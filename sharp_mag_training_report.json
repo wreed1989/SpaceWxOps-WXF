@@ -1,0 +1,209 @@
+{
+  "schema_version": "4.1",
+  "script_version": "1.3.0",
+  "model_version": "sharp-mag-20260822-hierx1",
+  "research_only": true,
+  "training_started": "2026-08-22T17:24:58Z",
+  "training_finished": "2026-08-22T17:24:59Z",
+  "dataset": "/Users/Billiam/Downloads/SpaceWxOps_SHARPMAG_Mac_Jupyter/sharp-mag-work/sharp_mag_training_table.csv.gz",
+  "dataset_sha256": "0f781fe6ce73821402f3e92edfbf70b17a12e83676afa6ef476135e57d393ee2",
+  "samples": 7145,
+  "date_start": "2012-10-01T21:00:00Z",
+  "date_end": "2026-08-20T21:00:00Z",
+  "features": [
+    "USFLUX__LOG1P",
+    "USFLUX__DELTA24H",
+    "MEANGBT__LOG1P",
+    "MEANGBT__DELTA24H",
+    "MEANJZH__LOG1P",
+    "MEANJZH__DELTA24H",
+    "MEANPOT__LOG1P",
+    "MEANPOT__DELTA24H",
+    "SHRGT45__LOG1P",
+    "SHRGT45__DELTA24H",
+    "TOTUSJH__LOG1P",
+    "TOTUSJH__DELTA24H",
+    "MEANGBH__LOG1P",
+    "MEANGBH__DELTA24H",
+    "MEANALP__LOG1P",
+    "MEANALP__DELTA24H",
+    "MEANGAM__LOG1P",
+    "MEANGAM__DELTA24H",
+    "MEANGBZ__LOG1P",
+    "MEANGBZ__DELTA24H",
+    "MEANJZD__LOG1P",
+    "MEANJZD__DELTA24H",
+    "TOTUSJZ__LOG1P",
+    "TOTUSJZ__DELTA24H",
+    "SAVNCPP__LOG1P",
+    "SAVNCPP__DELTA24H",
+    "TOTPOT__LOG1P",
+    "TOTPOT__DELTA24H",
+    "MEANSHR__LOG1P",
+    "MEANSHR__DELTA24H",
+    "AREA_ACR__LOG1P",
+    "AREA_ACR__DELTA24H",
+    "R_VALUE__LOG1P",
+    "R_VALUE__DELTA24H",
+    "ABSNJZH__LOG1P",
+    "ABSNJZH__DELTA24H",
+    "ABS_LON_FWT",
+    "LAT_FWT_VALUE"
+  ],
+  "M1+": {
+    "samples": 1319,
+    "positives": 32,
+    "prevalence": 0.024260803639120546,
+    "brier_score": 0.02053212395631193,
+    "brier_skill_vs_training_climatology": 0.13267011793530215,
+    "log_loss": 0.08021545614686584,
+    "roc_auc": 0.9130730380730381,
+    "precision_recall_auc": 0.2967516751345902,
+    "reliability": [
+      {
+        "mean_forecast": 4.1808306902938215e-07,
+        "observed_frequency": 0.0,
+        "count": 132
+      },
+      {
+        "mean_forecast": 4.294513504695872e-06,
+        "observed_frequency": 0.0,
+        "count": 132
+      },
+      {
+        "mean_forecast": 2.3504728798536044e-05,
+        "observed_frequency": 0.0,
+        "count": 132
+      },
+      {
+        "mean_forecast": 0.00012598204837918162,
+        "observed_frequency": 0.0,
+        "count": 132
+      },
+      {
+        "mean_forecast": 0.0004991336250584245,
+        "observed_frequency": 0.0,
+        "count": 131
+      },
+      {
+        "mean_forecast": 0.0018319314721420355,
+        "observed_frequency": 0.015267175572519083,
+        "count": 132
+      },
+      {
+        "mean_forecast": 0.0054636125017654535,
+        "observed_frequency": 0.007575757575757576,
+        "count": 132
+      },
+      {
+        "mean_forecast": 0.016501126248212573,
+        "observed_frequency": 0.007575757575757576,
+        "count": 132
+      },
+      {
+        "mean_forecast": 0.04684486123912024,
+        "observed_frequency": 0.03787878787878788,
+        "count": 132
+      },
+      {
+        "mean_forecast": 0.22583796665440684,
+        "observed_frequency": 0.17424242424242425,
+        "count": 132
+      }
+    ],
+    "train_samples": 4516,
+    "train_positives": 113,
+    "calibration_samples": 1278,
+    "calibration_positives": 74,
+    "calibrator": "Platt/logistic",
+    "test_start": "2025-02-05T21:00:00Z",
+    "test_end": "2026-08-20T21:00:00Z"
+  },
+  "X1+": {
+    "samples": 1319,
+    "positives": 3,
+    "prevalence": 0.002274450341167551,
+    "brier_score": 0.0022244953494326685,
+    "brier_skill_vs_training_climatology": 0.020322202276752965,
+    "log_loss": 0.012093365777490943,
+    "roc_auc": 0.9318642350557244,
+    "precision_recall_auc": 0.05272633466466065,
+    "reliability": [
+      {
+        "mean_forecast": 2.335038417451336e-08,
+        "observed_frequency": 0.0,
+        "count": 132
+      },
+      {
+        "mean_forecast": 2.398531478686524e-07,
+        "observed_frequency": 0.0,
+        "count": 132
+      },
+      {
+        "mean_forecast": 1.3127641084288744e-06,
+        "observed_frequency": 0.0,
+        "count": 132
+      },
+      {
+        "mean_forecast": 7.036231425433021e-06,
+        "observed_frequency": 0.0,
+        "count": 132
+      },
+      {
+        "mean_forecast": 2.787714395273114e-05,
+        "observed_frequency": 0.0,
+        "count": 131
+      },
+      {
+        "mean_forecast": 0.0001023153215824009,
+        "observed_frequency": 0.0,
+        "count": 132
+      },
+      {
+        "mean_forecast": 0.0003051485705773259,
+        "observed_frequency": 0.0,
+        "count": 132
+      },
+      {
+        "mean_forecast": 0.0009216054553522979,
+        "observed_frequency": 0.0,
+        "count": 132
+      },
+      {
+        "mean_forecast": 0.002616335335163631,
+        "observed_frequency": 0.007575757575757576,
+        "count": 132
+      },
+      {
+        "mean_forecast": 0.012613290690804633,
+        "observed_frequency": 0.015151515151515152,
+        "count": 132
+      }
+    ],
+    "method": "hierarchical_x_given_m",
+    "description": "Calibrated SHARP M1+ probability multiplied by a Beta-binomial-smoothed P(X1+ | M1+) severity rate.",
+    "train_samples": 4516,
+    "train_x1_positives": 5,
+    "calibration_samples": 1278,
+    "calibration_x1_positives": 5,
+    "test_x1_positives": 3,
+    "development_conditional_x_given_m": {
+      "successes": 10,
+      "trials": 187,
+      "prior_alpha": 0.5,
+      "prior_beta": 0.5,
+      "posterior_alpha": 10.5,
+      "posterior_beta": 177.5,
+      "posterior_mean": 0.05585106382978723,
+      "approx_95_lower": 0.02311238509257369,
+      "approx_95_upper": 0.08858974256700078
+    },
+    "test_start": "2025-02-05T21:00:00Z",
+    "test_end": "2026-08-20T21:00:00Z"
+  },
+  "prediction_methods": {
+    "M1+": "regularized logistic SHARP classifier with probability calibration",
+    "X1+": "hierarchical P(M1+) \u00d7 Beta-binomial-smoothed P(X1+ | M1+)"
+  },
+  "validation_note": "M1+ scores use a chronologically later untouched holdout block. The production M1+ classifier is refit to all rows and calibrated from out-of-fold predictions grouped by NOAA active region. X1+ holdout probabilities use only the development-period X/M severity ratio and the held-out M1+ probabilities."
+}

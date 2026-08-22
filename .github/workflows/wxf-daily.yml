@@ -10,10 +10,10 @@ on:
       - "external_flare_guidance.py"
       - "external_flare_guidance_fixed.py"
       - "external_flare_guidance_strict_v3.py"
+      - "external_flare_guidance_strict_v4.py"
       - "sharp_mag_pipeline.py"
   schedule:
     # Formal 21Z WXF issue plus retries for delayed HMI/SHARP and provider feeds.
-    # GitHub schedules use UTC. Non-zero minutes reduce top-of-hour congestion.
     - cron: "20 21 * * *"
     - cron: "20 22 * * *"
     - cron: "20 23 * * *"
@@ -67,7 +67,6 @@ jobs:
             --max-longitude 45
 
       - name: Add SolarMonitor MCSTAT and MCEVOL guidance
-        id: solarmonitor
         continue-on-error: true
         shell: bash
         run: |
@@ -89,7 +88,7 @@ jobs:
           regions = [row for row in payload.get("regions", []) if isinstance(row, dict)]
           full = next((row for row in regions if row.get("id") == "full-disk"), None)
           regional = [row for row in regions if row.get("id") != "full-disk"]
-          members = [
+          wxf_members = [
               row.get("members", {}).get("sharpmag")
               for row in regional
               if isinstance(row.get("members", {}).get("sharpmag"), dict)
@@ -97,17 +96,16 @@ jobs:
 
           def maximum(key):
               values = []
-              for member in members:
-                  value = member.get(key)
+              for member in wxf_members:
                   try:
-                      value = float(value)
+                      value = float(member.get(key))
                   except (TypeError, ValueError):
                       continue
                   if math.isfinite(value) and 0 <= value <= 100:
                       values.append(value)
               return max(values) if values else None
 
-          if full is not None and members:
+          if full is not None and wxf_members:
               m1 = maximum("m1")
               x1 = maximum("x1")
               if m1 is not None or x1 is not None:
@@ -117,16 +115,16 @@ jobs:
                       "m1": m1,
                       "x1": x1,
                       "source": (
-                          f"WXF dominant-region proxy (maximum of {len(members)} "
+                          f"WXF dominant-region proxy (maximum of {len(wxf_members)} "
                           "quality-controlled regional forecasts)"
                       ),
                       "quality": "research-dominant-region-proxy",
                   }
                   payload["wxf_full_disk"] = {
                       "method": "maximum regional probability (dominant-region proxy)",
-                      "regional_forecasts": len(members),
+                      "regional_forecasts": len(wxf_members),
                       "note": (
-                          "Interim full-disk display proxy. It avoids the inflated "
+                          "Interim full-disk display proxy. It avoids an inflated "
                           "independence-union calculation but is not a separately "
                           "trained or calibrated full-disk model."
                       ),
@@ -143,11 +141,10 @@ jobs:
           PY
 
       - name: Add SIDC, Met Office, FLARECAST, and NASA CCMC guidance
-        id: external_guidance
         continue-on-error: true
         shell: bash
         run: |
-          python external_flare_guidance_strict_v3.py \
+          python external_flare_guidance_strict_v4.py \
             --input flare_guidance.json \
             --output flare_guidance.json \
             --js-output flare_guidance.js
@@ -175,14 +172,17 @@ jobs:
           full_members = full_disk.get("members", {})
           assert full_members.get("sharpmag"), "full-disk WXF probability missing"
 
-          member_keys = (
+          allowed = (
               "sharpmag", "mcstat", "mcevol", "sidc", "metoffice", "flarecast",
-              "ccmc_magpy", "ccmc_daffs", "ccmc_aeffort", "swpc",
+              "ccmc_magpy", "ccmc_mag4", "ccmc_daffs", "ccmc_aeffort", "swpc",
           )
           count = 0
           for region in regions:
-              for key in member_keys:
-                  member = region.get("members", {}).get(key)
+              members = region.get("members", {})
+              assert "ensemble" not in members
+              assert "evolp" not in members and "evol_p" not in members
+              for key in allowed:
+                  member = members.get(key)
                   if not isinstance(member, dict):
                       continue
                   count += 1
@@ -195,14 +195,11 @@ jobs:
                   if m1 is not None and x1 is not None:
                       assert float(x1) <= float(m1), (region.get("id"), key, m1, x1)
 
-          for region in regions:
-              members = region.get("members", {})
-              assert "ensemble" not in members
-              assert "evolp" not in members and "evol_p" not in members
-
-          external = payload.get("external_sources") or {}
           available = [
-              key for key in ("sidc", "metoffice", "flarecast", "ccmc_magpy", "ccmc_daffs", "ccmc_aeffort")
+              key for key in (
+                  "sidc", "metoffice", "flarecast", "ccmc_magpy", "ccmc_mag4",
+                  "ccmc_daffs", "ccmc_aeffort",
+              )
               if isinstance(full_members.get(key), dict)
           ]
           print(
@@ -210,8 +207,8 @@ jobs:
               f"{count} probability members; external rows="
               f"{available if available else 'none current'}"
           )
-          if external:
-              print(json.dumps(external, indent=2))
+          if payload.get("external_sources"):
+              print(json.dumps(payload["external_sources"], indent=2))
           PY
 
       - name: Store the latest version of this formal forecast

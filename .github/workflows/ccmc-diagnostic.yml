@@ -30,7 +30,7 @@ jobs:
 
           base = "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi"
           session = requests.Session()
-          session.headers.update({"User-Agent": "SpaceWxOps CCMC diagnostic"})
+          session.headers.update({"User-Agent": "SpaceWxOps CCMC diagnostic v2"})
           catalog_response = session.get(base + "/catalog", timeout=60)
           catalog_response.raise_for_status()
           catalog = catalog_response.json().get("catalog", [])

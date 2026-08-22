@@ -76,6 +76,27 @@
           "x1": 0.0,
           "source": "SolarMonitor MCEVOL dominant-region proxy (maximum of 4 regions; MCSTAT fallback for 1 region(s) with no evolution forecast)",
           "quality": "published-comparison"
+        },
+        "sidc": {
+          "m1": 0.0,
+          "x1": 0.0,
+          "source": "SIDC 24-hour Global Flare Forecast",
+          "quality": "published-comparison",
+          "issued": "2026-08-22T10:22:15Z",
+          "valid_start": "2026-08-22T10:22:15Z",
+          "valid_end": "2026-08-23T10:22:15Z",
+          "note": "Human-operator-moderated global forecast published by SIDC."
+        },
+        "ccmc_magpy": {
+          "m1": null,
+          "x1": 14.0,
+          "source": "NASA/CCMC Flare Scoreboard · CCMC MagPy",
+          "quality": "published-comparison",
+          "issued": "2026-08-21T14:03:32Z",
+          "valid_start": "2026-08-21T11:00:00Z",
+          "valid_end": "2026-08-22T11:00:00Z",
+          "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed.",
+          "dataset_id": "MagPy_SHARP_HMI_CEA_FULLDISK"
         }
       }
     },
@@ -86,7 +107,7 @@
       "mcintosh": "",
       "quality": {
         "level": "research",
-        "message": "SHARP NRT record age 8.4 h; single-region HARP; |LON_FWT|=27.6\u00b0"
+        "message": "SHARP NRT record age 8.4 h; single-region HARP; |LON_FWT|=27.6°"
       },
       "members": {
         "sharpmag": {
@@ -173,7 +194,7 @@
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://solmon.dias.ie/forecast?date=2026082200",
-    "retrieved_at": "2026-08-22T20:06:44Z",
+    "retrieved_at": "2026-08-22T20:41:54Z",
     "valid_start": "2026-08-22T00:00:00Z",
     "valid_end": "2026-08-23T00:00:00Z",
     "regional_forecasts": 4,
@@ -185,6 +206,78 @@
   "wxf_full_disk": {
     "method": "maximum regional probability (dominant-region proxy)",
     "regional_forecasts": 1,
-    "note": "Interim full-disk display proxy. It avoids the inflated independence-union calculation but is not a separately trained or calibrated full-disk model."
+    "note": "Interim full-disk display proxy. It avoids an inflated independence-union calculation but is not a separately trained or calibrated full-disk model."
+  },
+  "external_sources": {
+    "generated_at": "2026-08-22T20:41:54Z",
+    "script_version": "1.0.0",
+    "sidc_direct": {
+      "ok": true,
+      "url": "https://www.sidc.be/WMO/FlareForecast.php",
+      "issued": "2026-08-22T10:22:15Z",
+      "m1": 0.0,
+      "x1": 0.0
+    },
+    "ccmc_catalog": {
+      "ok": true,
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/catalog",
+      "datasets": 22
+    },
+    "ccmc_sidc": {
+      "dataset_id": "SIDC_Operator_FULLDISK",
+      "label": "SIDC",
+      "ok": true,
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=SIDC_Operator_FULLDISK&time.min=2026-08-18T21%3A00%3A00.0&time.max=2026-08-22T21%3A00%3A00.0&format=json&options=fields.all",
+      "records": 3,
+      "issued": "2026-08-21T12:30:03Z",
+      "valid_start": "2026-08-21T12:30:00Z",
+      "valid_end": "2026-08-22T12:30:00Z",
+      "m1": null,
+      "x1": 12.0
+    },
+    "ccmc_metoffice": {
+      "dataset_id": "MO_TOT1_FULLDISK",
+      "label": "Met Office",
+      "ok": false,
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MO_TOT1_FULLDISK&time.min=2026-08-18T21%3A00%3A00.0&time.max=2026-08-22T21%3A00%3A00.0&format=json&options=fields.all",
+      "records": 0,
+      "detail": "No M/X probability record in query window"
+    },
+    "ccmc_ccmc_magpy": {
+      "dataset_id": "MagPy_SHARP_HMI_CEA_FULLDISK",
+      "label": "CCMC MagPy",
+      "ok": true,
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MagPy_SHARP_HMI_CEA_FULLDISK&time.min=2026-08-18T21%3A00%3A00.0&time.max=2026-08-22T21%3A00%3A00.0&format=json&options=fields.all",
+      "records": 56,
+      "issued": "2026-08-21T14:03:32Z",
+      "valid_start": "2026-08-21T11:00:00Z",
+      "valid_end": "2026-08-22T11:00:00Z",
+      "m1": null,
+      "x1": 14.0
+    },
+    "ccmc_ccmc_daffs": {
+      "dataset_id": "SPS_FULLDISK",
+      "label": "CCMC DAFFS",
+      "ok": false,
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=SPS_FULLDISK&time.min=2026-08-18T21%3A00%3A00.0&time.max=2026-08-22T21%3A00%3A00.0&format=json&options=fields.all",
+      "records": 2,
+      "detail": "Forecast window does not meaningfully overlap target (2026-08-20T17:00:00Z to 2026-08-21T17:00:00Z)"
+    },
+    "ccmc_ccmc_aeffort": {
+      "dataset_id": "SPS_FULLDISK",
+      "label": "CCMC A-EFFort",
+      "ok": false,
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=SPS_FULLDISK&time.min=2026-08-18T21%3A00%3A00.0&time.max=2026-08-22T21%3A00%3A00.0&format=json&options=fields.all",
+      "records": 2,
+      "detail": "Forecast window does not meaningfully overlap target (2026-08-20T17:00:00Z to 2026-08-21T17:00:00Z)"
+    },
+    "flarecast": {
+      "ok": false,
+      "url": "https://api.flarecast.eu/api/prediction/flarecast_latest.xml",
+      "http_status": 200,
+      "content_length": 49,
+      "detail": "XML contained no parseable current M/X probabilities",
+      "candidate_count": 0
+    }
   }
 }

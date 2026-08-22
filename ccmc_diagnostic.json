@@ -1,0 +1,3730 @@
+{
+  "generated_at": "2026-08-22T21:16:15.161981+00:00",
+  "catalog_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/catalog",
+  "catalog": [
+    {
+      "id": "AMOS_v1_FULLDISK",
+      "title": "AMOS_v1"
+    },
+    {
+      "id": "AMOS_v1_REGIONS",
+      "title": "AMOS_v1"
+    },
+    {
+      "id": "ASAP_1_FULLDISK",
+      "title": "ASAP_1"
+    },
+    {
+      "id": "ASAP_1_REGIONS",
+      "title": "ASAP_1"
+    },
+    {
+      "id": "ASSA_1_FULLDISK",
+      "title": "ASSA_1"
+    },
+    {
+      "id": "ASSA_1_REGIONS",
+      "title": "ASSA_1"
+    },
+    {
+      "id": "ASSA_24H_1_FULLDISK",
+      "title": "ASSA_24H_1"
+    },
+    {
+      "id": "ASSA_24H_1_REGIONS",
+      "title": "ASSA_24H_1"
+    },
+    {
+      "id": "BoM_flare1_FULLDISK",
+      "title": "Australian Bureau of Meteorology, Space Weather Services Flarecast automatic forecast"
+    },
+    {
+      "id": "BoM_flare1_REGIONS",
+      "title": "Australian Bureau of Meteorology, Space Weather Services Flarecast automatic forecast"
+    },
+    {
+      "id": "MAG4_LOS_FEr_FULLDISK",
+      "title": "MAG4 Using Line-of-Sight HMI magnetogram. Free energy only. Near-Real-Time data. [HMI-NRT]"
+    },
+    {
+      "id": "MAG4_LOS_FEr_REGIONS",
+      "title": "MAG4 Using Line-of-Sight HMI magnetogram. Free energy only. Near-Real-Time data. [HMI-NRT]"
+    },
+    {
+      "id": "MAG4_LOS_r_FULLDISK",
+      "title": "MAG4 Using Line-of-Sight HMI magnetogram. Free energy with flares. Near-Real-Time data. [WF-HMI-NRT]"
+    },
+    {
+      "id": "MAG4_LOS_r_REGIONS",
+      "title": "MAG4 Using Line-of-Sight HMI magnetogram. Free energy with flares. Near-Real-Time data. [WF-HMI-NRT]"
+    },
+    {
+      "id": "MO_TOT1_FULLDISK",
+      "title": "Met Office"
+    },
+    {
+      "id": "MagPy-HMI-LOS_FULLDISK",
+      "title": "spase://CCMC/SimulationModel/MagPy/v3"
+    },
+    {
+      "id": "MagPy_SHARP_HMI_CEA_FULLDISK",
+      "title": "spase://CCMC/SimulationModel/MagPy/v3"
+    },
+    {
+      "id": "NOAA_1_FULLDISK",
+      "title": "NOAA_1"
+    },
+    {
+      "id": "NOAA_1_REGIONS",
+      "title": "NOAA_1"
+    },
+    {
+      "id": "SIDC_Operator_FULLDISK",
+      "title": "SIDC human operator moderated"
+    },
+    {
+      "id": "SIDC_Operator_REGIONS",
+      "title": "SIDC human operator moderated"
+    },
+    {
+      "id": "SPS_FULLDISK",
+      "title": "SPS Flare Scoreboard [SPS]"
+    }
+  ],
+  "full_disk": [
+    {
+      "id": "AMOS_v1_FULLDISK",
+      "title": "AMOS_v1",
+      "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=AMOS_v1_FULLDISK",
+      "info_status": 200,
+      "parameters": [
+        {
+          "name": "start_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "end_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "issue_time",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "C",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "M",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "CPlus",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "MPlus",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "X",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        }
+      ],
+      "data_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=AMOS_v1_FULLDISK&time.min=2026-08-17T21%3A16%3A15.0&time.max=2026-08-22T22%3A16%3A15.0&format=json&options=fields.all",
+      "data_status": 200,
+      "data_parameters": [
+        {
+          "fill": null,
+          "length": 22,
+          "name": "start_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "end_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "issue_time",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": "-1",
+          "name": "C",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "M",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "X",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "C_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "M_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "X_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "C_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "M_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "X_level",
+          "type": "double",
+          "units": "level"
+        }
+      ],
+      "row_count": 0
+    },
+    {
+      "id": "ASAP_1_FULLDISK",
+      "title": "ASAP_1",
+      "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=ASAP_1_FULLDISK",
+      "info_status": 200,
+      "parameters": [
+        {
+          "name": "start_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "end_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "issue_time",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "C",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "M",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "CPlus",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "MPlus",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "X",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "C_uncertainty",
+          "type": "double",
+          "length": 0,
+          "units": "uncertainty",
+          "fill": "-1"
+        },
+        {
+          "name": "M_uncertainty",
+          "type": "double",
+          "length": 0,
+          "units": "uncertainty",
+          "fill": "-1"
+        },
+        {
+          "name": "CPlus_uncertainty",
+          "type": "double",
+          "length": 0,
+          "units": "uncertainty",
+          "fill": "-1"
+        },
+        {
+          "name": "MPlus_uncertainty",
+          "type": "double",
+          "length": 0,
+          "units": "uncertainty",
+          "fill": "-1"
+        },
+        {
+          "name": "X_uncertainty",
+          "type": "double",
+          "length": 0,
+          "units": "uncertainty",
+          "fill": "-1"
+        },
+        {
+          "name": "C_value_lower",
+          "type": "double",
+          "length": 0,
+          "units": "value_lower",
+          "fill": "-1"
+        },
+        {
+          "name": "M_value_lower",
+          "type": "double",
+          "length": 0,
+          "units": "value_lower",
+          "fill": "-1"
+        },
+        {
+          "name": "CPlus_value_lower",
+          "type": "double",
+          "length": 0,
+          "units": "value_lower",
+          "fill": "-1"
+        },
+        {
+          "name": "MPlus_value_lower",
+          "type": "double",
+          "length": 0,
+          "units": "value_lower",
+          "fill": "-1"
+        },
+        {
+          "name": "X_value_lower",
+          "type": "double",
+          "length": 0,
+          "units": "value_lower",
+          "fill": "-1"
+        },
+        {
+          "name": "C_value_higher",
+          "type": "double",
+          "length": 0,
+          "units": "value_higher",
+          "fill": "-1"
+        },
+        {
+          "name": "M_value_higher",
+          "type": "double",
+          "length": 0,
+          "units": "value_higher",
+          "fill": "-1"
+        },
+        {
+          "name": "CPlus_value_higher",
+          "type": "double",
+          "length": 0,
+          "units": "value_higher",
+          "fill": "-1"
+        },
+        {
+          "name": "MPlus_value_higher",
+          "type": "double",
+          "length": 0,
+          "units": "value_higher",
+          "fill": "-1"
+        },
+        {
+          "name": "X_value_higher",
+          "type": "double",
+          "length": 0,
+          "units": "value_higher",
+          "fill": "-1"
+        }
+      ],
+      "data_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=ASAP_1_FULLDISK&time.min=2026-08-17T21%3A16%3A15.0&time.max=2026-08-22T22%3A16%3A15.0&format=json&options=fields.all",
+      "data_status": 200,
+      "data_parameters": [
+        {
+          "fill": null,
+          "length": 22,
+          "name": "start_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "end_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "issue_time",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": "-1",
+          "name": "C",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "M",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "X",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "C_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "M_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "X_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "C_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "M_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "X_level",
+          "type": "double",
+          "units": "level"
+        }
+      ],
+      "row_count": 0
+    },
+    {
+      "id": "ASSA_1_FULLDISK",
+      "title": "ASSA_1",
+      "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=ASSA_1_FULLDISK",
+      "info_status": 200,
+      "parameters": [
+        {
+          "name": "start_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "end_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "issue_time",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "C",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "M",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "X",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        }
+      ],
+      "data_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=ASSA_1_FULLDISK&time.min=2026-08-17T21%3A16%3A15.0&time.max=2026-08-22T22%3A16%3A15.0&format=json&options=fields.all",
+      "data_status": 200,
+      "data_parameters": [
+        {
+          "fill": null,
+          "length": 22,
+          "name": "start_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "end_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "issue_time",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": "-1",
+          "name": "C",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "M",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "X",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "C_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "M_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "X_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "C_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "M_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "X_level",
+          "type": "double",
+          "units": "level"
+        }
+      ],
+      "row_count": 89,
+      "first_row": [
+        "2026-08-17T22:00:00.0Z",
+        "2026-08-18T10:00:00.0Z",
+        "2026-08-17T22:00:00.0Z",
+        0.84,
+        0.21,
+        "-1",
+        "-1",
+        0.01,
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1"
+      ],
+      "last_row": [
+        "2026-08-21T14:00:00.0Z",
+        "2026-08-22T02:00:00.0Z",
+        "2026-08-21T14:00:00.0Z",
+        0.79,
+        0.24,
+        "-1",
+        "-1",
+        0.04,
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1"
+      ]
+    },
+    {
+      "id": "ASSA_24H_1_FULLDISK",
+      "title": "ASSA_24H_1",
+      "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=ASSA_24H_1_FULLDISK",
+      "info_status": 200,
+      "parameters": [
+        {
+          "name": "start_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "end_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "issue_time",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "C",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "M",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "X",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        }
+      ],
+      "data_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=ASSA_24H_1_FULLDISK&time.min=2026-08-17T21%3A16%3A15.0&time.max=2026-08-22T22%3A16%3A15.0&format=json&options=fields.all",
+      "data_status": 200,
+      "data_parameters": [
+        {
+          "fill": null,
+          "length": 22,
+          "name": "start_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "end_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "issue_time",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": "-1",
+          "name": "C",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "M",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "X",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "C_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "M_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "X_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "C_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "M_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "X_level",
+          "type": "double",
+          "units": "level"
+        }
+      ],
+      "row_count": 89,
+      "first_row": [
+        "2026-08-17T22:00:00.0Z",
+        "2026-08-18T22:00:00.0Z",
+        "2026-08-17T22:00:00.0Z",
+        0.9744,
+        0.3759,
+        "-1",
+        "-1",
+        0.0199,
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1"
+      ],
+      "last_row": [
+        "2026-08-21T14:00:00.0Z",
+        "2026-08-22T14:00:00.0Z",
+        "2026-08-21T14:00:00.0Z",
+        0.9559,
+        0.4224,
+        "-1",
+        "-1",
+        0.0784,
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1"
+      ]
+    },
+    {
+      "id": "BoM_flare1_FULLDISK",
+      "title": "Australian Bureau of Meteorology, Space Weather Services Flarecast automatic forecast",
+      "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=BoM_flare1_FULLDISK",
+      "info_status": 200,
+      "parameters": [
+        {
+          "name": "start_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "end_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "issue_time",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "MPlus",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "X",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        }
+      ],
+      "data_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=BoM_flare1_FULLDISK&time.min=2026-08-17T21%3A16%3A15.0&time.max=2026-08-22T22%3A16%3A15.0&format=json&options=fields.all",
+      "data_status": 200,
+      "data_parameters": [
+        {
+          "fill": null,
+          "length": 22,
+          "name": "start_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "end_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "issue_time",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": "-1",
+          "name": "C",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "M",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "X",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "C_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "M_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "X_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "C_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "M_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "X_level",
+          "type": "double",
+          "units": "level"
+        }
+      ],
+      "row_count": 0
+    },
+    {
+      "id": "MAG4_LOS_FEr_FULLDISK",
+      "title": "MAG4 Using Line-of-Sight HMI magnetogram. Free energy only. Near-Real-Time data. [HMI-NRT]",
+      "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=MAG4_LOS_FEr_FULLDISK",
+      "info_status": 200,
+      "parameters": [
+        {
+          "name": "start_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "end_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "issue_time",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "M",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "MPlus",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "X",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "M_uncertainty",
+          "type": "double",
+          "length": 0,
+          "units": "uncertainty",
+          "fill": "-1"
+        },
+        {
+          "name": "MPlus_uncertainty",
+          "type": "double",
+          "length": 0,
+          "units": "uncertainty",
+          "fill": "-1"
+        },
+        {
+          "name": "X_uncertainty",
+          "type": "double",
+          "length": 0,
+          "units": "uncertainty",
+          "fill": "-1"
+        },
+        {
+          "name": "M_value_lower",
+          "type": "double",
+          "length": 0,
+          "units": "value_lower",
+          "fill": "-1"
+        },
+        {
+          "name": "MPlus_value_lower",
+          "type": "double",
+          "length": 0,
+          "units": "value_lower",
+          "fill": "-1"
+        },
+        {
+          "name": "X_value_lower",
+          "type": "double",
+          "length": 0,
+          "units": "value_lower",
+          "fill": "-1"
+        },
+        {
+          "name": "M_value_higher",
+          "type": "double",
+          "length": 0,
+          "units": "value_higher",
+          "fill": "-1"
+        },
+        {
+          "name": "MPlus_value_higher",
+          "type": "double",
+          "length": 0,
+          "units": "value_higher",
+          "fill": "-1"
+        },
+        {
+          "name": "X_value_higher",
+          "type": "double",
+          "length": 0,
+          "units": "value_higher",
+          "fill": "-1"
+        }
+      ],
+      "data_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MAG4_LOS_FEr_FULLDISK&time.min=2026-08-17T21%3A16%3A15.0&time.max=2026-08-22T22%3A16%3A15.0&format=json&options=fields.all",
+      "data_status": 200,
+      "data_parameters": [
+        {
+          "fill": null,
+          "length": 22,
+          "name": "start_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "end_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "issue_time",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": "-1",
+          "name": "C",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "M",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "X",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "C_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "M_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "X_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "C_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "M_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "X_level",
+          "type": "double",
+          "units": "level"
+        }
+      ],
+      "row_count": 0
+    },
+    {
+      "id": "MAG4_LOS_r_FULLDISK",
+      "title": "MAG4 Using Line-of-Sight HMI magnetogram. Free energy with flares. Near-Real-Time data. [WF-HMI-NRT]",
+      "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=MAG4_LOS_r_FULLDISK",
+      "info_status": 200,
+      "parameters": [
+        {
+          "name": "start_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "end_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "issue_time",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "M",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "MPlus",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "X",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "M_uncertainty",
+          "type": "double",
+          "length": 0,
+          "units": "uncertainty",
+          "fill": "-1"
+        },
+        {
+          "name": "MPlus_uncertainty",
+          "type": "double",
+          "length": 0,
+          "units": "uncertainty",
+          "fill": "-1"
+        },
+        {
+          "name": "X_uncertainty",
+          "type": "double",
+          "length": 0,
+          "units": "uncertainty",
+          "fill": "-1"
+        },
+        {
+          "name": "M_value_lower",
+          "type": "double",
+          "length": 0,
+          "units": "value_lower",
+          "fill": "-1"
+        },
+        {
+          "name": "MPlus_value_lower",
+          "type": "double",
+          "length": 0,
+          "units": "value_lower",
+          "fill": "-1"
+        },
+        {
+          "name": "X_value_lower",
+          "type": "double",
+          "length": 0,
+          "units": "value_lower",
+          "fill": "-1"
+        },
+        {
+          "name": "M_value_higher",
+          "type": "double",
+          "length": 0,
+          "units": "value_higher",
+          "fill": "-1"
+        },
+        {
+          "name": "MPlus_value_higher",
+          "type": "double",
+          "length": 0,
+          "units": "value_higher",
+          "fill": "-1"
+        },
+        {
+          "name": "X_value_higher",
+          "type": "double",
+          "length": 0,
+          "units": "value_higher",
+          "fill": "-1"
+        }
+      ],
+      "data_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MAG4_LOS_r_FULLDISK&time.min=2026-08-17T21%3A16%3A15.0&time.max=2026-08-22T22%3A16%3A15.0&format=json&options=fields.all",
+      "data_status": 200,
+      "data_parameters": [
+        {
+          "fill": null,
+          "length": 22,
+          "name": "start_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "end_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "issue_time",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": "-1",
+          "name": "C",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "M",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "X",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "C_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "M_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "X_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "C_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "M_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "X_level",
+          "type": "double",
+          "units": "level"
+        }
+      ],
+      "row_count": 0
+    },
+    {
+      "id": "MO_TOT1_FULLDISK",
+      "title": "Met Office",
+      "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=MO_TOT1_FULLDISK",
+      "info_status": 200,
+      "parameters": [
+        {
+          "name": "start_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "end_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "issue_time",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "M",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "X",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        }
+      ],
+      "data_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MO_TOT1_FULLDISK&time.min=2026-08-17T21%3A16%3A15.0&time.max=2026-08-22T22%3A16%3A15.0&format=json&options=fields.all",
+      "data_status": 200,
+      "data_parameters": [
+        {
+          "fill": null,
+          "length": 22,
+          "name": "start_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "end_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "issue_time",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": "-1",
+          "name": "C",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "M",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "X",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "C_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "M_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "X_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "C_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "M_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "X_level",
+          "type": "double",
+          "units": "level"
+        }
+      ],
+      "row_count": 0
+    },
+    {
+      "id": "MagPy-HMI-LOS_FULLDISK",
+      "title": "spase://CCMC/SimulationModel/MagPy/v3",
+      "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=MagPy-HMI-LOS_FULLDISK",
+      "info_status": 200,
+      "parameters": [
+        {
+          "name": "start_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "end_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "issue_time",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "MPlus",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "X",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "MPlus_uncertainty",
+          "type": "double",
+          "length": 0,
+          "units": "uncertainty",
+          "fill": "-1"
+        },
+        {
+          "name": "X_uncertainty",
+          "type": "double",
+          "length": 0,
+          "units": "uncertainty",
+          "fill": "-1"
+        }
+      ],
+      "data_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MagPy-HMI-LOS_FULLDISK&time.min=2026-08-17T21%3A16%3A15.0&time.max=2026-08-22T22%3A16%3A15.0&format=json&options=fields.all",
+      "data_status": 200,
+      "data_parameters": [
+        {
+          "fill": null,
+          "length": 22,
+          "name": "start_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "end_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "issue_time",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": "-1",
+          "name": "C",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "M",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "X",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "C_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "M_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "X_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "C_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "M_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "X_level",
+          "type": "double",
+          "units": "level"
+        }
+      ],
+      "row_count": 77,
+      "first_row": [
+        "2026-08-18T00:00:00.0Z",
+        "2026-08-19T00:00:00.0Z",
+        "2026-08-18T03:15:34.0Z",
+        "-1",
+        "-1",
+        "-1",
+        0.11,
+        0.02,
+        "-1",
+        "-1",
+        "-1",
+        0.01,
+        0.01,
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1"
+      ],
+      "last_row": [
+        "2026-08-21T11:00:00.0Z",
+        "2026-08-22T11:00:00.0Z",
+        "2026-08-21T14:07:25.0Z",
+        "-1",
+        "-1",
+        "-1",
+        0.01,
+        0.01,
+        "-1",
+        "-1",
+        "-1",
+        0.01,
+        0.01,
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1"
+      ]
+    },
+    {
+      "id": "MagPy_SHARP_HMI_CEA_FULLDISK",
+      "title": "spase://CCMC/SimulationModel/MagPy/v3",
+      "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=MagPy_SHARP_HMI_CEA_FULLDISK",
+      "info_status": 200,
+      "parameters": [
+        {
+          "name": "start_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "end_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "issue_time",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "MPlus",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "X",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "MPlus_uncertainty",
+          "type": "double",
+          "length": 0,
+          "units": "uncertainty",
+          "fill": "-1"
+        },
+        {
+          "name": "X_uncertainty",
+          "type": "double",
+          "length": 0,
+          "units": "uncertainty",
+          "fill": "-1"
+        }
+      ],
+      "data_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MagPy_SHARP_HMI_CEA_FULLDISK&time.min=2026-08-17T21%3A16%3A15.0&time.max=2026-08-22T22%3A16%3A15.0&format=json&options=fields.all",
+      "data_status": 200,
+      "data_parameters": [
+        {
+          "fill": null,
+          "length": 22,
+          "name": "start_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "end_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "issue_time",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": "-1",
+          "name": "C",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "M",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "X",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "C_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "M_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "X_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "C_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "M_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "X_level",
+          "type": "double",
+          "units": "level"
+        }
+      ],
+      "row_count": 77,
+      "first_row": [
+        "2026-08-18T00:00:00.0Z",
+        "2026-08-19T00:00:00.0Z",
+        "2026-08-18T03:05:56.0Z",
+        "-1",
+        "-1",
+        "-1",
+        0.14,
+        0.07,
+        "-1",
+        "-1",
+        "-1",
+        0.01,
+        0.023,
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1"
+      ],
+      "last_row": [
+        "2026-08-21T11:00:00.0Z",
+        "2026-08-22T11:00:00.0Z",
+        "2026-08-21T14:03:32.0Z",
+        "-1",
+        "-1",
+        "-1",
+        0.25,
+        0.14,
+        "-1",
+        "-1",
+        "-1",
+        0.01,
+        0.041,
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1"
+      ]
+    },
+    {
+      "id": "NOAA_1_FULLDISK",
+      "title": "NOAA_1",
+      "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=NOAA_1_FULLDISK",
+      "info_status": 200,
+      "parameters": [
+        {
+          "name": "start_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "end_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "issue_time",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "M",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "X",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "M_level",
+          "type": "double",
+          "length": 0,
+          "units": "level",
+          "fill": "-1"
+        },
+        {
+          "name": "X_level",
+          "type": "double",
+          "length": 0,
+          "units": "level",
+          "fill": "-1"
+        }
+      ],
+      "data_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=NOAA_1_FULLDISK&time.min=2026-08-17T21%3A16%3A15.0&time.max=2026-08-22T22%3A16%3A15.0&format=json&options=fields.all",
+      "data_status": 200,
+      "data_parameters": [
+        {
+          "fill": null,
+          "length": 22,
+          "name": "start_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "end_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "issue_time",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": "-1",
+          "name": "C",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "M",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "X",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "C_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "M_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "X_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "C_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "M_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "X_level",
+          "type": "double",
+          "units": "level"
+        }
+      ],
+      "row_count": 14,
+      "first_row": [
+        "2026-08-18T00:00:00.0Z",
+        "2026-08-19T00:00:00.0Z",
+        "2026-08-15T22:00:00.0Z",
+        "-1",
+        0.15,
+        "-1",
+        "-1",
+        0.01,
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        0.15,
+        "-1",
+        "-1",
+        0.01
+      ],
+      "last_row": [
+        "2026-08-22T00:00:00.0Z",
+        "2026-08-23T00:00:00.0Z",
+        "2026-08-20T22:00:00.0Z",
+        "-1",
+        0.4,
+        "-1",
+        "-1",
+        0.1,
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        0.4,
+        "-1",
+        "-1",
+        0.1
+      ]
+    },
+    {
+      "id": "SIDC_Operator_FULLDISK",
+      "title": "SIDC human operator moderated",
+      "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=SIDC_Operator_FULLDISK",
+      "info_status": 200,
+      "parameters": [
+        {
+          "name": "start_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "end_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "issue_time",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "C",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "M",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "CPlus",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "MPlus",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "X",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "CPlus_level",
+          "type": "double",
+          "length": 0,
+          "units": "level",
+          "fill": "-1"
+        },
+        {
+          "name": "MPlus_level",
+          "type": "double",
+          "length": 0,
+          "units": "level",
+          "fill": "-1"
+        },
+        {
+          "name": "X_level",
+          "type": "double",
+          "length": 0,
+          "units": "level",
+          "fill": "-1"
+        }
+      ],
+      "data_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=SIDC_Operator_FULLDISK&time.min=2026-08-17T21%3A16%3A15.0&time.max=2026-08-22T22%3A16%3A15.0&format=json&options=fields.all",
+      "data_status": 200,
+      "data_parameters": [
+        {
+          "fill": null,
+          "length": 22,
+          "name": "start_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "end_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "issue_time",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": "-1",
+          "name": "C",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "M",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "X",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "C_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "M_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "X_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "C_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "M_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "X_level",
+          "type": "double",
+          "units": "level"
+        }
+      ],
+      "row_count": 4,
+      "first_row": [
+        "2026-08-18T12:30:00.0Z",
+        "2026-08-19T12:30:00.0Z",
+        "2026-08-18T12:30:03.0Z",
+        "-1",
+        "-1",
+        0.97,
+        0.47,
+        0.02,
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        0.97,
+        0.47,
+        0.02
+      ],
+      "last_row": [
+        "2026-08-21T12:30:00.0Z",
+        "2026-08-22T12:30:00.0Z",
+        "2026-08-21T12:30:03.0Z",
+        "-1",
+        "-1",
+        0.99,
+        0.77,
+        0.12,
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        0.99,
+        0.77,
+        0.12
+      ]
+    },
+    {
+      "id": "SPS_FULLDISK",
+      "title": "SPS Flare Scoreboard [SPS]",
+      "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=SPS_FULLDISK",
+      "info_status": 200,
+      "parameters": [
+        {
+          "name": "start_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "end_window",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "issue_time",
+          "type": "isotime",
+          "length": 22,
+          "units": "UTC"
+        },
+        {
+          "name": "C",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "M",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "CPlus",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "MPlus",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        },
+        {
+          "name": "X",
+          "type": "double",
+          "length": 0,
+          "units": "probability",
+          "fill": "-1"
+        }
+      ],
+      "data_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=SPS_FULLDISK&time.min=2026-08-17T21%3A16%3A15.0&time.max=2026-08-22T22%3A16%3A15.0&format=json&options=fields.all",
+      "data_status": 200,
+      "data_parameters": [
+        {
+          "fill": null,
+          "length": 22,
+          "name": "start_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "end_window",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": null,
+          "length": 22,
+          "name": "issue_time",
+          "type": "isotime",
+          "units": "UTC"
+        },
+        {
+          "fill": "-1",
+          "name": "C",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "M",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "X",
+          "type": "double",
+          "units": "probability"
+        },
+        {
+          "fill": "-1",
+          "name": "C_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "M_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "X_uncertainty",
+          "type": "double",
+          "units": "uncertainty"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_lower",
+          "type": "double",
+          "units": "value_lower"
+        },
+        {
+          "fill": "-1",
+          "name": "C_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "M_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "X_value_higher",
+          "type": "double",
+          "units": "value_higher"
+        },
+        {
+          "fill": "-1",
+          "name": "C_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "M_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "CPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "MPlus_level",
+          "type": "double",
+          "units": "level"
+        },
+        {
+          "fill": "-1",
+          "name": "X_level",
+          "type": "double",
+          "units": "level"
+        }
+      ],
+      "row_count": 3,
+      "first_row": [
+        "2026-08-18T17:00:00.0Z",
+        "2026-08-19T17:00:00.0Z",
+        "2026-08-18T17:00:00.0Z",
+        0.99,
+        0.4,
+        "-1",
+        "-1",
+        0.15,
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1"
+      ],
+      "last_row": [
+        "2026-08-20T17:00:00.0Z",
+        "2026-08-21T17:00:00.0Z",
+        "2026-08-20T17:00:00.0Z",
+        0.99,
+        0.45,
+        "-1",
+        "-1",
+        0.2,
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1"
+      ]
+    }
+  ]
+}

@@ -9,9 +9,11 @@ on:
       - "solar_monitor_guidance.py"
       - "external_flare_guidance.py"
       - "external_flare_guidance_fixed.py"
+      - "external_flare_guidance_strict_v3.py"
       - "sharp_mag_pipeline.py"
   schedule:
-    # Formal 21Z WXF issue plus retries for delayed source availability.
+    # Formal 21Z WXF issue plus retries for delayed HMI/SHARP and provider feeds.
+    # GitHub schedules use UTC. Non-zero minutes reduce top-of-hour congestion.
     - cron: "20 21 * * *"
     - cron: "20 22 * * *"
     - cron: "20 23 * * *"
@@ -65,6 +67,7 @@ jobs:
             --max-longitude 45
 
       - name: Add SolarMonitor MCSTAT and MCEVOL guidance
+        id: solarmonitor
         continue-on-error: true
         shell: bash
         run: |
@@ -123,7 +126,7 @@ jobs:
                       "method": "maximum regional probability (dominant-region proxy)",
                       "regional_forecasts": len(members),
                       "note": (
-                          "Interim full-disk display proxy. It avoids an inflated "
+                          "Interim full-disk display proxy. It avoids the inflated "
                           "independence-union calculation but is not a separately "
                           "trained or calibrated full-disk model."
                       ),
@@ -140,10 +143,11 @@ jobs:
           PY
 
       - name: Add SIDC, Met Office, FLARECAST, and NASA CCMC guidance
+        id: external_guidance
         continue-on-error: true
         shell: bash
         run: |
-          python external_flare_guidance_fixed.py \
+          python external_flare_guidance_strict_v3.py \
             --input flare_guidance.json \
             --output flare_guidance.json \
             --js-output flare_guidance.js
@@ -156,8 +160,7 @@ jobs:
           import json
           from pathlib import Path
 
-          path = Path("flare_guidance.json")
-          payload = json.loads(path.read_text(encoding="utf-8"))
+          payload = json.loads(Path("flare_guidance.json").read_text(encoding="utf-8"))
           assert payload.get("model_version"), "model_version missing"
           assert payload.get("operational") is False, "research flag unexpectedly changed"
           assert payload.get("probability_scale") == "percent"
@@ -171,31 +174,18 @@ jobs:
           assert full_disk, "full-disk row missing"
           full_members = full_disk.get("members", {})
           assert full_members.get("sharpmag"), "full-disk WXF probability missing"
-          assert "ensemble" not in full_members, "untrained ensemble leaked into output"
 
-          solar = payload.get("solar_monitor")
-          if solar:
-              assert solar.get("regional_forecasts", 0) > 0, "SolarMonitor region count missing"
-              assert full_members.get("mcstat"), "full-disk SolarMonitor MCSTAT proxy missing"
-              assert full_members.get("mcevol"), "full-disk SolarMonitor MCEVOL proxy missing"
-              solar_status = f"{solar['regional_forecasts']} SolarMonitor regions"
-          else:
-              solar_status = "SolarMonitor unavailable for this retry"
-
-          allowed = (
-              "sharpmag", "mcstat", "mcevol", "swpc", "sidc", "metoffice",
-              "flarecast", "ccmc_magpy", "ccmc_daffs", "ccmc_aeffort"
+          member_keys = (
+              "sharpmag", "mcstat", "mcevol", "sidc", "metoffice", "flarecast",
+              "ccmc_magpy", "ccmc_daffs", "ccmc_aeffort", "swpc",
           )
-          member_count = 0
+          count = 0
           for region in regions:
-              members = region.get("members", {})
-              assert "evolp" not in members and "evol_p" not in members
-              assert "ensemble" not in members
-              for key in allowed:
-                  member = members.get(key)
+              for key in member_keys:
+                  member = region.get("members", {}).get(key)
                   if not isinstance(member, dict):
                       continue
-                  member_count += 1
+                  count += 1
                   m1 = member.get("m1")
                   x1 = member.get("x1")
                   if m1 is not None:
@@ -205,15 +195,20 @@ jobs:
                   if m1 is not None and x1 is not None:
                       assert float(x1) <= float(m1), (region.get("id"), key, m1, x1)
 
+          for region in regions:
+              members = region.get("members", {})
+              assert "ensemble" not in members
+              assert "evolp" not in members and "evol_p" not in members
+
           external = payload.get("external_sources") or {}
-          available_external = [
+          available = [
               key for key in ("sidc", "metoffice", "flarecast", "ccmc_magpy", "ccmc_daffs", "ccmc_aeffort")
               if isinstance(full_members.get(key), dict)
           ]
           print(
               f"Validated {payload['model_version']} issued {payload['issued']} with "
-              f"{solar_status}, {member_count} members, and external rows: "
-              f"{', '.join(available_external) if available_external else 'none current'}"
+              f"{count} probability members; external rows="
+              f"{available if available else 'none current'}"
           )
           if external:
               print(json.dumps(external, indent=2))

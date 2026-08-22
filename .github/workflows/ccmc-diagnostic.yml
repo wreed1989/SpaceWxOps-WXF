@@ -14,11 +14,20 @@ jobs:
   inspect:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
         with:
           python-version: "3.13"
+
+      - name: Install diagnostic dependency
+        shell: bash
+        run: python -m pip install "requests==2.32.4"
+
       - name: Fetch catalog, schemas, and recent samples
         shell: bash
         run: |
@@ -30,7 +39,7 @@ jobs:
 
           base = "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi"
           session = requests.Session()
-          session.headers.update({"User-Agent": "SpaceWxOps CCMC diagnostic v2"})
+          session.headers.update({"User-Agent": "SpaceWxOps CCMC diagnostic v3"})
           catalog_response = session.get(base + "/catalog", timeout=60)
           catalog_response.raise_for_status()
           catalog = catalog_response.json().get("catalog", [])
@@ -51,16 +60,16 @@ jobs:
                   continue
               record = {"id": dataset_id, "title": item.get("title", "")}
               try:
-                  info_response = session.get(base + "/info", params={"id": dataset_id}, timeout=45)
-                  record["info_url"] = info_response.url
-                  record["info_status"] = info_response.status_code
-                  if info_response.ok:
-                      info = info_response.json()
-                      record["parameters"] = info.get("parameters", [])
+                  response = session.get(base + "/info", params={"id": dataset_id}, timeout=45)
+                  record["info_url"] = response.url
+                  record["info_status"] = response.status_code
+                  if response.ok:
+                      record["parameters"] = response.json().get("parameters", [])
               except Exception as exc:
                   record["info_error"] = f"{type(exc).__name__}: {exc}"
+
               try:
-                  data_response = session.get(
+                  response = session.get(
                       base + "/data",
                       params={
                           "id": dataset_id,
@@ -71,10 +80,10 @@ jobs:
                       },
                       timeout=60,
                   )
-                  record["data_url"] = data_response.url
-                  record["data_status"] = data_response.status_code
-                  if data_response.ok:
-                      data = data_response.json()
+                  record["data_url"] = response.url
+                  record["data_status"] = response.status_code
+                  if response.ok:
+                      data = response.json()
                       record["data_parameters"] = data.get("parameters", [])
                       rows = data.get("data", [])
                       record["row_count"] = len(rows) if isinstance(rows, list) else None
@@ -85,9 +94,15 @@ jobs:
                   record["data_error"] = f"{type(exc).__name__}: {exc}"
               output["full_disk"].append(record)
 
-          Path("ccmc_diagnostic.json").write_text(json.dumps(output, indent=2) + "\n", encoding="utf-8")
-          print(f"Catalog entries: {len(catalog)}; full-disk entries: {len(output['full_disk'])}")
+          Path("ccmc_diagnostic.json").write_text(
+              json.dumps(output, indent=2) + "\n", encoding="utf-8"
+          )
+          print(
+              f"Catalog entries: {len(catalog)}; "
+              f"full-disk entries: {len(output['full_disk'])}"
+          )
           PY
+
       - name: Publish diagnostic
         shell: bash
         run: |
@@ -98,5 +113,6 @@ jobs:
             echo "Diagnostic unchanged."
           else
             git commit -m "Record CCMC Flare Scoreboard catalog diagnostic"
+            git pull --rebase origin main
             git push
           fi

@@ -2,12 +2,19 @@ name: Update daily WXF flare guidance
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/wxf-daily.yml"
+      - "solar_monitor_guidance.py"
+      - "sharp_mag_pipeline.py"
   schedule:
-    # Formal 21Z issue plus two retries for delayed JSOC NRT availability.
+    # Formal 21Z issue plus retries for delayed JSOC/SolarMonitor availability.
     # GitHub schedules use UTC. Non-zero minutes reduce top-of-hour congestion.
     - cron: "20 21 * * *"
     - cron: "20 22 * * *"
     - cron: "20 23 * * *"
+    - cron: "20 0 * * *"
 
 permissions:
   contents: write
@@ -56,7 +63,83 @@ jobs:
             --input-lag-hours 3 \
             --max-longitude 45
 
-      - name: Validate forecast product
+      - name: Add SolarMonitor MCSTAT and MCEVOL guidance
+        id: solarmonitor
+        continue-on-error: true
+        shell: bash
+        run: |
+          python solar_monitor_guidance.py enrich \
+            --input flare_guidance.json \
+            --output flare_guidance.json \
+            --js-output flare_guidance.js
+
+      - name: Apply conservative WXF full-disk proxy
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import math
+          from pathlib import Path
+
+          path = Path("flare_guidance.json")
+          payload = json.loads(path.read_text(encoding="utf-8"))
+          regions = [row for row in payload.get("regions", []) if isinstance(row, dict)]
+          full = next((row for row in regions if row.get("id") == "full-disk"), None)
+          regional = [row for row in regions if row.get("id") != "full-disk"]
+          members = [
+              row.get("members", {}).get("sharpmag")
+              for row in regional
+              if isinstance(row.get("members", {}).get("sharpmag"), dict)
+          ]
+
+          def maximum(key):
+              values = []
+              for member in members:
+                  value = member.get(key)
+                  try:
+                      value = float(value)
+                  except (TypeError, ValueError):
+                      continue
+                  if math.isfinite(value) and 0 <= value <= 100:
+                      values.append(value)
+              return max(values) if values else None
+
+          if full is not None and members:
+              m1 = maximum("m1")
+              x1 = maximum("x1")
+              if m1 is not None or x1 is not None:
+                  if m1 is not None and x1 is not None:
+                      x1 = min(x1, m1)
+                  full.setdefault("members", {})["sharpmag"] = {
+                      "m1": m1,
+                      "x1": x1,
+                      "source": (
+                          f"WXF dominant-region proxy (maximum of {len(members)} "
+                          "quality-controlled regional forecasts)"
+                      ),
+                      "quality": "research-dominant-region-proxy",
+                  }
+                  payload["wxf_full_disk"] = {
+                      "method": "maximum regional probability (dominant-region proxy)",
+                      "regional_forecasts": len(members),
+                      "note": (
+                          "Interim full-disk display proxy. It avoids the inflated "
+                          "independence-union calculation but is not a separately "
+                          "trained or calibrated full-disk model."
+                      ),
+                  }
+
+          path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+          Path("flare_guidance.js").write_text(
+              "/* Generated automatically by the SpaceWxOps WXF workflow. */\n"
+              "window.FLARE_GUIDANCE_PAYLOAD = "
+              + json.dumps(payload, indent=2)
+              + ";\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Validate combined forecast product
         shell: bash
         run: |
           python - <<'PY'
@@ -75,26 +158,39 @@ jobs:
 
           regions = payload.get("regions") or []
           assert regions, "no forecast regions"
-          members = [
-              region.get("members", {}).get("sharpmag")
-              for region in regions
-              if region.get("members", {}).get("sharpmag")
-          ]
-          assert members, "no WXF probabilities"
+          full_disk = next((region for region in regions if region.get("id") == "full-disk"), None)
+          assert full_disk, "full-disk row missing"
+          full_members = full_disk.get("members", {})
+          assert full_members.get("sharpmag"), "full-disk WXF probability missing"
 
-          for member in members:
-              m1 = member.get("m1")
-              x1 = member.get("x1")
-              if m1 is not None and x1 is not None:
-                  assert 0 <= float(x1) <= float(m1) <= 100
+          solar = payload.get("solar_monitor")
+          if solar:
+              assert solar.get("regional_forecasts", 0) > 0, "SolarMonitor region count missing"
+              assert full_members.get("mcstat"), "full-disk SolarMonitor MCSTAT proxy missing"
+              assert full_members.get("mcevol"), "full-disk SolarMonitor MCEVOL proxy missing"
+              solar_status = f"{solar['regional_forecasts']} SolarMonitor regions"
+          else:
+              solar_status = "SolarMonitor unavailable for this retry"
+
+          member_count = 0
+          for region in regions:
+              for key in ("sharpmag", "mcstat", "mcevol", "swpc"):
+                  member = region.get("members", {}).get(key)
+                  if not member:
+                      continue
+                  member_count += 1
+                  m1 = member.get("m1")
+                  x1 = member.get("x1")
+                  if m1 is not None and x1 is not None:
+                      assert 0 <= float(x1) <= float(m1) <= 100, (region.get("id"), key, m1, x1)
 
           print(
-              f"Validated {payload['model_version']} issued {payload['issued']} "
-              f"with {len(members)} WXF members"
+              f"Validated {payload['model_version']} issued {payload['issued']} with "
+              f"{solar_status} and {member_count} probability members"
           )
           PY
 
-      - name: Archive the first successful forecast for this issue time
+      - name: Store the latest version of this formal forecast
         shell: bash
         run: |
           python - <<'PY'
@@ -104,26 +200,28 @@ jobs:
           payload = json.loads(Path("flare_guidance.json").read_text(encoding="utf-8"))
           issued = payload["issued"]
           history = Path("forecast_history.jsonl")
+          lines = [line for line in history.read_text(encoding="utf-8").splitlines() if line.strip()] if history.exists() else []
+          replacement = json.dumps(payload, separators=(",", ":"))
+          output = []
+          replaced = False
 
-          existing = []
-          if history.exists():
-              existing = [line for line in history.read_text(encoding="utf-8").splitlines() if line.strip()]
-
-          already_archived = False
-          for line in existing:
+          for line in lines:
               try:
-                  if json.loads(line).get("issued") == issued:
-                      already_archived = True
-                      break
+                  record = json.loads(line)
               except json.JSONDecodeError:
+                  output.append(line)
                   continue
+              if record.get("issued") == issued:
+                  if not replaced:
+                      output.append(replacement)
+                      replaced = True
+              else:
+                  output.append(line)
 
-          if already_archived:
-              print(f"Forecast {issued} is already present in history.")
-          else:
-              with history.open("a", encoding="utf-8", newline="\n") as handle:
-                  handle.write(json.dumps(payload, separators=(",", ":")) + "\n")
-              print(f"Archived forecast {issued}.")
+          if not replaced:
+              output.append(replacement)
+          history.write_text("\n".join(output) + "\n", encoding="utf-8")
+          print(f"Stored latest forecast version for {issued}.")
           PY
 
       - name: Publish updated forecast files
@@ -137,6 +235,6 @@ jobs:
             echo "Forecast files are unchanged."
           else
             issued=$(python -c 'import json; print(json.load(open("flare_guidance.json"))["issued"])')
-            git commit -m "Update WXF forecast ${issued}"
+            git commit -m "Update WXF and SolarMonitor forecast ${issued}"
             git push
           fi

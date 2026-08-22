@@ -1,0 +1,102 @@
+name: Inspect CCMC Flare Scoreboard HAPI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ccmc-diagnostic.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Fetch catalog, schemas, and recent samples
+        shell: bash
+        run: |
+          python - <<'PY'
+          import datetime as dt
+          import json
+          from pathlib import Path
+          import requests
+
+          base = "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi"
+          session = requests.Session()
+          session.headers.update({"User-Agent": "SpaceWxOps CCMC diagnostic"})
+          catalog_response = session.get(base + "/catalog", timeout=60)
+          catalog_response.raise_for_status()
+          catalog = catalog_response.json().get("catalog", [])
+          now = dt.datetime.now(dt.timezone.utc)
+          tmin = (now - dt.timedelta(days=5)).strftime("%Y-%m-%dT%H:%M:%S.0")
+          tmax = (now + dt.timedelta(hours=1)).strftime("%Y-%m-%dT%H:%M:%S.0")
+
+          output = {
+              "generated_at": now.isoformat(),
+              "catalog_url": catalog_response.url,
+              "catalog": catalog,
+              "full_disk": [],
+          }
+
+          for item in catalog:
+              dataset_id = str(item.get("id") or "")
+              if "FULLDISK" not in dataset_id.upper():
+                  continue
+              record = {"id": dataset_id, "title": item.get("title", "")}
+              try:
+                  info_response = session.get(base + "/info", params={"id": dataset_id}, timeout=45)
+                  record["info_url"] = info_response.url
+                  record["info_status"] = info_response.status_code
+                  if info_response.ok:
+                      info = info_response.json()
+                      record["parameters"] = info.get("parameters", [])
+              except Exception as exc:
+                  record["info_error"] = f"{type(exc).__name__}: {exc}"
+              try:
+                  data_response = session.get(
+                      base + "/data",
+                      params={
+                          "id": dataset_id,
+                          "time.min": tmin,
+                          "time.max": tmax,
+                          "format": "json",
+                          "options": "fields.all",
+                      },
+                      timeout=60,
+                  )
+                  record["data_url"] = data_response.url
+                  record["data_status"] = data_response.status_code
+                  if data_response.ok:
+                      data = data_response.json()
+                      record["data_parameters"] = data.get("parameters", [])
+                      rows = data.get("data", [])
+                      record["row_count"] = len(rows) if isinstance(rows, list) else None
+                      if isinstance(rows, list) and rows:
+                          record["first_row"] = rows[0]
+                          record["last_row"] = rows[-1]
+              except Exception as exc:
+                  record["data_error"] = f"{type(exc).__name__}: {exc}"
+              output["full_disk"].append(record)
+
+          Path("ccmc_diagnostic.json").write_text(json.dumps(output, indent=2) + "\n", encoding="utf-8")
+          print(f"Catalog entries: {len(catalog)}; full-disk entries: {len(output['full_disk'])}")
+          PY
+      - name: Publish diagnostic
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ccmc_diagnostic.json
+          if git diff --cached --quiet; then
+            echo "Diagnostic unchanged."
+          else
+            git commit -m "Record CCMC Flare Scoreboard catalog diagnostic"
+            git push
+          fi

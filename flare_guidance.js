@@ -65,16 +65,6 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "x1": 2.1,
           "source": "WXF dominant-region proxy (maximum of 2 quality-controlled regional forecasts)",
           "quality": "research-dominant-region-proxy"
-        },
-        "sidc": {
-          "m1": 0.0,
-          "x1": 0.0,
-          "source": "SIDC 24-hour Global Flare Forecast",
-          "quality": "published-comparison",
-          "issued": "2026-08-22T10:22:15Z",
-          "valid_start": "2026-08-22T10:22:15Z",
-          "valid_end": "2026-08-23T10:22:15Z",
-          "note": "Human-operator-moderated global forecast published by SIDC."
         }
       }
     },
@@ -133,14 +123,12 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Interim full-disk display proxy. It avoids an inflated independence-union calculation but is not a separately trained or calibrated full-disk model."
   },
   "external_sources": {
-    "generated_at": "2026-08-22T21:38:39Z",
+    "generated_at": "2026-08-22T22:41:39Z",
     "script_version": "1.0.0",
     "sidc_direct": {
-      "ok": true,
+      "ok": false,
       "url": "https://www.sidc.be/WMO/FlareForecast.php",
-      "issued": "2026-08-22T10:22:15Z",
-      "m1": 0.0,
-      "x1": 0.0
+      "detail": "ConnectionError: HTTPSConnectionPool(host='www.sidc.be', port=443): Max retries exceeded with url: /WMO/FlareForecast.php (Caused by ProtocolError('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer')))"
     },
     "ccmc_catalog": {
       "ok": true,

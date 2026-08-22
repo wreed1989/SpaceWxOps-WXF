@@ -1,4 +1,4 @@
-name: Update daily WXF flare guidance
+name: Update daily multi-source flare guidance
 
 on:
   workflow_dispatch:
@@ -7,10 +7,10 @@ on:
     paths:
       - ".github/workflows/wxf-daily.yml"
       - "solar_monitor_guidance.py"
+      - "external_flare_guidance.py"
       - "sharp_mag_pipeline.py"
   schedule:
-    # Formal 21Z issue plus retries for delayed JSOC/SolarMonitor availability.
-    # GitHub schedules use UTC. Non-zero minutes reduce top-of-hour congestion.
+    # Formal 21Z WXF issue plus retries for delayed source availability.
     - cron: "20 21 * * *"
     - cron: "20 22 * * *"
     - cron: "20 23 * * *"
@@ -26,7 +26,7 @@ concurrency:
 jobs:
   forecast:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
 
     steps:
       - name: Check out repository
@@ -64,7 +64,6 @@ jobs:
             --max-longitude 45
 
       - name: Add SolarMonitor MCSTAT and MCEVOL guidance
-        id: solarmonitor
         continue-on-error: true
         shell: bash
         run: |
@@ -123,7 +122,7 @@ jobs:
                       "method": "maximum regional probability (dominant-region proxy)",
                       "regional_forecasts": len(members),
                       "note": (
-                          "Interim full-disk display proxy. It avoids the inflated "
+                          "Interim full-disk display proxy. It avoids an inflated "
                           "independence-union calculation but is not a separately "
                           "trained or calibrated full-disk model."
                       ),
@@ -138,6 +137,15 @@ jobs:
               encoding="utf-8",
           )
           PY
+
+      - name: Add SIDC, Met Office, FLARECAST, and NASA CCMC guidance
+        continue-on-error: true
+        shell: bash
+        run: |
+          python external_flare_guidance.py \
+            --input flare_guidance.json \
+            --output flare_guidance.json \
+            --js-output flare_guidance.js
 
       - name: Validate combined forecast product
         shell: bash
@@ -162,6 +170,7 @@ jobs:
           assert full_disk, "full-disk row missing"
           full_members = full_disk.get("members", {})
           assert full_members.get("sharpmag"), "full-disk WXF probability missing"
+          assert "ensemble" not in full_members, "untrained ensemble leaked into output"
 
           solar = payload.get("solar_monitor")
           if solar:
@@ -172,22 +181,41 @@ jobs:
           else:
               solar_status = "SolarMonitor unavailable for this retry"
 
+          allowed = (
+              "sharpmag", "mcstat", "mcevol", "swpc", "sidc", "metoffice",
+              "flarecast", "ccmc_magpy", "ccmc_daffs", "ccmc_aeffort"
+          )
           member_count = 0
           for region in regions:
-              for key in ("sharpmag", "mcstat", "mcevol", "swpc"):
-                  member = region.get("members", {}).get(key)
-                  if not member:
+              members = region.get("members", {})
+              assert "evolp" not in members and "evol_p" not in members
+              assert "ensemble" not in members
+              for key in allowed:
+                  member = members.get(key)
+                  if not isinstance(member, dict):
                       continue
                   member_count += 1
                   m1 = member.get("m1")
                   x1 = member.get("x1")
+                  if m1 is not None:
+                      assert 0 <= float(m1) <= 100, (region.get("id"), key, m1)
+                  if x1 is not None:
+                      assert 0 <= float(x1) <= 100, (region.get("id"), key, x1)
                   if m1 is not None and x1 is not None:
-                      assert 0 <= float(x1) <= float(m1) <= 100, (region.get("id"), key, m1, x1)
+                      assert float(x1) <= float(m1), (region.get("id"), key, m1, x1)
 
+          external = payload.get("external_sources") or {}
+          available_external = [
+              key for key in ("sidc", "metoffice", "flarecast", "ccmc_magpy", "ccmc_daffs", "ccmc_aeffort")
+              if isinstance(full_members.get(key), dict)
+          ]
           print(
               f"Validated {payload['model_version']} issued {payload['issued']} with "
-              f"{solar_status} and {member_count} probability members"
+              f"{solar_status}, {member_count} members, and external rows: "
+              f"{', '.join(available_external) if available_external else 'none current'}"
           )
+          if external:
+              print(json.dumps(external, indent=2))
           PY
 
       - name: Store the latest version of this formal forecast
@@ -235,6 +263,6 @@ jobs:
             echo "Forecast files are unchanged."
           else
             issued=$(python -c 'import json; print(json.load(open("flare_guidance.json"))["issued"])')
-            git commit -m "Update WXF and SolarMonitor forecast ${issued}"
+            git commit -m "Update multi-source flare guidance ${issued}"
             git push
           fi

@@ -1,0 +1,180 @@
+name: Refresh current external flare guidance
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/external-guidance-refresh.yml"
+      - "solar_monitor_guidance.py"
+      - "external_flare_guidance.py"
+      - "external_flare_guidance_fixed.py"
+      - "external_flare_guidance_strict_v3.py"
+      - "external_flare_guidance_strict_v4.py"
+      - "external_source_audit.py"
+      - "test_external_source_audit.py"
+  schedule:
+    # Midday refresh complements the formal 21Z/00Z forecast-production cycle.
+    - cron: "20 12 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  # Never publish concurrently with the daily WXF forecast workflow.
+  group: wxf-flare-guidance-publication
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements-runtime-pinned.txt
+
+      - name: Install lightweight feed runtime
+        run: python -m pip install requests==2.32.4
+
+      - name: Test provider transition auditing
+        run: python -m unittest -v test_external_source_audit.py
+
+      - name: Refresh current SolarMonitor guidance when available
+        shell: bash
+        run: |
+          set +e
+          solar_output=$(python solar_monitor_guidance.py enrich \
+            --input flare_guidance.json \
+            --output flare_guidance.json \
+            --js-output flare_guidance.js 2>&1)
+          solar_status=$?
+          set -e
+
+          if [[ -n "$solar_output" ]]; then
+            printf '%s\n' "$solar_output"
+          fi
+          if [[ "$solar_status" -eq 0 ]]; then
+            echo "SolarMonitor guidance refreshed successfully."
+          else
+            echo "::notice title=SolarMonitor midday refresh unavailable::The existing same-cycle SolarMonitor values are retained. A later refresh will retry."
+          fi
+
+      - name: Refresh current SIDC and NASA CCMC guidance
+        run: |
+          python external_flare_guidance_strict_v4.py \
+            --input flare_guidance.json \
+            --output flare_guidance.json \
+            --js-output flare_guidance.js
+
+      - name: Record stopped and resumed providers
+        run: |
+          python external_source_audit.py \
+            --payload flare_guidance.json \
+            --audit-output external_source_audit.json
+
+      - name: Validate refreshed product
+        shell: bash
+        run: |
+          python - <<'PY'
+          import datetime as dt
+          import json
+          from pathlib import Path
+
+          UTC = dt.timezone.utc
+          payload = json.loads(Path("flare_guidance.json").read_text(encoding="utf-8"))
+          audit = json.loads(Path("external_source_audit.json").read_text(encoding="utf-8"))
+          valid_start = dt.datetime.fromisoformat(payload["valid_start"].replace("Z", "+00:00"))
+          valid_end = dt.datetime.fromisoformat(payload["valid_end"].replace("Z", "+00:00"))
+          now = dt.datetime.now(tz=UTC)
+          assert valid_start <= now <= valid_end, (now, valid_start, valid_end)
+          full = next(row for row in payload["regions"] if row.get("id") == "full-disk")
+          assert isinstance(full.get("members", {}).get("sharpmag"), dict), "WXF member missing"
+          assert audit.get("schema_version") == 1
+          assert isinstance(audit.get("events"), list)
+          print(
+              f"Validated external refresh for {payload['valid_start']} to {payload['valid_end']}; "
+              f"audit summary={audit.get('summary', {})}"
+          )
+          PY
+
+      - name: Publish refreshed guidance and transition history
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          issued=$(python -c 'import json; print(json.load(open("flare_guidance.json"))["issued"])')
+          checked=$(python -c 'import json; print(json.load(open("external_source_audit.json"))["updated_at"])')
+          snapshot_dir=$(mktemp -d)
+          trap 'rm -rf "$snapshot_dir"' EXIT
+          cp flare_guidance.json flare_guidance.js external_source_audit.json "$snapshot_dir"/
+
+          cat > "$snapshot_dir/merge_history.py" <<'PY'
+          import json
+          from pathlib import Path
+
+          payload = json.loads(Path("flare_guidance.json").read_text(encoding="utf-8"))
+          issued = payload["issued"]
+          history = Path("forecast_history.jsonl")
+          lines = [line for line in history.read_text(encoding="utf-8").splitlines() if line.strip()] if history.exists() else []
+          replacement = json.dumps(payload, separators=(",", ":"))
+          output = []
+          replaced = False
+          for line in lines:
+              try:
+                  record = json.loads(line)
+              except json.JSONDecodeError:
+                  output.append(line)
+                  continue
+              if record.get("issued") == issued:
+                  if not replaced:
+                      output.append(replacement)
+                      replaced = True
+              else:
+                  output.append(line)
+          if not replaced:
+              output.append(replacement)
+          history.write_text("\n".join(output) + "\n", encoding="utf-8")
+          PY
+
+          for attempt in 1 2 3 4; do
+            echo "Publish attempt ${attempt} of 4"
+            git fetch origin main
+            git reset --hard origin/main
+            cp "$snapshot_dir/flare_guidance.json" flare_guidance.json
+            cp "$snapshot_dir/flare_guidance.js" flare_guidance.js
+            cp "$snapshot_dir/external_source_audit.json" external_source_audit.json
+            python "$snapshot_dir/merge_history.py"
+
+            git add flare_guidance.json flare_guidance.js external_source_audit.json forecast_history.jsonl
+            if git diff --cached --quiet; then
+              echo "External guidance already matches the latest main branch."
+              exit 0
+            fi
+
+            git commit -m "Refresh external flare guidance ${checked}"
+            if git push origin HEAD:main; then
+              echo "External guidance published successfully for ${issued}."
+              exit 0
+            fi
+
+            if [[ "$attempt" -lt 4 ]]; then
+              echo "::notice title=Concurrent repository update::main advanced during publication. Refreshing and retrying."
+              sleep $((attempt * 2))
+            fi
+          done
+
+          echo "::error title=External guidance publication failed::Unable to publish after four attempts."
+          exit 1

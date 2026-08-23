@@ -15,7 +15,9 @@ This repository runs the frozen WXF flare model automatically in GitHub Actions 
 
 ## Automatic schedule
 
-The workflow requests the formal 21Z issue at 21:20 UTC and retries at 22:20 and 23:20 UTC. Retries accommodate delayed SHARP NRT availability. All three runs target the same formal 21Z cycle; unchanged output is not recommitted.
+The daily workflow requests the formal 21Z issue at 21:20 UTC and retries at 22:20, 23:20, and 00:20 UTC. Retries accommodate delayed SHARP NRT and SolarMonitor availability. A separate lightweight workflow refreshes SolarMonitor, SIDC, and the NASA/CCMC Flare Scoreboard at 12:20 UTC without retraining or advancing the formal WXF cycle. Both workflows share one publication lock so they cannot overwrite each other.
+
+`external_source_audit.json` records the first observed state of every configured external provider and then appends only real state changes. An accepted provider changing to unavailable is recorded as `stopped`; a provider that becomes current again is recorded as `resumed`. The last accepted forecast remains in the audit record for diagnosis, but stale members are never retained in `flare_guidance.json`.
 
 ## Files that may be public
 
@@ -23,7 +25,7 @@ The public repository contains the frozen model artifacts, the inference program
 
 ## What the work HTML does
 
-The HTML checks the public GitHub REST endpoint every 15 minutes, caches the latest successful payload locally, and falls back to an optional same-folder `flare_guidance.js` if GitHub is temporarily unavailable. The existing MCSTAT, EVOL-P, Ensemble, and SWPC members remain usable even when WXF is unavailable.
+The HTML checks the public GitHub REST endpoint every 15 minutes, caches the latest successful payload locally, and falls back to an optional same-folder `flare_guidance.js` if GitHub is temporarily unavailable. The five baseline methods remain visible. Any additional configured model appears only while the repository publishes a current forecast that overlaps the card's valid window; it disappears automatically when that condition is no longer met.
 
 ## Model identity
 

@@ -66,16 +66,6 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "source": "WXF dominant-region proxy (maximum of 2 quality-controlled regional forecasts)",
           "quality": "research-dominant-region-proxy"
         },
-        "sidc": {
-          "m1": 0.0,
-          "x1": 0.0,
-          "source": "SIDC 24-hour Global Flare Forecast",
-          "quality": "published-comparison",
-          "issued": "2026-08-22T10:22:15Z",
-          "valid_start": "2026-08-22T10:22:15Z",
-          "valid_end": "2026-08-23T10:22:15Z",
-          "note": "Human-operator-moderated global forecast published by SIDC."
-        },
         "mcstat": {
           "m1": 30.0,
           "x1": 14.0,
@@ -87,6 +77,16 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "x1": 0.0,
           "source": "SolarMonitor MCEVOL dominant-region proxy (maximum of 4 regional forecasts)",
           "quality": "published-comparison"
+        },
+        "sidc": {
+          "m1": 0.0,
+          "x1": 0.0,
+          "source": "SIDC 24-hour Global Flare Forecast",
+          "quality": "published-comparison",
+          "issued": "2026-08-23T09:42:20Z",
+          "valid_start": "2026-08-23T09:42:20Z",
+          "valid_end": "2026-08-24T09:42:20Z",
+          "note": "Human-operator-moderated global forecast published by SIDC."
         }
       }
     },
@@ -229,18 +229,28 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       }
     }
   ],
+  "solar_monitor": {
+    "source": "SolarMonitor",
+    "source_url": "https://www.solarmonitor.org/forecast.php?date=20260823",
+    "retrieved_at": "2026-08-23T14:57:51Z",
+    "valid_start": "2026-08-23T00:00:00Z",
+    "valid_end": "2026-08-24T00:00:00Z",
+    "regional_forecasts": 4,
+    "full_disk_method": "maximum regional probability (dominant-region proxy)",
+    "note": "Regional MCSTAT/MCEVOL values are reproduced from SolarMonitor. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. Missing values remain missing."
+  },
   "wxf_full_disk": {
     "method": "maximum regional probability (dominant-region proxy)",
     "regional_forecasts": 2,
     "note": "Interim full-disk display proxy. It avoids an inflated independence-union calculation but is not a separately trained or calibrated full-disk model."
   },
   "external_sources": {
-    "generated_at": "2026-08-23T08:53:16Z",
+    "generated_at": "2026-08-23T14:57:51Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
       "url": "https://www.sidc.be/WMO/FlareForecast.php",
-      "issued": "2026-08-22T10:22:15Z",
+      "issued": "2026-08-23T09:42:20Z",
       "m1": 0.0,
       "x1": 0.0
     },
@@ -1028,15 +1038,5 @@ window.FLARE_GUIDANCE_PAYLOAD = {
         "description": ""
       }
     ]
-  },
-  "solar_monitor": {
-    "source": "SolarMonitor",
-    "source_url": "https://www.solarmonitor.org/forecast.php?date=20260823",
-    "retrieved_at": "2026-08-23T14:57:20Z",
-    "valid_start": "2026-08-23T00:00:00Z",
-    "valid_end": "2026-08-24T00:00:00Z",
-    "regional_forecasts": 4,
-    "full_disk_method": "maximum regional probability (dominant-region proxy)",
-    "note": "Regional MCSTAT/MCEVOL values are reproduced from SolarMonitor. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. Missing values remain missing."
   }
 };

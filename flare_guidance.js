@@ -133,7 +133,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Interim full-disk display proxy. It avoids an inflated independence-union calculation but is not a separately trained or calibrated full-disk model."
   },
   "external_sources": {
-    "generated_at": "2026-08-23T08:48:34Z",
+    "generated_at": "2026-08-23T08:53:16Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,

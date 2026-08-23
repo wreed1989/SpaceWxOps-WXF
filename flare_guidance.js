@@ -9,44 +9,42 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "valid_start": "2026-08-24T00:00:00Z",
   "valid_end": "2026-08-25T00:00:00Z",
   "quality": {
-    "level": "degraded",
-    "message": "WXF input refresh unavailable; prior published WXF probabilities retained."
+    "level": "research",
+    "message": "Daily WXF inference from a saved calibrated M1+ model and a hierarchical X1+ severity layer. Research/shadow guidance unless explicitly validated and marked operational."
   },
   "input": {
     "series": "hmi.sharp_cea_720s_nrt",
-    "target_time": "2026-08-22T18:00:00Z",
-    "latest_record": "2026-08-22T18:00:00Z",
-    "oldest_retained_record": "2026-08-22T18:00:00Z",
-    "raw_records": 2354,
-    "retained_regions": 2,
+    "target_time": "2026-08-23T18:00:00Z",
+    "latest_record": "2026-08-23T18:00:00Z",
+    "oldest_retained_record": "2026-08-23T18:00:00Z",
+    "raw_records": 2871,
+    "retained_regions": 1,
     "mapping": {
       "skipped_multi_region_harps": 0,
-      "skipped_unmapped_harps": 16,
-      "expanded_rows": 5
+      "skipped_unmapped_harps": 15,
+      "expanded_rows": 4
     },
     "quality": {
-      "input": 5,
+      "input": 4,
       "rejected_longitude": 3,
-      "after_longitude": 2,
+      "after_longitude": 1,
       "quality_missing": 0,
       "quality_top_values": {
-        "0x00010400": 2
+        "0x00010400": 1
       },
       "rejected_quality": 0,
-      "after_quality": 2,
+      "after_quality": 1,
       "rejected_harp_merge": 0,
-      "after_harp_merge": 2,
+      "after_harp_merge": 1,
       "rejected_observer_velocity": 0,
-      "after_observer_velocity": 2,
+      "after_observer_velocity": 1,
       "rejected_missing_mapping": 0,
-      "after_mapping": 2,
+      "after_mapping": 1,
       "min_finite_parameters": 12,
       "rejected_parameter_completeness": 0,
-      "after_parameter_completeness": 2,
-      "retained": 2
-    },
-    "attempted_target_time": "2026-08-23T18:00:00Z",
-    "fallback_from_previous_cycle": true
+      "after_parameter_completeness": 1,
+      "retained": 1
+    }
   },
   "regions": [
     {
@@ -57,15 +55,15 @@ window.FLARE_GUIDANCE_PAYLOAD = {
         "message": "Visible-disk WXF combination of quality-controlled, single-region HARPs. It contains no residual term for unnumbered, farside, or excluded limb regions."
       },
       "drivers": [
-        "2 active regions represented",
+        "1 active regions represented",
         "Regional probabilities combined as 1 - product(1 - p_i)",
         "No unnumbered/farside residual term"
       ],
       "members": {
         "sharpmag": {
-          "m1": 33.5,
-          "x1": 2.1,
-          "source": "WXF dominant-region proxy (maximum of 2 quality-controlled regional forecasts)",
+          "m1": 26.8,
+          "x1": 1.6,
+          "source": "WXF dominant-region proxy (maximum of 1 quality-controlled regional forecasts)",
           "quality": "research-dominant-region-proxy"
         },
         "sidc": {
@@ -81,89 +79,37 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       }
     },
     {
-      "id": "AR14511",
-      "label": "AR 14511",
-      "location": "",
-      "mcintosh": "",
-      "quality": {
-        "level": "research",
-        "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=38.9°"
-      },
-      "members": {
-        "sharpmag": {
-          "m1": 0.0,
-          "x1": 0.0,
-          "source": "WXF sharp-mag-20260822-hierx1 (calibrated M1; hierarchical X1)",
-          "quality": "stale-fallback",
-          "issued": "2026-08-22T21:00:00Z",
-          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts."
-        }
-      },
-      "drivers": [
-        "M1+: lower strong-gradient PIL flux",
-        "M1+: falling strong-gradient PIL flux",
-        "M1+: falling mean horizontal-field gradient",
-        "X1+: hierarchical severity factor 6.1% of SHARP M1+"
-      ]
-    },
-    {
       "id": "AR14513",
       "label": "AR 14513",
       "location": "",
       "mcintosh": "",
       "quality": {
         "level": "research",
-        "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=40.2°"
+        "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=25.3°"
       },
       "members": {
         "sharpmag": {
-          "m1": 33.5,
-          "x1": 2.1,
+          "m1": 26.8,
+          "x1": 1.6,
           "source": "WXF sharp-mag-20260822-hierx1 (calibrated M1; hierarchical X1)",
-          "quality": "stale-fallback",
-          "issued": "2026-08-22T21:00:00Z",
-          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts."
+          "quality": "research"
         }
       },
       "drivers": [
         "M1+: lower total free-energy proxy",
-        "M1+: elevated strong-gradient PIL flux",
+        "M1+: elevated active magnetic area",
         "M1+: elevated total unsigned vertical current",
         "X1+: hierarchical severity factor 6.1% of SHARP M1+"
       ]
-    },
-    {
-      "id": "AR14508",
-      "label": "AR 14508",
-      "members": {}
-    },
-    {
-      "id": "AR14514",
-      "label": "AR 14514",
-      "members": {}
-    },
-    {
-      "id": "AR14515",
-      "label": "AR 14515",
-      "members": {}
     }
   ],
   "wxf_full_disk": {
     "method": "maximum regional probability (dominant-region proxy)",
-    "regional_forecasts": 2,
+    "regional_forecasts": 1,
     "note": "Interim full-disk display proxy. It avoids an inflated independence-union calculation but is not a separately trained or calibrated full-disk model."
   },
-  "generation_status": {
-    "ok": false,
-    "used_previous_forecast": true,
-    "previous_issued": "2026-08-22T21:00:00Z",
-    "attempts": 3,
-    "exit_code": 2,
-    "checked_at": "2026-08-23T21:41:27Z",
-    "detail": "JSOC/SHARP retrieval failed after three attempts. The prior WXF magnetic probability was retained transparently while all independent forecast sources were refreshed."
-  },
   "external_sources": {
-    "generated_at": "2026-08-23T21:41:28Z",
+    "generated_at": "2026-08-23T22:41:07Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,

@@ -11,6 +11,8 @@ on:
       - "external_flare_guidance_fixed.py"
       - "external_flare_guidance_strict_v3.py"
       - "external_flare_guidance_strict_v4.py"
+      - "external_source_audit.py"
+      - "test_external_source_audit.py"
       - "sharp_mag_pipeline.py"
   schedule:
     # Formal 21Z WXF issue plus retries for delayed HMI/SHARP and provider feeds.
@@ -23,7 +25,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: wxf-daily-forecast
+  # Share the publication lock with the 12Z external-only refresh.
+  group: wxf-flare-guidance-publication
   cancel-in-progress: false
 
 jobs:
@@ -220,7 +223,7 @@ jobs:
               echo "::notice title=SolarMonitor guidance pending::The next-00Z SolarMonitor table is not available or parseable yet. Continuing with the valid WXF and other external guidance; a later scheduled retry will try again."
               ;;
             *)
-              echo "::warning title=SolarMonitor refresh incomplete::solar_monitor_guidance.py exited with code ${solar_status}. Continuing with built-in MCSTAT/MCEVOL fallback and the other independent guidance sources."
+              echo "::warning title=SolarMonitor refresh incomplete::solar_monitor_guidance.py exited with code ${solar_status}. MCSTAT/MCEVOL remain unavailable; continuing with WXF and the other independently verified sources."
               ;;
           esac
 
@@ -309,6 +312,13 @@ jobs:
             echo "::warning title=External guidance refresh incomplete::The external adapter exited with code ${external_status}. The validated WXF/SolarMonitor payload is retained, and the next scheduled run will retry the unavailable sources."
           fi
 
+      - name: Record external-provider availability transitions
+        shell: bash
+        run: |
+          python external_source_audit.py \
+            --payload flare_guidance.json \
+            --audit-output external_source_audit.json
+
       - name: Validate combined forecast product
         shell: bash
         run: |
@@ -364,6 +374,11 @@ jobs:
               print(json.dumps(payload["generation_status"], indent=2))
           if payload.get("external_sources"):
               print(json.dumps(payload["external_sources"], indent=2))
+
+          audit = json.loads(Path("external_source_audit.json").read_text(encoding="utf-8"))
+          assert audit.get("schema_version") == 1, "external audit schema missing"
+          assert isinstance(audit.get("providers"), dict), "external audit providers missing"
+          print(json.dumps(audit.get("summary", {}), indent=2))
           PY
 
       - name: Store the latest version of this formal forecast
@@ -411,7 +426,7 @@ jobs:
           issued=$(python -c 'import json; print(json.load(open("flare_guidance.json"))["issued"])')
           snapshot_dir=$(mktemp -d)
           trap 'rm -rf "$snapshot_dir"' EXIT
-          cp flare_guidance.json flare_guidance.js "$snapshot_dir"/
+          cp flare_guidance.json flare_guidance.js external_source_audit.json "$snapshot_dir"/
 
           cat > "$snapshot_dir/merge_history.py" <<'PY'
           import json
@@ -453,9 +468,10 @@ jobs:
             git reset --hard origin/main
             cp "$snapshot_dir/flare_guidance.json" flare_guidance.json
             cp "$snapshot_dir/flare_guidance.js" flare_guidance.js
+            cp "$snapshot_dir/external_source_audit.json" external_source_audit.json
             python "$snapshot_dir/merge_history.py"
 
-            git add flare_guidance.json flare_guidance.js forecast_history.jsonl
+            git add flare_guidance.json flare_guidance.js external_source_audit.json forecast_history.jsonl
             if git diff --cached --quiet; then
               echo "Forecast files already match the latest main branch."
               exit 0

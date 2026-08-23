@@ -2,15 +2,14 @@
 """Enrich a WXF forecast payload with SolarMonitor MCSTAT/MCEVOL guidance.
 
 SolarMonitor publishes active-region probabilities for C+, M+, and X+ over a
-00Z-to-00Z 24-hour period. This module extracts its regional M1+/X1+ MCSTAT and
-MCEVOL values, preserves those regional values exactly, and writes a conservative
+24-hour period. This module extracts its regional M1+/X1+ MCSTAT and MCEVOL
+values, preserves those regional values exactly, and writes a conservative
 full-disk *dominant-region proxy* using the maximum regional probability.
 
 The maximum is intentionally used instead of 1-product(1-p_i): SolarMonitor does
 not publish a full-disk aggregate, and treating regional probabilities as
-independent can create misleadingly large disk probabilities. MCEVOL falls back
-to that region's MCSTAT value only where SolarMonitor reports no evolution value,
-matching SolarMonitor's documented plotting fallback behavior.
+independent can create misleadingly large disk probabilities. Missing MCEVOL
+values remain missing; MCSTAT is never substituted into the MCEVOL product.
 """
 
 from __future__ import annotations
@@ -31,7 +30,7 @@ from typing import Any, Iterable, Mapping
 import requests
 
 UTC = dt.timezone.utc
-DEFAULT_BASE_URL = "https://solmon.dias.ie/forecast"
+DEFAULT_BASE_URL = "https://www.solarmonitor.org/forecast.php"
 USER_AGENT = (
     "SpaceWxOps-WXF/1.0 (SolarMonitor forecast ingestion; "
     "research comparison guidance)"
@@ -47,48 +46,67 @@ def _clean_text(value: str) -> str:
 
 
 class _TableParser(HTMLParser):
-    """Minimal dependency-free HTML table extractor."""
+    """Minimal dependency-free extractor that preserves nested HTML tables."""
 
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
         self.tables: list[list[list[str]]] = []
-        self._table_depth = 0
-        self._current_table: list[list[str]] | None = None
-        self._current_row: list[str] | None = None
-        self._current_cell: list[str] | None = None
+        self._stack: list[dict[str, Any]] = []
+
+    @staticmethod
+    def _finish_cell(context: dict[str, Any]) -> None:
+        cell = context.get("cell")
+        if cell is None:
+            return
+        if context.get("row") is None:
+            context["row"] = []
+        context["row"].append(_clean_text("".join(cell)))
+        context["cell"] = None
+
+    @classmethod
+    def _finish_row(cls, context: dict[str, Any]) -> None:
+        cls._finish_cell(context)
+        row = context.get("row")
+        if row:
+            context["rows"].append(row)
+        context["row"] = None
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         tag = tag.lower()
         if tag == "table":
-            self._table_depth += 1
-            if self._table_depth == 1:
-                self._current_table = []
-        elif self._table_depth == 1 and tag == "tr":
-            self._current_row = []
-        elif self._table_depth == 1 and tag in {"td", "th"}:
-            self._current_cell = []
-        elif self._current_cell is not None and tag in {"br", "p", "div"}:
-            self._current_cell.append(" ")
+            self._stack.append({"rows": [], "row": None, "cell": None})
+            return
+        if not self._stack:
+            return
+        context = self._stack[-1]
+        if tag == "tr":
+            self._finish_row(context)
+            context["row"] = []
+        elif tag in {"td", "th"}:
+            if context.get("row") is None:
+                context["row"] = []
+            self._finish_cell(context)
+            context["cell"] = []
+        elif context.get("cell") is not None and tag in {"br", "p", "div"}:
+            context["cell"].append(" ")
 
     def handle_endtag(self, tag: str) -> None:
         tag = tag.lower()
-        if tag in {"td", "th"} and self._table_depth == 1 and self._current_cell is not None:
-            if self._current_row is not None:
-                self._current_row.append(_clean_text("".join(self._current_cell)))
-            self._current_cell = None
-        elif tag == "tr" and self._table_depth == 1:
-            if self._current_table is not None and self._current_row:
-                self._current_table.append(self._current_row)
-            self._current_row = None
+        if not self._stack:
+            return
+        context = self._stack[-1]
+        if tag in {"td", "th"}:
+            self._finish_cell(context)
+        elif tag == "tr":
+            self._finish_row(context)
         elif tag == "table":
-            if self._table_depth == 1 and self._current_table is not None:
-                self.tables.append(self._current_table)
-                self._current_table = None
-            self._table_depth = max(0, self._table_depth - 1)
+            self._finish_row(context)
+            self.tables.append(context["rows"])
+            self._stack.pop()
 
     def handle_data(self, data: str) -> None:
-        if self._current_cell is not None:
-            self._current_cell.append(data)
+        if self._stack and self._stack[-1].get("cell") is not None:
+            self._stack[-1]["cell"].append(data)
 
 
 def parse_probability(value: Any) -> float | None:
@@ -138,6 +156,55 @@ def parse_solar_monitor_html(document: str) -> list[dict[str, Any]]:
     if not parser.tables:
         raise SolarMonitorError("SolarMonitor response contained no HTML tables")
 
+    # The current solarmonitor.org page renders the NOAA region numbers and the
+    # C/M/X method values as four adjacent nested tables rather than one flat
+    # table. Identify the three method tables first and align their data rows
+    # with the nearest preceding NOAA-number table.
+    method_tables: list[tuple[int, list[list[str]]]] = []
+    for index, candidate in enumerate(parser.tables):
+        header = " ".join(candidate[0] if candidate else []).upper()
+        if "MCEVOL" in header and "MCSTAT" in header:
+            method_tables.append((index, candidate))
+    if len(method_tables) >= 3:
+        first_method_index = method_tables[0][0]
+        region_candidates: list[tuple[int, list[int]]] = []
+        for index, candidate in enumerate(parser.tables[:first_method_index]):
+            numbers = [
+                number
+                for row in candidate
+                if row and (number := canonical_noaa_region(row[0])) is not None
+            ]
+            if numbers:
+                region_candidates.append((index, numbers))
+        if region_candidates:
+            _, region_numbers = max(region_candidates, key=lambda item: (item[0], len(item[1])))
+            c_table, m_table, x_table = [item[1] for item in method_tables[:3]]
+            c_rows, m_rows, x_rows = c_table[1:], m_table[1:], x_table[1:]
+            count = min(len(region_numbers), len(c_rows), len(m_rows), len(x_rows))
+            regions: list[dict[str, Any]] = []
+            for index in range(count):
+                c_values = [parse_probability(value) for value in c_rows[index][:3]]
+                m_values = [parse_probability(value) for value in m_rows[index][:3]]
+                x_values = [parse_probability(value) for value in x_rows[index][:3]]
+                while len(c_values) < 3:
+                    c_values.append(None)
+                while len(m_values) < 3:
+                    m_values.append(None)
+                while len(x_values) < 3:
+                    x_values.append(None)
+                regions.append(
+                    {
+                        "noaa_region": region_numbers[index],
+                        "c1": {"mcevol": c_values[0], "mcstat": c_values[1], "swpc": c_values[2]},
+                        "m1": {"mcevol": m_values[0], "mcstat": m_values[1], "swpc": m_values[2]},
+                        "x1": {"mcevol": x_values[0], "mcstat": x_values[1], "swpc": x_values[2]},
+                        "mean": {"c1": None, "m1": None, "x1": None},
+                    }
+                )
+            if regions:
+                return regions
+
+    # Retain support for the older flat-table rendering.
     table = max(parser.tables, key=_table_score)
     if _table_score(table) < 12:
         raise SolarMonitorError("Could not identify the SolarMonitor flare-probability table")
@@ -206,7 +273,8 @@ def parse_iso_time(value: Any) -> dt.datetime:
 
 
 def solar_monitor_url(valid_start: dt.datetime, base_url: str = DEFAULT_BASE_URL) -> str:
-    return f"{base_url}?date={valid_start:%Y%m%d%H}"
+    separator = "&" if "?" in base_url else "?"
+    return f"{base_url}{separator}date={valid_start:%Y%m%d}"
 
 
 def fetch_solar_monitor(url: str, timeout: float = 60.0) -> tuple[str, str]:
@@ -277,8 +345,6 @@ def enrich_payload(
         payload_regions.insert(0, full_disk)
     full_disk.setdefault("members", {})
 
-    mcevol_fallback_m = 0
-    mcevol_fallback_x = 0
     regional_mcstat_m: list[float | None] = []
     regional_mcstat_x: list[float | None] = []
     regional_mcevol_m: list[float | None] = []
@@ -319,16 +385,8 @@ def enrich_payload(
         regional_mcstat_m.append(mcstat_m)
         regional_mcstat_x.append(mcstat_x)
 
-        mcevol_proxy_m = mcevol_m
-        if mcevol_proxy_m is None and mcstat_m is not None:
-            mcevol_proxy_m = mcstat_m
-            mcevol_fallback_m += 1
-        mcevol_proxy_x = mcevol_x
-        if mcevol_proxy_x is None and mcstat_x is not None:
-            mcevol_proxy_x = mcstat_x
-            mcevol_fallback_x += 1
-        regional_mcevol_m.append(mcevol_proxy_m)
-        regional_mcevol_x.append(mcevol_proxy_x)
+        regional_mcevol_m.append(mcevol_m)
+        regional_mcevol_x.append(mcevol_x)
 
     full_mcstat = member(
         max_probability(regional_mcstat_m),
@@ -338,10 +396,7 @@ def enrich_payload(
     full_mcevol = member(
         max_probability(regional_mcevol_m),
         max_probability(regional_mcevol_x),
-        (
-            f"SolarMonitor MCEVOL dominant-region proxy (maximum of {len(solar_regions)} regions; "
-            f"MCSTAT fallback for {max(mcevol_fallback_m, mcevol_fallback_x)} region(s) with no evolution forecast)"
-        ),
+        f"SolarMonitor MCEVOL dominant-region proxy (maximum of {len(solar_regions)} regional forecasts)",
     )
     if full_mcstat:
         full_disk["members"]["mcstat"] = full_mcstat
@@ -357,12 +412,11 @@ def enrich_payload(
         "valid_end": payload.get("valid_end"),
         "regional_forecasts": len(solar_regions),
         "full_disk_method": "maximum regional probability (dominant-region proxy)",
-        "mcevol_mcstat_fallback_regions_m1": mcevol_fallback_m,
-        "mcevol_mcstat_fallback_regions_x1": mcevol_fallback_x,
         "note": (
             "Regional MCSTAT/MCEVOL values are reproduced from SolarMonitor. "
             "SolarMonitor does not publish a full-disk aggregate in this table; "
-            "the dashboard uses the maximum regional probability to avoid an independence-union inflation."
+            "the dashboard uses each method's maximum published regional probability "
+            "to avoid an independence-union inflation. Missing values remain missing."
         ),
     }
     return payload

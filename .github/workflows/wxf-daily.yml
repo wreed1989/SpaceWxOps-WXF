@@ -29,7 +29,7 @@ concurrency:
 jobs:
   forecast:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 45
 
     steps:
       - name: Check out repository
@@ -61,14 +61,138 @@ jobs:
       - name: Generate the formal 21Z WXF forecast
         shell: bash
         run: |
-          python sharp_mag_pipeline.py forecast \
-            --model-dir . \
-            --output flare_guidance.json \
-            --js-output flare_guidance.js \
-            --issue-time cycle \
-            --issue-hour 21 \
-            --input-lag-hours 3 \
-            --max-longitude 45
+          set -euo pipefail
+
+          previous_dir=$(mktemp -d)
+          trap 'rm -rf "$previous_dir"' EXIT
+          if [[ -s flare_guidance.json ]]; then
+            cp flare_guidance.json "$previous_dir/flare_guidance.json"
+          fi
+          if [[ -s flare_guidance.js ]]; then
+            cp flare_guidance.js "$previous_dir/flare_guidance.js"
+          fi
+
+          generated=0
+          last_status=1
+          for attempt in 1 2 3; do
+            echo "WXF/JSOC attempt ${attempt} of 3"
+            set +e
+            attempt_output=$(python sharp_mag_pipeline.py forecast \
+              --model-dir . \
+              --output flare_guidance.json \
+              --js-output flare_guidance.js \
+              --issue-time cycle \
+              --issue-hour 21 \
+              --input-lag-hours 3 \
+              --max-longitude 45 2>&1)
+            last_status=$?
+            set -e
+
+            if [[ -n "$attempt_output" ]]; then
+              printf '%s\n' "$attempt_output"
+            fi
+            if [[ "$last_status" -eq 0 ]]; then
+              generated=1
+              break
+            fi
+
+            echo "::notice title=WXF source retry::JSOC/SHARP attempt ${attempt} failed with exit code ${last_status}. The workflow will retry before using the prior published WXF probabilities."
+            if [[ "$attempt" -lt 3 ]]; then
+              sleep $((attempt * 5))
+            fi
+          done
+
+          if [[ "$generated" -eq 0 ]]; then
+            if [[ ! -s "$previous_dir/flare_guidance.json" || ! -s "$previous_dir/flare_guidance.js" ]]; then
+              echo "::error title=WXF generation failed::JSOC/SHARP failed after three attempts and no prior forecast exists to retain."
+              exit "$last_status"
+            fi
+
+            cp "$previous_dir/flare_guidance.json" flare_guidance.json
+            cp "$previous_dir/flare_guidance.js" flare_guidance.js
+            WXF_LAST_STATUS="$last_status" python - <<'PY'
+          import datetime as dt
+          import json
+          import os
+          from pathlib import Path
+
+          UTC = dt.timezone.utc
+
+          def iso_z(value):
+              return value.astimezone(UTC).isoformat(timespec="seconds").replace("+00:00", "Z")
+
+          path = Path("flare_guidance.json")
+          payload = json.loads(path.read_text(encoding="utf-8"))
+          status = int(os.environ.get("WXF_LAST_STATUS", "1"))
+          now = dt.datetime.now(tz=UTC)
+          formal_issue = now.replace(hour=21, minute=0, second=0, microsecond=0)
+          if now < formal_issue:
+              formal_issue -= dt.timedelta(days=1)
+          valid_start = dt.datetime.combine(
+              formal_issue.date() + dt.timedelta(days=1),
+              dt.time(0),
+              tzinfo=UTC,
+          )
+          previous_issued = payload.get("issued")
+
+          # Retain only the most recent WXF magnetic member. Every independent
+          # source is refreshed below so stale external values cannot masquerade
+          # as current guidance when JSOC itself is temporarily unavailable.
+          for region in payload.get("regions", []):
+              if not isinstance(region, dict):
+                  continue
+              members = region.get("members")
+              if not isinstance(members, dict):
+                  continue
+              for key in list(members):
+                  if key != "sharpmag":
+                      members.pop(key, None)
+              wxf = members.get("sharpmag")
+              if isinstance(wxf, dict):
+                  wxf["issued"] = previous_issued
+                  wxf["quality"] = "stale-fallback"
+                  wxf["note"] = (
+                      "Previous published WXF magnetic probability retained because "
+                      "the current JSOC/SHARP query timed out after three attempts."
+                  )
+
+          payload.pop("solar_monitor", None)
+          payload.pop("external_sources", None)
+          payload["issued"] = iso_z(formal_issue)
+          payload["valid_start"] = iso_z(valid_start)
+          payload["valid_end"] = iso_z(valid_start + dt.timedelta(days=1))
+          input_meta = payload.setdefault("input", {})
+          input_meta["attempted_target_time"] = iso_z(formal_issue - dt.timedelta(hours=3))
+          input_meta["fallback_from_previous_cycle"] = True
+          payload["generation_status"] = {
+              "ok": False,
+              "used_previous_forecast": True,
+              "previous_issued": previous_issued,
+              "attempts": 3,
+              "exit_code": status,
+              "checked_at": iso_z(now),
+              "detail": (
+                  "JSOC/SHARP retrieval failed after three attempts. The prior WXF "
+                  "magnetic probability was retained transparently while all "
+                  "independent forecast sources were refreshed."
+              ),
+          }
+          quality = payload.setdefault("quality", {})
+          quality["level"] = "degraded"
+          quality["message"] = (
+              "WXF input refresh unavailable; prior published WXF probabilities retained."
+          )
+          path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+          Path("flare_guidance.js").write_text(
+              "/* Generated automatically by the SpaceWxOps WXF workflow. */\n"
+              "window.FLARE_GUIDANCE_PAYLOAD = "
+              + json.dumps(payload, indent=2)
+              + ";\n",
+              encoding="utf-8",
+          )
+          PY
+            echo "::warning title=Prior WXF cycle retained::JSOC/SHARP remained unavailable after three attempts. External sources will still refresh, and later scheduled runs will retry the WXF input."
+          fi
 
       - name: Add SolarMonitor MCSTAT and MCEVOL guidance
         shell: bash
@@ -96,8 +220,7 @@ jobs:
               echo "::notice title=SolarMonitor guidance pending::The next-00Z SolarMonitor table is not available or parseable yet. Continuing with the valid WXF and other external guidance; a later scheduled retry will try again."
               ;;
             *)
-              echo "::error title=Unexpected SolarMonitor step failure::solar_monitor_guidance.py exited with code ${solar_status}."
-              exit "$solar_status"
+              echo "::warning title=SolarMonitor refresh incomplete::solar_monitor_guidance.py exited with code ${solar_status}. Continuing with built-in MCSTAT/MCEVOL fallback and the other independent guidance sources."
               ;;
           esac
 
@@ -167,13 +290,24 @@ jobs:
           PY
 
       - name: Add SIDC, Met Office, FLARECAST, and NASA CCMC guidance
-        continue-on-error: true
         shell: bash
         run: |
-          python external_flare_guidance_strict_v4.py \
+          set +e
+          external_output=$(python external_flare_guidance_strict_v4.py \
             --input flare_guidance.json \
             --output flare_guidance.json \
-            --js-output flare_guidance.js
+            --js-output flare_guidance.js 2>&1)
+          external_status=$?
+          set -e
+
+          if [[ -n "$external_output" ]]; then
+            printf '%s\n' "$external_output"
+          fi
+          if [[ "$external_status" -eq 0 ]]; then
+            echo "Independent flare guidance refresh completed."
+          else
+            echo "::warning title=External guidance refresh incomplete::The external adapter exited with code ${external_status}. The validated WXF/SolarMonitor payload is retained, and the next scheduled run will retry the unavailable sources."
+          fi
 
       - name: Validate combined forecast product
         shell: bash
@@ -198,17 +332,12 @@ jobs:
           full_members = full_disk.get("members", {})
           assert full_members.get("sharpmag"), "full-disk WXF probability missing"
 
-          allowed = (
-              "sharpmag", "mcstat", "mcevol", "sidc", "metoffice", "flarecast",
-              "ccmc_magpy", "ccmc_mag4", "ccmc_daffs", "ccmc_aeffort", "swpc",
-          )
           count = 0
           for region in regions:
               members = region.get("members", {})
+              assert isinstance(members, dict), (region.get("id"), "members must be an object")
               assert "ensemble" not in members
-              assert "evolp" not in members and "evol_p" not in members
-              for key in allowed:
-                  member = members.get(key)
+              for key, member in members.items():
                   if not isinstance(member, dict):
                       continue
                   count += 1
@@ -221,18 +350,18 @@ jobs:
                   if m1 is not None and x1 is not None:
                       assert float(x1) <= float(m1), (region.get("id"), key, m1, x1)
 
-          available = [
-              key for key in (
-                  "sidc", "metoffice", "flarecast", "ccmc_magpy", "ccmc_mag4",
-                  "ccmc_daffs", "ccmc_aeffort",
-              )
-              if isinstance(full_members.get(key), dict)
-          ]
+          external_keys = sorted(
+              key for key, value in full_members.items()
+              if key not in {"sharpmag", "mcstat", "mcevol", "evolp", "swpc"}
+              and isinstance(value, dict)
+          )
           print(
               f"Validated {payload['model_version']} issued {payload['issued']} with "
-              f"{count} probability members; external rows="
-              f"{available if available else 'none current'}"
+              f"{count} probability members; current independent full-disk rows="
+              f"{external_keys if external_keys else 'none current'}"
           )
+          if payload.get("generation_status"):
+              print(json.dumps(payload["generation_status"], indent=2))
           if payload.get("external_sources"):
               print(json.dumps(payload["external_sources"], indent=2))
           PY

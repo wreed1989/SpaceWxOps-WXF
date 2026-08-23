@@ -34,6 +34,10 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
+        with:
+          # The publish step rebases itself onto the latest main branch if a
+          # human or another workflow commits while this run is generating data.
+          fetch-depth: 0
 
       - name: Set up Python used to train the frozen model
         uses: actions/setup-python@v6
@@ -67,13 +71,35 @@ jobs:
             --max-longitude 45
 
       - name: Add SolarMonitor MCSTAT and MCEVOL guidance
-        continue-on-error: true
         shell: bash
         run: |
-          python solar_monitor_guidance.py enrich \
+          # SolarMonitor's next-00Z table can legitimately be unavailable during
+          # the 21Z/22Z/23Z attempts. Exit code 2 is therefore an optional-source
+          # notice, not a failed forecast job. The 00:20Z retry will try again.
+          set +e
+          solar_output=$(python solar_monitor_guidance.py enrich \
             --input flare_guidance.json \
             --output flare_guidance.json \
-            --js-output flare_guidance.js
+            --js-output flare_guidance.js 2>&1)
+          solar_status=$?
+          set -e
+
+          if [[ -n "$solar_output" ]]; then
+            printf '%s\n' "$solar_output"
+          fi
+
+          case "$solar_status" in
+            0)
+              echo "SolarMonitor guidance added successfully."
+              ;;
+            2)
+              echo "::notice title=SolarMonitor guidance pending::The next-00Z SolarMonitor table is not available or parseable yet. Continuing with the valid WXF and other external guidance; a later scheduled retry will try again."
+              ;;
+            *)
+              echo "::error title=Unexpected SolarMonitor step failure::solar_monitor_guidance.py exited with code ${solar_status}."
+              exit "$solar_status"
+              ;;
+          esac
 
       - name: Apply conservative WXF full-disk proxy
         shell: bash
@@ -248,14 +274,75 @@ jobs:
       - name: Publish updated forecast files
         shell: bash
         run: |
+          set -euo pipefail
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add flare_guidance.json flare_guidance.js forecast_history.jsonl
 
-          if git diff --cached --quiet; then
-            echo "Forecast files are unchanged."
-          else
-            issued=$(python -c 'import json; print(json.load(open("flare_guidance.json"))["issued"])')
+          issued=$(python -c 'import json; print(json.load(open("flare_guidance.json"))["issued"])')
+          snapshot_dir=$(mktemp -d)
+          trap 'rm -rf "$snapshot_dir"' EXIT
+          cp flare_guidance.json flare_guidance.js "$snapshot_dir"/
+
+          cat > "$snapshot_dir/merge_history.py" <<'PY'
+          import json
+          from pathlib import Path
+
+          payload = json.loads(Path("flare_guidance.json").read_text(encoding="utf-8"))
+          issued = payload["issued"]
+          history = Path("forecast_history.jsonl")
+          lines = [line for line in history.read_text(encoding="utf-8").splitlines() if line.strip()] if history.exists() else []
+          replacement = json.dumps(payload, separators=(",", ":"))
+          output = []
+          replaced = False
+
+          for line in lines:
+              try:
+                  record = json.loads(line)
+              except json.JSONDecodeError:
+                  output.append(line)
+                  continue
+              if record.get("issued") == issued:
+                  if not replaced:
+                      output.append(replacement)
+                      replaced = True
+              else:
+                  output.append(line)
+
+          if not replaced:
+              output.append(replacement)
+          history.write_text("\n".join(output) + "\n", encoding="utf-8")
+          PY
+
+          # A human commit or another writer may advance main while the forecast
+          # is being built. Rebase by resetting to the newest main, restoring the
+          # generated payload, and rebuilding history against that newest copy.
+          # A rejected push is retried instead of failing with a non-fast-forward.
+          for attempt in 1 2 3 4; do
+            echo "Publish attempt ${attempt} of 4"
+            git fetch origin main
+            git reset --hard origin/main
+            cp "$snapshot_dir/flare_guidance.json" flare_guidance.json
+            cp "$snapshot_dir/flare_guidance.js" flare_guidance.js
+            python "$snapshot_dir/merge_history.py"
+
+            git add flare_guidance.json flare_guidance.js forecast_history.jsonl
+            if git diff --cached --quiet; then
+              echo "Forecast files already match the latest main branch."
+              exit 0
+            fi
+
             git commit -m "Update multi-source flare guidance ${issued}"
-            git push
-          fi
+            if git push origin HEAD:main; then
+              echo "Forecast files published successfully."
+              exit 0
+            fi
+
+            if [[ "$attempt" -lt 4 ]]; then
+              echo "::notice title=Concurrent repository update::main advanced during publication. Refreshing from origin and retrying without discarding the generated forecast."
+              sleep $((attempt * 2))
+            fi
+          done
+
+          echo "::error title=Forecast publication failed::Unable to publish after four fetch-reset-reapply attempts."
+          exit 1

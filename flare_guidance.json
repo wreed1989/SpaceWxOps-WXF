@@ -231,7 +231,7 @@
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20260823",
-    "retrieved_at": "2026-08-23T15:52:58Z",
+    "retrieved_at": "2026-08-23T18:51:48Z",
     "valid_start": "2026-08-23T00:00:00Z",
     "valid_end": "2026-08-24T00:00:00Z",
     "regional_forecasts": 4,

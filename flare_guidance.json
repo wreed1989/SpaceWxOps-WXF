@@ -231,7 +231,7 @@
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20260823",
-    "retrieved_at": "2026-08-23T15:41:20Z",
+    "retrieved_at": "2026-08-23T15:52:34Z",
     "valid_start": "2026-08-23T00:00:00Z",
     "valid_end": "2026-08-24T00:00:00Z",
     "regional_forecasts": 4,
@@ -244,7 +244,7 @@
     "note": "Interim full-disk display proxy. It avoids an inflated independence-union calculation but is not a separately trained or calibrated full-disk model."
   },
   "external_sources": {
-    "generated_at": "2026-08-23T14:57:51Z",
+    "generated_at": "2026-08-23T15:52:35Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,

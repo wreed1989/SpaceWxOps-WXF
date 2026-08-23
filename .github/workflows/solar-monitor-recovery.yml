@@ -2,6 +2,11 @@ name: Recover delayed SolarMonitor flare guidance
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/solar-monitor-recovery.yml"
+      - "solar_monitor_guidance.py"
   schedule:
     # SolarMonitor's new 00Z table is not always populated during the formal
     # 21Z/22Z/23Z/00Z WXF attempts. Recheck the same published forecast later.

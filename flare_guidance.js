@@ -996,7 +996,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20260824",
-    "retrieved_at": "2026-08-24T04:10:23Z",
+    "retrieved_at": "2026-08-24T07:32:59Z",
     "valid_start": "2026-08-24T00:00:00Z",
     "valid_end": "2026-08-25T00:00:00Z",
     "regional_forecasts": 4,

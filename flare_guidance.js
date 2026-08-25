@@ -71,9 +71,9 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "x1": 0.0,
           "source": "SIDC 24-hour Global Flare Forecast",
           "quality": "published-comparison",
-          "issued": "2026-08-24T12:25:42Z",
-          "valid_start": "2026-08-24T12:25:42Z",
-          "valid_end": "2026-08-25T12:25:42Z",
+          "issued": "2026-08-25T11:33:39Z",
+          "valid_start": "2026-08-25T11:33:39Z",
+          "valid_end": "2026-08-26T11:33:39Z",
           "note": "Human-operator-moderated global forecast published by SIDC."
         },
         "ccmc_amos": {
@@ -295,12 +295,12 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Interim full-disk display proxy. It avoids an inflated independence-union calculation but is not a separately trained or calibrated full-disk model."
   },
   "external_sources": {
-    "generated_at": "2026-08-25T04:50:26Z",
+    "generated_at": "2026-08-25T13:13:17Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
       "url": "https://www.sidc.be/WMO/FlareForecast.php",
-      "issued": "2026-08-24T12:25:42Z",
+      "issued": "2026-08-25T11:33:39Z",
       "m1": 0.0,
       "x1": 0.0
     },
@@ -349,7 +349,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 4,
+      "records": 5,
       "issued": "2026-08-24T12:30:03Z",
       "valid_start": "2026-08-24T12:30:00Z",
       "valid_end": "2026-08-25T12:30:00Z",
@@ -589,7 +589,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 104,
+      "records": 113,
       "issued": "2026-08-25T00:00:00Z",
       "valid_start": "2026-08-25T00:00:00Z",
       "valid_end": "2026-08-26T00:00:00Z",
@@ -666,7 +666,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 104,
+      "records": 113,
       "issued": "2026-08-25T00:00:00Z",
       "valid_start": "2026-08-25T00:00:00Z",
       "valid_end": "2026-08-25T12:00:00Z",
@@ -872,7 +872,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 58,
+      "records": 66,
       "issued": "2026-08-25T03:11:14Z",
       "valid_start": "2026-08-25T00:00:00Z",
       "valid_end": "2026-08-26T00:00:00Z",
@@ -949,7 +949,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 80,
+      "records": 89,
       "issued": "2026-08-25T03:04:58Z",
       "valid_start": "2026-08-25T00:00:00Z",
       "valid_end": "2026-08-26T00:00:00Z",
@@ -1078,10 +1078,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "flarecast": {
       "ok": false,
       "url": "https://api.flarecast.eu/api/prediction/flarecast_latest.xml",
-      "http_status": 200,
-      "content_length": 49,
-      "detail": "XML contained no parseable current M/X probabilities",
-      "candidate_count": 0
+      "detail": "ConnectionError: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: /api/prediction/flarecast_latest.xml (Caused by ReadTimeoutError(\"HTTPSConnectionPool(host='api.flarecast.eu', port=443): Read timed out. (read timeout=60)\"))"
     },
     "strict_parser_version": "5.0.0",
     "availability_policy": "Only current, positively identified forecasts that overlap the wall's target period are published. Missing, stale, retired, maintenance-mode, or non-overlapping providers remain unavailable rather than being replaced or assigned a synthetic probability.",
@@ -1330,7 +1327,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20260825",
-    "retrieved_at": "2026-08-25T04:50:26Z",
+    "retrieved_at": "2026-08-25T13:13:17Z",
     "valid_start": "2026-08-25T00:00:00Z",
     "valid_end": "2026-08-26T00:00:00Z",
     "regional_forecasts": 4,

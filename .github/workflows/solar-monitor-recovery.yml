@@ -18,8 +18,10 @@ permissions:
   contents: write
 
 concurrency:
-  # Serialize every writer of flare_guidance.json and forecast_history.jsonl.
-  group: wxf-flare-guidance-publication
+  # Keep a separate queue from the 12:20Z external refresh. GitHub retains only
+  # one pending run per concurrency group, so sharing that group could cancel
+  # the provider-audit refresh when both schedules fire at 12:20Z.
+  group: wxf-solar-monitor-recovery
   cancel-in-progress: false
 
 jobs:

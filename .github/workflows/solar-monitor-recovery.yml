@@ -7,6 +7,8 @@ on:
     paths:
       - ".github/workflows/solar-monitor-recovery.yml"
       - "solar_monitor_guidance.py"
+      - "publication_guard.py"
+      - "test_publication_guard.py"
   schedule:
     # SolarMonitor's new 00Z table is not always populated during the formal
     # 21Z/22Z/23Z/00Z WXF attempts. Recheck the same published forecast later.
@@ -16,7 +18,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: wxf-solar-monitor-recovery
+  # Serialize every writer of flare_guidance.json and forecast_history.jsonl.
+  group: wxf-flare-guidance-publication
   cancel-in-progress: false
 
 jobs:
@@ -38,6 +41,9 @@ jobs:
       - name: Install SolarMonitor runtime
         shell: bash
         run: python -m pip install requests==2.32.4
+
+      - name: Test semantic publication guard
+        run: python -m unittest -v test_publication_guard.py
 
       - name: Recover current SolarMonitor MCSTAT and MCEVOL
         shell: bash
@@ -141,6 +147,15 @@ jobs:
           for attempt in 1 2 3 4; do
             git fetch origin main
             git reset --hard origin/main
+            python publication_guard.py \
+              --previous-payload flare_guidance.json \
+              --candidate-payload "$snapshot_dir/flare_guidance.json" \
+              --github-output "$snapshot_dir/publication.env"
+            source "$snapshot_dir/publication.env"
+            if [[ "$publish" != "true" ]]; then
+              echo "SolarMonitor recovery changed retrieval metadata only; no commit is required."
+              exit 0
+            fi
             cp "$snapshot_dir/flare_guidance.json" flare_guidance.json
             cp "$snapshot_dir/flare_guidance.js" flare_guidance.js
             python "$snapshot_dir/merge_history.py"

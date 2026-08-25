@@ -13,6 +13,8 @@ on:
       - "external_flare_guidance_strict_v4.py"
       - "external_source_audit.py"
       - "test_external_source_audit.py"
+      - "publication_guard.py"
+      - "test_publication_guard.py"
       - "sharp_mag_pipeline.py"
   schedule:
     # Formal 21Z WXF issue plus retries for delayed HMI/SHARP and provider feeds.
@@ -60,6 +62,9 @@ jobs:
           else
             python -m pip install -r requirements-sharp-mag.txt
           fi
+
+      - name: Test publication and provider-transition guards
+        run: python -m unittest -v test_external_source_audit.py test_publication_guard.py
 
       - name: Generate the formal 21Z WXF forecast
         shell: bash
@@ -466,6 +471,17 @@ jobs:
             echo "Publish attempt ${attempt} of 4"
             git fetch origin main
             git reset --hard origin/main
+            python publication_guard.py \
+              --previous-payload flare_guidance.json \
+              --candidate-payload "$snapshot_dir/flare_guidance.json" \
+              --previous-audit external_source_audit.json \
+              --candidate-audit "$snapshot_dir/external_source_audit.json" \
+              --github-output "$snapshot_dir/publication.env"
+            source "$snapshot_dir/publication.env"
+            if [[ "$publish" != "true" ]]; then
+              echo "Scheduled production completed with no forecast or provider-state change; no commit is required."
+              exit 0
+            fi
             cp "$snapshot_dir/flare_guidance.json" flare_guidance.json
             cp "$snapshot_dir/flare_guidance.js" flare_guidance.js
             cp "$snapshot_dir/external_source_audit.json" external_source_audit.json

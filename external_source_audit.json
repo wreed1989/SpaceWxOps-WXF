@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-26T02:00:24Z",
+  "updated_at": "2026-08-26T13:18:28Z",
   "forecast_issued": "2026-08-25T21:00:00Z",
   "forecast_valid_start": "2026-08-26T00:00:00Z",
   "forecast_valid_end": "2026-08-27T00:00:00Z",
@@ -34,7 +34,7 @@
       "key": "sidc",
       "label": "SIDC Operator",
       "state": "available",
-      "last_checked": "2026-08-26T02:00:24Z",
+      "last_checked": "2026-08-26T13:18:28Z",
       "status_key": "sidc_direct",
       "detail": "Current overlapping probability accepted",
       "dataset_ids": [
@@ -43,13 +43,13 @@
       "first_seen_at": "2026-08-23T15:53:05Z",
       "since": "2026-08-23T15:53:05Z",
       "last_changed_at": "2026-08-23T15:53:05Z",
-      "last_available_at": "2026-08-26T02:00:24Z",
+      "last_available_at": "2026-08-26T13:18:28Z",
       "latest_forecast": {
         "m1": 0.0,
         "x1": 0.0,
-        "issued": "2026-08-25T11:33:39Z",
-        "valid_start": "2026-08-25T11:33:39Z",
-        "valid_end": "2026-08-26T11:33:39Z",
+        "issued": "2026-08-26T10:36:42Z",
+        "valid_start": "2026-08-26T10:36:42Z",
+        "valid_end": "2026-08-27T10:36:42Z",
         "source": "SIDC 24-hour Global Flare Forecast"
       },
       "transitions": [
@@ -68,7 +68,7 @@
       "key": "metoffice",
       "label": "Met Office (MOSWOC)",
       "state": "unavailable",
-      "last_checked": "2026-08-26T02:00:24Z",
+      "last_checked": "2026-08-26T13:18:28Z",
       "status_key": "ccmc_metoffice",
       "detail": "No records in query window",
       "dataset_ids": [
@@ -77,7 +77,7 @@
       "first_seen_at": "2026-08-23T15:53:05Z",
       "since": "2026-08-23T15:53:05Z",
       "last_changed_at": "2026-08-23T15:53:05Z",
-      "last_unavailable_at": "2026-08-26T02:00:24Z",
+      "last_unavailable_at": "2026-08-26T13:18:28Z",
       "transitions": [
         {
           "at": "2026-08-23T15:53:05Z",
@@ -94,7 +94,7 @@
       "key": "ccmc_amos",
       "label": "CCMC AMOS",
       "state": "available",
-      "last_checked": "2026-08-26T02:00:24Z",
+      "last_checked": "2026-08-26T13:18:28Z",
       "status_key": "ccmc_ccmc_amos",
       "detail": "Current overlapping probability accepted",
       "dataset_ids": [
@@ -160,7 +160,7 @@
           "detail": "Current overlapping probability accepted"
         }
       ],
-      "last_available_at": "2026-08-26T02:00:24Z",
+      "last_available_at": "2026-08-26T13:18:28Z",
       "latest_forecast": {
         "x1": 5.78,
         "issued": "2026-08-26T00:30:00Z",
@@ -174,7 +174,7 @@
       "key": "ccmc_asap",
       "label": "CCMC ASAP",
       "state": "unavailable",
-      "last_checked": "2026-08-26T02:00:24Z",
+      "last_checked": "2026-08-26T13:18:28Z",
       "status_key": "ccmc_ccmc_asap",
       "detail": "No records in query window",
       "dataset_ids": [
@@ -183,7 +183,7 @@
       "first_seen_at": "2026-08-23T15:53:05Z",
       "since": "2026-08-23T15:53:05Z",
       "last_changed_at": "2026-08-23T15:53:05Z",
-      "last_unavailable_at": "2026-08-26T02:00:24Z",
+      "last_unavailable_at": "2026-08-26T13:18:28Z",
       "transitions": [
         {
           "at": "2026-08-23T15:53:05Z",
@@ -200,7 +200,7 @@
       "key": "ccmc_assa24",
       "label": "CCMC ASSA 24H",
       "state": "available",
-      "last_checked": "2026-08-26T02:00:24Z",
+      "last_checked": "2026-08-26T13:18:28Z",
       "status_key": "ccmc_ccmc_assa24",
       "detail": "Current overlapping probability accepted",
       "dataset_ids": [
@@ -230,7 +230,7 @@
           "detail": "Current overlapping probability accepted"
         }
       ],
-      "last_available_at": "2026-08-26T02:00:24Z",
+      "last_available_at": "2026-08-26T13:18:28Z",
       "latest_forecast": {
         "x1": 0.0,
         "issued": "2026-08-26T00:00:00Z",
@@ -244,7 +244,7 @@
       "key": "ccmc_assa",
       "label": "CCMC ASSA",
       "state": "available",
-      "last_checked": "2026-08-26T02:00:24Z",
+      "last_checked": "2026-08-26T13:18:28Z",
       "status_key": "ccmc_ccmc_assa",
       "detail": "Current overlapping probability accepted",
       "dataset_ids": [
@@ -274,7 +274,7 @@
           "detail": "Current overlapping probability accepted"
         }
       ],
-      "last_available_at": "2026-08-26T02:00:24Z",
+      "last_available_at": "2026-08-26T13:18:28Z",
       "latest_forecast": {
         "x1": 0.0,
         "issued": "2026-08-26T00:00:00Z",
@@ -288,7 +288,7 @@
       "key": "ccmc_bom",
       "label": "BoM Flarecast",
       "state": "unavailable",
-      "last_checked": "2026-08-26T02:00:24Z",
+      "last_checked": "2026-08-26T13:18:28Z",
       "status_key": "ccmc_ccmc_bom",
       "detail": "No records in query window",
       "dataset_ids": [
@@ -297,7 +297,7 @@
       "first_seen_at": "2026-08-23T15:53:05Z",
       "since": "2026-08-23T15:53:05Z",
       "last_changed_at": "2026-08-23T15:53:05Z",
-      "last_unavailable_at": "2026-08-26T02:00:24Z",
+      "last_unavailable_at": "2026-08-26T13:18:28Z",
       "transitions": [
         {
           "at": "2026-08-23T15:53:05Z",
@@ -314,7 +314,7 @@
       "key": "ccmc_mag4_fe",
       "label": "NASA MAG4 Free Energy",
       "state": "unavailable",
-      "last_checked": "2026-08-26T02:00:24Z",
+      "last_checked": "2026-08-26T13:18:28Z",
       "status_key": "ccmc_ccmc_mag4_fe",
       "detail": "No records in query window",
       "dataset_ids": [
@@ -323,7 +323,7 @@
       "first_seen_at": "2026-08-23T15:53:05Z",
       "since": "2026-08-23T15:53:05Z",
       "last_changed_at": "2026-08-23T15:53:05Z",
-      "last_unavailable_at": "2026-08-26T02:00:24Z",
+      "last_unavailable_at": "2026-08-26T13:18:28Z",
       "transitions": [
         {
           "at": "2026-08-23T15:53:05Z",
@@ -340,7 +340,7 @@
       "key": "ccmc_mag4",
       "label": "NASA MAG4",
       "state": "unavailable",
-      "last_checked": "2026-08-26T02:00:24Z",
+      "last_checked": "2026-08-26T13:18:28Z",
       "status_key": "ccmc_ccmc_mag4",
       "detail": "No records in query window",
       "dataset_ids": [
@@ -349,7 +349,7 @@
       "first_seen_at": "2026-08-23T15:53:05Z",
       "since": "2026-08-23T15:53:05Z",
       "last_changed_at": "2026-08-23T15:53:05Z",
-      "last_unavailable_at": "2026-08-26T02:00:24Z",
+      "last_unavailable_at": "2026-08-26T13:18:28Z",
       "transitions": [
         {
           "at": "2026-08-23T15:53:05Z",
@@ -366,7 +366,7 @@
       "key": "ccmc_magpy_los",
       "label": "CCMC MagPy HMI LOS",
       "state": "available",
-      "last_checked": "2026-08-26T02:00:24Z",
+      "last_checked": "2026-08-26T13:18:28Z",
       "status_key": "ccmc_ccmc_magpy_los",
       "detail": "Current overlapping probability accepted",
       "dataset_ids": [
@@ -396,13 +396,13 @@
           "detail": "Current overlapping probability accepted"
         }
       ],
-      "last_available_at": "2026-08-26T02:00:24Z",
+      "last_available_at": "2026-08-26T13:18:28Z",
       "latest_forecast": {
-        "m1": 21.0,
-        "x1": 4.0,
-        "issued": "2026-08-26T00:06:51Z",
-        "valid_start": "2026-08-25T21:00:00Z",
-        "valid_end": "2026-08-26T21:00:00Z",
+        "m1": 17.0,
+        "x1": 3.0,
+        "issued": "2026-08-26T03:07:25Z",
+        "valid_start": "2026-08-26T00:00:00Z",
+        "valid_end": "2026-08-27T00:00:00Z",
         "dataset_id": "MagPy-HMI-LOS_FULLDISK",
         "source": "NASA/CCMC Flare Scoreboard · CCMC MagPy HMI LOS"
       }
@@ -411,7 +411,7 @@
       "key": "ccmc_magpy",
       "label": "CCMC MagPy SHARP",
       "state": "available",
-      "last_checked": "2026-08-26T02:00:24Z",
+      "last_checked": "2026-08-26T13:18:28Z",
       "status_key": "ccmc_ccmc_magpy",
       "detail": "Current overlapping probability accepted",
       "dataset_ids": [
@@ -441,13 +441,13 @@
           "detail": "Current overlapping probability accepted"
         }
       ],
-      "last_available_at": "2026-08-26T02:00:24Z",
+      "last_available_at": "2026-08-26T13:18:28Z",
       "latest_forecast": {
-        "m1": 25.0,
-        "x1": 15.0,
-        "issued": "2026-08-26T00:03:22Z",
-        "valid_start": "2026-08-25T21:00:00Z",
-        "valid_end": "2026-08-26T21:00:00Z",
+        "m1": 24.0,
+        "x1": 14.0,
+        "issued": "2026-08-26T03:03:41Z",
+        "valid_start": "2026-08-26T00:00:00Z",
+        "valid_end": "2026-08-27T00:00:00Z",
         "dataset_id": "MagPy_SHARP_HMI_CEA_FULLDISK",
         "source": "NASA/CCMC Flare Scoreboard · CCMC MagPy SHARP"
       }
@@ -456,7 +456,7 @@
       "key": "ccmc_sps",
       "label": "CCMC SPS",
       "state": "available",
-      "last_checked": "2026-08-26T02:00:24Z",
+      "last_checked": "2026-08-26T13:18:28Z",
       "status_key": "ccmc_ccmc_sps",
       "detail": "Current overlapping probability accepted",
       "dataset_ids": [
@@ -486,7 +486,7 @@
           "detail": "Current overlapping probability accepted"
         }
       ],
-      "last_available_at": "2026-08-26T02:00:24Z",
+      "last_available_at": "2026-08-26T13:18:28Z",
       "latest_forecast": {
         "x1": 10.0,
         "issued": "2026-08-25T17:00:00Z",
@@ -500,14 +500,14 @@
       "key": "ccmc_daffs",
       "label": "CCMC DAFFS",
       "state": "unavailable",
-      "last_checked": "2026-08-26T02:00:24Z",
+      "last_checked": "2026-08-26T13:18:28Z",
       "status_key": "ccmc_ccmc_daffs",
       "detail": "No matching full-disk dataset in current CCMC catalog",
       "dataset_ids": [],
       "first_seen_at": "2026-08-23T15:53:05Z",
       "since": "2026-08-23T15:53:05Z",
       "last_changed_at": "2026-08-23T15:53:05Z",
-      "last_unavailable_at": "2026-08-26T02:00:24Z",
+      "last_unavailable_at": "2026-08-26T13:18:28Z",
       "transitions": [
         {
           "at": "2026-08-23T15:53:05Z",
@@ -524,14 +524,14 @@
       "key": "ccmc_aeffort",
       "label": "CCMC A-EFFort",
       "state": "unavailable",
-      "last_checked": "2026-08-26T02:00:24Z",
+      "last_checked": "2026-08-26T13:18:28Z",
       "status_key": "ccmc_ccmc_aeffort",
       "detail": "No matching full-disk dataset in current CCMC catalog",
       "dataset_ids": [],
       "first_seen_at": "2026-08-23T15:53:05Z",
       "since": "2026-08-23T15:53:05Z",
       "last_changed_at": "2026-08-23T15:53:05Z",
-      "last_unavailable_at": "2026-08-26T02:00:24Z",
+      "last_unavailable_at": "2026-08-26T13:18:28Z",
       "transitions": [
         {
           "at": "2026-08-23T15:53:05Z",
@@ -548,14 +548,14 @@
       "key": "flarecast",
       "label": "FLARECAST",
       "state": "unavailable",
-      "last_checked": "2026-08-26T02:00:24Z",
+      "last_checked": "2026-08-26T13:18:28Z",
       "status_key": "flarecast",
-      "detail": "HTTPError: 500 Server Error: INTERNAL SERVER ERROR for url: https://api.flarecast.eu/api/prediction/flarecast_latest.xml",
+      "detail": "XML contained no parseable current M/X probabilities",
       "dataset_ids": [],
       "first_seen_at": "2026-08-23T15:53:05Z",
       "since": "2026-08-23T15:53:05Z",
       "last_changed_at": "2026-08-23T15:53:05Z",
-      "last_unavailable_at": "2026-08-26T02:00:24Z",
+      "last_unavailable_at": "2026-08-26T13:18:28Z",
       "transitions": [
         {
           "at": "2026-08-23T15:53:05Z",
@@ -572,14 +572,14 @@
       "key": "njit_solarflarenet",
       "label": "NJIT SolarFlareNet",
       "state": "unavailable",
-      "last_checked": "2026-08-26T02:00:24Z",
+      "last_checked": "2026-08-26T13:18:28Z",
       "status_key": "njit_solarflarenet",
       "detail": "The public SolarDB tool is retained in the wall's source inventory, but this workflow has no stable unauthenticated machine-readable endpoint from which to reproduce its current probabilities.",
       "dataset_ids": [],
       "first_seen_at": "2026-08-23T15:53:05Z",
       "since": "2026-08-23T15:53:05Z",
       "last_changed_at": "2026-08-23T15:53:05Z",
-      "last_unavailable_at": "2026-08-26T02:00:24Z",
+      "last_unavailable_at": "2026-08-26T13:18:28Z",
       "transitions": [
         {
           "at": "2026-08-23T15:53:05Z",
@@ -596,14 +596,14 @@
       "key": "inaf_oact",
       "label": "INAF-OACT",
       "state": "unavailable",
-      "last_checked": "2026-08-26T02:00:24Z",
+      "last_checked": "2026-08-26T13:18:28Z",
       "status_key": "inaf_oact",
       "detail": "The OACT web product is retained in the wall's source inventory, but no stable current machine-readable feed is configured.",
       "dataset_ids": [],
       "first_seen_at": "2026-08-23T15:53:05Z",
       "since": "2026-08-23T15:53:05Z",
       "last_changed_at": "2026-08-23T15:53:05Z",
-      "last_unavailable_at": "2026-08-26T02:00:24Z",
+      "last_unavailable_at": "2026-08-26T13:18:28Z",
       "transitions": [
         {
           "at": "2026-08-23T15:53:05Z",

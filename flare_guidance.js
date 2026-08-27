@@ -66,6 +66,18 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "source": "WXF dominant-region proxy (maximum of 1 quality-controlled regional forecasts)",
           "quality": "research-dominant-region-proxy"
         },
+        "mcstat": {
+          "m1": 24.0,
+          "x1": 2.0,
+          "source": "SolarMonitor MCSTAT dominant-region proxy (maximum of 6 regional forecasts)",
+          "quality": "published-comparison"
+        },
+        "mcevol": {
+          "m1": 49.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCEVOL dominant-region proxy (maximum of 6 regional forecasts)",
+          "quality": "published-comparison"
+        },
         "sidc": {
           "m1": 0.0,
           "x1": 0.0,
@@ -159,6 +171,24 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "x1": 0.0,
           "source": "WXF sharp-mag-20260822-hierx1 (calibrated M1; hierarchical X1)",
           "quality": "research"
+        },
+        "mcstat": {
+          "m1": 3.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCSTAT regional forecast",
+          "quality": "published-comparison"
+        },
+        "mcevol": {
+          "m1": 0.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCEVOL regional forecast",
+          "quality": "published-comparison"
+        },
+        "swpc": {
+          "m1": 1.0,
+          "x1": 1.0,
+          "source": "SWPC regional forecast as displayed by SolarMonitor",
+          "quality": "published-comparison"
         }
       },
       "drivers": [
@@ -167,15 +197,133 @@ window.FLARE_GUIDANCE_PAYLOAD = {
         "M1+: elevated mean magnetic shear",
         "X1+: hierarchical severity factor 6.1% of SHARP M1+"
       ]
+    },
+    {
+      "id": "AR14513",
+      "label": "AR 14513",
+      "members": {
+        "mcstat": {
+          "m1": 24.0,
+          "x1": 2.0,
+          "source": "SolarMonitor MCSTAT regional forecast",
+          "quality": "published-comparison"
+        },
+        "mcevol": {
+          "m1": 49.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCEVOL regional forecast",
+          "quality": "published-comparison"
+        },
+        "swpc": {
+          "m1": 50.0,
+          "x1": 15.0,
+          "source": "SWPC regional forecast as displayed by SolarMonitor",
+          "quality": "published-comparison"
+        }
+      }
+    },
+    {
+      "id": "AR14516",
+      "label": "AR 14516",
+      "members": {
+        "mcstat": {
+          "m1": 7.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCSTAT regional forecast",
+          "quality": "published-comparison"
+        },
+        "mcevol": {
+          "m1": 5.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCEVOL regional forecast",
+          "quality": "published-comparison"
+        },
+        "swpc": {
+          "m1": 5.0,
+          "x1": 1.0,
+          "source": "SWPC regional forecast as displayed by SolarMonitor",
+          "quality": "published-comparison"
+        }
+      }
+    },
+    {
+      "id": "AR14517",
+      "label": "AR 14517",
+      "members": {
+        "mcstat": {
+          "m1": 16.0,
+          "x1": 2.0,
+          "source": "SolarMonitor MCSTAT regional forecast",
+          "quality": "published-comparison"
+        },
+        "mcevol": {
+          "m1": 10.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCEVOL regional forecast",
+          "quality": "published-comparison"
+        },
+        "swpc": {
+          "m1": 10.0,
+          "x1": 1.0,
+          "source": "SWPC regional forecast as displayed by SolarMonitor",
+          "quality": "published-comparison"
+        }
+      }
+    },
+    {
+      "id": "AR14518",
+      "label": "AR 14518",
+      "members": {
+        "mcstat": {
+          "m1": 4.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCSTAT regional forecast",
+          "quality": "published-comparison"
+        },
+        "swpc": {
+          "m1": 5.0,
+          "x1": 1.0,
+          "source": "SWPC regional forecast as displayed by SolarMonitor",
+          "quality": "published-comparison"
+        }
+      }
+    },
+    {
+      "id": "AR14519",
+      "label": "AR 14519",
+      "members": {
+        "mcstat": {
+          "m1": 1.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCSTAT regional forecast",
+          "quality": "published-comparison"
+        },
+        "swpc": {
+          "m1": 1.0,
+          "x1": 1.0,
+          "source": "SWPC regional forecast as displayed by SolarMonitor",
+          "quality": "published-comparison"
+        }
+      }
     }
   ],
+  "solar_monitor": {
+    "source": "SolarMonitor",
+    "source_url": "https://www.solarmonitor.org/forecast.php?date=20260827",
+    "retrieved_at": "2026-08-27T04:33:41Z",
+    "valid_start": "2026-08-27T00:00:00Z",
+    "valid_end": "2026-08-28T00:00:00Z",
+    "regional_forecasts": 6,
+    "full_disk_method": "maximum regional probability (dominant-region proxy)",
+    "note": "Regional MCSTAT/MCEVOL values are reproduced from SolarMonitor. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. Missing values remain missing."
+  },
   "wxf_full_disk": {
     "method": "maximum regional probability (dominant-region proxy)",
     "regional_forecasts": 1,
     "note": "Interim full-disk display proxy. It avoids an inflated independence-union calculation but is not a separately trained or calibrated full-disk model."
   },
   "external_sources": {
-    "generated_at": "2026-08-27T03:21:00Z",
+    "generated_at": "2026-08-27T04:33:42Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
@@ -469,7 +617,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 103,
+      "records": 104,
       "issued": "2026-08-27T00:00:00Z",
       "valid_start": "2026-08-27T00:00:00Z",
       "valid_end": "2026-08-28T00:00:00Z",
@@ -546,7 +694,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 103,
+      "records": 104,
       "issued": "2026-08-27T00:00:00Z",
       "valid_start": "2026-08-27T00:00:00Z",
       "valid_end": "2026-08-27T12:00:00Z",
@@ -752,7 +900,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 66,
+      "records": 67,
       "issued": "2026-08-27T03:08:09Z",
       "valid_start": "2026-08-27T00:00:00Z",
       "valid_end": "2026-08-28T00:00:00Z",
@@ -829,7 +977,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 89,
+      "records": 90,
       "issued": "2026-08-27T03:04:16Z",
       "valid_start": "2026-08-27T00:00:00Z",
       "valid_end": "2026-08-28T00:00:00Z",

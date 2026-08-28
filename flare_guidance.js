@@ -215,8 +215,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "quality": "published-comparison"
         },
         "swpc": {
-          "m1": 50.0,
-          "x1": 15.0,
+          "m1": 35.0,
+          "x1": 5.0,
           "source": "SWPC regional forecast as displayed by SolarMonitor",
           "quality": "published-comparison"
         }
@@ -263,7 +263,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "quality": "published-comparison"
         },
         "swpc": {
-          "m1": 10.0,
+          "m1": 5.0,
           "x1": 1.0,
           "source": "SWPC regional forecast as displayed by SolarMonitor",
           "quality": "published-comparison"
@@ -281,7 +281,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "quality": "published-comparison"
         },
         "swpc": {
-          "m1": 5.0,
+          "m1": 1.0,
           "x1": 1.0,
           "source": "SWPC regional forecast as displayed by SolarMonitor",
           "quality": "published-comparison"
@@ -310,7 +310,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20260827",
-    "retrieved_at": "2026-08-27T22:17:17Z",
+    "retrieved_at": "2026-08-28T00:26:55Z",
     "valid_start": "2026-08-27T00:00:00Z",
     "valid_end": "2026-08-28T00:00:00Z",
     "regional_forecasts": 6,

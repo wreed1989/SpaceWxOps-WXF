@@ -292,7 +292,7 @@
           "quality": "published-comparison"
         },
         "swpc": {
-          "m1": 35.0,
+          "m1": 15.0,
           "x1": 5.0,
           "source": "SWPC regional forecast as displayed by SolarMonitor",
           "quality": "published-comparison"
@@ -316,7 +316,7 @@
           "quality": "published-comparison"
         },
         "swpc": {
-          "m1": 5.0,
+          "m1": 10.0,
           "x1": 1.0,
           "source": "SWPC regional forecast as displayed by SolarMonitor",
           "quality": "published-comparison"
@@ -327,7 +327,7 @@
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20260828",
-    "retrieved_at": "2026-08-28T22:22:36Z",
+    "retrieved_at": "2026-08-29T01:47:13Z",
     "valid_start": "2026-08-28T00:00:00Z",
     "valid_end": "2026-08-29T00:00:00Z",
     "regional_forecasts": 5,

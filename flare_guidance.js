@@ -67,28 +67,26 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "source": "WXF dominant-region proxy (maximum of 3 quality-controlled regional forecasts)",
           "quality": "research-dominant-region-proxy"
         },
-        "mcstat": {
-          "m1": 29.0,
-          "x1": 2.0,
-          "source": "SolarMonitor MCSTAT dominant-region proxy (maximum of 5 regional forecasts)",
-          "quality": "published-comparison"
-        },
-        "mcevol": {
-          "m1": 10.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCEVOL dominant-region proxy (maximum of 5 regional forecasts)",
-          "quality": "published-comparison"
-        },
         "sidc": {
-          "m1": 15.0,
-          "x1": 1.0,
-          "source": "NASA/CCMC Flare Scoreboard · SIDC Operator",
+          "m1": 0.0,
+          "x1": 0.0,
+          "source": "SIDC 24-hour Global Flare Forecast",
           "quality": "published-comparison",
-          "issued": "2026-08-30T12:30:06Z",
-          "valid_start": "2026-08-30T12:30:00Z",
-          "valid_end": "2026-08-31T12:30:00Z",
+          "issued": "2026-08-30T11:17:28Z",
+          "valid_start": "2026-08-30T11:17:28Z",
+          "valid_end": "2026-08-31T11:17:28Z",
+          "note": "Human-operator-moderated global forecast published by SIDC."
+        },
+        "ccmc_amos": {
+          "m1": null,
+          "x1": 0.12,
+          "source": "NASA/CCMC Flare Scoreboard · CCMC AMOS",
+          "quality": "published-comparison",
+          "issued": "2026-08-31T00:30:00Z",
+          "valid_start": "2026-08-31T00:00:00Z",
+          "valid_end": "2026-09-01T00:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
-          "dataset_id": "SIDC_Operator_FULLDISK"
+          "dataset_id": "AMOS_v1_FULLDISK"
         },
         "ccmc_assa24": {
           "m1": null,
@@ -162,24 +160,6 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "x1": 0.0,
           "source": "WXF sharp-mag-20260822-hierx1 (calibrated M1; hierarchical X1)",
           "quality": "research"
-        },
-        "mcstat": {
-          "m1": 1.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCSTAT regional forecast",
-          "quality": "published-comparison"
-        },
-        "mcevol": {
-          "m1": 1.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCEVOL regional forecast",
-          "quality": "published-comparison"
-        },
-        "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
-          "source": "SWPC regional forecast as displayed by SolarMonitor",
-          "quality": "published-comparison"
         }
       },
       "drivers": [
@@ -228,24 +208,6 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "x1": 0.0,
           "source": "WXF sharp-mag-20260822-hierx1 (calibrated M1; hierarchical X1)",
           "quality": "research"
-        },
-        "mcstat": {
-          "m1": 2.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCSTAT regional forecast",
-          "quality": "published-comparison"
-        },
-        "mcevol": {
-          "m1": 1.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCEVOL regional forecast",
-          "quality": "published-comparison"
-        },
-        "swpc": {
-          "m1": 5.0,
-          "x1": 1.0,
-          "source": "SWPC regional forecast as displayed by SolarMonitor",
-          "quality": "published-comparison"
         }
       },
       "drivers": [
@@ -254,102 +216,22 @@ window.FLARE_GUIDANCE_PAYLOAD = {
         "M1+: rising mean horizontal-field gradient",
         "X1+: hierarchical severity factor 6.1% of SHARP M1+"
       ]
-    },
-    {
-      "id": "AR14513",
-      "label": "AR 14513",
-      "members": {
-        "mcstat": {
-          "m1": 16.0,
-          "x1": 2.0,
-          "source": "SolarMonitor MCSTAT regional forecast",
-          "quality": "published-comparison"
-        },
-        "mcevol": {
-          "m1": 10.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCEVOL regional forecast",
-          "quality": "published-comparison"
-        },
-        "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
-          "source": "SWPC regional forecast as displayed by SolarMonitor",
-          "quality": "published-comparison"
-        }
-      }
-    },
-    {
-      "id": "AR14515",
-      "label": "AR 14515",
-      "members": {
-        "mcstat": {
-          "m1": 3.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCSTAT regional forecast",
-          "quality": "published-comparison"
-        },
-        "mcevol": {
-          "m1": 0.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCEVOL regional forecast",
-          "quality": "published-comparison"
-        },
-        "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
-          "source": "SWPC regional forecast as displayed by SolarMonitor",
-          "quality": "published-comparison"
-        }
-      }
-    },
-    {
-      "id": "AR14517",
-      "label": "AR 14517",
-      "members": {
-        "mcstat": {
-          "m1": 29.0,
-          "x1": 1.0,
-          "source": "SolarMonitor MCSTAT regional forecast",
-          "quality": "published-comparison"
-        },
-        "mcevol": {
-          "m1": 7.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCEVOL regional forecast",
-          "quality": "published-comparison"
-        },
-        "swpc": {
-          "m1": 10.0,
-          "x1": 1.0,
-          "source": "SWPC regional forecast as displayed by SolarMonitor",
-          "quality": "published-comparison"
-        }
-      }
     }
   ],
-  "solar_monitor": {
-    "source": "SolarMonitor",
-    "source_url": "https://www.solarmonitor.org/forecast.php?date=20260831",
-    "retrieved_at": "2026-08-31T00:39:04Z",
-    "valid_start": "2026-08-31T00:00:00Z",
-    "valid_end": "2026-09-01T00:00:00Z",
-    "regional_forecasts": 5,
-    "full_disk_method": "maximum regional probability (dominant-region proxy)",
-    "note": "Regional MCSTAT/MCEVOL values are reproduced from SolarMonitor. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. Missing values remain missing."
-  },
   "wxf_full_disk": {
     "method": "maximum regional probability (dominant-region proxy)",
     "regional_forecasts": 3,
     "note": "Interim full-disk display proxy. It avoids an inflated independence-union calculation but is not a separately trained or calibrated full-disk model."
   },
   "external_sources": {
-    "generated_at": "2026-08-31T00:39:05Z",
+    "generated_at": "2026-08-31T01:24:43Z",
     "script_version": "1.0.0",
     "sidc_direct": {
-      "ok": false,
+      "ok": true,
       "url": "https://www.sidc.be/WMO/FlareForecast.php",
-      "detail": "ConnectionError: HTTPSConnectionPool(host='www.sidc.be', port=443): Max retries exceeded with url: /WMO/FlareForecast.php (Caused by ProtocolError('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer')))"
+      "issued": "2026-08-30T11:17:28Z",
+      "m1": 0.0,
+      "x1": 0.0
     },
     "ccmc_catalog": {
       "ok": true,
@@ -479,7 +361,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "ccmc_ccmc_amos": {
       "dataset_id": "AMOS_v1_FULLDISK",
       "label": "CCMC AMOS",
-      "ok": false,
+      "ok": true,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=AMOS_v1_FULLDISK",
       "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=AMOS_v1_FULLDISK&time.min=2026-08-26T21%3A00%3A00.0&time.max=2026-08-31T21%3A00%3A00.0&format=json&options=fields.all",
@@ -516,8 +398,42 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 4,
-      "detail": "Forecast window does not meaningfully overlap target (2026-08-30T00:00:00Z to 2026-08-31T00:00:00Z)"
+      "records": 5,
+      "issued": "2026-08-31T00:30:00Z",
+      "valid_start": "2026-08-31T00:00:00Z",
+      "valid_end": "2026-09-01T00:00:00Z",
+      "m1": null,
+      "x1": 0.12,
+      "selected_record": {
+        "start_window": "2026-08-31T00:00:00.0Z",
+        "end_window": "2026-09-01T00:00:00.0Z",
+        "issue_time": "2026-08-31T00:30:00.0Z",
+        "C": 0.4285,
+        "M": 0.045,
+        "CPlus": "-1",
+        "MPlus": "-1",
+        "X": 0.0012,
+        "C_uncertainty": "-1",
+        "M_uncertainty": "-1",
+        "CPlus_uncertainty": "-1",
+        "MPlus_uncertainty": "-1",
+        "X_uncertainty": "-1",
+        "C_value_lower": "-1",
+        "M_value_lower": "-1",
+        "CPlus_value_lower": "-1",
+        "MPlus_value_lower": "-1",
+        "X_value_lower": "-1",
+        "C_value_higher": "-1",
+        "M_value_higher": "-1",
+        "CPlus_value_higher": "-1",
+        "MPlus_value_higher": "-1",
+        "X_value_higher": "-1",
+        "C_level": "-1",
+        "M_level": "-1",
+        "CPlus_level": "-1",
+        "MPlus_level": "-1",
+        "X_level": "-1"
+      }
     },
     "ccmc_ccmc_asap": {
       "dataset_id": "ASAP_1_FULLDISK",
@@ -602,7 +518,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 100,
+      "records": 101,
       "issued": "2026-08-31T00:00:00Z",
       "valid_start": "2026-08-31T00:00:00Z",
       "valid_end": "2026-09-01T00:00:00Z",
@@ -679,7 +595,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 100,
+      "records": 101,
       "issued": "2026-08-31T00:00:00Z",
       "valid_start": "2026-08-31T00:00:00Z",
       "valid_end": "2026-08-31T12:00:00Z",

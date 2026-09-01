@@ -76,6 +76,17 @@
           "valid_end": "2026-09-01T12:18:09Z",
           "note": "Human-operator-moderated global forecast published by SIDC."
         },
+        "ccmc_amos": {
+          "m1": null,
+          "x1": 0.62,
+          "source": "NASA/CCMC Flare Scoreboard · CCMC AMOS",
+          "quality": "published-comparison",
+          "issued": "2026-09-01T00:30:00Z",
+          "valid_start": "2026-09-01T00:00:00Z",
+          "valid_end": "2026-09-02T00:00:00Z",
+          "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
+          "dataset_id": "AMOS_v1_FULLDISK"
+        },
         "ccmc_assa24": {
           "m1": null,
           "x1": 0.0,
@@ -212,7 +223,7 @@
     "note": "Interim full-disk display proxy. It avoids an inflated independence-union calculation but is not a separately trained or calibrated full-disk model."
   },
   "external_sources": {
-    "generated_at": "2026-09-01T00:39:55Z",
+    "generated_at": "2026-09-01T01:19:18Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
@@ -349,7 +360,7 @@
     "ccmc_ccmc_amos": {
       "dataset_id": "AMOS_v1_FULLDISK",
       "label": "CCMC AMOS",
-      "ok": false,
+      "ok": true,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=AMOS_v1_FULLDISK",
       "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=AMOS_v1_FULLDISK&time.min=2026-08-27T21%3A00%3A00.0&time.max=2026-09-01T21%3A00%3A00.0&format=json&options=fields.all",
@@ -386,8 +397,42 @@
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 4,
-      "detail": "Forecast window does not meaningfully overlap target (2026-08-31T00:00:00Z to 2026-09-01T00:00:00Z)"
+      "records": 5,
+      "issued": "2026-09-01T00:30:00Z",
+      "valid_start": "2026-09-01T00:00:00Z",
+      "valid_end": "2026-09-02T00:00:00Z",
+      "m1": null,
+      "x1": 0.62,
+      "selected_record": {
+        "start_window": "2026-09-01T00:00:00.0Z",
+        "end_window": "2026-09-02T00:00:00.0Z",
+        "issue_time": "2026-09-01T00:30:00.0Z",
+        "C": 0.6884,
+        "M": 0.1302,
+        "CPlus": "-1",
+        "MPlus": "-1",
+        "X": 0.0062,
+        "C_uncertainty": "-1",
+        "M_uncertainty": "-1",
+        "CPlus_uncertainty": "-1",
+        "MPlus_uncertainty": "-1",
+        "X_uncertainty": "-1",
+        "C_value_lower": "-1",
+        "M_value_lower": "-1",
+        "CPlus_value_lower": "-1",
+        "MPlus_value_lower": "-1",
+        "X_value_lower": "-1",
+        "C_value_higher": "-1",
+        "M_value_higher": "-1",
+        "CPlus_value_higher": "-1",
+        "MPlus_value_higher": "-1",
+        "X_value_higher": "-1",
+        "C_level": "-1",
+        "M_level": "-1",
+        "CPlus_level": "-1",
+        "MPlus_level": "-1",
+        "X_level": "-1"
+      }
     },
     "ccmc_ccmc_asap": {
       "dataset_id": "ASAP_1_FULLDISK",
@@ -472,7 +517,7 @@
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 100,
+      "records": 101,
       "issued": "2026-09-01T00:00:00Z",
       "valid_start": "2026-09-01T00:00:00Z",
       "valid_end": "2026-09-02T00:00:00Z",
@@ -549,7 +594,7 @@
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 100,
+      "records": 101,
       "issued": "2026-09-01T00:00:00Z",
       "valid_start": "2026-09-01T00:00:00Z",
       "valid_end": "2026-09-01T12:00:00Z",

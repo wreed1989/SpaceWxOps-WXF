@@ -8,45 +8,42 @@
   "valid_start": "2026-09-02T00:00:00Z",
   "valid_end": "2026-09-03T00:00:00Z",
   "quality": {
-    "level": "degraded",
-    "message": "WXF input refresh unavailable; prior published WXF probabilities retained."
+    "level": "research",
+    "message": "Daily WXF inference from a saved calibrated M1+ model and a hierarchical X1+ severity layer. Research/shadow guidance unless explicitly validated and marked operational."
   },
   "input": {
     "series": "hmi.sharp_cea_720s_nrt",
-    "target_time": "2026-08-31T18:00:00Z",
-    "latest_record": "2026-08-31T18:00:00Z",
-    "oldest_retained_record": "2026-08-31T18:00:00Z",
-    "raw_records": 2167,
-    "retained_regions": 3,
+    "target_time": "2026-09-01T18:00:00Z",
+    "latest_record": "2026-09-01T18:00:00Z",
+    "oldest_retained_record": "2026-09-01T18:00:00Z",
+    "raw_records": 2297,
+    "retained_regions": 2,
     "mapping": {
-      "skipped_multi_region_harps": 1,
-      "skipped_unmapped_harps": 10,
-      "expanded_rows": 5
+      "skipped_multi_region_harps": 3,
+      "skipped_unmapped_harps": 8,
+      "expanded_rows": 2
     },
     "quality": {
-      "input": 5,
-      "rejected_longitude": 1,
-      "after_longitude": 4,
+      "input": 2,
+      "rejected_longitude": 0,
+      "after_longitude": 2,
       "quality_missing": 0,
       "quality_top_values": {
-        "0x00010400": 3,
-        "0x00000400": 1
+        "0x00010400": 2
       },
       "rejected_quality": 0,
-      "after_quality": 4,
+      "after_quality": 2,
       "rejected_harp_merge": 0,
-      "after_harp_merge": 4,
+      "after_harp_merge": 2,
       "rejected_observer_velocity": 0,
-      "after_observer_velocity": 4,
+      "after_observer_velocity": 2,
       "rejected_missing_mapping": 0,
-      "after_mapping": 4,
+      "after_mapping": 2,
       "min_finite_parameters": 12,
       "rejected_parameter_completeness": 0,
-      "after_parameter_completeness": 4,
-      "retained": 4
-    },
-    "attempted_target_time": "2026-09-01T18:00:00Z",
-    "fallback_from_previous_cycle": true
+      "after_parameter_completeness": 2,
+      "retained": 2
+    }
   },
   "regions": [
     {
@@ -57,16 +54,28 @@
         "message": "Visible-disk WXF combination of quality-controlled, single-region HARPs. It contains no residual term for unnumbered, farside, or excluded limb regions."
       },
       "drivers": [
-        "3 active regions represented",
+        "2 active regions represented",
         "Regional probabilities combined as 1 - product(1 - p_i)",
         "No unnumbered/farside residual term"
       ],
       "members": {
         "sharpmag": {
-          "m1": 2.4,
+          "m1": 2.3,
           "x1": 0.1,
-          "source": "WXF dominant-region proxy (maximum of 3 quality-controlled regional forecasts)",
+          "source": "WXF dominant-region proxy (maximum of 2 quality-controlled regional forecasts)",
           "quality": "research-dominant-region-proxy"
+        },
+        "mcstat": {
+          "m1": 16.0,
+          "x1": 2.0,
+          "source": "SolarMonitor MCSTAT dominant-region proxy (maximum of 5 regional forecasts)",
+          "quality": "published-comparison"
+        },
+        "mcevol": {
+          "m1": 15.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCEVOL dominant-region proxy (maximum of 5 regional forecasts)",
+          "quality": "published-comparison"
         },
         "sidc": {
           "m1": 0.0,
@@ -83,9 +92,9 @@
           "x1": 0.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC ASSA 24H",
           "quality": "published-comparison",
-          "issued": "2026-09-01T23:00:00Z",
-          "valid_start": "2026-09-01T23:00:00Z",
-          "valid_end": "2026-09-02T23:00:00Z",
+          "issued": "2026-09-02T00:00:00Z",
+          "valid_start": "2026-09-02T00:00:00Z",
+          "valid_end": "2026-09-03T00:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "ASSA_24H_1_FULLDISK"
         },
@@ -94,9 +103,9 @@
           "x1": 0.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC ASSA",
           "quality": "published-comparison",
-          "issued": "2026-09-01T23:00:00Z",
-          "valid_start": "2026-09-01T23:00:00Z",
-          "valid_end": "2026-09-02T11:00:00Z",
+          "issued": "2026-09-02T00:00:00Z",
+          "valid_start": "2026-09-02T00:00:00Z",
+          "valid_end": "2026-09-02T12:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "ASSA_1_FULLDISK"
         },
@@ -142,47 +151,19 @@
       "mcintosh": "",
       "quality": {
         "level": "research",
-        "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=19.4°"
+        "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=33.1°"
       },
       "members": {
         "sharpmag": {
-          "m1": 1.0,
-          "x1": 0.1,
-          "source": "WXF sharp-mag-20260822-hierx1 (calibrated M1; hierarchical X1)",
-          "quality": "stale-fallback",
-          "issued": "2026-08-31T21:00:00Z",
-          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts."
-        }
-      },
-      "drivers": [
-        "M1+: rising total unsigned flux",
-        "M1+: elevated strong-gradient PIL flux",
-        "M1+: elevated total free-energy proxy",
-        "X1+: hierarchical severity factor 6.1% of SHARP M1+"
-      ]
-    },
-    {
-      "id": "AR14519",
-      "label": "AR 14519",
-      "location": "",
-      "mcintosh": "",
-      "quality": {
-        "level": "research",
-        "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=10.0°"
-      },
-      "members": {
-        "sharpmag": {
-          "m1": 0.1,
+          "m1": 0.0,
           "x1": 0.0,
           "source": "WXF sharp-mag-20260822-hierx1 (calibrated M1; hierarchical X1)",
-          "quality": "stale-fallback",
-          "issued": "2026-08-31T21:00:00Z",
-          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts."
+          "quality": "research"
         }
       },
       "drivers": [
-        "M1+: rising strong-gradient PIL flux",
-        "M1+: rising total unsigned flux",
+        "M1+: lower strong-gradient PIL flux",
+        "M1+: falling mean horizontal-field gradient",
         "M1+: elevated total free-energy proxy",
         "X1+: hierarchical severity factor 6.1% of SHARP M1+"
       ]
@@ -194,62 +175,137 @@
       "mcintosh": "",
       "quality": {
         "level": "research",
-        "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=2.7°"
+        "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=15.8°"
       },
       "members": {
         "sharpmag": {
-          "m1": 2.4,
+          "m1": 2.3,
           "x1": 0.1,
           "source": "WXF sharp-mag-20260822-hierx1 (calibrated M1; hierarchical X1)",
-          "quality": "stale-fallback",
-          "issued": "2026-08-31T21:00:00Z",
-          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts."
+          "quality": "research"
+        },
+        "mcstat": {
+          "m1": 16.0,
+          "x1": 2.0,
+          "source": "SolarMonitor MCSTAT regional forecast",
+          "quality": "published-comparison"
+        },
+        "mcevol": {
+          "m1": 15.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCEVOL regional forecast",
+          "quality": "published-comparison"
+        },
+        "swpc": {
+          "m1": 10.0,
+          "x1": 1.0,
+          "source": "SWPC regional forecast as displayed by SolarMonitor",
+          "quality": "published-comparison"
         }
       },
       "drivers": [
-        "M1+: rising total unsigned flux",
         "M1+: elevated strong-gradient PIL flux",
-        "M1+: rising total unsigned current helicity",
+        "M1+: falling mean horizontal-field gradient",
+        "M1+: elevated total unsigned vertical current",
         "X1+: hierarchical severity factor 6.1% of SHARP M1+"
       ]
     },
     {
       "id": "AR14513",
       "label": "AR 14513",
-      "members": {}
+      "members": {
+        "mcstat": {
+          "m1": 2.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCSTAT regional forecast",
+          "quality": "published-comparison"
+        },
+        "mcevol": {
+          "m1": 1.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCEVOL regional forecast",
+          "quality": "published-comparison"
+        },
+        "swpc": {
+          "m1": 0.0,
+          "x1": 0.0,
+          "source": "SWPC regional forecast as displayed by SolarMonitor",
+          "quality": "published-comparison"
+        }
+      }
     },
     {
       "id": "AR14521",
       "label": "AR 14521",
-      "members": {}
+      "members": {
+        "mcstat": {
+          "m1": 3.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCSTAT regional forecast",
+          "quality": "published-comparison"
+        },
+        "swpc": {
+          "m1": 1.0,
+          "x1": 1.0,
+          "source": "SWPC regional forecast as displayed by SolarMonitor",
+          "quality": "published-comparison"
+        }
+      }
     },
     {
       "id": "AR14522",
       "label": "AR 14522",
-      "members": {}
+      "members": {
+        "mcstat": {
+          "m1": 1.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCSTAT regional forecast",
+          "quality": "published-comparison"
+        },
+        "swpc": {
+          "m1": 1.0,
+          "x1": 1.0,
+          "source": "SWPC regional forecast as displayed by SolarMonitor",
+          "quality": "published-comparison"
+        }
+      }
     },
     {
       "id": "AR14523",
       "label": "AR 14523",
-      "members": {}
+      "members": {
+        "mcstat": {
+          "m1": 3.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCSTAT regional forecast",
+          "quality": "published-comparison"
+        },
+        "swpc": {
+          "m1": 1.0,
+          "x1": 1.0,
+          "source": "SWPC regional forecast as displayed by SolarMonitor",
+          "quality": "published-comparison"
+        }
+      }
     }
   ],
+  "solar_monitor": {
+    "source": "SolarMonitor",
+    "source_url": "https://www.solarmonitor.org/forecast.php?date=20260902",
+    "retrieved_at": "2026-09-02T00:17:35Z",
+    "valid_start": "2026-09-02T00:00:00Z",
+    "valid_end": "2026-09-03T00:00:00Z",
+    "regional_forecasts": 5,
+    "full_disk_method": "maximum regional probability (dominant-region proxy)",
+    "note": "Regional MCSTAT/MCEVOL values are reproduced from SolarMonitor. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. Missing values remain missing."
+  },
   "wxf_full_disk": {
     "method": "maximum regional probability (dominant-region proxy)",
-    "regional_forecasts": 3,
+    "regional_forecasts": 2,
     "note": "Interim full-disk display proxy. It avoids an inflated independence-union calculation but is not a separately trained or calibrated full-disk model."
   },
-  "generation_status": {
-    "ok": false,
-    "used_previous_forecast": true,
-    "previous_issued": "2026-08-31T21:00:00Z",
-    "attempts": 3,
-    "exit_code": 2,
-    "checked_at": "2026-09-01T23:23:51Z",
-    "detail": "JSOC/SHARP retrieval failed after three attempts. The prior WXF magnetic probability was retained transparently while all independent forecast sources were refreshed."
-  },
   "external_sources": {
-    "generated_at": "2026-09-01T23:23:53Z",
+    "generated_at": "2026-09-02T00:17:35Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
@@ -509,18 +565,18 @@
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 99,
-      "issued": "2026-09-01T23:00:00Z",
-      "valid_start": "2026-09-01T23:00:00Z",
-      "valid_end": "2026-09-02T23:00:00Z",
+      "records": 100,
+      "issued": "2026-09-02T00:00:00Z",
+      "valid_start": "2026-09-02T00:00:00Z",
+      "valid_end": "2026-09-03T00:00:00Z",
       "m1": null,
       "x1": 0.0,
       "selected_record": {
-        "start_window": "2026-09-01T23:00:00.0Z",
-        "end_window": "2026-09-02T23:00:00.0Z",
-        "issue_time": "2026-09-01T23:00:00.0Z",
-        "C": 0.4816,
-        "M": 0.0975,
+        "start_window": "2026-09-02T00:00:00.0Z",
+        "end_window": "2026-09-03T00:00:00.0Z",
+        "issue_time": "2026-09-02T00:00:00.0Z",
+        "C": 0.5376,
+        "M": 0.1536,
         "CPlus": "-1",
         "MPlus": "-1",
         "X": 0,
@@ -586,18 +642,18 @@
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 99,
-      "issued": "2026-09-01T23:00:00Z",
-      "valid_start": "2026-09-01T23:00:00Z",
-      "valid_end": "2026-09-02T11:00:00Z",
+      "records": 100,
+      "issued": "2026-09-02T00:00:00Z",
+      "valid_start": "2026-09-02T00:00:00Z",
+      "valid_end": "2026-09-02T12:00:00Z",
       "m1": null,
       "x1": 0.0,
       "selected_record": {
-        "start_window": "2026-09-01T23:00:00.0Z",
-        "end_window": "2026-09-02T11:00:00.0Z",
-        "issue_time": "2026-09-01T23:00:00.0Z",
-        "C": 0.28,
-        "M": 0.05,
+        "start_window": "2026-09-02T00:00:00.0Z",
+        "end_window": "2026-09-02T12:00:00.0Z",
+        "issue_time": "2026-09-02T00:00:00.0Z",
+        "C": 0.32,
+        "M": 0.08,
         "CPlus": "-1",
         "MPlus": "-1",
         "X": 0,

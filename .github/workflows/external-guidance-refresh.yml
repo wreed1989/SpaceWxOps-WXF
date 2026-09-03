@@ -49,7 +49,7 @@ jobs:
         run: python -m pip install requests==2.32.4
 
       - name: Test provider transition auditing
-        run: python -m unittest -v test_external_source_audit.py test_publication_guard.py
+        run: python -m unittest -v test_solar_monitor_guidance.py test_external_flare_guidance_strict_v4.py test_external_source_audit.py test_publication_guard.py
 
       - name: Refresh current SolarMonitor guidance when available
         shell: bash
@@ -95,10 +95,17 @@ jobs:
           UTC = dt.timezone.utc
           payload = json.loads(Path("flare_guidance.json").read_text(encoding="utf-8"))
           audit = json.loads(Path("external_source_audit.json").read_text(encoding="utf-8"))
+          issued = dt.datetime.fromisoformat(payload["issued"].replace("Z", "+00:00"))
           valid_start = dt.datetime.fromisoformat(payload["valid_start"].replace("Z", "+00:00"))
           valid_end = dt.datetime.fromisoformat(payload["valid_end"].replace("Z", "+00:00"))
           now = dt.datetime.now(tz=UTC)
-          assert valid_start <= now <= valid_end, (now, valid_start, valid_end)
+          # The formal 21Z product forecasts the following UTC day, so a
+          # successful refresh normally occurs *before* valid_start.  Validate
+          # issue chronology and freshness instead of requiring wall-clock time
+          # to be inside the future target window.
+          assert issued <= valid_start < valid_end, (issued, valid_start, valid_end)
+          assert issued <= now <= valid_end, (issued, now, valid_end)
+          assert now - issued <= dt.timedelta(hours=27), (issued, now)
           full = next(row for row in payload["regions"] if row.get("id") == "full-disk")
           assert isinstance(full.get("members", {}).get("sharpmag"), dict), "WXF member missing"
           assert audit.get("schema_version") == 1

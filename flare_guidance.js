@@ -84,7 +84,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "component_id": "HARP13922",
       "m1": 0.03985878726916839,
-      "x1": 0.025812276954225215
+      "x1": 0.025812276954225263
     },
     {
       "component_id": "HARP13939",
@@ -497,7 +497,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20260903&region=&indexnum=1",
-    "retrieved_at": "2026-09-03T22:00:16Z",
+    "retrieved_at": "2026-09-03T22:02:01Z",
     "table_date": "2026-09-03",
     "valid_start": "2026-09-03T00:00:00Z",
     "valid_end": "2026-09-04T00:00:00Z",
@@ -509,7 +509,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-09-03T22:00:16Z",
+    "generated_at": "2026-09-03T22:02:01Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,

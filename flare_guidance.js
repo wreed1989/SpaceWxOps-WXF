@@ -60,15 +60,9 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     }
   },
   "wxf_full_disk": {
-    "method": "union_of_unique_region_components",
-    "formula": "1 - product(1 - regional probability)",
-    "components": 5,
-    "numbered_regions": 7,
-    "sharp_regions": 5,
-    "shared_harp_region_values": 4,
-    "fallback_regions": 2,
-    "unnumbered_or_farside_residual": false,
-    "note": "Coverage aggregate, not a separately trained full-disk classifier. Shared HARP probabilities are included once."
+    "method": "maximum regional probability (dominant-region proxy)",
+    "regional_forecasts": 7,
+    "note": "Interim full-disk display proxy. It avoids an inflated independence-union calculation but is not a separately trained or calibrated full-disk model."
   },
   "regions": [
     {
@@ -87,11 +81,10 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "members": {
         "sharpmag": {
-          "m1": 8.2,
-          "x1": 0.4,
-          "source": "WXF sharp-mag-20260903-xstruct-history-v3 regional combination",
-          "quality": "research",
-          "method": "regional_union_with_explicit_fallbacks"
+          "m1": 3.7,
+          "x1": 0.2,
+          "source": "WXF dominant-region proxy (maximum of 7 quality-controlled regional forecasts)",
+          "quality": "research-dominant-region-proxy"
         },
         "swpc": {
           "m1": 15.0,
@@ -470,7 +463,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20260903&region=&indexnum=1",
-    "retrieved_at": "2026-09-03T21:45:34Z",
+    "retrieved_at": "2026-09-03T21:54:18Z",
     "table_date": "2026-09-03",
     "valid_start": "2026-09-03T00:00:00Z",
     "valid_end": "2026-09-04T00:00:00Z",
@@ -482,7 +475,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-09-03T21:45:34Z",
+    "generated_at": "2026-09-03T21:54:19Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,

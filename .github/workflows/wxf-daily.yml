@@ -342,7 +342,7 @@ jobs:
           issued = payload["issued"]
           history = Path("forecast_history.jsonl")
           lines = [line for line in history.read_text(encoding="utf-8").splitlines() if line.strip()] if history.exists() else []
-          replacment = json.dumps(payload, separators=(",", ":"))
+          replacement = json.dumps(payload, separators=(",", ":"))
           output = []
           replaced = False
 

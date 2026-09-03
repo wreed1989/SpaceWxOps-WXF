@@ -1,0 +1,43 @@
+{
+  "comparators": [
+    "climatology",
+    "persistence",
+    "MCSTAT",
+    "MCEVOL",
+    "SWPC",
+    "FLARECAST when matched"
+  ],
+  "hard_rules": [
+    "No row-random split.",
+    "All observations from one region passage stay in one fold.",
+    "Every feature timestamp must precede issue time.",
+    "Thresholds and calibration are selected without using the final cycle-25 test.",
+    "Report every score separately by cycle and instrument before any pooled score."
+  ],
+  "primary_split": {
+    "calibration_threshold_selection": "cycle 24",
+    "development": "cycles 21-23",
+    "untouched_final_test": "cycle 25-to-date"
+  },
+  "required_metrics": [
+    "Brier score",
+    "Brier skill",
+    "log loss",
+    "reliability/ECE",
+    "PR-AUC",
+    "ROC-AUC",
+    "TSS",
+    "HSS",
+    "POD",
+    "FAR"
+  ],
+  "required_secondary_tests": [
+    "leave-one-instrument-out transfer test",
+    "overlap-era paired-instrument residual test",
+    "active-region-grouped bootstrap confidence intervals",
+    "event-episode-grouped bootstrap confidence intervals",
+    "disk-center versus limb reliability",
+    "solar-maximum versus solar-minimum reliability"
+  ],
+  "schema_version": "1.0"
+}

@@ -1,15 +1,15 @@
 {
-  "schema_version": "4.1",
-  "script_version": "1.3.0",
-  "model_version": "sharp-mag-20260822-hierx1",
+  "schema_version": "5.0",
+  "script_version": "2.0.0",
+  "model_version": "sharp-mag-20260903-xstruct-history-v3",
   "research_only": true,
-  "training_started": "2026-08-22T17:24:58Z",
-  "training_finished": "2026-08-22T17:24:59Z",
-  "dataset": "/Users/Billiam/Downloads/SpaceWxOps_SHARPMAG_Mac_Jupyter/sharp-mag-work/sharp_mag_training_table.csv.gz",
-  "dataset_sha256": "0f781fe6ce73821402f3e92edfbf70b17a12e83676afa6ef476135e57d393ee2",
-  "samples": 7145,
+  "training_started": "2026-09-03T21:45:21Z",
+  "training_finished": "2026-09-03T21:45:23Z",
+  "dataset": "sharp_mag_training_table_v2.csv.gz",
+  "dataset_sha256": "12a0f1d5ba245d392c2eb3bcbed41a530b6205b4b20705d534319db1fd20f683",
+  "samples": 7706,
   "date_start": "2012-10-01T21:00:00Z",
-  "date_end": "2026-08-20T21:00:00Z",
+  "date_end": "2026-09-02T21:00:00Z",
   "features": [
     "USFLUX__LOG1P",
     "USFLUX__DELTA24H",
@@ -48,162 +48,259 @@
     "ABSNJZH__LOG1P",
     "ABSNJZH__DELTA24H",
     "ABS_LON_FWT",
-    "LAT_FWT_VALUE"
+    "LAT_FWT_VALUE",
+    "PRIOR_M1_COUNT_24H__LOG1P",
+    "PRIOR_M1_COUNT_7D__LOG1P",
+    "PRIOR_M1_COUNT_30D__LOG1P",
+    "PRIOR_X1_COUNT_7D__LOG1P",
+    "PRIOR_X1_COUNT_30D__LOG1P",
+    "HOURS_SINCE_M1__LOG1P",
+    "HOURS_SINCE_X1__LOG1P"
   ],
   "M1+": {
-    "samples": 1319,
-    "positives": 32,
-    "prevalence": 0.024260803639120546,
-    "brier_score": 0.02053212395631193,
-    "brier_skill_vs_training_climatology": 0.13267011793530215,
-    "log_loss": 0.08021545614686584,
-    "roc_auc": 0.9130730380730381,
-    "precision_recall_auc": 0.2967516751345902,
+    "samples": 1467,
+    "positives": 41,
+    "prevalence": 0.02794819359236537,
+    "brier_score": 0.0183339122594087,
+    "brier_skill_vs_training_climatology": 0.32547431762527823,
+    "log_loss": 0.07272560272174487,
+    "roc_auc": 0.9381691923511101,
+    "precision_recall_auc": 0.5154672200698092,
     "reliability": [
       {
-        "mean_forecast": 4.1808306902938215e-07,
+        "mean_forecast": 0.00010605344176723255,
         "observed_frequency": 0.0,
-        "count": 132
+        "count": 147
       },
       {
-        "mean_forecast": 4.294513504695872e-06,
+        "mean_forecast": 0.0004536289243020666,
         "observed_frequency": 0.0,
-        "count": 132
+        "count": 147
       },
       {
-        "mean_forecast": 2.3504728798536044e-05,
+        "mean_forecast": 0.001182151478311817,
         "observed_frequency": 0.0,
-        "count": 132
+        "count": 146
       },
       {
-        "mean_forecast": 0.00012598204837918162,
+        "mean_forecast": 0.0023867935751318513,
         "observed_frequency": 0.0,
-        "count": 132
+        "count": 147
       },
       {
-        "mean_forecast": 0.0004991336250584245,
+        "mean_forecast": 0.004471921635851622,
         "observed_frequency": 0.0,
-        "count": 131
+        "count": 146
       },
       {
-        "mean_forecast": 0.0018319314721420355,
-        "observed_frequency": 0.015267175572519083,
-        "count": 132
+        "mean_forecast": 0.008067365600929422,
+        "observed_frequency": 0.00684931506849315,
+        "count": 147
       },
       {
-        "mean_forecast": 0.0054636125017654535,
-        "observed_frequency": 0.007575757575757576,
-        "count": 132
+        "mean_forecast": 0.01425876540347323,
+        "observed_frequency": 0.006802721088435374,
+        "count": 147
       },
       {
-        "mean_forecast": 0.016501126248212573,
-        "observed_frequency": 0.007575757575757576,
-        "count": 132
+        "mean_forecast": 0.024552659320832858,
+        "observed_frequency": 0.00684931506849315,
+        "count": 146
       },
       {
-        "mean_forecast": 0.04684486123912024,
-        "observed_frequency": 0.03787878787878788,
-        "count": 132
+        "mean_forecast": 0.04445741408579982,
+        "observed_frequency": 0.047619047619047616,
+        "count": 147
       },
       {
-        "mean_forecast": 0.22583796665440684,
-        "observed_frequency": 0.17424242424242425,
-        "count": 132
+        "mean_forecast": 0.21683862679598623,
+        "observed_frequency": 0.2108843537414966,
+        "count": 147
       }
     ],
-    "train_samples": 4516,
-    "train_positives": 113,
-    "calibration_samples": 1278,
-    "calibration_positives": 74,
+    "active_region_bootstrap_brier_skill_95": {
+      "draws": 500,
+      "groups": 340,
+      "lower": 0.17239439452978766,
+      "median": 0.3216593189780119,
+      "upper": 0.4357716753768477
+    },
+    "train_samples": 4778,
+    "train_positives": 151,
+    "calibration_samples": 1404,
+    "calibration_positives": 90,
     "calibrator": "Platt/logistic",
-    "test_start": "2025-02-05T21:00:00Z",
-    "test_end": "2026-08-20T21:00:00Z"
+    "test_start": "2025-02-08T21:00:00Z",
+    "test_end": "2026-09-02T21:00:00Z"
   },
   "X1+": {
-    "samples": 1319,
-    "positives": 3,
-    "prevalence": 0.002274450341167551,
-    "brier_score": 0.0022244953494326685,
-    "brier_skill_vs_training_climatology": 0.020322202276752965,
-    "log_loss": 0.012093365777490943,
-    "roc_auc": 0.9318642350557244,
-    "precision_recall_auc": 0.05272633466466065,
+    "samples": 1467,
+    "positives": 6,
+    "prevalence": 0.00408997955010225,
+    "brier_score": 0.003770443017940391,
+    "brier_skill_vs_training_climatology": 0.07616264670603534,
+    "log_loss": 0.018798940102003215,
+    "roc_auc": 0.9398813597992243,
+    "precision_recall_auc": 0.2515908205207391,
     "reliability": [
       {
-        "mean_forecast": 2.335038417451336e-08,
+        "mean_forecast": 0.00010605344176723255,
         "observed_frequency": 0.0,
-        "count": 132
+        "count": 147
       },
       {
-        "mean_forecast": 2.398531478686524e-07,
+        "mean_forecast": 0.0003818757598391435,
         "observed_frequency": 0.0,
-        "count": 132
+        "count": 147
       },
       {
-        "mean_forecast": 1.3127641084288744e-06,
+        "mean_forecast": 0.0006103345520023047,
         "observed_frequency": 0.0,
-        "count": 132
+        "count": 146
       },
       {
-        "mean_forecast": 7.036231425433021e-06,
+        "mean_forecast": 0.0009072045325873146,
         "observed_frequency": 0.0,
-        "count": 132
+        "count": 147
       },
       {
-        "mean_forecast": 2.787714395273114e-05,
+        "mean_forecast": 0.001191373053290079,
         "observed_frequency": 0.0,
-        "count": 131
+        "count": 146
       },
       {
-        "mean_forecast": 0.0001023153215824009,
+        "mean_forecast": 0.0014681710666947952,
         "observed_frequency": 0.0,
-        "count": 132
+        "count": 147
       },
       {
-        "mean_forecast": 0.0003051485705773259,
+        "mean_forecast": 0.001826511989354431,
         "observed_frequency": 0.0,
-        "count": 132
+        "count": 147
       },
       {
-        "mean_forecast": 0.0009216054553522979,
+        "mean_forecast": 0.0023580878132969767,
+        "observed_frequency": 0.00684931506849315,
+        "count": 146
+      },
+      {
+        "mean_forecast": 0.003187026577543161,
         "observed_frequency": 0.0,
-        "count": 132
+        "count": 147
       },
       {
-        "mean_forecast": 0.002616335335163631,
-        "observed_frequency": 0.007575757575757576,
-        "count": 132
-      },
-      {
-        "mean_forecast": 0.012613290690804633,
-        "observed_frequency": 0.015151515151515152,
-        "count": 132
+        "mean_forecast": 0.013683499033060723,
+        "observed_frequency": 0.034013605442176874,
+        "count": 147
       }
     ],
-    "method": "hierarchical_x_given_m",
-    "description": "Calibrated SHARP M1+ probability multiplied by a Beta-binomial-smoothed P(X1+ | M1+) severity rate.",
-    "train_samples": 4516,
-    "train_x1_positives": 5,
-    "calibration_samples": 1278,
-    "calibration_x1_positives": 5,
-    "test_x1_positives": 3,
+    "active_region_bootstrap_brier_skill_95": {
+      "draws": 500,
+      "groups": 340,
+      "lower": -0.057790219588312174,
+      "median": 0.0685065922585904,
+      "upper": 0.16102203281605187
+    },
+    "method": "direct_magnetic_x1",
+    "description": "Strongly regularized direct X1+ classifier over magnetic state, 24-hour evolution, disk position, and causal regional flare history; calibrated separately and constrained to P(X1+) <= P(M1+).",
+    "train_samples": 4778,
+    "train_x1_positives": 6,
+    "calibration_samples": 1404,
+    "calibration_x1_positives": 7,
+    "test_x1_positives": 6,
+    "x1_c": 0.1,
+    "calibrator": "Platt/logistic",
+    "constant_severity_reference": {
+      "samples": 1467,
+      "positives": 6,
+      "prevalence": 0.00408997955010225,
+      "brier_score": 0.0038710309311303986,
+      "brier_skill_vs_training_climatology": 0.05151650537657926,
+      "log_loss": 0.017416126070927528,
+      "roc_auc": 0.9792379648642482,
+      "precision_recall_auc": 0.41287495010899267,
+      "reliability": [
+        {
+          "mean_forecast": 5.916204396105947e-06,
+          "observed_frequency": 0.0,
+          "count": 147
+        },
+        {
+          "mean_forecast": 2.5305745777181403e-05,
+          "observed_frequency": 0.0,
+          "count": 147
+        },
+        {
+          "mean_forecast": 6.594646676532861e-05,
+          "observed_frequency": 0.0,
+          "count": 146
+        },
+        {
+          "mean_forecast": 0.00013314757547223144,
+          "observed_frequency": 0.0,
+          "count": 147
+        },
+        {
+          "mean_forecast": 0.0002494667028264335,
+          "observed_frequency": 0.0,
+          "count": 146
+        },
+        {
+          "mean_forecast": 0.00045003899013449294,
+          "observed_frequency": 0.0,
+          "count": 147
+        },
+        {
+          "mean_forecast": 0.0007954269956483004,
+          "observed_frequency": 0.0,
+          "count": 147
+        },
+        {
+          "mean_forecast": 0.0013696731439307574,
+          "observed_frequency": 0.0,
+          "count": 146
+        },
+        {
+          "mean_forecast": 0.002480062356026022,
+          "observed_frequency": 0.0,
+          "count": 147
+        },
+        {
+          "mean_forecast": 0.01209636967663559,
+          "observed_frequency": 0.04081632653061224,
+          "count": 147
+        }
+      ],
+      "active_region_bootstrap_brier_skill_95": {
+        "draws": 500,
+        "groups": 340,
+        "lower": -0.017711935128921136,
+        "median": 0.04921318773317962,
+        "upper": 0.08548802656719025
+      }
+    },
     "development_conditional_x_given_m": {
-      "successes": 10,
-      "trials": 187,
+      "successes": 13,
+      "trials": 241,
       "prior_alpha": 0.5,
       "prior_beta": 0.5,
-      "posterior_alpha": 10.5,
-      "posterior_beta": 177.5,
-      "posterior_mean": 0.05585106382978723,
-      "approx_95_lower": 0.02311238509257369,
-      "approx_95_upper": 0.08858974256700078
+      "posterior_alpha": 13.5,
+      "posterior_beta": 228.5,
+      "posterior_mean": 0.05578512396694215,
+      "approx_95_lower": 0.02692836479352161,
+      "approx_95_upper": 0.0846418831403627
     },
-    "test_start": "2025-02-05T21:00:00Z",
-    "test_end": "2026-08-20T21:00:00Z"
+    "brier_improvement_vs_constant_severity": 0.025984786734998933,
+    "test_start": "2025-02-08T21:00:00Z",
+    "test_end": "2026-09-02T21:00:00Z"
   },
   "prediction_methods": {
     "M1+": "regularized logistic SHARP classifier with probability calibration",
-    "X1+": "hierarchical P(M1+) \u00d7 Beta-binomial-smoothed P(X1+ | M1+)"
+    "X1+": "strongly regularized direct magnetic/history X1+ classifier with independent calibration and P(X1+) <= P(M1+) constraint"
   },
-  "validation_note": "M1+ scores use a chronologically later untouched holdout block. The production M1+ classifier is refit to all rows and calibrated from out-of-fold predictions grouped by NOAA active region. X1+ holdout probabilities use only the development-period X/M severity ratio and the held-out M1+ probabilities."
+  "artifacts": {
+    "coefficients": "sharp_mag_coefficients.csv",
+    "coefficients_sha256": "d9a9ca712d16c0f6aaf79409ad8990727d6bcb010da28ac17af7fad0200e9287"
+  },
+  "validation_note": "M1+ scores use a chronologically later untouched holdout block. The production M1+ classifier is refit to all rows and calibrated from out-of-fold predictions grouped by NOAA active region. X1+ holdout probabilities use a separately fitted direct magnetic/history stage; the constant X/M ratio is retained only as a scored reference."
 }

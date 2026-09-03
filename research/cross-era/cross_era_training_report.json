@@ -1,0 +1,406 @@
+{
+  "M1+": {
+    "brier_score": 0.03734484043769904,
+    "brier_skill_ci": [
+      0.22654967846684396,
+      0.340697039315081
+    ],
+    "brier_skill_vs_cycle24_climatology": 0.2815935786784286,
+    "calibration_threshold": {
+      "far": 0.7863835103060587,
+      "fn": 68,
+      "fp": 1259,
+      "hss": 0.30319455548612606,
+      "pod": 0.8341463414634146,
+      "threshold": 0.049296835290804975,
+      "tn": 10647,
+      "tp": 342,
+      "tss": 0.7284013389436766
+    },
+    "expected_calibration_error": 0.004416211818355863,
+    "far": 0.7764434180138569,
+    "fn": 83,
+    "fp": 1681,
+    "hss": 0.2932691763339021,
+    "log_loss": 0.13308320118373157,
+    "pod": 0.8536155202821869,
+    "positives": 567,
+    "precision_recall_auc": 0.4906697274160133,
+    "prevalence": 0.054503508603287516,
+    "reliability": [
+      {
+        "count": 1041,
+        "mean_forecast": 0.00032760959752232765,
+        "observed_frequency": 0.0
+      },
+      {
+        "count": 1041,
+        "mean_forecast": 0.000988844129233535,
+        "observed_frequency": 0.0
+      },
+      {
+        "count": 1041,
+        "mean_forecast": 0.00211848778644077,
+        "observed_frequency": 0.0019212295869356388
+      },
+      {
+        "count": 1040,
+        "mean_forecast": 0.0038581239335718134,
+        "observed_frequency": 0.0028846153846153848
+      },
+      {
+        "count": 1040,
+        "mean_forecast": 0.006365969298605768,
+        "observed_frequency": 0.0057692307692307696
+      },
+      {
+        "count": 1040,
+        "mean_forecast": 0.010677852214262859,
+        "observed_frequency": 0.011538461538461539
+      },
+      {
+        "count": 1040,
+        "mean_forecast": 0.019114379123386094,
+        "observed_frequency": 0.025961538461538463
+      },
+      {
+        "count": 1040,
+        "mean_forecast": 0.036803793585680915,
+        "observed_frequency": 0.038461538461538464
+      },
+      {
+        "count": 1040,
+        "mean_forecast": 0.08121965774890685,
+        "observed_frequency": 0.09134615384615384
+      },
+      {
+        "count": 1040,
+        "mean_forecast": 0.3889051254315191,
+        "observed_frequency": 0.36730769230769234
+      }
+    ],
+    "roc_auc": 0.9204617096036373,
+    "samples": 10403,
+    "threshold": 0.049296835290804975,
+    "tn": 8155,
+    "tp": 484,
+    "tss": 0.6827127142634801
+  },
+  "X1+": {
+    "brier_score": 0.004808018167224536,
+    "brier_skill_ci": [
+      -0.18127186705796056,
+      0.1445793585929924
+    ],
+    "brier_skill_vs_cycle24_climatology": 0.014828943264900696,
+    "calibration_threshold": {
+      "far": 0.9334415584415584,
+      "fn": 2,
+      "fp": 575,
+      "hss": 0.11867843162350551,
+      "pod": 0.9534883720930233,
+      "threshold": 0.008216013051969997,
+      "tn": 11698,
+      "tp": 41,
+      "tss": 0.9066375613702986
+    },
+    "expected_calibration_error": 0.002937580064130114,
+    "far": 0.9584569732937686,
+    "fn": 9,
+    "fp": 969,
+    "hss": 0.0704193309300143,
+    "log_loss": 0.021162350618034394,
+    "pod": 0.8235294117647058,
+    "positives": 51,
+    "precision_recall_auc": 0.13454961265879814,
+    "prevalence": 0.004902431990771893,
+    "reliability": [
+      {
+        "count": 1041,
+        "mean_forecast": 1.6820051363331012e-06,
+        "observed_frequency": 0.0
+      },
+      {
+        "count": 1041,
+        "mean_forecast": 7.4732649173293906e-06,
+        "observed_frequency": 0.0
+      },
+      {
+        "count": 1041,
+        "mean_forecast": 2.063696107001122e-05,
+        "observed_frequency": 0.0
+      },
+      {
+        "count": 1040,
+        "mean_forecast": 4.5991560825712646e-05,
+        "observed_frequency": 0.0
+      },
+      {
+        "count": 1040,
+        "mean_forecast": 9.100434257016516e-05,
+        "observed_frequency": 0.0
+      },
+      {
+        "count": 1040,
+        "mean_forecast": 0.00018206245030414332,
+        "observed_frequency": 0.0009615384615384616
+      },
+      {
+        "count": 1040,
+        "mean_forecast": 0.00040897529235485274,
+        "observed_frequency": 0.0
+      },
+      {
+        "count": 1040,
+        "mean_forecast": 0.001106726253627866,
+        "observed_frequency": 0.0
+      },
+      {
+        "count": 1040,
+        "mean_forecast": 0.00390684759331897,
+        "observed_frequency": 0.007692307692307693
+      },
+      {
+        "count": 1040,
+        "mean_forecast": 0.06352143537746166,
+        "observed_frequency": 0.04038461538461539
+      }
+    ],
+    "roc_auc": 0.9541549231748341,
+    "samples": 10403,
+    "threshold": 0.008216013051969997,
+    "tn": 9383,
+    "tp": 42,
+    "tss": 0.7299243113010273
+  },
+  "case_audit": {
+    "active_regions": 4527,
+    "cases": 40637,
+    "date_end": "2026-01-01",
+    "date_start": "1996-05-06",
+    "feature_count": 29,
+    "splits": {
+      "calibration_cycle24": {
+        "cases": 12316,
+        "instrument_rows": {
+          "hmi": 11960,
+          "mdi": 356
+        },
+        "m1_events": 727,
+        "m1_positive_region_days": 410,
+        "regions": 1363,
+        "x1_events": 47,
+        "x1_positive_region_days": 43
+      },
+      "development_cycle23": {
+        "cases": 17918,
+        "instrument_rows": {
+          "mdi": 17918
+        },
+        "m1_events": 1393,
+        "m1_positive_region_days": 875,
+        "regions": 2079,
+        "x1_events": 129,
+        "x1_positive_region_days": 111
+      },
+      "test_cycle25": {
+        "cases": 10403,
+        "instrument_rows": {
+          "hmi": 10403
+        },
+        "m1_events": 1101,
+        "m1_positive_region_days": 567,
+        "regions": 1086,
+        "x1_events": 57,
+        "x1_positive_region_days": 51
+      }
+    }
+  },
+  "cycle24_calibration_climatology": {
+    "M1+": 0.033290029230269566,
+    "X1+": 0.0034913933095160766
+  },
+  "feature_names": [
+    "USFLUXL_SLOG",
+    "R_VALUE_SLOG",
+    "MEANGBL_GMM_SLOG",
+    "MEANGBZ_SLOG",
+    "USFLUXZ_SLOG",
+    "CMASKL_SLOG",
+    "LAT_FWT_VALUE",
+    "ABS_LON_FWT",
+    "USFLUXL_SLOG_DELTA24H",
+    "R_VALUE_SLOG_DELTA24H",
+    "MEANGBL_GMM_SLOG_DELTA24H",
+    "MEANGBZ_SLOG_DELTA24H",
+    "USFLUXZ_SLOG_DELTA24H",
+    "CMASKL_SLOG_DELTA24H",
+    "LAT_FWT_VALUE_DELTA24H",
+    "prior_C_1d",
+    "prior_M_1d",
+    "prior_X_1d",
+    "days_since_m1plus",
+    "MEANGBL_GMM_SLOG_MISSING",
+    "MEANGBZ_SLOG_MISSING",
+    "USFLUXL_SLOG_DELTA24H_MISSING",
+    "R_VALUE_SLOG_DELTA24H_MISSING",
+    "MEANGBL_GMM_SLOG_DELTA24H_MISSING",
+    "MEANGBZ_SLOG_DELTA24H_MISSING",
+    "USFLUXZ_SLOG_DELTA24H_MISSING",
+    "CMASKL_SLOG_DELTA24H_MISSING",
+    "LAT_FWT_VALUE_DELTA24H_MISSING",
+    "days_since_m1plus_MISSING"
+  ],
+  "forecast_probabilities_changed": false,
+  "generated_utc": "2026-09-03T20:32:26.329939+00:00",
+  "goes_audit": {
+    "class_counts": {
+      "A": 14,
+      "B": 29596,
+      "C": 45742,
+      "M": 5679,
+      "X": 366
+    },
+    "date_end": "2026-09-02 19:20:00",
+    "date_start": "1995-01-03 00:14:00",
+    "events": 81397,
+    "files": 32,
+    "region_attributed_class_counts": {
+      "B": 7229,
+      "C": 24793,
+      "M": 4551,
+      "X": 336
+    },
+    "region_attributed_events": 36909
+  },
+  "limitations": [
+    "Cycle and instrument are partly confounded: development is dominated by MDI and final testing by HMI.",
+    "Only GOES events carrying an active-region identifier can become regional positive labels.",
+    "Daily aggregation is a retrospective baseline, not a replacement for issue-time 6/12-hour sequences.",
+    "No matched historical SWPC probability table is available for this full interval.",
+    "GONG/KPVT overlap calibration and a prospective shadow period remain outstanding."
+  ],
+  "model_version": "wxf-cross-era-smarp-sharp-daily-v1",
+  "operational": false,
+  "research_only": true,
+  "schema_version": "1.0",
+  "source_audit": {
+    "bytes": 1237472995,
+    "daily_instrument_region_records_before_priority": 40638,
+    "date_end": "2026-01-04",
+    "date_start": "1996-04-23",
+    "file": "merged_smarp_sharp_v3c_19960423_20260106.csv",
+    "limb_filter": "abs(LON_FWT) <= 65 degrees",
+    "missing_by_instrument": {
+      "hmi": {
+        "CMASKL": 0,
+        "LAT_FWT": 0,
+        "LON_FWT": 0,
+        "MEANGBL_GMM": 0,
+        "MEANGBZ": 0,
+        "R_VALUE": 2233,
+        "USFLUXL": 0,
+        "USFLUXZ": 0
+      },
+      "mdi": {
+        "CMASKL": 0,
+        "LAT_FWT": 0,
+        "LON_FWT": 0,
+        "MEANGBL_GMM": 5595,
+        "MEANGBZ": 5595,
+        "R_VALUE": 0,
+        "USFLUXL": 0,
+        "USFLUXZ": 0
+      }
+    },
+    "noaa_attributed_rows_by_instrument": {
+      "hmi": 2235351,
+      "mdi": 231714
+    },
+    "overlap_region_days": 1,
+    "rows": 4653499,
+    "rows_by_instrument": {
+      "hmi": 4277878,
+      "mdi": 375621
+    },
+    "selected_region_days": 40637,
+    "selection_rule": "HMI preferred where HMI and MDI share the same NOAA-region/day; otherwise retain MDI",
+    "sha256": "2f15d72a14ea5bc2e487697cd8e8ee086115834970cb809b71088b52ecf87e99",
+    "top_quality_values_by_instrument": {
+      "hmi": [
+        [
+          0,
+          4065576
+        ],
+        [
+          128,
+          162177
+        ],
+        [
+          4096,
+          30847
+        ],
+        [
+          1024,
+          11475
+        ],
+        [
+          32,
+          5463
+        ],
+        [
+          4224,
+          1625
+        ],
+        [
+          8192,
+          255
+        ],
+        [
+          1152,
+          200
+        ]
+      ],
+      "mdi": [
+        [
+          512,
+          337939
+        ],
+        [
+          0,
+          25968
+        ],
+        [
+          513,
+          2812
+        ],
+        [
+          640,
+          2390
+        ],
+        [
+          1536,
+          1642
+        ],
+        [
+          517,
+          1099
+        ],
+        [
+          540,
+          962
+        ],
+        [
+          131597,
+          519
+        ]
+      ]
+    },
+    "unique_patches_by_instrument": {
+      "hmi": 7507,
+      "mdi": 5864
+    }
+  },
+  "split_definition": "cycle 23 development (through 2008); cycle 24 calibration/threshold selection (2009-2019); cycle 25-to-date untouched test (2020-2026-01-05)",
+  "target_definition": "Features from calendar day D; at least one region-attributed NOAA/NCEI GOES M1+/X1+ flare on D+1"
+}

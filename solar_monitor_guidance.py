@@ -151,6 +151,14 @@ def _table_score(table: list[list[str]]) -> int:
 
 
 def parse_solar_monitor_html(document: str) -> list[dict[str, Any]]:
+    if re.search(
+        r"Active\s+Regions\s*(?:<[^>]+>\s*)*No\s+Data",
+        document,
+        flags=re.IGNORECASE,
+    ):
+        raise SolarMonitorError(
+            "SolarMonitor explicitly reports no active-region table for the requested date"
+        )
     parser = _TableParser()
     parser.feed(document)
     if not parser.tables:
@@ -272,9 +280,12 @@ def parse_iso_time(value: Any) -> dt.datetime:
     return parsed.astimezone(UTC)
 
 
-def solar_monitor_url(valid_start: dt.datetime, base_url: str = DEFAULT_BASE_URL) -> str:
+def solar_monitor_url(table_time: dt.datetime, base_url: str = DEFAULT_BASE_URL) -> str:
     separator = "&" if "?" in base_url else "?"
-    return f"{base_url}{separator}date={valid_start:%Y%m%d}"
+    return (
+        f"{base_url}{separator}date={table_time:%Y%m%d}"
+        "&region=&indexnum=1"
+    )
 
 
 def fetch_solar_monitor(url: str, timeout: float = 60.0) -> tuple[str, str]:
@@ -320,6 +331,7 @@ def enrich_payload(
     solar_regions: list[dict[str, Any]],
     *,
     source_url: str,
+    table_date: dt.date | None = None,
     fetched_at: dt.datetime | None = None,
 ) -> dict[str, Any]:
     fetched_at = fetched_at or dt.datetime.now(tz=UTC)
@@ -379,7 +391,10 @@ def enrich_payload(
             members["mcevol"] = mcevol_member
         else:
             members.pop("mcevol", None)
-        if swpc_member:
+        # The direct NOAA/SWPC products in the base WXF payload are authoritative.
+        # SolarMonitor's displayed SWPC copy is used only when no direct regional
+        # member was available.
+        if swpc_member and "swpc" not in members:
             members["swpc"] = swpc_member
 
         regional_mcstat_m.append(mcstat_m)
@@ -403,20 +418,28 @@ def enrich_payload(
     if full_mcevol:
         full_disk["members"]["mcevol"] = full_mcevol
 
-    valid_start = parse_iso_time(payload.get("valid_start"))
+    issued = parse_iso_time(payload.get("issued") or payload.get("valid_start"))
+    selected_date = table_date or issued.date()
+    solar_valid_start = dt.datetime.combine(selected_date, dt.time.min, tzinfo=UTC)
+    solar_valid_end = solar_valid_start + dt.timedelta(days=1)
     payload["solar_monitor"] = {
         "source": "SolarMonitor",
         "source_url": source_url,
         "retrieved_at": iso_z(fetched_at),
-        "valid_start": iso_z(valid_start),
-        "valid_end": payload.get("valid_end"),
+        "table_date": selected_date.isoformat(),
+        "valid_start": iso_z(solar_valid_start),
+        "valid_end": iso_z(solar_valid_end),
+        "wxf_valid_start": payload.get("valid_start"),
+        "wxf_valid_end": payload.get("valid_end"),
+        "window_alignment": "latest issue-date comparison; not asserted as an exact WXF target-window match",
         "regional_forecasts": len(solar_regions),
         "full_disk_method": "maximum regional probability (dominant-region proxy)",
         "note": (
-            "Regional MCSTAT/MCEVOL values are reproduced from SolarMonitor. "
+            "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. "
             "SolarMonitor does not publish a full-disk aggregate in this table; "
             "the dashboard uses each method's maximum published regional probability "
-            "to avoid an independence-union inflation. Missing values remain missing."
+            "to avoid an independence-union inflation. The table's daily window is "
+            "reported separately from WXF's next-calendar-day window; missing values remain missing."
         ),
     }
     return payload
@@ -452,17 +475,19 @@ def command_enrich(args: argparse.Namespace) -> int:
     payload = json.loads(input_path.read_text(encoding="utf-8"))
     if not isinstance(payload, dict):
         raise SolarMonitorError("Forecast payload root must be an object")
-    valid_start = parse_iso_time(payload.get("valid_start"))
-    url = args.url or solar_monitor_url(valid_start, args.base_url)
+    issued = parse_iso_time(payload.get("issued") or payload.get("valid_start"))
+    table_date = issued.date()
+    url = args.url or solar_monitor_url(issued, args.base_url)
     document, final_url = fetch_solar_monitor(url, timeout=args.timeout)
     rows = parse_solar_monitor_html(document)
-    enrich_payload(payload, rows, source_url=final_url)
+    enrich_payload(payload, rows, source_url=final_url, table_date=table_date)
     atomic_write(output_path, json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
     js_path = args.js_output.expanduser().resolve() if args.js_output else output_path.with_name("flare_guidance.js")
     atomic_write(js_path, javascript_payload(payload))
     print(
         f"SolarMonitor enrichment complete: {len(rows)} regions; "
-        f"valid {payload['valid_start']} to {payload.get('valid_end')}"
+        f"table date {table_date}; WXF target remains "
+        f"{payload['valid_start']} to {payload.get('valid_end')}"
     )
     return 0
 

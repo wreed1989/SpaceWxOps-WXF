@@ -1,0 +1,145 @@
+{
+  "schema_version": "1.0",
+  "sources": [
+    {
+      "branch": "Cross-era metadata/QC",
+      "coverage": "1996-05-05 to 2023-06-14",
+      "cycles": "23, 24, part of 25",
+      "id": "nadc-mdi-hmi-ar",
+      "local": "nadc_allAR_v1.xlsx",
+      "name": "NADC homogeneous MDI/HMI active-region database",
+      "role": "Polarity centroids, areas and signed flux; cross-instrument lineage check",
+      "status": "materialized_audited",
+      "url": "https://nadc.china-vo.org/res/r101300/?lang=en"
+    },
+    {
+      "branch": "All branches",
+      "coverage": "1996-present",
+      "cycles": "23, 24, 25",
+      "id": "noaa-srs",
+      "local": "noaa_cycle23_region_days.csv.gz",
+      "name": "NOAA/SWPC Solar Region Summary",
+      "role": "NOAA region identity, location, area, McIntosh class, spot count and magnetic class",
+      "status": "cycle23_materialized_audited",
+      "url": "https://www.ngdc.noaa.gov/stp/space-weather/swpc-products/daily_reports/solar_region_summaries/"
+    },
+    {
+      "branch": "Label authority",
+      "coverage": "1996-01-01 to 2008-12-31 in local seed",
+      "cycles": "23",
+      "id": "goes-xrs-cycle23",
+      "local": "goes_cycle23_events.csv.gz",
+      "name": "NOAA/NCEI GOES XRS flare reports",
+      "role": "M1+/X1+ event time, class, location and reported NOAA region",
+      "status": "cycle23_materialized_audited",
+      "url": "https://www.ngdc.noaa.gov/stp/space-weather/solar-data/solar-features/solar-flares/x-rays/goes/xrs/"
+    },
+    {
+      "branch": "WXF Cross-Era",
+      "coverage": "1996-2011",
+      "cycles": "23, early 24",
+      "id": "mdi-mtarp",
+      "name": "SOHO/MDI tracked active-region patches (M-TARP)",
+      "role": "96-minute LOS magnetograms, intensitygrams, magnetic and sunspot masks",
+      "series": [
+        "mdi.Mtarp",
+        "mdi.fd_M_96m_lev182",
+        "mdi.fd_Ic_flat",
+        "mdi.fd_spotmask"
+      ],
+      "status": "adapter_registered_not_materialized",
+      "url": "https://jsoc1.stanford.edu/data/mdi/mdi-tarp/"
+    },
+    {
+      "branch": "WXF Cross-Era",
+      "coverage": "1996-04-23 to 2026-01-06",
+      "cycles": "23, 24, part of 25",
+      "id": "smarp-sharp",
+      "local": "merged_smarp_sharp_v3c_19960423_20260106.csv",
+      "name": "Merged SMARP-SHARP parameters",
+      "role": "4,653,499-row harmonized MDI/HMI magnetic-parameter expansion and cross-era baseline",
+      "status": "materialized_audited_trained_retrospective",
+      "url": "https://sun.njit.edu/sharp-smarp.html"
+    },
+    {
+      "branch": "WXF Cross-Era",
+      "coverage": "1995-present",
+      "cycles": "23, 24, 25",
+      "id": "gong",
+      "name": "NSO GONG full-disk magnetic and intensity archive",
+      "role": "Temporal gap filling and MDI/HMI overlap-transfer calibration",
+      "status": "adapter_registered_not_materialized",
+      "url": "https://nso.edu/telescopes/nisp/gong/"
+    },
+    {
+      "branch": "WXF Historical LOS",
+      "coverage": "1974-02-01 to 2003",
+      "cycles": "21, 22, part of 23",
+      "id": "kpvt",
+      "name": "NSO Kitt Peak Vacuum Telescope archive",
+      "role": "Second-cycle extension with longitudinal field and pseudo-continuum images",
+      "status": "registered_phase2",
+      "url": "https://nso.edu/data/historical-archive/"
+    },
+    {
+      "branch": "Transfer calibration",
+      "coverage": "2003 onward with product/version breaks",
+      "cycles": "23, 24, 25",
+      "id": "solis-vsm",
+      "name": "NSO SOLIS/VSM",
+      "role": "Independent bridge between MDI, GONG and HMI eras",
+      "status": "registered_overlap_control",
+      "url": "https://nso.edu/data/historical-archive/"
+    },
+    {
+      "branch": "WXF Historical Prior",
+      "coverage": "1974 onward",
+      "cycles": "21 onward",
+      "id": "debrecen-dpd",
+      "name": "Debrecen Photoheliographic Data",
+      "role": "Sunspot-group and individual-spot position, area and evolution",
+      "status": "registered_phase2",
+      "url": "https://fenyi.solarobs.epss.hun-ren.hu/en/databases/DPD/"
+    },
+    {
+      "branch": "WXF Historical Prior",
+      "coverage": "1954-12 to 2025-01",
+      "cycles": "19-24 complete; selected 25",
+      "id": "mcintosh-archive",
+      "name": "NOAA/NCEI McIntosh Archive",
+      "role": "PIL, filament, plage, sunspot and coronal-hole morphology context",
+      "status": "registered_phase2",
+      "url": "https://www.ncei.noaa.gov/products/space-weather/legacy-data/solar-chromosphere"
+    },
+    {
+      "branch": "WXF-HMI",
+      "coverage": "2010-05 to 2024-12",
+      "cycles": "24, most of 25",
+      "id": "suryabench",
+      "name": "NASA IMPACT SuryaBench",
+      "role": "Consistently processed AIA/HMI imagery for current-cycle validation",
+      "status": "registered_modern_enrichment",
+      "url": "https://github.com/NASA-IMPACT/SuryaBench"
+    },
+    {
+      "branch": "Event reconciliation",
+      "coverage": "cycles 24-25",
+      "cycles": "24, 25",
+      "id": "flaredb",
+      "name": "FlareDB",
+      "role": "Exact significant-flare mapping to NOAA region and HARP identifiers",
+      "status": "registered_modern_enrichment",
+      "url": "https://www.nature.com/articles/s41597-026-06607-7"
+    },
+    {
+      "branch": "Benchmark only",
+      "coverage": "archive-dependent",
+      "cycles": "primarily 24",
+      "id": "flarecast-archive",
+      "name": "FLARECAST forecast archive",
+      "role": "Historical forecast comparison; never used as truth labels",
+      "status": "registered_benchmark_only",
+      "url": "https://api.flarecast.eu/archive.html"
+    }
+  ]
+}

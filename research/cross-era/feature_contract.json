@@ -1,0 +1,63 @@
+{
+  "branches": {
+    "wxf_cross_era": {
+      "allowed": [
+        "normalized unsigned LOS flux",
+        "flux imbalance",
+        "polarity separation",
+        "polarity-centroid motion",
+        "normalized PIL length",
+        "normalized PIL gradient",
+        "common-resolution Zernike moments",
+        "sunspot area/count",
+        "McIntosh/Hale class",
+        "central-meridian distance",
+        "6/12/24/48 h deltas",
+        "prior flare counts/waiting time"
+      ],
+      "coverage": "1974-present",
+      "forbidden": [
+        "HMI-only vector SHARP quantities",
+        "unharmonized raw-pixel pooling"
+      ]
+    },
+    "wxf_historical_prior": {
+      "allowed": [
+        "sunspot morphology",
+        "area/count",
+        "location",
+        "evolution",
+        "PIL context",
+        "flare history"
+      ],
+      "coverage": "1954-present",
+      "forbidden": [
+        "claims of vector-field equivalence"
+      ]
+    },
+    "wxf_hmi": {
+      "allowed": [
+        "HMI vector SHARP",
+        "HMI/AIA tracked imagery",
+        "common LOS features",
+        "morphology/history"
+      ],
+      "coverage": "2010-present",
+      "forbidden": []
+    }
+  },
+  "harmonization": [
+    "Reproject to a common heliographic grid and common physical pixel scale.",
+    "Apply limb/foreshortening masks before feature extraction.",
+    "Normalize flux and gradient features within instrument, then learn overlap mappings.",
+    "Retain instrument and processing-version indicators in every case.",
+    "Publish overlap residuals and per-instrument missingness; never mean-impute silently."
+  ],
+  "identity_unit": "canonical NOAA active-region passage",
+  "schema_version": "1.0",
+  "target_window_hours": 24,
+  "targets": [
+    "M1+",
+    "X1+"
+  ]
+}

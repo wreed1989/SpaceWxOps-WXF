@@ -1,0 +1,116 @@
+{
+  "artifacts": {
+    "case_manifest": "datasets/sdobenchmark_case_manifest.csv.gz",
+    "case_manifest_sha256": "8d455394fa03316d6c5b0b4022d089c2fc519edf38e1b5557b50f56f116a6bed"
+  },
+  "combined": {
+    "c1_plus_cases": 3932,
+    "cases": 9222,
+    "cases_by_target_year": {
+      "2012": 1836,
+      "2013": 1825,
+      "2014": 2393,
+      "2015": 1600,
+      "2016": 921,
+      "2017": 647
+    },
+    "date_end": "2017-12-28T22:29:01Z",
+    "date_start": "2012-01-01T07:06:00Z",
+    "m1_plus_cases": 690,
+    "m1_plus_prevalence": 0.07482108002602472,
+    "unique_active_regions": 1182,
+    "x1_plus_cases": 60,
+    "x1_plus_prevalence": 0.006506180871828237
+  },
+  "dataset": "FHNW-i4DS SDOBenchmark full image archive",
+  "forecast_definition": {
+    "continuous_target": "maximum GOES X-ray peak flux in the verification window",
+    "image_time_offsets_hours": [
+      0.0,
+      7.0,
+      10.5,
+      11.833333333333334
+    ],
+    "input_window_hours": 12,
+    "m1_plus_threshold_w_m2": 1e-05,
+    "verification_window_hours": 24,
+    "x1_plus_threshold_w_m2": 0.0001
+  },
+  "guardrails": [
+    "Never random-split rows; group by NOAA active region and flare episode.",
+    "Do not treat repeated forecast windows around one flare as independent positive events.",
+    "Do not use the supplied test set for architecture, feature, threshold, or calibration selection.",
+    "Keep natural event prevalence in calibration and test data.",
+    "Do not merge SDOBenchmark probabilities with live WXF until forecast-window and source-domain alignment are validated."
+  ],
+  "image_inventory": {
+    "archive_jpeg_images": 364910,
+    "cases_with_all_40_expected_images": 8310,
+    "cases_with_missing_images": 912,
+    "cases_without_image_directory": 0,
+    "images_by_channel": {
+      "131": 36574,
+      "1700": 36365,
+      "171": 36541,
+      "193": 36651,
+      "211": 36646,
+      "304": 36662,
+      "335": 36554,
+      "94": 36641,
+      "continuum": 36138,
+      "magnetogram": 36138
+    },
+    "unknown_image_directories": 0
+  },
+  "independence_audit": {
+    "active_region_split": true,
+    "episode_proxy_warning": "A 48-hour within-region cluster is not a catalog event ID and must not be reported as an independent flare count.",
+    "m1_positive_episode_proxies_48h": 165,
+    "train_test_region_overlap": [],
+    "train_test_region_overlap_count": 0,
+    "x1_positive_episode_proxies_48h": 23
+  },
+  "research_only": true,
+  "schema_version": "1.0",
+  "source_archive": "SDOBenchmark-data-full.zip (local source; not committed)",
+  "source_archive_bytes": 3040135749,
+  "source_archive_sha256": "99c79cf008027b5a086a752dc864b2722f4ea6e10df5a033ba2c3c2535ccad8c",
+  "test": {
+    "c1_plus_cases": 527,
+    "cases": 886,
+    "cases_by_target_year": {
+      "2012": 144,
+      "2013": 175,
+      "2014": 332,
+      "2015": 88,
+      "2016": 75,
+      "2017": 72
+    },
+    "date_end": "2017-09-10T16:06:01Z",
+    "date_start": "2012-01-15T00:00:00Z",
+    "m1_plus_cases": 176,
+    "m1_plus_prevalence": 0.1986455981941309,
+    "unique_active_regions": 91,
+    "x1_plus_cases": 25,
+    "x1_plus_prevalence": 0.028216704288939052
+  },
+  "training": {
+    "c1_plus_cases": 3405,
+    "cases": 8336,
+    "cases_by_target_year": {
+      "2012": 1692,
+      "2013": 1650,
+      "2014": 2061,
+      "2015": 1512,
+      "2016": 846,
+      "2017": 575
+    },
+    "date_end": "2017-12-28T22:29:01Z",
+    "date_start": "2012-01-01T07:06:00Z",
+    "m1_plus_cases": 514,
+    "m1_plus_prevalence": 0.061660268714011514,
+    "unique_active_regions": 1091,
+    "x1_plus_cases": 35,
+    "x1_plus_prevalence": 0.004198656429942419
+  }
+}

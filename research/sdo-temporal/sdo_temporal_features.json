@@ -1,0 +1,20 @@
+{
+  "cases": 9222,
+  "features": 292,
+  "channels": [
+    "magnetogram",
+    "continuum",
+    "131",
+    "193"
+  ],
+  "time_offsets_minutes": [
+    0,
+    420,
+    630,
+    710
+  ],
+  "image_size": 64,
+  "missing_or_rejected_channel_frames": 3198,
+  "flagged_channel_frames_rejected": 1147,
+  "elapsed_seconds": 62.782796144485474
+}

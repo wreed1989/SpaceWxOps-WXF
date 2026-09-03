@@ -5,3 +5,4 @@ requests>=2.31,<3
 scikit-learn>=1.4,<2
 joblib>=1.3,<2
 drms>=0.7,<1
+packaging>=23,<27

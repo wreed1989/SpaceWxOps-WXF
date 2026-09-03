@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "note": "Compact, derived, or government-source artifacts only; raw multi-GB archives are intentionally excluded.",
+  "files": [
+    {
+      "path": "datasets/cross_era_cycle25_predictions.csv.gz",
+      "bytes": 258794,
+      "sha256": "7ec90d0efee32f58cdf0ee32a30fbcf845a1bf596c020ec873958e3836ec1827"
+    },
+    {
+      "path": "datasets/cross_era_daily_cases.csv.gz",
+      "bytes": 8264685,
+      "sha256": "a1668ddeba15ebeef5b5857e88291dfc479e4ce43a934659caa66a98dc62d121"
+    },
+    {
+      "path": "datasets/goes_cycle23_events.csv.gz",
+      "bytes": 291920,
+      "sha256": "b8d63582d37a56fc51ca3c8a4db245b71884fc2cb70e6db2d5fa839867f66101"
+    },
+    {
+      "path": "datasets/goes_region_flares_1995_2026.csv.gz",
+      "bytes": 125656,
+      "sha256": "e69866e6b21a74971924bbb8facfe61beb150086fdebdd450741db1fe19ae3b5"
+    },
+    {
+      "path": "datasets/goes_region_flares_1995_2026.csv.gz.manifest.json",
+      "bytes": 6860,
+      "sha256": "5958aa37fc6c30f31369629fbbcfd67402cf8f6225f9fd896b55f1153ee5ddc3"
+    },
+    {
+      "path": "datasets/noaa_cycle23_region_days.csv.gz",
+      "bytes": 250730,
+      "sha256": "0e339bdb405610dcb872d66883d2c697b953dc72a07d39907e08b615ae7d8594"
+    },
+    {
+      "path": "datasets/sdo_temporal_features.npz",
+      "bytes": 6872456,
+      "sha256": "383b62ffce095996bdea590f0af0e64c15dfed46aeccfd09aebd903466273f82"
+    },
+    {
+      "path": "datasets/sdo_temporal_test_predictions.csv.gz",
+      "bytes": 36025,
+      "sha256": "ba8bb7dae3844849c478e3ed717621b4a601ed841290651d7b1e5fbade1b874d"
+    },
+    {
+      "path": "datasets/sdobenchmark_case_manifest.csv.gz",
+      "bytes": 181316,
+      "sha256": "8d455394fa03316d6c5b0b4022d089c2fc519edf38e1b5557b50f56f116a6bed"
+    },
+    {
+      "path": "datasets/sharp_mag_training_table_v2.csv.gz",
+      "bytes": 3315058,
+      "sha256": "12a0f1d5ba245d392c2eb3bcbed41a530b6205b4b20705d534319db1fd20f683"
+    },
+    {
+      "path": "datasets/sharp_mag_training_table_v2.csv.gz.metadata.json",
+      "bytes": 2707,
+      "sha256": "55ba659fb0edbf1fe5b731e2105a93c2041246d3d0a32b7c7beecca6eb3a3343"
+    }
+  ],
+  "total_bytes": 19606207
+}

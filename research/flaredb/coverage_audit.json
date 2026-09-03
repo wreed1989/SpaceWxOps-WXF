@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "purpose": "positive-event label and precursor coverage audit; not direct training ingestion",
+  "flaredb_repository": "https://github.com/Reasopprime/njit-flaredb/",
+  "flaredb_article": "https://www.nature.com/articles/s41597-026-06607-7",
+  "events_file": "Flare_event_list.csv (local audit input; not redistributed)",
+  "events_source_url": "https://raw.githubusercontent.com/Reasopprime/njit-flaredb/main/Flare_event_list.csv",
+  "events_file_sha256": "cbb9fbda83364329e7663f315692515410e9e8f942c1955d073682da9096cc8c",
+  "repository_event_rows": 103,
+  "repository_x1_events": 41,
+  "repository_unique_regions": 57,
+  "repository_unique_region_days": 86,
+  "paper_reported_events": 151,
+  "paper_reported_regions": 82,
+  "paper_statement_2024_x_events": "more than 30",
+  "repository_2024_x_events": 13,
+  "repository_2024_x_unique_regions": 5,
+  "repository_2024_x_unique_region_days": 10,
+  "repository_2024_x_by_region": {
+    "3664": 6,
+    "3663": 4,
+    "3590": 1,
+    "3614": 1,
+    "3615": 1
+  },
+  "goes_exact_day_region_class_matches": 90,
+  "wxf_prior_day_precursor_cases": 23,
+  "limitations": [
+    "FlareDB selects M5+ and X events and supplies no quiet/control cases.",
+    "Multiple flares from one active region on one valid day are one 24-hour forecast case.",
+    "The repository event list is smaller than the version described by the 2026 paper.",
+    "Event-centered sequences can overlap and must be grouped by active region during evaluation."
+  ]
+}

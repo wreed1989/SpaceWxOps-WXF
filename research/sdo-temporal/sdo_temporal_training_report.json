@@ -1,0 +1,744 @@
+{
+  "M1+": {
+    "active_region_bootstrap": {
+      "brier_skill_95_ci": [
+        0.12510894228250488,
+        0.4026180262853704
+      ],
+      "iterations_requested": 500,
+      "iterations_valid": 500,
+      "precision_recall_auc_95_ci": [
+        0.35938505112511443,
+        0.7416495697288772
+      ],
+      "roc_auc_95_ci": [
+        0.7912004700509851,
+        0.9002589053619214
+      ]
+    },
+    "brier_score": 0.12565730363902394,
+    "brier_skill_vs_training_climatology": 0.2916911717074131,
+    "calibration_positives": 64,
+    "calibration_samples": 1268,
+    "calibrator": {
+      "intercept": 4.928142117474085,
+      "method": "Platt/logistic on active-region-disjoint calibration set",
+      "slope": 1.1624770190847258
+    },
+    "decision": {
+      "far": 0.6346604215456675,
+      "fn": 20,
+      "fp": 271,
+      "hss": 0.3284976846184699,
+      "pod": 0.8863636363636364,
+      "threshold": 0.04009993403370127,
+      "tn": 439,
+      "tp": 156,
+      "tss": 0.5046734955185659
+    },
+    "expected_calibration_error": 0.08635637359414015,
+    "log_loss": 0.4057033442851351,
+    "positives": 176,
+    "precision_recall_auc": 0.5979308505770186,
+    "prevalence": 0.1986455981941309,
+    "reliability": [
+      {
+        "count": 89,
+        "mean_forecast": 0.006689585775477453,
+        "observed_frequency": 0.0
+      },
+      {
+        "count": 89,
+        "mean_forecast": 0.011495222276360227,
+        "observed_frequency": 0.02247191011235955
+      },
+      {
+        "count": 89,
+        "mean_forecast": 0.015572530978885191,
+        "observed_frequency": 0.02247191011235955
+      },
+      {
+        "count": 89,
+        "mean_forecast": 0.02202442535439819,
+        "observed_frequency": 0.0449438202247191
+      },
+      {
+        "count": 89,
+        "mean_forecast": 0.032179719183942204,
+        "observed_frequency": 0.056179775280898875
+      },
+      {
+        "count": 89,
+        "mean_forecast": 0.04652006506257944,
+        "observed_frequency": 0.21348314606741572
+      },
+      {
+        "count": 88,
+        "mean_forecast": 0.07285390017428427,
+        "observed_frequency": 0.2159090909090909
+      },
+      {
+        "count": 88,
+        "mean_forecast": 0.12262398970045417,
+        "observed_frequency": 0.3068181818181818
+      },
+      {
+        "count": 88,
+        "mean_forecast": 0.24900186059777976,
+        "observed_frequency": 0.3977272727272727
+      },
+      {
+        "count": 88,
+        "mean_forecast": 0.5635900385662388,
+        "observed_frequency": 0.7159090909090909
+      }
+    ],
+    "roc_auc": 0.8524087708066581,
+    "samples": 886,
+    "test_positive_episode_proxies_48h": 30,
+    "training_climatology": 0.0636672325976231
+  },
+  "X1+": {
+    "active_region_bootstrap": {
+      "brier_skill_95_ci": [
+        -0.04410161511054218,
+        0.0863025131993371
+      ],
+      "iterations_requested": 500,
+      "iterations_valid": 497,
+      "precision_recall_auc_95_ci": [
+        0.00927202051321495,
+        0.31875012895888166
+      ],
+      "roc_auc_95_ci": [
+        0.6187013234995764,
+        0.8618585528533498
+      ]
+    },
+    "brier_score": 0.026915148267781654,
+    "brier_skill_vs_training_climatology": 0.03834719960391164,
+    "calibration_positives": 4,
+    "calibration_samples": 1268,
+    "calibrator": {
+      "intercept": 0.866643814677677,
+      "method": "Platt/logistic on active-region-disjoint calibration set",
+      "slope": 0.9947843446079824
+    },
+    "decision": {
+      "far": 0.92,
+      "fn": 13,
+      "fp": 138,
+      "hss": 0.09328363266689257,
+      "pod": 0.48,
+      "threshold": 0.010155416696024237,
+      "tn": 723,
+      "tp": 12,
+      "tss": 0.31972125435540066
+    },
+    "expected_calibration_error": 0.019853041200082442,
+    "log_loss": 0.13335889779078705,
+    "positives": 25,
+    "precision_recall_auc": 0.11840569050395106,
+    "prevalence": 0.028216704288939052,
+    "reliability": [
+      {
+        "count": 89,
+        "mean_forecast": 0.00048303922779905755,
+        "observed_frequency": 0.0
+      },
+      {
+        "count": 89,
+        "mean_forecast": 0.0007744042001796672,
+        "observed_frequency": 0.011235955056179775
+      },
+      {
+        "count": 89,
+        "mean_forecast": 0.0010073702995457793,
+        "observed_frequency": 0.0
+      },
+      {
+        "count": 89,
+        "mean_forecast": 0.0013622759714178086,
+        "observed_frequency": 0.011235955056179775
+      },
+      {
+        "count": 89,
+        "mean_forecast": 0.0019004524421607372,
+        "observed_frequency": 0.011235955056179775
+      },
+      {
+        "count": 89,
+        "mean_forecast": 0.0026369659862745926,
+        "observed_frequency": 0.011235955056179775
+      },
+      {
+        "count": 88,
+        "mean_forecast": 0.003960733056503562,
+        "observed_frequency": 0.056818181818181816
+      },
+      {
+        "count": 88,
+        "mean_forecast": 0.006477008077775032,
+        "observed_frequency": 0.03409090909090909
+      },
+      {
+        "count": 88,
+        "mean_forecast": 0.013682713475867974,
+        "observed_frequency": 0.045454545454545456
+      },
+      {
+        "count": 88,
+        "mean_forecast": 0.054843831404145796,
+        "observed_frequency": 0.10227272727272728
+      }
+    ],
+    "roc_auc": 0.7729616724738676,
+    "samples": 886,
+    "test_positive_episode_proxies_48h": 6,
+    "training_climatology": 0.0043859649122807015
+  },
+  "artifacts": {
+    "case_predictions": "datasets/sdo_temporal_test_predictions.csv.gz",
+    "coefficient_report": "research/sdo-temporal/sdo_temporal_coefficients.csv",
+    "feature_matrix": "datasets/sdo_temporal_features.npz",
+    "model": "research/sdo-temporal/sdo_temporal_model.npz"
+  },
+  "dataset": "FHNW-i4DS SDOBenchmark full image archive",
+  "features": {
+    "cases": 9222,
+    "channels": [
+      "magnetogram",
+      "continuum",
+      "131",
+      "193"
+    ],
+    "elapsed_seconds": 62.782796144485474,
+    "families": [
+      "image statistics",
+      "continuum sunspot contrast",
+      "magnetic PIL proxies",
+      "low-order Zernike moments",
+      "12-hour temporal deltas"
+    ],
+    "feature_count": 292,
+    "feature_names": [
+      "t0_magnetogram_mean",
+      "t0_magnetogram_std",
+      "t0_magnetogram_q10",
+      "t0_magnetogram_median",
+      "t0_magnetogram_q90",
+      "t0_magnetogram_gradient",
+      "t0_magnetogram_entropy",
+      "t0_magnetogram_dark_fraction",
+      "t0_magnetogram_bright_fraction",
+      "t0_magnetogram_unsigned_field",
+      "t0_magnetogram_strong_field_fraction",
+      "t0_magnetogram_flux_imbalance",
+      "t0_magnetogram_pil_fraction",
+      "t0_magnetogram_pil_strength",
+      "t0_magnetogram_zernike_2_0",
+      "t0_magnetogram_zernike_2_2",
+      "t0_magnetogram_zernike_4_0",
+      "t0_magnetogram_zernike_4_2",
+      "t0_magnetogram_zernike_4_4",
+      "t0_magnetogram_zernike_6_0",
+      "t0_magnetogram_zernike_6_2",
+      "t0_magnetogram_zernike_6_4",
+      "t0_magnetogram_zernike_6_6",
+      "t0_magnetogram_missing",
+      "t0_magnetogram_flagged",
+      "t0_continuum_mean",
+      "t0_continuum_std",
+      "t0_continuum_q10",
+      "t0_continuum_median",
+      "t0_continuum_q90",
+      "t0_continuum_gradient",
+      "t0_continuum_entropy",
+      "t0_continuum_dark_fraction",
+      "t0_continuum_bright_fraction",
+      "t0_continuum_spot_dark_fraction",
+      "t0_continuum_spot_contrast",
+      "t0_continuum_missing",
+      "t0_continuum_flagged",
+      "t0_131_mean",
+      "t0_131_std",
+      "t0_131_q10",
+      "t0_131_median",
+      "t0_131_q90",
+      "t0_131_gradient",
+      "t0_131_entropy",
+      "t0_131_dark_fraction",
+      "t0_131_bright_fraction",
+      "t0_131_missing",
+      "t0_131_flagged",
+      "t0_193_mean",
+      "t0_193_std",
+      "t0_193_q10",
+      "t0_193_median",
+      "t0_193_q90",
+      "t0_193_gradient",
+      "t0_193_entropy",
+      "t0_193_dark_fraction",
+      "t0_193_bright_fraction",
+      "t0_193_missing",
+      "t0_193_flagged",
+      "t1_magnetogram_mean",
+      "t1_magnetogram_std",
+      "t1_magnetogram_q10",
+      "t1_magnetogram_median",
+      "t1_magnetogram_q90",
+      "t1_magnetogram_gradient",
+      "t1_magnetogram_entropy",
+      "t1_magnetogram_dark_fraction",
+      "t1_magnetogram_bright_fraction",
+      "t1_magnetogram_unsigned_field",
+      "t1_magnetogram_strong_field_fraction",
+      "t1_magnetogram_flux_imbalance",
+      "t1_magnetogram_pil_fraction",
+      "t1_magnetogram_pil_strength",
+      "t1_magnetogram_zernike_2_0",
+      "t1_magnetogram_zernike_2_2",
+      "t1_magnetogram_zernike_4_0",
+      "t1_magnetogram_zernike_4_2",
+      "t1_magnetogram_zernike_4_4",
+      "t1_magnetogram_zernike_6_0",
+      "t1_magnetogram_zernike_6_2",
+      "t1_magnetogram_zernike_6_4",
+      "t1_magnetogram_zernike_6_6",
+      "t1_magnetogram_missing",
+      "t1_magnetogram_flagged",
+      "t1_continuum_mean",
+      "t1_continuum_std",
+      "t1_continuum_q10",
+      "t1_continuum_median",
+      "t1_continuum_q90",
+      "t1_continuum_gradient",
+      "t1_continuum_entropy",
+      "t1_continuum_dark_fraction",
+      "t1_continuum_bright_fraction",
+      "t1_continuum_spot_dark_fraction",
+      "t1_continuum_spot_contrast",
+      "t1_continuum_missing",
+      "t1_continuum_flagged",
+      "t1_131_mean",
+      "t1_131_std",
+      "t1_131_q10",
+      "t1_131_median",
+      "t1_131_q90",
+      "t1_131_gradient",
+      "t1_131_entropy",
+      "t1_131_dark_fraction",
+      "t1_131_bright_fraction",
+      "t1_131_missing",
+      "t1_131_flagged",
+      "t1_193_mean",
+      "t1_193_std",
+      "t1_193_q10",
+      "t1_193_median",
+      "t1_193_q90",
+      "t1_193_gradient",
+      "t1_193_entropy",
+      "t1_193_dark_fraction",
+      "t1_193_bright_fraction",
+      "t1_193_missing",
+      "t1_193_flagged",
+      "t2_magnetogram_mean",
+      "t2_magnetogram_std",
+      "t2_magnetogram_q10",
+      "t2_magnetogram_median",
+      "t2_magnetogram_q90",
+      "t2_magnetogram_gradient",
+      "t2_magnetogram_entropy",
+      "t2_magnetogram_dark_fraction",
+      "t2_magnetogram_bright_fraction",
+      "t2_magnetogram_unsigned_field",
+      "t2_magnetogram_strong_field_fraction",
+      "t2_magnetogram_flux_imbalance",
+      "t2_magnetogram_pil_fraction",
+      "t2_magnetogram_pil_strength",
+      "t2_magnetogram_zernike_2_0",
+      "t2_magnetogram_zernike_2_2",
+      "t2_magnetogram_zernike_4_0",
+      "t2_magnetogram_zernike_4_2",
+      "t2_magnetogram_zernike_4_4",
+      "t2_magnetogram_zernike_6_0",
+      "t2_magnetogram_zernike_6_2",
+      "t2_magnetogram_zernike_6_4",
+      "t2_magnetogram_zernike_6_6",
+      "t2_magnetogram_missing",
+      "t2_magnetogram_flagged",
+      "t2_continuum_mean",
+      "t2_continuum_std",
+      "t2_continuum_q10",
+      "t2_continuum_median",
+      "t2_continuum_q90",
+      "t2_continuum_gradient",
+      "t2_continuum_entropy",
+      "t2_continuum_dark_fraction",
+      "t2_continuum_bright_fraction",
+      "t2_continuum_spot_dark_fraction",
+      "t2_continuum_spot_contrast",
+      "t2_continuum_missing",
+      "t2_continuum_flagged",
+      "t2_131_mean",
+      "t2_131_std",
+      "t2_131_q10",
+      "t2_131_median",
+      "t2_131_q90",
+      "t2_131_gradient",
+      "t2_131_entropy",
+      "t2_131_dark_fraction",
+      "t2_131_bright_fraction",
+      "t2_131_missing",
+      "t2_131_flagged",
+      "t2_193_mean",
+      "t2_193_std",
+      "t2_193_q10",
+      "t2_193_median",
+      "t2_193_q90",
+      "t2_193_gradient",
+      "t2_193_entropy",
+      "t2_193_dark_fraction",
+      "t2_193_bright_fraction",
+      "t2_193_missing",
+      "t2_193_flagged",
+      "t3_magnetogram_mean",
+      "t3_magnetogram_std",
+      "t3_magnetogram_q10",
+      "t3_magnetogram_median",
+      "t3_magnetogram_q90",
+      "t3_magnetogram_gradient",
+      "t3_magnetogram_entropy",
+      "t3_magnetogram_dark_fraction",
+      "t3_magnetogram_bright_fraction",
+      "t3_magnetogram_unsigned_field",
+      "t3_magnetogram_strong_field_fraction",
+      "t3_magnetogram_flux_imbalance",
+      "t3_magnetogram_pil_fraction",
+      "t3_magnetogram_pil_strength",
+      "t3_magnetogram_zernike_2_0",
+      "t3_magnetogram_zernike_2_2",
+      "t3_magnetogram_zernike_4_0",
+      "t3_magnetogram_zernike_4_2",
+      "t3_magnetogram_zernike_4_4",
+      "t3_magnetogram_zernike_6_0",
+      "t3_magnetogram_zernike_6_2",
+      "t3_magnetogram_zernike_6_4",
+      "t3_magnetogram_zernike_6_6",
+      "t3_magnetogram_missing",
+      "t3_magnetogram_flagged",
+      "t3_continuum_mean",
+      "t3_continuum_std",
+      "t3_continuum_q10",
+      "t3_continuum_median",
+      "t3_continuum_q90",
+      "t3_continuum_gradient",
+      "t3_continuum_entropy",
+      "t3_continuum_dark_fraction",
+      "t3_continuum_bright_fraction",
+      "t3_continuum_spot_dark_fraction",
+      "t3_continuum_spot_contrast",
+      "t3_continuum_missing",
+      "t3_continuum_flagged",
+      "t3_131_mean",
+      "t3_131_std",
+      "t3_131_q10",
+      "t3_131_median",
+      "t3_131_q90",
+      "t3_131_gradient",
+      "t3_131_entropy",
+      "t3_131_dark_fraction",
+      "t3_131_bright_fraction",
+      "t3_131_missing",
+      "t3_131_flagged",
+      "t3_193_mean",
+      "t3_193_std",
+      "t3_193_q10",
+      "t3_193_median",
+      "t3_193_q90",
+      "t3_193_gradient",
+      "t3_193_entropy",
+      "t3_193_dark_fraction",
+      "t3_193_bright_fraction",
+      "t3_193_missing",
+      "t3_193_flagged",
+      "delta_magnetogram_mean",
+      "delta_magnetogram_std",
+      "delta_magnetogram_q10",
+      "delta_magnetogram_median",
+      "delta_magnetogram_q90",
+      "delta_magnetogram_gradient",
+      "delta_magnetogram_entropy",
+      "delta_magnetogram_dark_fraction",
+      "delta_magnetogram_bright_fraction",
+      "delta_magnetogram_unsigned_field",
+      "delta_magnetogram_strong_field_fraction",
+      "delta_magnetogram_flux_imbalance",
+      "delta_magnetogram_pil_fraction",
+      "delta_magnetogram_pil_strength",
+      "delta_magnetogram_zernike_2_0",
+      "delta_magnetogram_zernike_2_2",
+      "delta_magnetogram_zernike_4_0",
+      "delta_magnetogram_zernike_4_2",
+      "delta_magnetogram_zernike_4_4",
+      "delta_magnetogram_zernike_6_0",
+      "delta_magnetogram_zernike_6_2",
+      "delta_magnetogram_zernike_6_4",
+      "delta_magnetogram_zernike_6_6",
+      "delta_continuum_mean",
+      "delta_continuum_std",
+      "delta_continuum_q10",
+      "delta_continuum_median",
+      "delta_continuum_q90",
+      "delta_continuum_gradient",
+      "delta_continuum_entropy",
+      "delta_continuum_dark_fraction",
+      "delta_continuum_bright_fraction",
+      "delta_continuum_spot_dark_fraction",
+      "delta_continuum_spot_contrast",
+      "delta_131_mean",
+      "delta_131_std",
+      "delta_131_q10",
+      "delta_131_median",
+      "delta_131_q90",
+      "delta_131_gradient",
+      "delta_131_entropy",
+      "delta_131_dark_fraction",
+      "delta_131_bright_fraction",
+      "delta_193_mean",
+      "delta_193_std",
+      "delta_193_q10",
+      "delta_193_median",
+      "delta_193_q90",
+      "delta_193_gradient",
+      "delta_193_entropy",
+      "delta_193_dark_fraction",
+      "delta_193_bright_fraction"
+    ],
+    "features": 292,
+    "flagged_channel_frames_rejected": 1147,
+    "image_size": 64,
+    "missing_or_rejected_channel_frames": 3198,
+    "time_offsets_minutes": [
+      0,
+      420,
+      630,
+      710
+    ]
+  },
+  "limitations": [
+    "Positive case counts include overlapping forecast windows and are not independent flare-event counts.",
+    "The supplied test set is active-region-disjoint but spans the same years as training; it is not a future chronological holdout.",
+    "JPEG-derived PIL and Zernike descriptors are lower-fidelity than definitive vector-field SHARP CEA features.",
+    "No archived SWPC probabilities are available for these exact cases, so this report cannot claim improvement over SWPC.",
+    "The archive ends in 2017 and must undergo current-cycle shadow validation before operational use."
+  ],
+  "model": {
+    "method": "region-balanced ridge regression of log10 peak flux with separately Platt-calibrated M1+/X1+ probabilities",
+    "probability_nesting": "P(X1+) clipped to P(M1+)",
+    "selected_ridge_alpha": 100.0,
+    "top_standardized_coefficients": [
+      {
+        "absolute_coefficient": 0.3268320173855026,
+        "feature": "t3_131_std",
+        "missing_fraction": 0.021904142268488396,
+        "standardized_coefficient": 0.3268320173855026
+      },
+      {
+        "absolute_coefficient": 0.22887778600459963,
+        "feature": "t2_magnetogram_pil_fraction",
+        "missing_fraction": 0.01594014313597918,
+        "standardized_coefficient": 0.22887778600459963
+      },
+      {
+        "absolute_coefficient": 0.2194059193752635,
+        "feature": "delta_131_q10",
+        "missing_fraction": 0.03643461288223813,
+        "standardized_coefficient": 0.2194059193752635
+      },
+      {
+        "absolute_coefficient": 0.21876094164594945,
+        "feature": "t3_131_q10",
+        "missing_fraction": 0.021904142268488396,
+        "standardized_coefficient": 0.21876094164594945
+      },
+      {
+        "absolute_coefficient": 0.18823092474549363,
+        "feature": "t0_131_std",
+        "missing_fraction": 0.017241379310344827,
+        "standardized_coefficient": 0.18823092474549363
+      },
+      {
+        "absolute_coefficient": 0.17682995682581942,
+        "feature": "t3_continuum_q10",
+        "missing_fraction": 0.019952288006939926,
+        "standardized_coefficient": -0.17682995682581942
+      },
+      {
+        "absolute_coefficient": 0.17360360257305724,
+        "feature": "t3_magnetogram_flux_imbalance",
+        "missing_fraction": 0.019952288006939926,
+        "standardized_coefficient": 0.17360360257305724
+      },
+      {
+        "absolute_coefficient": 0.17005714644680717,
+        "feature": "t2_131_q10",
+        "missing_fraction": 0.02006072435480373,
+        "standardized_coefficient": 0.17005714644680717
+      },
+      {
+        "absolute_coefficient": 0.16458227785534296,
+        "feature": "delta_131_std",
+        "missing_fraction": 0.03643461288223813,
+        "standardized_coefficient": 0.16458227785534296
+      },
+      {
+        "absolute_coefficient": 0.15472750882463338,
+        "feature": "t2_continuum_dark_fraction",
+        "missing_fraction": 0.01594014313597918,
+        "standardized_coefficient": -0.15472750882463338
+      },
+      {
+        "absolute_coefficient": 0.1463718232390851,
+        "feature": "t1_193_q90",
+        "missing_fraction": 0.03253090435914118,
+        "standardized_coefficient": -0.1463718232390851
+      },
+      {
+        "absolute_coefficient": 0.14571273627899567,
+        "feature": "t0_131_q10",
+        "missing_fraction": 0.017241379310344827,
+        "standardized_coefficient": 0.14571273627899567
+      },
+      {
+        "absolute_coefficient": 0.14457911153085218,
+        "feature": "t3_continuum_spot_contrast",
+        "missing_fraction": 0.019952288006939926,
+        "standardized_coefficient": -0.14457911153085218
+      },
+      {
+        "absolute_coefficient": 0.1365889472017893,
+        "feature": "t1_magnetogram_zernike_4_0",
+        "missing_fraction": 0.03057905009759271,
+        "standardized_coefficient": -0.1365889472017893
+      },
+      {
+        "absolute_coefficient": 0.13293582162914033,
+        "feature": "delta_continuum_std",
+        "missing_fraction": 0.03437432227282585,
+        "standardized_coefficient": -0.13293582162914033
+      },
+      {
+        "absolute_coefficient": 0.13176330251357873,
+        "feature": "t3_magnetogram_zernike_4_4",
+        "missing_fraction": 0.019952288006939926,
+        "standardized_coefficient": -0.13176330251357873
+      },
+      {
+        "absolute_coefficient": 0.13097586034845826,
+        "feature": "t3_magnetogram_zernike_4_0",
+        "missing_fraction": 0.019952288006939926,
+        "standardized_coefficient": 0.13097586034845826
+      },
+      {
+        "absolute_coefficient": 0.1309274688017954,
+        "feature": "delta_193_q10",
+        "missing_fraction": 0.036651485577965735,
+        "standardized_coefficient": -0.1309274688017954
+      },
+      {
+        "absolute_coefficient": 0.12892627462640968,
+        "feature": "t3_magnetogram_pil_strength",
+        "missing_fraction": 0.019952288006939926,
+        "standardized_coefficient": 0.12892627462640968
+      },
+      {
+        "absolute_coefficient": 0.12761630322342601,
+        "feature": "t1_magnetogram_zernike_6_0",
+        "missing_fraction": 0.03057905009759271,
+        "standardized_coefficient": 0.12761630322342601
+      },
+      {
+        "absolute_coefficient": 0.1268573490333884,
+        "feature": "t1_continuum_dark_fraction",
+        "missing_fraction": 0.03057905009759271,
+        "standardized_coefficient": 0.1268573490333884
+      },
+      {
+        "absolute_coefficient": 0.1244231814945392,
+        "feature": "delta_131_bright_fraction",
+        "missing_fraction": 0.03643461288223813,
+        "standardized_coefficient": -0.1244231814945392
+      },
+      {
+        "absolute_coefficient": 0.12390600792817595,
+        "feature": "t0_magnetogram_pil_strength",
+        "missing_fraction": 0.014855779657341141,
+        "standardized_coefficient": 0.12390600792817595
+      },
+      {
+        "absolute_coefficient": 0.12073874175140555,
+        "feature": "t1_magnetogram_bright_fraction",
+        "missing_fraction": 0.03057905009759271,
+        "standardized_coefficient": 0.12073874175140555
+      }
+    ],
+    "tuning_candidates": [
+      {
+        "alpha": 0.1,
+        "normalized_brier_objective": 0.8956016599484189
+      },
+      {
+        "alpha": 1.0,
+        "normalized_brier_objective": 0.8943628635930798
+      },
+      {
+        "alpha": 10.0,
+        "normalized_brier_objective": 0.8904360270985346
+      },
+      {
+        "alpha": 100.0,
+        "normalized_brier_objective": 0.8899788695100739
+      }
+    ]
+  },
+  "model_version": "wxf-sdo-temporal-zernike-pil-v1",
+  "operational": false,
+  "promotion_gates": {
+    "active_region_bootstrap_intervals": "published",
+    "case_level_predictions": "published",
+    "exact_goes_event_ids": "missing; 48-hour region episode proxies published",
+    "matched_swpc_cases": "missing",
+    "prospective_current_cycle_shadow": "missing",
+    "status": "research evidence only"
+  },
+  "research_only": true,
+  "schema_version": "1.0",
+  "split_method": "NOAA-active-region-disjoint, year-and-event-stratified development/tuning/calibration; supplied SDOBenchmark test untouched",
+  "splits": {
+    "calibration": {
+      "active_regions": 163,
+      "cases": 1268,
+      "m1_plus_cases": 64,
+      "x1_plus_cases": 4
+    },
+    "development": {
+      "active_regions": 761,
+      "cases": 5764,
+      "m1_plus_cases": 371,
+      "x1_plus_cases": 24
+    },
+    "tuning": {
+      "active_regions": 167,
+      "cases": 1304,
+      "m1_plus_cases": 79,
+      "x1_plus_cases": 7
+    },
+    "untouched_test": {
+      "active_regions": 91,
+      "cases": 886,
+      "m1_plus_cases": 176,
+      "x1_plus_cases": 25
+    }
+  }
+}

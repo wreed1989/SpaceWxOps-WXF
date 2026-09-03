@@ -1,0 +1,284 @@
+{
+  "cross_era_training": {
+    "M1+": {
+      "brier_score": 0.03734484043769904,
+      "brier_skill_ci": [
+        0.22654967846684396,
+        0.340697039315081
+      ],
+      "brier_skill_vs_cycle24_climatology": 0.2815935786784286,
+      "calibration_threshold": {
+        "far": 0.7863835103060587,
+        "fn": 68,
+        "fp": 1259,
+        "hss": 0.30319455548612606,
+        "pod": 0.8341463414634146,
+        "threshold": 0.049296835290804975,
+        "tn": 10647,
+        "tp": 342,
+        "tss": 0.7284013389436766
+      },
+      "expected_calibration_error": 0.004416211818355863,
+      "far": 0.7764434180138569,
+      "fn": 83,
+      "fp": 1681,
+      "hss": 0.2932691763339021,
+      "log_loss": 0.13308320118373157,
+      "pod": 0.8536155202821869,
+      "positives": 567,
+      "precision_recall_auc": 0.4906697274160133,
+      "prevalence": 0.054503508603287516,
+      "reliability": [
+        {
+          "count": 1041,
+          "mean_forecast": 0.00032760959752232765,
+          "observed_frequency": 0.0
+        },
+        {
+          "count": 1041,
+          "mean_forecast": 0.000988844129233535,
+          "observed_frequency": 0.0
+        },
+        {
+          "count": 1041,
+          "mean_forecast": 0.00211848778644077,
+          "observed_frequency": 0.0019212295869356388
+        },
+        {
+          "count": 1040,
+          "mean_forecast": 0.0038581239335718134,
+          "observed_frequency": 0.0028846153846153848
+        },
+        {
+          "count": 1040,
+          "mean_forecast": 0.006365969298605768,
+          "observed_frequency": 0.0057692307692307696
+        },
+        {
+          "count": 1040,
+          "mean_forecast": 0.010677852214262859,
+          "observed_frequency": 0.011538461538461539
+        },
+        {
+          "count": 1040,
+          "mean_forecast": 0.019114379123386094,
+          "observed_frequency": 0.025961538461538463
+        },
+        {
+          "count": 1040,
+          "mean_forecast": 0.036803793585680915,
+          "observed_frequency": 0.038461538461538464
+        },
+        {
+          "count": 1040,
+          "mean_forecast": 0.08121965774890685,
+          "observed_frequency": 0.09134615384615384
+        },
+        {
+          "count": 1040,
+          "mean_forecast": 0.3889051254315191,
+          "observed_frequency": 0.36730769230769234
+        }
+      ],
+      "roc_auc": 0.9204617096036373,
+      "samples": 10403,
+      "threshold": 0.049296835290804975,
+      "tn": 8155,
+      "tp": 484,
+      "tss": 0.6827127142634801
+    },
+    "X1+": {
+      "brier_score": 0.004808018167224536,
+      "brier_skill_ci": [
+        -0.18127186705796056,
+        0.1445793585929924
+      ],
+      "brier_skill_vs_cycle24_climatology": 0.014828943264900696,
+      "calibration_threshold": {
+        "far": 0.9334415584415584,
+        "fn": 2,
+        "fp": 575,
+        "hss": 0.11867843162350551,
+        "pod": 0.9534883720930233,
+        "threshold": 0.008216013051969997,
+        "tn": 11698,
+        "tp": 41,
+        "tss": 0.9066375613702986
+      },
+      "expected_calibration_error": 0.002937580064130114,
+      "far": 0.9584569732937686,
+      "fn": 9,
+      "fp": 969,
+      "hss": 0.0704193309300143,
+      "log_loss": 0.021162350618034394,
+      "pod": 0.8235294117647058,
+      "positives": 51,
+      "precision_recall_auc": 0.13454961265879814,
+      "prevalence": 0.004902431990771893,
+      "reliability": [
+        {
+          "count": 1041,
+          "mean_forecast": 1.6820051363331012e-06,
+          "observed_frequency": 0.0
+        },
+        {
+          "count": 1041,
+          "mean_forecast": 7.4732649173293906e-06,
+          "observed_frequency": 0.0
+        },
+        {
+          "count": 1041,
+          "mean_forecast": 2.063696107001122e-05,
+          "observed_frequency": 0.0
+        },
+        {
+          "count": 1040,
+          "mean_forecast": 4.5991560825712646e-05,
+          "observed_frequency": 0.0
+        },
+        {
+          "count": 1040,
+          "mean_forecast": 9.100434257016516e-05,
+          "observed_frequency": 0.0
+        },
+        {
+          "count": 1040,
+          "mean_forecast": 0.00018206245030414332,
+          "observed_frequency": 0.0009615384615384616
+        },
+        {
+          "count": 1040,
+          "mean_forecast": 0.00040897529235485274,
+          "observed_frequency": 0.0
+        },
+        {
+          "count": 1040,
+          "mean_forecast": 0.001106726253627866,
+          "observed_frequency": 0.0
+        },
+        {
+          "count": 1040,
+          "mean_forecast": 0.00390684759331897,
+          "observed_frequency": 0.007692307692307693
+        },
+        {
+          "count": 1040,
+          "mean_forecast": 0.06352143537746166,
+          "observed_frequency": 0.04038461538461539
+        }
+      ],
+      "roc_auc": 0.9541549231748341,
+      "samples": 10403,
+      "threshold": 0.008216013051969997,
+      "tn": 9383,
+      "tp": 42,
+      "tss": 0.7299243113010273
+    },
+    "daily_cases": 40637,
+    "feature_count": 29,
+    "model_version": "wxf-cross-era-smarp-sharp-daily-v1",
+    "report_sha256": "1970ea1ec7d82ab6a6b3c437e69242e8f16f127d67b98939ea4c7ddae46c3ca0",
+    "source_rows": 4653499
+  },
+  "download_report": null,
+  "generated_utc": "2026-09-03T20:35:46.770162+00:00",
+  "goes_cycle23": {
+    "class_counts": {
+      "A": 9,
+      "B": 8660,
+      "C": 13178,
+      "M": 1443,
+      "X": 126
+    },
+    "events": 23416,
+    "m1_plus_events": 1569,
+    "output_sha256": "b8d63582d37a56fc51ca3c8a4db245b71884fc2cb70e6db2d5fa839867f66101",
+    "region_attributed_class_counts": {
+      "A": 3,
+      "B": 3856,
+      "C": 7752,
+      "M": 1145,
+      "X": 111
+    },
+    "region_attributed_m1_plus_events": 1256,
+    "region_attributed_x1_plus_events": 111,
+    "x1_plus_events": 126,
+    "year_end": 2008,
+    "year_start": 1996
+  },
+  "model_readiness": {
+    "forecast_probabilities_changed": false,
+    "gong_transfer_features": "not_materialized",
+    "kpvt_historical_features": "not_materialized",
+    "labels_and_region_morphology": "materialized",
+    "mdi_smarp_magnetic_features": "materialized_audited_trained_retrospective"
+  },
+  "nadc": {
+    "advertised_vs_workbook_delta": 102,
+    "cr_end": 2271,
+    "cr_start": 1909,
+    "csv_sha256": "760c3f90e712cfcab098530f9fc2e8cd7f931c5c5e695f244d6d9f873e161282",
+    "landing_page_advertised_rows": 2849,
+    "missing_by_column": {
+      "Area(neg, \u03bcHem)": 0,
+      "Area(pos, \u03bcHem)": 0,
+      "CR": 0,
+      "Flux(neg, Mx)": 0,
+      "Flux(pos, Mx)": 0,
+      "Label": 0,
+      "Lat(neg)": 0,
+      "Lat(pos)": 0,
+      "Lat(whole)": 0,
+      "Lon(neg)": 0,
+      "Lon(pos)": 0,
+      "Lon(whole)": 0
+    },
+    "unique_cr_label_records": 2951,
+    "workbook_rows": 2951,
+    "xlsx_sha256": "4246650f70a2569379d1fb5d47cba95b56588b8a3db9b2dc0faf02bc67d17193"
+  },
+  "noaa_srs_cycle23": {
+    "date_end": "2008-12-13",
+    "date_start": "1996-01-02",
+    "days_with_spotted_regions": 3995,
+    "expected_daily_files": 4749,
+    "missing_source_dates": [
+      "1996-01-01",
+      "1996-04-28",
+      "1996-04-29",
+      "1996-05-24",
+      "1996-08-17",
+      "1996-08-18",
+      "1996-08-19",
+      "1996-09-11",
+      "1996-12-10",
+      "1996-12-12",
+      "1996-12-14",
+      "1996-12-15",
+      "1996-12-24",
+      "1997-01-27",
+      "1997-03-21",
+      "1997-03-27",
+      "1997-03-28",
+      "1997-04-11",
+      "1997-04-17",
+      "1997-04-18",
+      "1997-04-28",
+      "1997-05-06",
+      "1997-05-22",
+      "1997-05-29",
+      "1997-07-25",
+      "1997-07-30",
+      "1997-11-23",
+      "1998-08-09",
+      "2001-08-28"
+    ],
+    "output_sha256": "0e339bdb405610dcb872d66883d2c697b953dc72a07d39907e08b615ae7d8594",
+    "region_days": 21653,
+    "source_file_completeness": 0.9938934512528953,
+    "source_files": 4720,
+    "unique_noaa_regions": 3062
+  },
+  "schema_version": "1.0",
+  "status": "cross_era_baseline_trained_research_only"
+}

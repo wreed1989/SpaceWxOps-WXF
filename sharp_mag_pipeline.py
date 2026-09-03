@@ -5,7 +5,7 @@ WXF research training and daily forecast pipeline.
 Purpose
 -------
 Build a compact, scalar-parameter training table from SDO/HMI SHARP NRT
-records, train a calibrated M1+ classifier plus a hierarchical X1+ severity layer, and generate a
+records, train calibrated M1+ and magnetic-structure-dependent X1+ models, and generate a
 small ``flare_guidance.json`` file that the SpaceWxOps HTML dashboard already
 knows how to ingest.
 
@@ -83,19 +83,17 @@ DEFAULT_LIVE_SERIES = "hmi.sharp_cea_720s_nrt"
 DEFAULT_START_DATE = dt.date(2012, 10, 1)
 DEFAULT_ISSUE_HOUR = 21
 DEFAULT_INPUT_LAG_HOURS = 3
-DEFAULT_MAX_LONGITUDE = 45.0
+DEFAULT_MAX_LONGITUDE = 50.0
 DEFAULT_MAX_OBS_VR = 3500.0
 DEFAULT_MAX_QUALITY = 0xFFFFFFFF  # diagnostic-only by default; QUALITY is a bitmask
 DEFAULT_MIN_FINITE_PARAMETERS = 12
 DEFAULT_MAX_INPUT_AGE_HOURS = 8.0
 DEFAULT_CHUNK_DAYS = 31
-SCHEMA_VERSION = "4.1"
-SCRIPT_VERSION = "1.3.0"
+SCHEMA_VERSION = "5.0"
+SCRIPT_VERSION = "2.0.0"
 
-# X1+ is too rare in the available archive for an independent high-dimensional
-# SHARP classifier.  The production X1+ member therefore uses a transparent
-# Bayesian estimate of P(X1+ | M1+) multiplied by the calibrated SHARP M1+
-# probability. Jeffreys prior contributes one total pseudo-observation.
+# Jeffreys' prior is retained only for the constant-severity reference scored
+# beside the magnetic X1+ model. It is not used for production inference.
 X1_SEVERITY_PRIOR_ALPHA = 0.5
 X1_SEVERITY_PRIOR_BETA = 0.5
 
@@ -108,6 +106,8 @@ NCEI_SOLAR_EVENT_REPORT_ROOT = (
     "daily_reports/solar_event_reports"
 )
 SWPC_SOLAR_REGIONS_URL = "https://services.swpc.noaa.gov/json/solar_regions.json"
+SWPC_EDITED_EVENTS_URL = "https://services.swpc.noaa.gov/json/edited_events.json"
+SWPC_THREE_DAY_URL = "https://services.swpc.noaa.gov/text/3-day-solar-geomag-predictions.txt"
 
 # Scalar SHARP parameters used in many flare-prediction studies.  These are
 # keyword values, not FITS image segments, which keeps both training and live
@@ -132,6 +132,53 @@ SHARP_PARAMETERS: tuple[str, ...] = (
     "R_VALUE",
     "ABSNJZH",
 )
+
+# A pre-specified reduced feature family for the rare-event severity stage.
+# It concentrates capacity on free energy, current, flux, strong-gradient PIL,
+# shear, and size rather than fitting every available scalar to the small X set.
+X1_SEVERITY_PARAMETERS: tuple[str, ...] = (
+    "R_VALUE",
+    "TOTPOT",
+    "TOTUSJH",
+    "TOTUSJZ",
+    "SAVNCPP",
+    "USFLUX",
+    "AREA_ACR",
+    "SHRGT45",
+    "MEANSHR",
+    "ABSNJZH",
+)
+
+HISTORY_RAW_COLUMNS: tuple[str, ...] = (
+    "PRIOR_M1_COUNT_24H",
+    "PRIOR_M1_COUNT_7D",
+    "PRIOR_M1_COUNT_30D",
+    "PRIOR_X1_COUNT_7D",
+    "PRIOR_X1_COUNT_30D",
+    "HOURS_SINCE_M1",
+    "HOURS_SINCE_X1",
+)
+
+# Bloomfield et al. (2012) 24-hour McIntosh-Poisson probabilities. This is a
+# transparent coverage fallback for numbered regions without a trustworthy
+# live SHARP mapping; it is never represented as a magnetic-model prediction.
+LEGACY_MCSTAT_B12: dict[str, tuple[float, float]] = {
+    "AXX": (1, 0), "BXO": (1, 0), "BXI": (6, 0),
+    "HRX": (2, 0), "HSX": (3, 0), "HAX": (3, 0), "HHX": (9, 1), "HKX": (10, 0),
+    "CRO": (2, 0), "CRI": (4, 0), "CSO": (3, 0), "CSI": (9, 1),
+    "CAO": (3, 0), "CAI": (12, 0), "CHO": (6, 1), "CHI": (18, 0),
+    "CKO": (13, 1), "CKI": (27, 4),
+    "DRO": (6, 0), "DRI": (13, 2), "DSO": (7, 1), "DSI": (12, 0),
+    "DSC": (30, 10), "DAO": (7, 0), "DAI": (18, 2), "DAC": (26, 2),
+    "DHO": (14, 1), "DHI": (7, 0), "DHC": (28, 0), "DKO": (25, 3),
+    "DKI": (33, 4), "DKC": (54, 9),
+    "ESO": (11, 0), "ESI": (23, 2), "EAO": (14, 1), "EAI": (30, 1),
+    "EAC": (39, 14), "EHO": (14, 0), "EHI": (47, 6), "EHC": (74, 0),
+    "EKO": (22, 2), "EKI": (46, 7), "EKC": (85, 20),
+    "FRI": (39, 0), "FSO": (31, 4), "FSI": (66, 0), "FAO": (19, 0),
+    "FAI": (36, 3), "FHO": (5, 0), "FHI": (58, 0), "FHC": (55, 0),
+    "FKO": (27, 1), "FKI": (66, 11), "FKC": (84, 27),
+}
 
 SHARP_METADATA_KEYS: tuple[str, ...] = (
     "T_REC",
@@ -169,6 +216,13 @@ DISPLAY_NAMES: dict[str, str] = {
     "ABSNJZH": "absolute net current helicity",
     "ABS_LON_FWT": "distance from central meridian",
     "LAT_FWT_VALUE": "active-region latitude",
+    "PRIOR_M1_COUNT_24H": "prior 24-hour M1+ activity",
+    "PRIOR_M1_COUNT_7D": "prior 7-day M1+ activity",
+    "PRIOR_M1_COUNT_30D": "prior 30-day M1+ activity",
+    "PRIOR_X1_COUNT_7D": "prior 7-day X1+ activity",
+    "PRIOR_X1_COUNT_30D": "prior 30-day X1+ activity",
+    "HOURS_SINCE_M1": "time since the last M1+ flare",
+    "HOURS_SINCE_X1": "time since the last X1+ flare",
 }
 
 
@@ -278,7 +332,7 @@ def major_minor(version: str) -> tuple[int, int] | None:
 def exact_runtime_requirements() -> dict[str, str]:
     return {
         name: package_version(name)
-        for name in ("numpy", "pandas", "requests", "scikit-learn", "joblib", "drms")
+        for name in ("numpy", "pandas", "requests", "scikit-learn", "joblib", "drms", "packaging")
     }
 
 
@@ -528,6 +582,14 @@ def normalize_region_for_flare_catalog(number: Any) -> int | None:
     return value if remainder == 0 else remainder
 
 
+def canonical_noaa_region(number: Any) -> int | None:
+    """Return the cycle-qualified NOAA number used by HMI/SolarMonitor."""
+    normalized = normalize_region_for_flare_catalog(number)
+    if normalized is None:
+        return None
+    return normalized + 10000 if normalized < 10000 else normalized
+
+
 def clean_sharp_frame(frame: pd.DataFrame) -> pd.DataFrame:
     if frame.empty:
         return frame.copy()
@@ -742,7 +804,9 @@ def obtain_flare_csv(
         source = flare_csv.expanduser().resolve()
         if not source.exists():
             raise PipelineError(f"Flare CSV does not exist: {source}")
-        return source, str(source)
+        # Preserve reproducible provenance without publishing a developer's
+        # absolute filesystem path in the dataset metadata.
+        return source, f"local-file:{source.name}"
 
     session = request_session()
     url = flare_csv_url or discover_latest_flare_csv(session, NCEI_FLARE_DIRECTORY)
@@ -1002,6 +1066,71 @@ def normalize_flare_catalog(path: Path) -> pd.DataFrame:
     return catalog
 
 
+def add_causal_flare_history(
+    feature_rows: pd.DataFrame, flare_catalog: pd.DataFrame
+) -> pd.DataFrame:
+    """Attach strictly pre-issue regional flare-history features."""
+    output = feature_rows.copy()
+    history = flare_catalog[
+        flare_catalog["EVENT_TIME"].notna()
+        & flare_catalog["NOAA_REGION_NORM"].notna()
+    ].copy()
+    grouped: dict[int, tuple[np.ndarray, np.ndarray]] = {}
+    for region, group in history.groupby("NOAA_REGION_NORM"):
+        m_times = (
+            pd.to_datetime(group.loc[group["IS_M1_PLUS"], "EVENT_TIME"], utc=True)
+            .astype("datetime64[ns, UTC]")
+            .astype("int64")
+            .sort_values()
+            .to_numpy()
+        )
+        x_times = (
+            pd.to_datetime(group.loc[group["IS_X1_PLUS"], "EVENT_TIME"], utc=True)
+            .astype("datetime64[ns, UTC]")
+            .astype("int64")
+            .sort_values()
+            .to_numpy()
+        )
+        grouped[int(region)] = (m_times, x_times)
+
+    values = {column: [] for column in HISTORY_RAW_COLUMNS}
+    hour_ns = 3600 * 1_000_000_000
+    for row in output.itertuples(index=False):
+        region = int(getattr(row, "NOAA_REGION_NORM"))
+        issue = pd.Timestamp(getattr(row, "ISSUE_TIME"))
+        if issue.tzinfo is None:
+            issue = issue.tz_localize("UTC")
+        else:
+            issue = issue.tz_convert("UTC")
+        issue_ns = int(issue.value)
+        m_times, x_times = grouped.get(
+            region, (np.array([], dtype=np.int64), np.array([], dtype=np.int64))
+        )
+
+        def count_prior(times: np.ndarray, hours: int) -> int:
+            right = int(np.searchsorted(times, issue_ns, side="left"))
+            left = int(np.searchsorted(times, issue_ns - hours * hour_ns, side="left"))
+            return right - left
+
+        def hours_since(times: np.ndarray) -> float:
+            index = int(np.searchsorted(times, issue_ns, side="left")) - 1
+            if index < 0:
+                return 720.0
+            return min(720.0, max(0.0, (issue_ns - int(times[index])) / hour_ns))
+
+        values["PRIOR_M1_COUNT_24H"].append(count_prior(m_times, 24))
+        values["PRIOR_M1_COUNT_7D"].append(count_prior(m_times, 24 * 7))
+        values["PRIOR_M1_COUNT_30D"].append(count_prior(m_times, 24 * 30))
+        values["PRIOR_X1_COUNT_7D"].append(count_prior(x_times, 24 * 7))
+        values["PRIOR_X1_COUNT_30D"].append(count_prior(x_times, 24 * 30))
+        values["HOURS_SINCE_M1"].append(hours_since(m_times))
+        values["HOURS_SINCE_X1"].append(hours_since(x_times))
+
+    for column, column_values in values.items():
+        output[column] = column_values
+    return output
+
+
 def attach_flare_labels(
     feature_rows: pd.DataFrame,
     flare_catalog: pd.DataFrame,
@@ -1044,7 +1173,13 @@ def attach_flare_labels(
     labeled["LABEL_X1"] = [int(pair in positive_x) for pair in pairs]
     before_ambiguous = len(labeled)
     if not keep_ambiguous_days and ambiguous_dates:
-        labeled = labeled[~labeled["VALID_DATE"].isin(ambiguous_dates)].copy()
+        # An unattributed major event makes other regions unsafe negatives, but
+        # it does not erase a positively attributed region on the same day.
+        ambiguous_negative = (
+            labeled["VALID_DATE"].isin(ambiguous_dates)
+            & (labeled["LABEL_M1"] == 0)
+        )
+        labeled = labeled[~ambiguous_negative].copy()
 
     stats = {
         "rows_before_label_coverage_filter": before_coverage,
@@ -1052,6 +1187,13 @@ def attach_flare_labels(
         "rows_after_ambiguous_day_filter": len(labeled),
         "available_label_days": len(available_dates),
         "ambiguous_major_flare_days": len(ambiguous_dates),
+        "ambiguous_negative_rows_removed": before_ambiguous - len(labeled),
+        "attributed_positive_rows_preserved_on_ambiguous_days": int(
+            (
+                labeled["VALID_DATE"].isin(ambiguous_dates)
+                & (labeled["LABEL_M1"] == 1)
+            ).sum()
+        ),
         "m1_positive_rows": int(labeled["LABEL_M1"].sum()),
         "x1_positive_rows": int(labeled["LABEL_X1"].sum()),
         "m1_prevalence": float(labeled["LABEL_M1"].mean()) if len(labeled) else None,
@@ -1085,6 +1227,16 @@ def engineered_feature_columns() -> list[str]:
     for parameter in SHARP_PARAMETERS:
         columns.extend((f"{parameter}__LOG1P", f"{parameter}__DELTA24H"))
     columns.extend(("ABS_LON_FWT", "LAT_FWT_VALUE"))
+    columns.extend(f"{column}__LOG1P" for column in HISTORY_RAW_COLUMNS)
+    return columns
+
+
+def x1_severity_feature_columns() -> list[str]:
+    columns: list[str] = []
+    for parameter in X1_SEVERITY_PARAMETERS:
+        columns.extend((f"{parameter}__LOG1P", f"{parameter}__DELTA24H"))
+    columns.extend(("ABS_LON_FWT", "LAT_FWT_VALUE"))
+    columns.extend(f"{column}__LOG1P" for column in HISTORY_RAW_COLUMNS)
     return columns
 
 
@@ -1097,6 +1249,11 @@ def engineer_features(frame: pd.DataFrame) -> pd.DataFrame:
         features[f"{parameter}__DELTA24H"] = current - previous
     features["ABS_LON_FWT"] = pd.to_numeric(frame.get("LON_FWT"), errors="coerce").abs()
     features["LAT_FWT_VALUE"] = pd.to_numeric(frame.get("LAT_FWT"), errors="coerce")
+    for column in HISTORY_RAW_COLUMNS:
+        raw = pd.to_numeric(
+            frame.get(column, pd.Series(np.nan, index=frame.index)), errors="coerce"
+        ).clip(lower=0)
+        features[f"{column}__LOG1P"] = np.log1p(raw)
     return features[engineered_feature_columns()]
 
 
@@ -1163,6 +1320,10 @@ def historical_sharp_rows(
                 target = aggregate.setdefault("quality_top_values", {})
                 for quality_hex, count in stat_value.items():
                     target[quality_hex] = int(target.get(quality_hex, 0)) + int(count)
+            elif stat_key == "min_finite_parameters":
+                # This is a configured threshold repeated for every archive chunk,
+                # not a count to accumulate across the mission.
+                aggregate[stat_key] = int(stat_value)
             elif stat_key != "retained":
                 aggregate[stat_key] = aggregate.get(stat_key, 0) + int(stat_value)
         if chunk.empty:
@@ -1225,6 +1386,7 @@ def build_dataset(args: argparse.Namespace) -> Path:
             workers=args.event_workers,
         )
     flare_catalog = normalize_flare_catalog(flare_path)
+    rows = add_causal_flare_history(rows, flare_catalog)
     flare_coverage = read_flare_coverage(
         flare_coverage_path,
         fallback_start=valid_label_start,
@@ -1249,7 +1411,7 @@ def build_dataset(args: argparse.Namespace) -> Path:
         "schema_version": SCHEMA_VERSION,
         "created_at": iso_z(utc_now()),
         "script_version": SCRIPT_VERSION,
-        "output": str(output),
+        "output": output.name,
         "sha256": sha256_file(output),
         "historical_series": args.series,
         "start": str(args.start),
@@ -1258,9 +1420,9 @@ def build_dataset(args: argparse.Namespace) -> Path:
         "input_lag_hours": args.input_lag_hours,
         "feature_sample_hour_utc": (args.issue_hour - args.input_lag_hours) % 24,
         "flare_catalog_source": flare_source,
-        "flare_catalog_file": str(flare_path),
+        "flare_catalog_file": flare_path.name,
         "flare_catalog_sha256": sha256_file(flare_path),
-        "flare_coverage_file": str(flare_coverage_path) if flare_coverage_path else None,
+        "flare_coverage_file": flare_coverage_path.name if flare_coverage_path else None,
         "flare_coverage_sha256": sha256_file(flare_coverage_path) if flare_coverage_path else None,
         "sharp_stats": sharp_stats,
         "label_stats": label_stats,
@@ -1296,7 +1458,7 @@ def load_training_table(path: Path) -> pd.DataFrame:
 def base_pipeline(c_value: float) -> Pipeline:
     return Pipeline(
         steps=[
-            ("imputer", SimpleImputer(strategy="median")),
+            ("imputer", SimpleImputer(strategy="median", keep_empty_features=True)),
             ("scaler", StandardScaler()),
             (
                 "classifier",
@@ -1408,6 +1570,45 @@ def evaluate_predictions(labels: np.ndarray, probabilities: np.ndarray, climatol
     }
 
 
+def grouped_bootstrap_brier_skill(
+    labels: np.ndarray,
+    probabilities: np.ndarray,
+    groups: np.ndarray,
+    climatology: float,
+    *,
+    draws: int = 500,
+) -> dict[str, Any]:
+    """Bootstrap whole active regions so repeated region-days stay clustered."""
+    labels = np.asarray(labels, dtype=int)
+    probabilities = np.asarray(probabilities, dtype=float)
+    groups = np.asarray(groups)
+    unique = np.unique(groups)
+    if len(labels) == 0 or len(unique) < 2:
+        return {"draws": 0, "groups": int(len(unique)), "lower": None, "median": None, "upper": None}
+    indices = {group: np.flatnonzero(groups == group) for group in unique}
+    rng = np.random.default_rng(42)
+    scores: list[float] = []
+    for _ in range(draws):
+        sampled = rng.choice(unique, size=len(unique), replace=True)
+        selected = np.concatenate([indices[group] for group in sampled])
+        brier = brier_score_loss(labels[selected], probabilities[selected])
+        reference = brier_score_loss(
+            labels[selected], np.full(len(selected), climatology, dtype=float)
+        )
+        if reference > 0:
+            scores.append(float(1.0 - brier / reference))
+    if not scores:
+        return {"draws": 0, "groups": int(len(unique)), "lower": None, "median": None, "upper": None}
+    lower, median, upper = np.quantile(scores, [0.025, 0.5, 0.975])
+    return {
+        "draws": len(scores),
+        "groups": int(len(unique)),
+        "lower": float(lower),
+        "median": float(median),
+        "upper": float(upper),
+    }
+
+
 def oof_calibrator(
     frame: pd.DataFrame,
     features: pd.DataFrame,
@@ -1479,6 +1680,15 @@ def train_one_threshold(
     test_probabilities = calibrated_predict(eval_bundle, features.loc[test_mask])
     train_climatology = float(labels[train_mask].mean())
     evaluation = evaluate_predictions(labels[test_mask], test_probabilities, train_climatology)
+    test_groups = (
+        pd.to_numeric(frame.loc[test_mask, "NOAA_REGION"], errors="coerce")
+        .fillna(-1)
+        .astype(int)
+        .to_numpy()
+    )
+    evaluation["active_region_bootstrap_brier_skill_95"] = grouped_bootstrap_brier_skill(
+        labels[test_mask], test_probabilities, test_groups, train_climatology
+    )
     evaluation.update(
         {
             "train_samples": int(train_mask.sum()),
@@ -1527,7 +1737,7 @@ def beta_binomial_summary(
     successes = int(successes)
     trials = int(trials)
     if trials < 1:
-        raise PipelineError("At least one M1+ event is required to estimate X1+ severity")
+        raise PipelineError("At least one M1+ event is required to estimate the X/M reference rate")
     if successes < 0 or successes > trials:
         raise PipelineError(
             f"Invalid nested-event counts: X1+ successes={successes}, M1+ trials={trials}"
@@ -1555,24 +1765,25 @@ def beta_binomial_summary(
     }
 
 
-def hierarchical_x1_predict(
+def x1_predict(
     m1_probabilities: np.ndarray,
     x1_bundle: Mapping[str, Any],
+    features: pd.DataFrame,
 ) -> np.ndarray:
-    """Convert calibrated M1+ probabilities to nested X1+ probabilities."""
+    """Return independently calibrated direct X1+ probabilities, nested beneath M1+."""
     method = str(x1_bundle.get("method", ""))
-    if method != "hierarchical_x_given_m":
+    m1 = np.clip(np.asarray(m1_probabilities, dtype=float), 0.0, 1.0)
+    if method != "direct_magnetic_x1":
         raise PipelineError(
             f"Unsupported X1+ model method {method!r}; retrain with the current pipeline"
         )
-    severity = float(x1_bundle.get("conditional_x_given_m", math.nan))
-    if not math.isfinite(severity) or not (0.0 <= severity <= 1.0):
-        raise PipelineError("X1+ hierarchy artifact contains an invalid conditional rate")
-    m1 = np.clip(np.asarray(m1_probabilities, dtype=float), 0.0, 1.0)
-    return np.minimum(m1 * severity, m1)
+    x1 = calibrated_predict(x1_bundle, features)
+    if len(x1) != len(m1):
+        raise PipelineError("X1+ predictions do not align with M1+ predictions")
+    return np.minimum(np.clip(x1, 0.0, 1.0), m1)
 
 
-def train_x1_hierarchy(
+def train_x1_structure(
     frame: pd.DataFrame,
     features: pd.DataFrame,
     *,
@@ -1580,14 +1791,142 @@ def train_x1_hierarchy(
     min_positives: int,
     allow_small_sample: bool,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
-    """Fit/evaluate a rare-event X1+ layer nested beneath the M1+ model.
+    """Train a direct, calibrated X1+ magnetic classifier with M1+ nesting."""
+    labels_m1 = pd.to_numeric(frame["LABEL_M1"], errors="coerce").fillna(0).astype(int).to_numpy()
+    labels_x1 = pd.to_numeric(frame["LABEL_X1"], errors="coerce").fillna(0).astype(int).to_numpy()
+    if np.any(labels_x1 > labels_m1):
+        raise PipelineError("LABEL_X1 must be nested within LABEL_M1 for every row")
+    positives = int(labels_x1.sum())
+    if positives < min_positives and not allow_small_sample:
+        raise PipelineError(
+            f"X1+ has only {positives} positive region-days; minimum is {min_positives}."
+        )
+    if len(np.unique(labels_x1)) < 2:
+        raise PipelineError("X1+ labels contain only one class")
+
+    train_mask, calibration_mask, test_mask = chronological_splits(frame)
+    columns = list(features.columns)
+    x_c = min(float(c_value), 0.1)
+
+    # Reproduce the M1 development model so the untouched X probabilities can
+    # be constrained to the same holdout M1 probabilities.
+    m_pipeline = base_pipeline(c_value)
+    m_pipeline.fit(features.loc[train_mask], labels_m1[train_mask])
+    m_calibrator = fit_platt_calibrator(
+        m_pipeline.predict_proba(features.loc[calibration_mask])[:, 1],
+        labels_m1[calibration_mask],
+    )
+    m_test = calibrated_predict(
+        {"pipeline": m_pipeline, "calibrator": m_calibrator, "feature_columns": columns},
+        features.loc[test_mask],
+    )
+
+    x_pipeline = base_pipeline(x_c)
+    x_pipeline.fit(features.loc[train_mask], labels_x1[train_mask])
+    x_calibrator = fit_platt_calibrator(
+        x_pipeline.predict_proba(features.loc[calibration_mask])[:, 1],
+        labels_x1[calibration_mask],
+    )
+    eval_bundle = {
+        "pipeline": x_pipeline,
+        "calibrator": x_calibrator,
+        "feature_columns": columns,
+    }
+    x_test = np.minimum(calibrated_predict(eval_bundle, features.loc[test_mask]), m_test)
+    climatology = float(labels_x1[train_mask].mean())
+    evaluation = evaluate_predictions(labels_x1[test_mask], x_test, climatology)
+    test_groups = (
+        pd.to_numeric(frame.loc[test_mask, "NOAA_REGION"], errors="coerce")
+        .fillna(-1).astype(int).to_numpy()
+    )
+    evaluation["active_region_bootstrap_brier_skill_95"] = grouped_bootstrap_brier_skill(
+        labels_x1[test_mask], x_test, test_groups, climatology
+    )
+
+    development_mask = train_mask | calibration_mask
+    reference_summary = beta_binomial_summary(
+        int(labels_x1[development_mask].sum()), int(labels_m1[development_mask].sum())
+    )
+    reference_test = m_test * float(reference_summary["posterior_mean"])
+    reference_evaluation = evaluate_predictions(
+        labels_x1[test_mask], reference_test, climatology
+    )
+    reference_evaluation["active_region_bootstrap_brier_skill_95"] = grouped_bootstrap_brier_skill(
+        labels_x1[test_mask], reference_test, test_groups, climatology
+    )
+    brier_improvement = None
+    if reference_evaluation.get("brier_score") not in (None, 0.0):
+        brier_improvement = 1.0 - float(evaluation["brier_score"]) / float(reference_evaluation["brier_score"])
+    evaluation.update(
+        {
+            "method": "direct_magnetic_x1",
+            "description": (
+                "Strongly regularized direct X1+ classifier over magnetic state, "
+                "24-hour evolution, disk position, and causal regional flare history; "
+                "calibrated separately and constrained to P(X1+) <= P(M1+)."
+            ),
+            "train_samples": int(train_mask.sum()),
+            "train_x1_positives": int(labels_x1[train_mask].sum()),
+            "calibration_samples": int(calibration_mask.sum()),
+            "calibration_x1_positives": int(labels_x1[calibration_mask].sum()),
+            "test_x1_positives": int(labels_x1[test_mask].sum()),
+            "x1_c": x_c,
+            "calibrator": "Platt/logistic" if x_calibrator is not None else "identity",
+            "constant_severity_reference": reference_evaluation,
+            "development_conditional_x_given_m": reference_summary,
+            "brier_improvement_vs_constant_severity": brier_improvement,
+            "test_start": iso_z(frame.loc[test_mask, "ISSUE_TIME"].min().to_pydatetime()),
+            "test_end": iso_z(frame.loc[test_mask, "ISSUE_TIME"].max().to_pydatetime()),
+        }
+    )
+
+    groups = pd.to_numeric(frame["NOAA_REGION"], errors="coerce").fillna(-1).astype(int).to_numpy()
+    production_calibrator, calibration_meta = oof_calibrator(
+        frame, features, labels_x1, groups, x_c
+    )
+    production_pipeline = base_pipeline(x_c)
+    production_pipeline.fit(features, labels_x1)
+    production_reference = beta_binomial_summary(int(labels_x1.sum()), int(labels_m1.sum()))
+    bundle = {
+        "schema_version": SCHEMA_VERSION,
+        "script_version": SCRIPT_VERSION,
+        "threshold": "X1+",
+        "method": "direct_magnetic_x1",
+        "pipeline": production_pipeline,
+        "calibrator": production_calibrator,
+        "feature_columns": columns,
+        "raw_parameters": list(SHARP_PARAMETERS) + list(HISTORY_RAW_COLUMNS),
+        "calibration": calibration_meta,
+        "constant_severity_reference": production_reference,
+        "trained_at": iso_z(utc_now()),
+        "training_samples": int(len(frame)),
+        "training_x1_positives": positives,
+        "training_prevalence": float(labels_x1.mean()),
+        "note": "Direct rare-event classifier; independently calibrated and clipped beneath M1+.",
+    }
+    return bundle, evaluation
+
+
+def _legacy_train_x1_hierarchy_reference(
+    frame: pd.DataFrame,
+    features: pd.DataFrame,
+    *,
+    c_value: float,
+    min_positives: int,
+    allow_small_sample: bool,
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    """Reproduce the retired pre-v3 conditional X1+ experiment.
 
     The magnetic classifier is trained for M1+.  X1+ is estimated as
 
-        P(X1+) = P(M1+) * P(X1+ | M1+)
+        P(X1+) = P(M1+) * P(X1+ | M1+, magnetic state/evolution)
 
-    where the conditional severity rate is Beta-binomial smoothed.  This avoids
-    fitting dozens of magnetic coefficients to only a handful of X1+ events.
+    This is retained only to make earlier research artifacts auditable; the
+    current training path never calls it. The conditional stage is trained only
+    on M1+-producing region-days and uses
+    a pre-specified reduced set of energy/current/PIL/size features. A constant
+    Beta-binomial severity ratio is scored as a reference, never used as the
+    production forecast.
     """
     labels_m1 = (
         pd.to_numeric(frame["LABEL_M1"], errors="coerce")
@@ -1614,6 +1953,15 @@ def train_x1_hierarchy(
     if total_m1 < 1:
         raise PipelineError("No M1+ events are available for the X1+ hierarchy")
 
+    severity_columns = x1_severity_feature_columns()
+    severity_features = features[severity_columns]
+    conditional_mask = labels_m1 == 1
+    conditional_negatives = int(conditional_mask.sum() - total_x1)
+    if conditional_negatives < 3:
+        raise PipelineError(
+            "X1+ magnetic severity training requires at least three M1+/non-X1 region-days"
+        )
+
     train_mask, calibration_mask, test_mask = chronological_splits(frame)
 
     # Reproduce the M1+ development fit without touching the chronological holdout.
@@ -1632,14 +1980,57 @@ def train_x1_hierarchy(
         eval_bundle, features.loc[test_mask]
     )
 
-    # Estimate the severity ratio from development data only for holdout scoring.
     development_mask = train_mask | calibration_mask
     development_m1 = int(labels_m1[development_mask].sum())
     development_x1 = int(labels_x1[development_mask].sum())
     development_summary = beta_binomial_summary(
         development_x1, development_m1
     )
+    # Empirical-Bayes shrinkage limits coefficient noise while still allowing
+    # magnetic structure to change the X/M ratio. Twenty X-positive cases are
+    # treated as the transition scale toward a fully dynamic severity stage.
+    development_dynamic_weight = development_x1 / (development_x1 + 20.0)
+
+    # Fit the severity model to M1+-positive development rows only. Calibration
+    # also remains conditional and chronologically separated from the fit.
+    severity_train_mask = train_mask & conditional_mask
+    severity_calibration_mask = calibration_mask & conditional_mask
+    if labels_x1[severity_train_mask].sum() < 3 or len(np.unique(labels_x1[severity_train_mask])) < 2:
+        raise PipelineError("The chronological X1+ training block has insufficient class support")
+    severity_c = min(float(c_value), 0.25)
+    severity_eval_pipeline = base_pipeline(severity_c)
+    severity_eval_pipeline.fit(
+        severity_features.loc[severity_train_mask], labels_x1[severity_train_mask]
+    )
+    raw_severity_cal = severity_eval_pipeline.predict_proba(
+        severity_features.loc[severity_calibration_mask]
+    )[:, 1]
+    severity_eval_calibrator = fit_platt_calibrator(
+        raw_severity_cal, labels_x1[severity_calibration_mask]
+    )
+    severity_eval_bundle = {
+        "pipeline": severity_eval_pipeline,
+        "calibrator": severity_eval_calibrator,
+        "feature_columns": severity_columns,
+    }
+    severity_test_probabilities = calibrated_predict(
+        severity_eval_bundle, severity_features.loc[test_mask]
+    )
+    severity_test_probabilities = (
+        float(development_summary["posterior_mean"])
+        + development_dynamic_weight
+        * (
+            severity_test_probabilities
+            - float(development_summary["posterior_mean"])
+        )
+    )
     x1_test_probabilities = np.minimum(
+        m1_test_probabilities * severity_test_probabilities,
+        m1_test_probabilities,
+    )
+
+    # Constant-severity reference from development data only.
+    constant_test_probabilities = np.minimum(
         m1_test_probabilities * float(development_summary["posterior_mean"]),
         m1_test_probabilities,
     )
@@ -1650,18 +2041,74 @@ def train_x1_hierarchy(
         x1_test_probabilities,
         x1_training_climatology,
     )
+    x_test_groups = (
+        pd.to_numeric(frame.loc[test_mask, "NOAA_REGION"], errors="coerce")
+        .fillna(-1)
+        .astype(int)
+        .to_numpy()
+    )
+    evaluation["active_region_bootstrap_brier_skill_95"] = grouped_bootstrap_brier_skill(
+        labels_x1[test_mask],
+        x1_test_probabilities,
+        x_test_groups,
+        x1_training_climatology,
+    )
+    constant_evaluation = evaluate_predictions(
+        labels_x1[test_mask],
+        constant_test_probabilities,
+        x1_training_climatology,
+    )
+    constant_evaluation["active_region_bootstrap_brier_skill_95"] = grouped_bootstrap_brier_skill(
+        labels_x1[test_mask],
+        constant_test_probabilities,
+        x_test_groups,
+        x1_training_climatology,
+    )
+    conditional_test_mask = test_mask & conditional_mask
+    conditional_evaluation = evaluate_predictions(
+        labels_x1[conditional_test_mask],
+        calibrated_predict(
+            severity_eval_bundle, severity_features.loc[conditional_test_mask]
+        ),
+        float(labels_x1[severity_train_mask].mean()),
+    )
+    conditional_evaluation["active_region_bootstrap_brier_skill_95"] = grouped_bootstrap_brier_skill(
+        labels_x1[conditional_test_mask],
+        calibrated_predict(
+            severity_eval_bundle, severity_features.loc[conditional_test_mask]
+        ),
+        pd.to_numeric(frame.loc[conditional_test_mask, "NOAA_REGION"], errors="coerce")
+        .fillna(-1)
+        .astype(int)
+        .to_numpy(),
+        float(labels_x1[severity_train_mask].mean()),
+    )
+    dynamic_brier = evaluation.get("brier_score")
+    constant_brier = constant_evaluation.get("brier_score")
+    brier_improvement = None
+    if dynamic_brier is not None and constant_brier not in (None, 0.0):
+        brier_improvement = 1.0 - float(dynamic_brier) / float(constant_brier)
     evaluation.update(
         {
-            "method": "hierarchical_x_given_m",
+            "method": "hierarchical_magnetic_x_given_m",
             "description": (
-                "Calibrated SHARP M1+ probability multiplied by a "
-                "Beta-binomial-smoothed P(X1+ | M1+) severity rate."
+                "Calibrated SHARP M1+ probability multiplied by a calibrated, "
+                "regularized magnetic P(X1+ | M1+) severity classifier."
             ),
             "train_samples": int(train_mask.sum()),
             "train_x1_positives": int(labels_x1[train_mask].sum()),
             "calibration_samples": int(calibration_mask.sum()),
             "calibration_x1_positives": int(labels_x1[calibration_mask].sum()),
             "test_x1_positives": int(labels_x1[test_mask].sum()),
+            "severity_feature_count": len(severity_columns),
+            "severity_c": severity_c,
+            "dynamic_weight": development_dynamic_weight,
+            "severity_calibrator": (
+                "Platt/logistic" if severity_eval_calibrator is not None else "identity"
+            ),
+            "conditional_test": conditional_evaluation,
+            "constant_severity_reference": constant_evaluation,
+            "brier_improvement_vs_constant_severity": brier_improvement,
             "development_conditional_x_given_m": development_summary,
             "test_start": iso_z(
                 frame.loc[test_mask, "ISSUE_TIME"].min().to_pydatetime()
@@ -1672,22 +2119,47 @@ def train_x1_hierarchy(
         }
     )
 
+    conditional_frame = frame.loc[conditional_mask].reset_index(drop=True)
+    conditional_features = severity_features.loc[conditional_mask].reset_index(drop=True)
+    conditional_labels = labels_x1[conditional_mask]
+    conditional_groups = (
+        pd.to_numeric(conditional_frame["NOAA_REGION"], errors="coerce")
+        .fillna(-1)
+        .astype(int)
+        .to_numpy()
+    )
+    production_calibrator, calibration_meta = oof_calibrator(
+        conditional_frame,
+        conditional_features,
+        conditional_labels,
+        conditional_groups,
+        severity_c,
+    )
+    production_pipeline = base_pipeline(severity_c)
+    production_pipeline.fit(conditional_features, conditional_labels)
     production_summary = beta_binomial_summary(total_x1, total_m1)
+    production_dynamic_weight = total_x1 / (total_x1 + 20.0)
     bundle = {
         "schema_version": SCHEMA_VERSION,
         "script_version": SCRIPT_VERSION,
         "threshold": "X1+",
-        "method": "hierarchical_x_given_m",
-        "conditional_x_given_m": float(production_summary["posterior_mean"]),
-        "severity_posterior": production_summary,
+        "method": "hierarchical_magnetic_x_given_m",
+        "pipeline": production_pipeline,
+        "calibrator": production_calibrator,
+        "feature_columns": severity_columns,
+        "raw_parameters": list(X1_SEVERITY_PARAMETERS),
+        "calibration": calibration_meta,
+        "constant_severity_reference": production_summary,
+        "dynamic_weight": production_dynamic_weight,
         "trained_at": iso_z(utc_now()),
         "training_samples": int(len(frame)),
         "training_m1_positives": total_m1,
         "training_x1_positives": total_x1,
+        "training_m1_non_x1": conditional_negatives,
         "training_prevalence": float(labels_x1.mean()),
         "note": (
-            "This artifact is a nested rare-event severity layer, not an "
-            "independent high-dimensional X1+ magnetic classifier."
+            "Nested rare-event classifier. It models X/M severity from a reduced, "
+            "pre-specified magnetic feature set and is multiplied by calibrated M1+."
         ),
     }
     return bundle, evaluation
@@ -1727,9 +2199,9 @@ def train_models(args: argparse.Namespace) -> ModelPaths:
         allow_small_sample=args.allow_small_sample,
     )
 
-    # X1+ is nested beneath M1+ because the archive contains too few X1+ events
-    # for a stable independent classifier with this feature count.
-    x1_bundle, x1_eval = train_x1_hierarchy(
+    # X1+ receives its own strongly regularized magnetic/history classifier,
+    # calibrated independently and constrained beneath the M1+ probability.
+    x1_bundle, x1_eval = train_x1_structure(
         frame,
         features,
         c_value=args.c_value,
@@ -1754,6 +2226,33 @@ def train_models(args: argparse.Namespace) -> ModelPaths:
     joblib.dump(m1_bundle, model_paths.m1, compress=3)
     joblib.dump(x1_bundle, model_paths.x1, compress=3)
 
+    coefficient_rows: list[dict[str, Any]] = []
+    for model_name, bundle in (("M1+", m1_bundle), ("X1+ direct", x1_bundle)):
+        fitted: Pipeline = bundle["pipeline"]
+        coefficients = fitted.named_steps["classifier"].coef_[0]
+        medians = fitted.named_steps["imputer"].statistics_
+        means = fitted.named_steps["scaler"].mean_
+        scales = fitted.named_steps["scaler"].scale_
+        for feature, coefficient, median, mean, scale in zip(
+            bundle["feature_columns"], coefficients, medians, means, scales
+        ):
+            coefficient_rows.append(
+                {
+                    "model": model_name,
+                    "feature": feature,
+                    "standardized_coefficient": float(coefficient),
+                    "absolute_coefficient": abs(float(coefficient)),
+                    "imputation_median": float(median),
+                    "training_mean_after_imputation": float(mean),
+                    "training_scale": float(scale),
+                }
+            )
+    coefficient_frame = pd.DataFrame(coefficient_rows).sort_values(
+        ["model", "absolute_coefficient"], ascending=[True, False]
+    )
+    coefficient_path = model_paths.directory / "sharp_mag_coefficients.csv"
+    coefficient_frame.to_csv(coefficient_path, index=False)
+
     report = {
         "schema_version": SCHEMA_VERSION,
         "script_version": SCRIPT_VERSION,
@@ -1761,7 +2260,7 @@ def train_models(args: argparse.Namespace) -> ModelPaths:
         "research_only": True,
         "training_started": iso_z(training_started),
         "training_finished": iso_z(utc_now()),
-        "dataset": str(dataset),
+        "dataset": dataset.name,
         "dataset_sha256": sha256_file(dataset),
         "samples": int(len(frame)),
         "date_start": iso_z(frame["ISSUE_TIME"].min().to_pydatetime()),
@@ -1772,16 +2271,21 @@ def train_models(args: argparse.Namespace) -> ModelPaths:
         "prediction_methods": {
             "M1+": "regularized logistic SHARP classifier with probability calibration",
             "X1+": (
-                "hierarchical P(M1+) × Beta-binomial-smoothed "
-                "P(X1+ | M1+)"
+                "strongly regularized direct magnetic/history X1+ classifier "
+                "with independent calibration and P(X1+) <= P(M1+) constraint"
             ),
+        },
+        "artifacts": {
+            "coefficients": coefficient_path.name,
+            "coefficients_sha256": sha256_file(coefficient_path),
         },
         "validation_note": (
             "M1+ scores use a chronologically later untouched holdout block. "
             "The production M1+ classifier is refit to all rows and calibrated "
             "from out-of-fold predictions grouped by NOAA active region. "
-            "X1+ holdout probabilities use only the development-period X/M "
-            "severity ratio and the held-out M1+ probabilities."
+            "X1+ holdout probabilities use a separately fitted direct magnetic/history "
+            "stage; the constant X/M ratio is retained only "
+            "as a scored reference."
         ),
     }
     atomic_write_json(model_paths.report, report)
@@ -1801,8 +2305,12 @@ def train_models(args: argparse.Namespace) -> ModelPaths:
             "x1": {
                 "file": model_paths.x1.name,
                 "sha256": sha256_file(model_paths.x1),
-                "method": "hierarchical_x_given_m",
+                "method": "direct_magnetic_x1",
             },
+        },
+        "coefficients": {
+            "file": coefficient_path.name,
+            "sha256": sha256_file(coefficient_path),
         },
         "training_report": model_paths.report.name,
         "training_dataset_sha256": sha256_file(dataset),
@@ -1816,12 +2324,14 @@ def train_models(args: argparse.Namespace) -> ModelPaths:
             "max_abs_observer_velocity_m_s": args.max_obs_vr,
             "max_quality_integer": args.max_quality,
             "max_live_input_age_hours": args.max_input_age_hours,
-            "multi_region_harps": "excluded",
+            "multi_region_harps_training": "excluded",
+            "multi_region_harps_live": "expanded with shared-HARP disclosure",
         },
         "features": feature_columns,
-        "x1_hierarchy": {
-            "conditional_x_given_m": x1_bundle["conditional_x_given_m"],
-            "severity_posterior": x1_bundle["severity_posterior"],
+        "x1_model": {
+            "method": x1_bundle["method"],
+            "features": x1_bundle["feature_columns"],
+            "constant_severity_reference": x1_bundle["constant_severity_reference"],
         },
         "packages": {
             "python": sys.version.split()[0],
@@ -1829,7 +2339,7 @@ def train_models(args: argparse.Namespace) -> ModelPaths:
         },
         "warning": (
             "Research model. M1+ is a calibrated SHARP classifier; X1+ is a "
-            "hierarchical rare-event estimate. Do not mark operational until "
+            "calibrated direct magnetic/history rare-event classifier constrained beneath M1+. Do not mark operational until "
             "independent backtesting and shadow verification are complete."
         ),
     }
@@ -1995,9 +2505,8 @@ def fetch_swpc_region_metadata() -> dict[int, dict[str, Any]]:
     for row in rows:
         if not isinstance(row, dict):
             continue
-        try:
-            region = int(row.get("region"))
-        except (TypeError, ValueError):
+        region = canonical_noaa_region(row.get("region"))
+        if region is None:
             continue
         timestamp = pd.to_datetime(
             row.get("observation_time") or row.get("observed_date") or row.get("first_date"),
@@ -2009,6 +2518,173 @@ def fetch_swpc_region_metadata() -> dict[int, dict[str, Any]]:
         if region not in latest or timestamp > latest[region][0]:
             latest[region] = (timestamp, row)
     return {region: row for region, (_, row) in latest.items()}
+
+
+def fetch_swpc_flare_history() -> tuple[pd.DataFrame, dict[str, Any]]:
+    """Return the recent SWPC edited-event XRA catalog for causal live features."""
+    columns = [
+        "EVENT_TIME", "FLARE_CLASS", "NOAA_REGION_NORM", "IS_M1_PLUS", "IS_X1_PLUS"
+    ]
+    session = request_session()
+    try:
+        response = session.get(SWPC_EDITED_EVENTS_URL, timeout=30)
+        response.raise_for_status()
+        rows = response.json()
+    except (requests.RequestException, ValueError) as exc:
+        LOGGER.warning("SWPC edited-event history unavailable: %s", exc)
+        return pd.DataFrame(columns=columns), {"available": False, "message": str(exc)}
+    events: list[dict[str, Any]] = []
+    for row in rows if isinstance(rows, list) else []:
+        if not isinstance(row, dict) or str(row.get("type") or "").upper() != "XRA":
+            continue
+        flare_class = str(row.get("particulars1") or "").strip().upper()
+        parsed = re.match(r"^([MX])(\d+(?:\.\d+)?)$", flare_class)
+        region = normalize_region_for_flare_catalog(row.get("region"))
+        event_time = pd.to_datetime(
+            row.get("begin_datetime") or row.get("max_datetime"), errors="coerce", utc=True
+        )
+        if not parsed or region is None or pd.isna(event_time):
+            continue
+        letter, coefficient_text = parsed.groups()
+        coefficient = float(coefficient_text)
+        events.append(
+            {
+                "EVENT_TIME": event_time,
+                "FLARE_CLASS": flare_class,
+                "NOAA_REGION_NORM": region,
+                "IS_M1_PLUS": bool(letter == "M" and coefficient >= 1.0) or letter == "X",
+                "IS_X1_PLUS": bool(letter == "X" and coefficient >= 1.0),
+            }
+        )
+    frame = pd.DataFrame(events, columns=columns)
+    if not frame.empty:
+        frame = frame.drop_duplicates(["EVENT_TIME", "FLARE_CLASS", "NOAA_REGION_NORM"])
+        frame = frame.sort_values("EVENT_TIME")
+    return frame, {
+        "available": True,
+        "source": SWPC_EDITED_EVENTS_URL,
+        "events": int(len(frame)),
+        "m1_plus_events": int(frame["IS_M1_PLUS"].sum()) if len(frame) else 0,
+        "x1_plus_events": int(frame["IS_X1_PLUS"].sum()) if len(frame) else 0,
+    }
+
+
+def fetch_swpc_full_disk(valid_date: dt.date) -> tuple[dict[str, Any] | None, dict[str, Any]]:
+    """Read the official SWPC whole-disk M/X probability for one forecast day."""
+    session = request_session()
+    try:
+        response = session.get(SWPC_THREE_DAY_URL, timeout=30)
+        response.raise_for_status()
+        text = response.text
+    except requests.RequestException as exc:
+        LOGGER.warning("SWPC three-day flare forecast unavailable: %s", exc)
+        return None, {"available": False, "message": str(exc)}
+    dates_match = re.search(r"^:Prediction_dates:\s+(.+)$", text, re.MULTILINE)
+    m_match = re.search(r"^Class_M\s+([\d\s]+)$", text, re.MULTILINE)
+    x_match = re.search(r"^Class_X\s+([\d\s]+)$", text, re.MULTILINE)
+    issued_match = re.search(r"^:Issued:\s+(.+?)\s*$", text, re.MULTILINE)
+    if not (dates_match and m_match and x_match):
+        return None, {"available": False, "message": "required SWPC fields were not parsed"}
+    date_tokens = re.findall(r"\d{4}\s+[A-Z][a-z]{2}\s+\d{1,2}", dates_match.group(1))
+    dates = [dt.datetime.strptime(token, "%Y %b %d").date() for token in date_tokens]
+    m_values = [float(value) for value in m_match.group(1).split()]
+    x_values = [float(value) for value in x_match.group(1).split()]
+    if valid_date not in dates:
+        return None, {
+            "available": False,
+            "message": f"SWPC product does not cover {valid_date}",
+            "covered_dates": [str(value) for value in dates],
+        }
+    index = dates.index(valid_date)
+    if index >= len(m_values) or index >= len(x_values):
+        return None, {"available": False, "message": "SWPC probability columns are incomplete"}
+    member = {
+        "m1": m_values[index],
+        "x1": min(x_values[index], m_values[index]),
+        "source": "NOAA/SWPC 3-day whole-disk flare forecast",
+        "quality": "official-operational",
+        "method": "official_swpc",
+    }
+    return member, {
+        "available": True,
+        "source": SWPC_THREE_DAY_URL,
+        "issued": issued_match.group(1) if issued_match else None,
+        "valid_date": str(valid_date),
+    }
+
+
+def swpc_region_member(metadata: Mapping[str, Any]) -> dict[str, Any] | None:
+    m1 = pd.to_numeric(metadata.get("m_flare_probability"), errors="coerce")
+    x1 = pd.to_numeric(metadata.get("x_flare_probability"), errors="coerce")
+    if pd.isna(m1) and pd.isna(x1):
+        return None
+    m_value = float(m1) if pd.notna(m1) else None
+    x_value = float(x1) if pd.notna(x1) else None
+    if m_value is not None and x_value is not None:
+        x_value = min(x_value, m_value)
+    return {
+        "m1": m_value,
+        "x1": x_value,
+        "source": "NOAA/SWPC numbered-region flare forecast",
+        "quality": "official-operational",
+        "method": "official_swpc",
+    }
+
+
+def active_swpc_region_metadata(
+    metadata: Mapping[int, Mapping[str, Any]], issue_time: dt.datetime
+) -> dict[int, Mapping[str, Any]]:
+    """Select the freshest visible numbered-region records for this cycle."""
+    selected: dict[int, Mapping[str, Any]] = {}
+    issue = pd.Timestamp(ensure_utc(issue_time))
+    for region, row in metadata.items():
+        observed = pd.to_datetime(
+            row.get("observation_time") or row.get("observed_date"),
+            errors="coerce",
+            utc=True,
+        )
+        if pd.isna(observed) or abs((issue - observed).total_seconds()) > 36 * 3600:
+            continue
+        if str(row.get("status") or "").lower() == "d":
+            continue
+        longitude = pd.to_numeric(row.get("longitude"), errors="coerce")
+        if pd.notna(longitude) and abs(float(longitude)) > 90:
+            continue
+        selected[int(region)] = row
+    return selected
+
+
+def morphology_fallback(
+    metadata: Mapping[str, Any],
+    m1_bundle: Mapping[str, Any],
+    x1_bundle: Mapping[str, Any],
+) -> tuple[float, float, str, list[str]]:
+    """Return an honest current-state fallback when SHARP cannot be mapped."""
+    mcintosh = str(metadata.get("spot_class") or "").strip().upper()
+    lookup = LEGACY_MCSTAT_B12.get(mcintosh)
+    if lookup is not None:
+        m1 = float(lookup[0]) / 100.0
+        x1 = min(float(lookup[1]) / 100.0, m1)
+        return (
+            m1,
+            x1,
+            "Bloomfield et al. (2012) McIntosh-Poisson coverage fallback",
+            [
+                f"McIntosh {mcintosh}",
+                "No accepted live single-region SHARP vector",
+            ],
+        )
+    m1 = float(m1_bundle.get("training_prevalence", 0.0) or 0.0)
+    x1 = min(float(x1_bundle.get("training_prevalence", 0.0) or 0.0), m1)
+    return (
+        m1,
+        x1,
+        "WXF training-climatology coverage fallback",
+        [
+            "McIntosh class unavailable or absent from published table",
+            "No accepted live single-region SHARP vector",
+        ],
+    )
 
 
 def feature_contributions(bundle: Mapping[str, Any], features: pd.DataFrame) -> list[tuple[str, float, float]]:
@@ -2046,27 +2722,33 @@ def top_drivers(
     features: pd.DataFrame,
     limit: int = 4,
 ) -> list[str]:
-    """Explain the magnetic M1+ model and identify the X1+ nesting method."""
-    candidates: list[tuple[float, str]] = []
+    """Explain both magnetic classifiers without treating coefficients as causality."""
+    m_candidates: list[tuple[float, str]] = []
     for feature, contribution, raw_value in feature_contributions(
         m1_bundle, features
     )[: max(5, limit)]:
         phrase = driver_phrase(feature, contribution, raw_value)
-        candidates.append((abs(contribution), f"M1+: {phrase}"))
+        m_candidates.append((abs(contribution), f"M1+: {phrase}"))
+
+    x_candidates: list[tuple[float, str]] = []
+    for feature, contribution, raw_value in feature_contributions(
+        x1_bundle, features
+    )[: max(5, limit)]:
+        phrase = driver_phrase(feature, contribution, raw_value)
+        x_candidates.append((abs(contribution), f"X1+ direct: {phrase}"))
 
     output: list[str] = []
-    reserved_for_x1 = 1 if limit > 1 else 0
-    for _, phrase in sorted(candidates, reverse=True):
+    m_slots = max(1, limit // 2)
+    for _, phrase in sorted(m_candidates, reverse=True):
         if phrase not in output:
             output.append(phrase)
-        if len(output) >= limit - reserved_for_x1:
+        if len(output) >= m_slots:
             break
-
-    severity = float(x1_bundle.get("conditional_x_given_m", math.nan))
-    if reserved_for_x1 and math.isfinite(severity):
-        output.append(
-            f"X1+: hierarchical severity factor {severity * 100.0:.1f}% of SHARP M1+"
-        )
+    for _, phrase in sorted(x_candidates, reverse=True):
+        if phrase not in output:
+            output.append(phrase)
+        if len(output) >= limit:
+            break
     return output[:limit]
 
 
@@ -2096,32 +2778,47 @@ def create_forecast_payload(
     input_stats: Mapping[str, Any],
     operational: bool,
     region_metadata: Mapping[int, Mapping[str, Any]] | None = None,
+    swpc_full_disk: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     valid_start = next_utc_midnight(issue_time)
     valid_end = valid_start + dt.timedelta(days=1)
-    swpc = dict(region_metadata) if region_metadata is not None else fetch_swpc_region_metadata()
+    swpc_all = dict(region_metadata) if region_metadata is not None else fetch_swpc_region_metadata()
+    swpc = active_swpc_region_metadata(swpc_all, issue_time)
     regions: list[dict[str, Any]] = []
-    m1_values: list[float] = []
-    x1_values: list[float] = []
+    component_probabilities: dict[str, tuple[float, float]] = {}
+    represented_regions: set[int] = set()
+    sharp_region_count = 0
+    shared_harp_region_count = 0
+    fallback_region_count = 0
 
     if not live_rows.empty:
         features = engineer_features(live_rows)
         m1_probabilities = calibrated_predict(m1_bundle, features)
-        x1_probabilities = hierarchical_x1_predict(
-            m1_probabilities, x1_bundle
+        x1_probabilities = x1_predict(
+            m1_probabilities, x1_bundle, features
         )
 
         for position, (_, row) in enumerate(live_rows.reset_index(drop=True).iterrows()):
-            region_number = int(row["NOAA_REGION"])
+            region_number = canonical_noaa_region(row["NOAA_REGION"])
+            if region_number is None:
+                continue
             metadata = swpc.get(region_number, {})
             row_features = features.iloc[[position]]
             m1_probability = float(m1_probabilities[position])
             x1_probability = float(x1_probabilities[position])
-            m1_values.append(m1_probability)
-            x1_values.append(x1_probability)
+            harp_number = int(row.get("HARPNUM", -1))
+            component_probabilities.setdefault(
+                f"HARP{harp_number}", (m1_probability, x1_probability)
+            )
+            represented_regions.add(region_number)
+            sharp_region_count += 1
             location = str(metadata.get("location") or "").strip()
             mcintosh = str(metadata.get("spot_class") or "").strip().upper()
             data_age = float(row.get("DATA_AGE_HOURS", np.nan))
+            harp_region_count = int(row.get("HARP_REGION_COUNT", 1) or 1)
+            shared_harp = harp_region_count > 1
+            if shared_harp:
+                shared_harp_region_count += 1
             regions.append(
                 {
                     "id": f"AR{region_number}",
@@ -2131,7 +2828,8 @@ def create_forecast_payload(
                     "quality": {
                         "level": "research" if not operational else "operational",
                         "message": (
-                            f"SHARP NRT record age {data_age:.1f} h; single-region HARP; "
+                            f"SHARP NRT record age {data_age:.1f} h; "
+                            f"{'shared ' + str(harp_region_count) + '-region HARP' if shared_harp else 'single-region HARP'}; "
                             f"|LON_FWT|={abs(float(row['LON_FWT'])):.1f}°"
                         ),
                     },
@@ -2141,31 +2839,87 @@ def create_forecast_payload(
                             "x1": percent(x1_probability),
                             "source": (
                                 f"WXF {manifest.get('model_version', 'unknown')} "
-                                "(calibrated M1; hierarchical X1)"
+                                "(independently calibrated magnetic M1/X1)"
                             ),
-                            "quality": "operational" if operational else "research",
+                            "quality": (
+                                "research-shared-harp" if shared_harp
+                                else "operational" if operational else "research"
+                            ),
+                            "method": "sharp_magnetic",
+                            "component_id": f"HARP{harp_number}",
                         }
                     },
                     "drivers": top_drivers(m1_bundle, x1_bundle, row_features),
                 }
             )
+            official_region = swpc_region_member(metadata)
+            if official_region is not None:
+                regions[-1]["members"]["swpc"] = official_region
 
-    full_m1 = combine_region_probabilities(m1_values)
-    full_x1 = combine_region_probabilities(x1_values)
+    # Every fresh visible numbered region gets a WXF value. Regions lacking an
+    # accepted magnetic vector receive a distinctly labelled morphology or
+    # climatology fallback instead of silently disappearing.
+    for region_number, metadata in sorted(swpc.items()):
+        if region_number in represented_regions:
+            continue
+        m1_probability, x1_probability, source, drivers = morphology_fallback(
+            metadata, m1_bundle, x1_bundle
+        )
+        component_id = f"AR{region_number}-fallback"
+        component_probabilities[component_id] = (m1_probability, x1_probability)
+        fallback_region_count += 1
+        location = str(metadata.get("location") or "").strip()
+        mcintosh = str(metadata.get("spot_class") or "").strip().upper()
+        regions.append(
+            {
+                "id": f"AR{region_number}",
+                "label": f"AR {region_number}",
+                "location": location,
+                "mcintosh": mcintosh,
+                "quality": {
+                    "level": "fallback",
+                    "message": (
+                        "Numbered region is represented, but no accepted live SHARP "
+                        "vector was available; this is not a SHARP magnetic inference."
+                    ),
+                },
+                "members": {
+                    "sharpmag": {
+                        "m1": percent(m1_probability),
+                        "x1": percent(x1_probability),
+                        "source": source,
+                        "quality": "research-coverage-fallback",
+                        "method": "morphology_fallback",
+                        "component_id": component_id,
+                    }
+                },
+                "drivers": drivers,
+            }
+        )
+        official_region = swpc_region_member(metadata)
+        if official_region is not None:
+            regions[-1]["members"]["swpc"] = official_region
+
+    regions.sort(key=lambda item: int(re.sub(r"\D", "", str(item.get("id", "0"))) or 0))
+
+    full_m1 = combine_region_probabilities(value[0] for value in component_probabilities.values())
+    full_x1 = combine_region_probabilities(value[1] for value in component_probabilities.values())
     full_disk: dict[str, Any] = {
         "id": "full-disk",
         "label": "Full Disk",
         "quality": {
             "level": "research" if not operational else "operational",
             "message": (
-                "Visible-disk WXF combination of quality-controlled, single-region HARPs. "
-                "It contains no residual term for unnumbered, farside, or excluded limb regions."
+                "Visible-disk WXF coverage aggregate. Accepted SHARP components and "
+                "explicit morphology/climatology fallbacks are combined once per HARP/region."
             ),
         },
         "drivers": [
-            f"{len(regions)} active regions represented",
+            f"{len(regions)} numbered active regions represented",
+            f"{sharp_region_count} SHARP region values; {fallback_region_count} fallbacks",
             "Regional probabilities combined as 1 - product(1 - p_i)",
-            "No unnumbered/farside residual term",
+            "Shared HARPs counted once in the full-disk aggregate",
+            "No unnumbered or farside residual term",
         ],
         "members": {},
     }
@@ -2175,7 +2929,10 @@ def create_forecast_payload(
             "x1": percent(min(full_x1 or 0.0, full_m1 or 1.0)),
             "source": f"WXF {manifest.get('model_version', 'unknown')} regional combination",
             "quality": "operational" if operational else "research",
+            "method": "regional_union_with_explicit_fallbacks",
         }
+    if swpc_full_disk is not None:
+        full_disk["members"]["swpc"] = dict(swpc_full_disk)
 
     return {
         "schema_version": SCHEMA_VERSION,
@@ -2190,13 +2947,28 @@ def create_forecast_payload(
             "level": "operational" if operational else "research",
             "message": (
                 "Daily WXF inference from a saved calibrated M1+ model and "
-                "a hierarchical X1+ severity layer. Research/shadow guidance unless "
+                "an independently calibrated magnetic/history X1+ model. "
+                "Research/shadow guidance unless "
                 "explicitly validated and marked operational."
             ),
         },
         "input": {
             "series": manifest.get("live_series", DEFAULT_LIVE_SERIES),
             **dict(input_stats),
+        },
+        "wxf_full_disk": {
+            "method": "union_of_unique_region_components",
+            "formula": "1 - product(1 - regional probability)",
+            "components": len(component_probabilities),
+            "numbered_regions": len(regions),
+            "sharp_regions": sharp_region_count,
+            "shared_harp_region_values": shared_harp_region_count,
+            "fallback_regions": fallback_region_count,
+            "unnumbered_or_farside_residual": False,
+            "note": (
+                "Coverage aggregate, not a separately trained full-disk classifier. "
+                "Shared HARP probabilities are included once."
+            ),
         },
         "regions": [full_disk, *regions],
     }
@@ -2230,7 +3002,7 @@ def forecast(args: argparse.Namespace) -> Path:
         issue_time=issue_time,
         input_lag_hours=input_lag_hours,
         query_hours=args.query_hours,
-        include_multi_region_harps=False,
+        include_multi_region_harps=True,
         max_longitude=max_longitude,
         max_obs_vr=max_obs_vr,
         max_quality=max_quality,
@@ -2242,6 +3014,15 @@ def forecast(args: argparse.Namespace) -> Path:
             "Use --allow-empty only if replacing the previous output with an explicit no-data payload is intended."
         )
 
+    flare_history, history_stats = fetch_swpc_flare_history()
+    live_rows = add_causal_flare_history(live_rows, flare_history)
+    swpc_full_disk, swpc_stats = fetch_swpc_full_disk(next_utc_midnight(issue_time).date())
+    input_stats = {
+        **dict(input_stats),
+        "flare_history": history_stats,
+        "swpc_full_disk": swpc_stats,
+    }
+
     payload = create_forecast_payload(
         live_rows=live_rows,
         m1_bundle=m1_bundle,
@@ -2250,6 +3031,7 @@ def forecast(args: argparse.Namespace) -> Path:
         issue_time=issue_time,
         input_stats=input_stats,
         operational=args.operational,
+        swpc_full_disk=swpc_full_disk,
     )
     output = args.output.expanduser().resolve()
     atomic_write_json(output, payload)
@@ -2272,7 +3054,7 @@ def doctor(args: argparse.Namespace) -> None:
         "python": sys.version,
         "packages": {
             name: package_version(name)
-            for name in ("numpy", "pandas", "requests", "scikit-learn", "joblib", "drms")
+            for name in ("numpy", "pandas", "requests", "scikit-learn", "joblib", "drms", "packaging")
         },
         "network": {},
     }
@@ -2410,7 +3192,7 @@ def self_test(args: argparse.Namespace) -> None:
 
 
 def add_common_quality_arguments(parser: argparse.ArgumentParser) -> None:
-    parser.add_argument("--max-longitude", type=float, default=DEFAULT_MAX_LONGITUDE, help="Maximum |LON_FWT| in degrees (default: 45)")
+    parser.add_argument("--max-longitude", type=float, default=DEFAULT_MAX_LONGITUDE, help="Maximum |LON_FWT| in degrees (default: 50)")
     parser.add_argument("--max-obs-vr", type=float, default=DEFAULT_MAX_OBS_VR, help="Maximum |OBS_VR| in m/s (default: 3500)")
     parser.add_argument("--max-quality", type=int, default=DEFAULT_MAX_QUALITY, help="Optional numeric QUALITY ceiling for sensitivity tests; default 0xFFFFFFFF means diagnostic-only")
 
@@ -2453,13 +3235,13 @@ def build_parser() -> argparse.ArgumentParser:
     build.add_argument("--keep-ambiguous-days", action="store_true", help="Keep days with an unattributed major flare as regional negatives")
     add_common_quality_arguments(build)
 
-    train = subparsers.add_parser("train", help="Train a calibrated M1+ model and hierarchical X1+ layer")
+    train = subparsers.add_parser("train", help="Train independently calibrated M1+ and direct magnetic X1+ models")
     train.add_argument("--dataset", type=Path, required=True)
     train.add_argument("--model-dir", type=Path, required=True)
     train.add_argument("--model-version")
     train.add_argument("--c-value", type=float, default=1.0)
     train.add_argument("--min-m1-positives", type=int, default=50)
-    train.add_argument("--min-x1-positives", type=int, default=5, help="Minimum X1+ events for the hierarchical severity estimate (default: 5)")
+    train.add_argument("--min-x1-positives", type=int, default=15, help="Minimum X1+ region-days for the direct magnetic model (default: 15)")
     train.add_argument("--allow-small-sample", action="store_true")
     train.add_argument("--historical-series", default=DEFAULT_HISTORICAL_SERIES)
     train.add_argument("--live-series", default=DEFAULT_LIVE_SERIES)

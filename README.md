@@ -69,6 +69,7 @@ python sharp_mag_pipeline.py forecast \
 python -m unittest -v \
   test_sharp_mag_pipeline.py \
   test_solar_monitor_guidance.py \
+  test_external_flare_guidance_strict_v4.py \
   test_external_source_audit.py \
   test_publication_guard.py
 

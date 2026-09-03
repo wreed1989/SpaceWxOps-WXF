@@ -152,6 +152,115 @@ def _prune_unverified_members(payload: dict[str, Any]) -> None:
         members.pop("flarecast", None)
 
 
+def _restore_wxf_full_disk_union(payload: dict[str, Any]) -> None:
+    """Rebuild the WXF disk value from unique regional components.
+
+    Older workflow revisions applied a dominant-region proxy after the base WXF
+    forecast was generated. The strict adapter runs later in that workflow, so
+    it also acts as a compatibility guard: current model payloads always leave
+    this adapter with the same unique-component union produced by inference.
+    """
+    regions = [row for row in payload.get("regions", []) if isinstance(row, dict)]
+    full = next((row for row in regions if row.get("id") == "full-disk"), None)
+    if full is None:
+        return
+
+    components: dict[str, tuple[float | None, float | None]] = {}
+    component_counts: dict[str, int] = {}
+    sharp_regions = 0
+    fallback_regions = 0
+    for row in regions:
+        if row is full:
+            continue
+        member = (row.get("members") or {}).get("sharpmag")
+        if not isinstance(member, dict):
+            continue
+        method = str(member.get("method") or "")
+        if method == "sharp_magnetic":
+            sharp_regions += 1
+        elif method == "morphology_fallback":
+            fallback_regions += 1
+        values: list[float | None] = []
+        for key in ("m1", "x1"):
+            try:
+                value = float(member.get(key))
+            except (TypeError, ValueError):
+                value = None
+            if value is not None and not 0.0 <= value <= 100.0:
+                value = None
+            values.append(value)
+        component_id = str(member.get("component_id") or row.get("id") or "")
+        if component_id:
+            component_counts[component_id] = component_counts.get(component_id, 0) + 1
+            if component_id not in components:
+                components[component_id] = (values[0], values[1])
+
+    # Current payloads preserve the unrounded component probabilities so a
+    # downstream compatibility repair reproduces the base inference exactly.
+    exact_components = payload.get("wxf_region_components")
+    if isinstance(exact_components, list):
+        exact: dict[str, tuple[float | None, float | None]] = {}
+        for item in exact_components:
+            if not isinstance(item, dict):
+                continue
+            component_id = str(item.get("component_id") or "")
+            values = []
+            for key in ("m1", "x1"):
+                try:
+                    value = float(item.get(key))
+                except (TypeError, ValueError):
+                    value = None
+                if value is not None and not 0.0 <= value <= 100.0:
+                    value = None
+                values.append(value)
+            if component_id:
+                exact[component_id] = (values[0], values[1])
+        if exact:
+            components = exact
+
+    def union(index: int) -> float | None:
+        probabilities = [
+            values[index] / 100.0
+            for values in components.values()
+            if values[index] is not None
+        ]
+        if not probabilities:
+            return None
+        survival = 1.0
+        for probability in probabilities:
+            survival *= 1.0 - probability
+        return round((1.0 - survival) * 100.0, 1)
+
+    m1 = union(0)
+    x1 = union(1)
+    if m1 is None and x1 is None:
+        return
+    if m1 is not None and x1 is not None:
+        x1 = min(x1, m1)
+    full.setdefault("members", {})["sharpmag"] = {
+        "m1": m1,
+        "x1": x1,
+        "source": f"WXF {payload.get('model_version', 'unknown')} regional combination",
+        "quality": "operational" if payload.get("operational") else "research",
+        "method": "regional_union_with_explicit_fallbacks",
+    }
+    shared_values = sum(count for count in component_counts.values() if count > 1)
+    payload["wxf_full_disk"] = {
+        "method": "union_of_unique_region_components",
+        "formula": "1 - product(1 - regional probability)",
+        "components": len(components),
+        "numbered_regions": len([row for row in regions if row is not full]),
+        "sharp_regions": sharp_regions,
+        "shared_harp_region_values": shared_values,
+        "fallback_regions": fallback_regions,
+        "unnumbered_or_farside_residual": False,
+        "note": (
+            "Coverage aggregate, not a separately trained full-disk classifier. "
+            "Shared HARP probabilities are included once."
+        ),
+    }
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=(
@@ -171,6 +280,7 @@ def main(argv: list[str] | None = None) -> int:
 
         payload = legacy.enrich(payload)
         _prune_unverified_members(payload)
+        _restore_wxf_full_disk_union(payload)
 
         external = payload.setdefault("external_sources", {})
         external["strict_parser_version"] = SCRIPT_VERSION

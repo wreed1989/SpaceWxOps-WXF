@@ -2970,6 +2970,15 @@ def create_forecast_payload(
                 "Shared HARP probabilities are included once."
             ),
         },
+        "wxf_region_components": [
+            {
+                "component_id": component_id,
+                "m1": probability_m1 * 100.0,
+                "x1": probability_x1 * 100.0,
+            }
+            for component_id, (probability_m1, probability_x1)
+            in sorted(component_probabilities.items())
+        ],
         "regions": [full_disk, *regions],
     }
 

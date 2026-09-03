@@ -6631,7 +6631,32 @@ body.fd-flare-desk .fd-flare-analysis-grid {
   grid-template-columns: repeat(auto-fit,minmax(min(100%,360px),1fr));
 }
 body.fd-flare-desk .fd-analysis-evidence {
-  grid-template-columns: repeat(auto-fit,minmax(min(100%,300px),1fr));
+  grid-template-columns: repeat(auto-fit,minmax(min(100%,460px),1fr));
+  align-items: start;
+  gap: 1px;
+  background: var(--fd-line);
+}
+body.fd-flare-desk .fd-evidence-stack {
+  min-width: 0;
+  display: grid;
+  align-content: start;
+  background: #02080d;
+}
+body.fd-flare-desk .fd-evidence-stack .fd-evidence-column + .fd-evidence-column {
+  border-top: 1px solid var(--fd-line);
+  border-left: 0;
+}
+body.fd-flare-desk .fd-evidence-data {
+  min-width: 0;
+  border-left: 0;
+  background: #02080d;
+}
+body.fd-flare-desk .fd-evidence-data .fd-dataset-list {
+  max-height: clamp(320px,48vh,470px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding-right: 4px;
 }
 body.fd-flare-desk .fd-flare-footer {
   grid-template-columns: repeat(auto-fit,minmax(min(100%,130px),1fr));
@@ -6673,6 +6698,23 @@ body.fd-flare-desk .fd-wxf-feature-rank {
 body.fd-flare-desk .fd-wxf-reliability-plot svg { max-width: 420px; margin-inline: auto; }
 body.fd-flare-desk .fd-wxf-metric-table th,
 body.fd-flare-desk .fd-wxf-metric-table td { overflow-wrap: anywhere; }
+body.fd-flare-desk .fd-source-entry {
+  grid-template-columns: minmax(0,1fr) auto;
+}
+body.fd-flare-desk .fd-source-entry > small { grid-column: 1 / -1; }
+body.fd-flare-desk .fd-source-entry strong,
+body.fd-flare-desk .fd-source-entry small { min-width: 0; overflow-wrap: anywhere; }
+
+.fd-flare-valid-inline {
+  display: grid;
+  gap: 3px;
+  margin-top: 9px;
+  padding-top: 8px;
+  border-top: 1px solid var(--fd-line);
+}
+.fd-flare-valid-inline > span { color: var(--fd-faint); font: 700 7px ui-monospace,monospace; letter-spacing: .08em; }
+.fd-flare-valid-inline > strong { color: var(--fd-text); font-size: 9px; overflow-wrap: anywhere; }
+.fd-flare-valid-inline > small { color: var(--fd-muted); font-size: 7px; line-height: 1.4; }
 
 @media (max-width: 1500px) {
   :root { --fd-dock: 220px; --fd-inspector: 286px; }
@@ -28958,7 +29000,8 @@ ${range(60, 12)}` }
         </section>
       </div>
       <div class="fd-analysis-evidence">
-        <section class="fd-evidence-column"><span class="fd-eyebrow">REGION FEATURE VECTOR</span><h4>Morphology + location + activity</h4><div class="fd-feature-list">
+        <div class="fd-evidence-stack">
+          <section class="fd-evidence-column"><span class="fd-eyebrow">REGION FEATURE VECTOR</span><h4>Morphology + location + activity</h4><div class="fd-feature-list">
           <div class="fd-feature-row"><span>Heliographic location</span><strong>${esc(region.location)}</strong></div>
           <div class="fd-feature-row"><span>Carrington longitude</span><strong>${esc(flareWorkspaceNumber(region.carringtonLongitude) ?? "--")}°</strong></div>
           <div class="fd-feature-row"><span>McIntosh complexity</span><strong>${esc(region.mcintosh)}</strong></div>
@@ -28967,9 +29010,10 @@ ${range(60, 12)}` }
           <div class="fd-feature-row"><span>Longitudinal extent</span><strong>${esc(flareWorkspaceNumber(region.extent) ?? "--")}°</strong></div>
           <div class="fd-feature-row"><span>SRS C/M/X activity</span><strong>${esc(flareWorkspaceNumber(region.cEvents) ?? 0)} / ${esc(flareWorkspaceNumber(region.mEvents) ?? 0)} / ${esc(flareWorkspaceNumber(region.xEvents) ?? 0)}</strong></div>
           <div class="fd-feature-row"><span>WXF drivers</span><strong>${esc(drivers.length ? drivers.join(" · ") : "Model explanation pending")}</strong></div>
-        </div></section>
-        <section class="fd-evidence-column"><span class="fd-eyebrow">ATTRIBUTED FLARE HISTORY</span><h4>Recent regional event sequence</h4><div class="fd-history-list">${historyMarkup}</div></section>
-        <section class="fd-evidence-column"><span class="fd-eyebrow">INTERNAL DATA + METHOD STATUS</span><h4>Loaded and evaluated in SpaceWxOps</h4><div class="fd-dataset-list">
+          </div></section>
+          <section class="fd-evidence-column"><span class="fd-eyebrow">ATTRIBUTED FLARE HISTORY</span><h4>Recent regional event sequence</h4><div class="fd-history-list">${historyMarkup}</div></section>
+        </div>
+        <section class="fd-evidence-column fd-evidence-data"><span class="fd-eyebrow">INTERNAL DATA + METHOD STATUS</span><h4>Loaded and evaluated in SpaceWxOps</h4><div class="fd-dataset-list">
           <div class="fd-dataset-row"><strong>NOAA/SWPC Solar Region Summary</strong><b>LIVE</b><small>Location, Carrington longitude, area, extent, spots, McIntosh, magnetic class and daily activity.</small></div>
           <div class="fd-dataset-row"><strong>NOAA/SWPC Edited Events</strong><b>${events.length} MATCHED</b><small>Region-attributed XRA/FLA history used for causal persistence and waiting-time features.</small></div>
           <div class="fd-dataset-row"><strong>SDO/HMI continuum + magnetograms</strong><b>${flareHmiFrames.length || "PENDING"}</b><small>Rolling 24-hour image loop with regional solar-rotation tracking.</small></div>
@@ -29037,11 +29081,10 @@ ${range(60, 12)}` }
             <div class="fd-flare-footer"><div><span>SELECTED REGION</span><strong id="fdFlareRegionSummary">${esc(guidance.selectedRegion)}</strong></div><div><span>NUMBERED REGIONS</span><strong id="fdFlareRegionCount">${guidance.activeRegions || "Awaiting ingest"}</strong></div><div><span>GUIDANCE SOURCES</span><strong id="fdFlareMethodCount">${guidance.methodsAvailable || "Loading"}</strong></div><div><span>DATASETS</span><strong id="fdFlareDatasetSummary">SRS/GOES C23 · NADC · SHARP · SDO V2</strong></div></div>
           </section>
           <aside class="fd-flare-sidebar">
-            <section class="fd-flare-side-section"><span class="fd-eyebrow">FORECAST OBJECT</span><h3>Region-aware M1+/X1+ guidance</h3><p>The probability table, solar-disk navigator, and active-region workbench are one synchronized forecast surface.</p><div class="fd-flare-thresholds"><div><span>EVENT CLASS</span><strong>M1+</strong></div><div><span>EVENT CLASS</span><strong>X1+</strong></div></div></section>
+            <section class="fd-flare-side-section"><span class="fd-eyebrow">FORECAST OBJECT</span><h3>Region-aware M1+/X1+ guidance</h3><p>The probability table, solar-disk navigator, and active-region workbench are one synchronized forecast surface.</p><div class="fd-flare-thresholds"><div><span>EVENT CLASS</span><strong>M1+</strong></div><div><span>EVENT CLASS</span><strong>X1+</strong></div></div><div class="fd-flare-valid-inline"><span>VALID PERIOD</span><strong id="fdFlareValidSummary">${esc(guidance.valid)}</strong><small>Region selection, the disk overlay, and forecast card stay synchronized.</small></div></section>
             <section class="fd-flare-side-section"><span class="fd-eyebrow">FORECAST SYNTHESIS</span><h3>WXF SHARP live-compatible · cross-era evidence isolated</h3><p>SWPC remains first. WXF SHARP is the live-compatible trained research model. The new merged SMARP–SHARP baseline is trained across cycles 23–25 and publishes cycle-held-out evidence, but stays disconnected from today’s forecast because X1+ reliability, GONG/KPVT transfer and matched-SWPC gates remain open. WXF SDO Temporal remains a separate image branch.</p></section>
             <section class="fd-flare-side-section"><span class="fd-eyebrow">SELECTED-REGION WORKFLOW</span><h3>From sunspot to forecast</h3><div class="fd-wxf-branches"><div class="fd-wxf-branch"><span>1</span><div><strong>Choose a numbered region</strong><small>Use the live disk or the active-region cards.</small></div></div><div class="fd-wxf-branch"><span>2</span><div><strong>Inspect evolution and morphology</strong><small>Tracked HMI cutouts, McIntosh, magnetic class, area, spot count, extent and location.</small></div></div><div class="fd-wxf-branch"><span>3</span><div><strong>Review history and methods</strong><small>Region-attributed events, explicit source records and M1+/X1+ method outputs.</small></div></div></div><button type="button" class="fd-button primary" data-fd-region-analysis>GO TO REGION WORKBENCH</button></section>
             <section class="fd-flare-side-section"><span class="fd-eyebrow">EVALUATION GUARDRAIL</span><h3>Region-disjoint, forward in time</h3><p>Training and backtests must keep every active-region identity in one fold and issue predictions strictly from data available at forecast time. Score Brier skill, reliability, PR-AUC and TSS separately for M1+ and X1+.</p></section>
-            <section class="fd-flare-side-section"><span class="fd-eyebrow">VALID PERIOD</span><h3 id="fdFlareValidSummary">${esc(guidance.valid)}</h3><p>Region selection, the disk overlay, and the singleton forecast card stay synchronized.</p></section>
           </aside>
         </div>
       </section>

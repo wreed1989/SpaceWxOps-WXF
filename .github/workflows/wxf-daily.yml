@@ -11,11 +11,14 @@ on:
       - "external_flare_guidance_fixed.py"
       - "external_flare_guidance_strict_v3.py"
       - "external_flare_guidance_strict_v4.py"
+      - "test_external_flare_guidance_strict_v4.py"
       - "external_source_audit.py"
+      - "test_solar_monitor_guidance.py"
       - "test_external_source_audit.py"
       - "publication_guard.py"
       - "test_publication_guard.py"
       - "sharp_mag_pipeline.py"
+      - "test_sharp_mag_pipeline.py"
   schedule:
     # Formal 21Z WXF issue plus retries for delayed HMI/SHARP and provider feeds.
     - cron: "20 21 * * *"
@@ -63,8 +66,8 @@ jobs:
             python -m pip install -r requirements-sharp-mag.txt
           fi
 
-      - name: Test publication and provider-transition guards
-        run: python -m unittest -v test_external_source_audit.py test_publication_guard.py
+      - name: Test model, provider, and publication guards
+        run: python -m unittest -v test_sharp_mag_pipeline.py test_solar_monitor_guidance.py test_external_flare_guidance_strict_v4.py test_external_source_audit.py test_publication_guard.py
 
       - name: Generate the formal 21Z WXF forecast
         shell: bash
@@ -92,7 +95,7 @@ jobs:
               --issue-time cycle \
               --issue-hour 21 \
               --input-lag-hours 3 \
-              --max-longitude 45 2>&1)
+              --max-longitude 50 2>&1)
             last_status=$?
             set -e
 
@@ -205,9 +208,9 @@ jobs:
       - name: Add SolarMonitor MCSTAT and MCEVOL guidance
         shell: bash
         run: |
-          # SolarMonitor's next-00Z table can legitimately be unavailable during
-          # the 21Z/22Z/23Z attempts. Exit code 2 is therefore an optional-source
-          # notice, not a failed forecast job. The 00:20Z retry will try again.
+          # Use the latest issue-date SolarMonitor table as a current comparison.
+          # Its own daily window remains explicit and is not presented as an exact
+          # match to WXF's next-calendar-day target.
           set +e
           solar_output=$(python solar_monitor_guidance.py enrich \
             --input flare_guidance.json \
@@ -225,77 +228,12 @@ jobs:
               echo "SolarMonitor guidance added successfully."
               ;;
             2)
-              echo "::notice title=SolarMonitor guidance pending::The next-00Z SolarMonitor table is not available or parseable yet. Continuing with the valid WXF and other external guidance; a later scheduled retry will try again."
+              echo "::notice title=SolarMonitor guidance unavailable::The current issue-date SolarMonitor table is not available or parseable. Continuing with WXF and the other independently verified sources."
               ;;
             *)
               echo "::warning title=SolarMonitor refresh incomplete::solar_monitor_guidance.py exited with code ${solar_status}. MCSTAT/MCEVOL remain unavailable; continuing with WXF and the other independently verified sources."
               ;;
           esac
-
-      - name: Apply conservative WXF full-disk proxy
-        shell: bash
-        run: |
-          python - <<'PY'
-          import json
-          import math
-          from pathlib import Path
-
-          path = Path("flare_guidance.json")
-          payload = json.loads(path.read_text(encoding="utf-8"))
-          regions = [row for row in payload.get("regions", []) if isinstance(row, dict)]
-          full = next((row for row in regions if row.get("id") == "full-disk"), None)
-          regional = [row for row in regions if row.get("id") != "full-disk"]
-          wxf_members = [
-              row.get("members", {}).get("sharpmag")
-              for row in regional
-              if isinstance(row.get("members", {}).get("sharpmag"), dict)
-          ]
-
-          def maximum(key):
-              values = []
-              for member in wxf_members:
-                  try:
-                      value = float(member.get(key))
-                  except (TypeError, ValueError):
-                      continue
-                  if math.isfinite(value) and 0 <= value <= 100:
-                      values.append(value)
-              return max(values) if values else None
-
-          if full is not None and wxf_members:
-              m1 = maximum("m1")
-              x1 = maximum("x1")
-              if m1 is not None or x1 is not None:
-                  if m1 is not None and x1 is not None:
-                      x1 = min(x1, m1)
-                  full.setdefault("members", {})["sharpmag"] = {
-                      "m1": m1,
-                      "x1": x1,
-                      "source": (
-                          f"WXF dominant-region proxy (maximum of {len(wxf_members)} "
-                          "quality-controlled regional forecasts)"
-                      ),
-                      "quality": "research-dominant-region-proxy",
-                  }
-                  payload["wxf_full_disk"] = {
-                      "method": "maximum regional probability (dominant-region proxy)",
-                      "regional_forecasts": len(wxf_members),
-                      "note": (
-                          "Interim full-disk display proxy. It avoids an inflated "
-                          "independence-union calculation but is not a separately "
-                          "trained or calibrated full-disk model."
-                      ),
-                  }
-
-          path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
-          Path("flare_guidance.js").write_text(
-              "/* Generated automatically by the SpaceWxOps WXF workflow. */\n"
-              "window.FLARE_GUIDANCE_PAYLOAD = "
-              + json.dumps(payload, indent=2)
-              + ";\n",
-              encoding="utf-8",
-          )
-          PY
 
       - name: Add SIDC, Met Office, FLARECAST, and NASA CCMC guidance
         shell: bash
@@ -346,6 +284,13 @@ jobs:
           assert full_disk, "full-disk row missing"
           full_members = full_disk.get("members", {})
           assert full_members.get("sharpmag"), "full-disk WXF probability missing"
+          assert full_members.get("swpc"), "official SWPC full-disk benchmark missing"
+          coverage = payload.get("wxf_full_disk") or {}
+          assert coverage.get("method") == "union_of_unique_region_components", coverage
+          numbered = [region for region in regions if region.get("id") != "full-disk"]
+          assert numbered, "no numbered active regions"
+          assert all((region.get("members") or {}).get("sharpmag") for region in numbered), \
+              "every numbered region must publish a WXF value or an explicit fallback"
 
           count = 0
           for region in regions:
@@ -397,7 +342,7 @@ jobs:
           issued = payload["issued"]
           history = Path("forecast_history.jsonl")
           lines = [line for line in history.read_text(encoding="utf-8").splitlines() if line.strip()] if history.exists() else []
-          replacement = json.dumps(payload, separators=(",", ":"))
+          replacment = json.dumps(payload, separators=(",", ":"))
           output = []
           replaced = False
 

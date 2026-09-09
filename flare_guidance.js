@@ -149,9 +149,9 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "x1": 0.0,
           "source": "SIDC 24-hour Global Flare Forecast",
           "quality": "published-comparison",
-          "issued": "2026-09-08T11:33:48Z",
-          "valid_start": "2026-09-08T11:33:48Z",
-          "valid_end": "2026-09-09T11:33:48Z",
+          "issued": "2026-09-09T11:47:37Z",
+          "valid_start": "2026-09-09T11:47:37Z",
+          "valid_end": "2026-09-10T11:47:37Z",
           "note": "Human-operator-moderated global forecast published by SIDC."
         },
         "ccmc_amos": {
@@ -601,7 +601,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20260908&region=&indexnum=1",
-    "retrieved_at": "2026-09-09T04:45:09Z",
+    "retrieved_at": "2026-09-09T16:40:40Z",
     "table_date": "2026-09-08",
     "valid_start": "2026-09-08T00:00:00Z",
     "valid_end": "2026-09-09T00:00:00Z",
@@ -613,12 +613,12 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-09-09T04:45:09Z",
+    "generated_at": "2026-09-09T16:40:40Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
       "url": "https://www.sidc.be/WMO/FlareForecast.php",
-      "issued": "2026-09-08T11:33:48Z",
+      "issued": "2026-09-09T11:47:37Z",
       "m1": 0.0,
       "x1": 0.0
     },
@@ -667,7 +667,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 4,
+      "records": 5,
       "issued": "2026-09-08T12:30:10Z",
       "valid_start": "2026-09-08T12:30:00Z",
       "valid_end": "2026-09-09T12:30:00Z",
@@ -907,7 +907,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 104,
+      "records": 116,
       "issued": "2026-09-09T00:00:00Z",
       "valid_start": "2026-09-09T00:00:00Z",
       "valid_end": "2026-09-10T00:00:00Z",
@@ -984,7 +984,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 104,
+      "records": 116,
       "issued": "2026-09-09T00:00:00Z",
       "valid_start": "2026-09-09T00:00:00Z",
       "valid_end": "2026-09-09T12:00:00Z",
@@ -1190,7 +1190,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 88,
+      "records": 100,
       "issued": "2026-09-09T03:20:37Z",
       "valid_start": "2026-09-09T00:00:00Z",
       "valid_end": "2026-09-10T00:00:00Z",
@@ -1267,7 +1267,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 93,
+      "records": 105,
       "issued": "2026-09-09T03:01:39Z",
       "valid_start": "2026-09-09T00:00:00Z",
       "valid_end": "2026-09-10T00:00:00Z",
@@ -1396,10 +1396,9 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "flarecast": {
       "ok": false,
       "url": "https://api.flarecast.eu/api/prediction/flarecast_latest.xml",
-      "http_status": 200,
-      "content_length": 49,
-      "detail": "XML contained no parseable current M/X probabilities",
-      "candidate_count": 0
+      "http_status": 500,
+      "content_length": 3323,
+      "detail": "HTTPError: 500 Server Error: INTERNAL SERVER ERROR for url: https://api.flarecast.eu/api/prediction/flarecast_latest.xml"
     },
     "strict_parser_version": "5.0.0",
     "availability_policy": "Only current, positively identified forecasts that overlap the wall's target period are published. Missing, stale, retired, maintenance-mode, or non-overlapping providers remain unavailable rather than being replaced or assigned a synthetic probability.",

@@ -74,8 +74,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "wxf_region_components": [
     {
       "component_id": "HARP13945",
-      "m1": 1.6210450303580766,
-      "x1": 0.1988404595799611
+      "m1": 1.621045030358081,
+      "x1": 0.19884045957996077
     },
     {
       "component_id": "HARP13953",
@@ -85,16 +85,16 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "component_id": "HARP13959",
       "m1": 2.153224153079885,
-      "x1": 0.4900727392456128
+      "x1": 0.49007273924561245
     },
     {
       "component_id": "HARP13966",
-      "m1": 1.3766356290917638,
-      "x1": 0.09851591143623249
+      "m1": 1.3766356290917625,
+      "x1": 0.09851591143623267
     },
     {
       "component_id": "HARP13967",
-      "m1": 0.7522490749027426,
+      "m1": 0.7522490749027432,
       "x1": 0.10799149658778844
     },
     {
@@ -155,6 +155,17 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "valid_end": "2026-09-10T11:47:37Z",
           "note": "Human-operator-moderated global forecast published by SIDC."
         },
+        "ccmc_amos": {
+          "m1": null,
+          "x1": 0.0,
+          "source": "NASA/CCMC Flare Scoreboard · CCMC AMOS",
+          "quality": "published-comparison",
+          "issued": "2026-09-10T00:30:00Z",
+          "valid_start": "2026-09-10T00:00:00Z",
+          "valid_end": "2026-09-11T00:00:00Z",
+          "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
+          "dataset_id": "AMOS_v1_FULLDISK"
+        },
         "ccmc_assa24": {
           "m1": null,
           "x1": 0.0,
@@ -178,24 +189,24 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "dataset_id": "ASSA_1_FULLDISK"
         },
         "ccmc_magpy_los": {
-          "m1": 3.0,
+          "m1": 2.0,
           "x1": 1.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC MagPy HMI LOS",
           "quality": "published-comparison",
-          "issued": "2026-09-09T23:17:55Z",
-          "valid_start": "2026-09-09T20:00:00Z",
-          "valid_end": "2026-09-10T20:00:00Z",
+          "issued": "2026-09-10T00:17:24Z",
+          "valid_start": "2026-09-09T21:00:00Z",
+          "valid_end": "2026-09-10T21:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "MagPy-HMI-LOS_FULLDISK"
         },
         "ccmc_magpy": {
-          "m1": 2.0,
-          "x1": 2.0,
+          "m1": 1.0,
+          "x1": 1.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC MagPy SHARP",
           "quality": "published-comparison",
-          "issued": "2026-09-09T23:03:50Z",
-          "valid_start": "2026-09-09T20:00:00Z",
-          "valid_end": "2026-09-10T20:00:00Z",
+          "issued": "2026-09-10T01:02:15Z",
+          "valid_start": "2026-09-09T22:00:00Z",
+          "valid_end": "2026-09-10T22:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "MagPy_SHARP_HMI_CEA_FULLDISK"
         }
@@ -598,7 +609,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20260909&region=&indexnum=1",
-    "retrieved_at": "2026-09-10T00:18:11Z",
+    "retrieved_at": "2026-09-10T01:10:58Z",
     "table_date": "2026-09-09",
     "valid_start": "2026-09-09T00:00:00Z",
     "valid_end": "2026-09-10T00:00:00Z",
@@ -610,7 +621,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-09-10T00:18:12Z",
+    "generated_at": "2026-09-10T01:10:58Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
@@ -747,7 +758,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "ccmc_ccmc_amos": {
       "dataset_id": "AMOS_v1_FULLDISK",
       "label": "CCMC AMOS",
-      "ok": false,
+      "ok": true,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=AMOS_v1_FULLDISK",
       "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=AMOS_v1_FULLDISK&time.min=2026-09-05T21%3A00%3A00.0&time.max=2026-09-10T21%3A00%3A00.0&format=json&options=fields.all",
@@ -784,8 +795,42 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 4,
-      "detail": "Forecast window does not meaningfully overlap target (2026-09-09T00:00:00Z to 2026-09-10T00:00:00Z)"
+      "records": 5,
+      "issued": "2026-09-10T00:30:00Z",
+      "valid_start": "2026-09-10T00:00:00Z",
+      "valid_end": "2026-09-11T00:00:00Z",
+      "m1": null,
+      "x1": 0.0,
+      "selected_record": {
+        "start_window": "2026-09-10T00:00:00.0Z",
+        "end_window": "2026-09-11T00:00:00.0Z",
+        "issue_time": "2026-09-10T00:30:00.0Z",
+        "C": 0.3302,
+        "M": 0.0085,
+        "CPlus": "-1",
+        "MPlus": "-1",
+        "X": 0,
+        "C_uncertainty": "-1",
+        "M_uncertainty": "-1",
+        "CPlus_uncertainty": "-1",
+        "MPlus_uncertainty": "-1",
+        "X_uncertainty": "-1",
+        "C_value_lower": "-1",
+        "M_value_lower": "-1",
+        "CPlus_value_lower": "-1",
+        "MPlus_value_lower": "-1",
+        "X_value_lower": "-1",
+        "C_value_higher": "-1",
+        "M_value_higher": "-1",
+        "CPlus_value_higher": "-1",
+        "MPlus_value_higher": "-1",
+        "X_value_higher": "-1",
+        "C_level": "-1",
+        "M_level": "-1",
+        "CPlus_level": "-1",
+        "MPlus_level": "-1",
+        "X_level": "-1"
+      }
     },
     "ccmc_ccmc_asap": {
       "dataset_id": "ASAP_1_FULLDISK",
@@ -870,7 +915,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 100,
+      "records": 101,
       "issued": "2026-09-10T00:00:00Z",
       "valid_start": "2026-09-10T00:00:00Z",
       "valid_end": "2026-09-11T00:00:00Z",
@@ -947,7 +992,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 100,
+      "records": 101,
       "issued": "2026-09-10T00:00:00Z",
       "valid_start": "2026-09-10T00:00:00Z",
       "valid_end": "2026-09-10T12:00:00Z",
@@ -1153,20 +1198,20 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 86,
-      "issued": "2026-09-09T23:17:55Z",
-      "valid_start": "2026-09-09T20:00:00Z",
-      "valid_end": "2026-09-10T20:00:00Z",
-      "m1": 3.0,
+      "records": 87,
+      "issued": "2026-09-10T00:17:24Z",
+      "valid_start": "2026-09-09T21:00:00Z",
+      "valid_end": "2026-09-10T21:00:00Z",
+      "m1": 2.0,
       "x1": 1.0,
       "selected_record": {
-        "start_window": "2026-09-09T20:00:00.0Z",
-        "end_window": "2026-09-10T20:00:00.0Z",
-        "issue_time": "2026-09-09T23:17:55.0Z",
+        "start_window": "2026-09-09T21:00:00.0Z",
+        "end_window": "2026-09-10T21:00:00.0Z",
+        "issue_time": "2026-09-10T00:17:24.0Z",
         "C": "-1",
         "M": "-1",
         "CPlus": "-1",
-        "MPlus": 0.03,
+        "MPlus": 0.02,
         "X": 0.01,
         "C_uncertainty": "-1",
         "M_uncertainty": "-1",
@@ -1230,26 +1275,26 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 95,
-      "issued": "2026-09-09T23:03:50Z",
-      "valid_start": "2026-09-09T20:00:00Z",
-      "valid_end": "2026-09-10T20:00:00Z",
-      "m1": 2.0,
+      "records": 97,
+      "issued": "2026-09-10T01:02:15Z",
+      "valid_start": "2026-09-09T22:00:00Z",
+      "valid_end": "2026-09-10T22:00:00Z",
+      "m1": 1.0,
       "x1": 3.0,
       "selected_record": {
-        "start_window": "2026-09-09T20:00:00.0Z",
-        "end_window": "2026-09-10T20:00:00.0Z",
-        "issue_time": "2026-09-09T23:03:50.0Z",
+        "start_window": "2026-09-09T22:00:00.0Z",
+        "end_window": "2026-09-10T22:00:00.0Z",
+        "issue_time": "2026-09-10T01:02:15.0Z",
         "C": "-1",
         "M": "-1",
         "CPlus": "-1",
-        "MPlus": 0.02,
+        "MPlus": 0.01,
         "X": 0.03,
         "C_uncertainty": "-1",
         "M_uncertainty": "-1",
         "CPlus_uncertainty": "-1",
         "MPlus_uncertainty": 0.01,
-        "X_uncertainty": 0.014,
+        "X_uncertainty": 0.018,
         "C_value_lower": "-1",
         "M_value_lower": "-1",
         "CPlus_value_lower": "-1",
@@ -1325,7 +1370,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "flarecast": {
       "ok": false,
       "url": "https://api.flarecast.eu/api/prediction/flarecast_latest.xml",
-      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x7f77c9d66c10>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
+      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x7f6dcbfa2c10>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
     },
     "strict_parser_version": "5.0.0",
     "availability_policy": "Only current, positively identified forecasts that overlap the wall's target period are published. Missing, stale, retired, maintenance-mode, or non-overlapping providers remain unavailable rather than being replaced or assigned a synthetic probability.",

@@ -5,47 +5,46 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "script_version": "2.0.0",
   "operational": false,
   "probability_scale": "percent",
-  "issued": "2026-09-10T21:00:00Z",
-  "valid_start": "2026-09-11T00:00:00Z",
-  "valid_end": "2026-09-12T00:00:00Z",
+  "issued": "2026-09-11T21:00:00Z",
+  "valid_start": "2026-09-12T00:00:00Z",
+  "valid_end": "2026-09-13T00:00:00Z",
   "quality": {
     "level": "research",
     "message": "Daily WXF inference from a saved calibrated M1+ model and an independently calibrated magnetic/history X1+ model. Research/shadow guidance unless explicitly validated and marked operational."
   },
   "input": {
     "series": "hmi.sharp_cea_720s_nrt",
-    "target_time": "2026-09-10T18:00:00Z",
-    "latest_record": "2026-09-10T18:00:00Z",
-    "oldest_retained_record": "2026-09-10T18:00:00Z",
-    "raw_records": 1737,
+    "target_time": "2026-09-11T18:00:00Z",
+    "latest_record": "2026-09-11T18:00:00Z",
+    "oldest_retained_record": "2026-09-11T18:00:00Z",
+    "raw_records": 1540,
     "retained_regions": 7,
     "mapping": {
       "skipped_multi_region_harps": 0,
-      "skipped_unmapped_harps": 7,
-      "expanded_rows": 11
+      "skipped_unmapped_harps": 6,
+      "expanded_rows": 12
     },
     "quality": {
-      "input": 11,
+      "input": 12,
       "rejected_longitude": 2,
-      "after_longitude": 9,
+      "after_longitude": 10,
       "quality_missing": 0,
       "quality_top_values": {
-        "0x00010400": 7,
-        "0x00000400": 1,
-        "0x00011C00": 1
+        "0x00011C00": 8,
+        "0x00000400": 2
       },
       "rejected_quality": 0,
-      "after_quality": 9,
+      "after_quality": 10,
       "rejected_harp_merge": 0,
-      "after_harp_merge": 9,
+      "after_harp_merge": 10,
       "rejected_observer_velocity": 0,
-      "after_observer_velocity": 9,
+      "after_observer_velocity": 10,
       "rejected_missing_mapping": 0,
-      "after_mapping": 9,
+      "after_mapping": 10,
       "min_finite_parameters": 12,
       "rejected_parameter_completeness": 0,
-      "after_parameter_completeness": 9,
-      "retained": 9
+      "after_parameter_completeness": 10,
+      "retained": 10
     },
     "flare_history": {
       "available": true,
@@ -57,14 +56,14 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "swpc_full_disk": {
       "available": true,
       "source": "https://services.swpc.noaa.gov/text/3-day-solar-geomag-predictions.txt",
-      "issued": "2026 Sep 10 2230 UTC",
-      "valid_date": "2026-09-11"
+      "issued": "2026 Sep 11 2200 UTC",
+      "valid_date": "2026-09-12"
     }
   },
   "wxf_full_disk": {
     "method": "union_of_unique_region_components",
     "formula": "1 - product(1 - regional probability)",
-    "components": 6,
+    "components": 5,
     "numbered_regions": 9,
     "sharp_regions": 7,
     "shared_harp_region_values": 5,
@@ -85,23 +84,18 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     },
     {
       "component_id": "HARP13953",
-      "m1": 6.1187901707278245,
-      "x1": 0.2115335231734057
-    },
-    {
-      "component_id": "HARP13959",
-      "m1": 2.016502894323531,
-      "x1": 0.48251830434097975
+      "m1": 5.0800335113118775,
+      "x1": 0.19265418203981155
     },
     {
       "component_id": "HARP13966",
-      "m1": 1.329860592554073,
-      "x1": 0.0810533893853006
+      "m1": 1.6885007769960159,
+      "x1": 0.15054336966573567
     },
     {
       "component_id": "HARP13967",
-      "m1": 0.92574755650906,
-      "x1": 0.1101849072071635
+      "m1": 0.8533005278996291,
+      "x1": 0.15215912634701684
     }
   ],
   "regions": [
@@ -121,8 +115,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "members": {
         "sharpmag": {
-          "m1": 16.0,
-          "x1": 1.1,
+          "m1": 13.6,
+          "x1": 0.7,
           "source": "WXF sharp-mag-20260903-xstruct-history-v3 regional combination",
           "quality": "research",
           "method": "regional_union_with_explicit_fallbacks"
@@ -135,8 +129,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "method": "official_swpc"
         },
         "mcstat": {
-          "m1": 6.0,
-          "x1": 0.0,
+          "m1": 12.0,
+          "x1": 2.0,
           "source": "SolarMonitor MCSTAT dominant-region proxy (maximum of 7 regional forecasts)",
           "quality": "published-comparison"
         },
@@ -156,25 +150,14 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "valid_end": "2026-09-12T11:21:09Z",
           "note": "Human-operator-moderated global forecast published by SIDC."
         },
-        "ccmc_amos": {
-          "m1": null,
-          "x1": 0.0,
-          "source": "NASA/CCMC Flare Scoreboard · CCMC AMOS",
-          "quality": "published-comparison",
-          "issued": "2026-09-11T00:30:00Z",
-          "valid_start": "2026-09-11T00:00:00Z",
-          "valid_end": "2026-09-12T00:00:00Z",
-          "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
-          "dataset_id": "AMOS_v1_FULLDISK"
-        },
         "ccmc_assa24": {
           "m1": null,
           "x1": 0.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC ASSA 24H",
           "quality": "published-comparison",
-          "issued": "2026-09-11T00:00:00Z",
-          "valid_start": "2026-09-11T00:00:00Z",
-          "valid_end": "2026-09-12T00:00:00Z",
+          "issued": "2026-09-12T00:00:00Z",
+          "valid_start": "2026-09-12T00:00:00Z",
+          "valid_end": "2026-09-13T00:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "ASSA_24H_1_FULLDISK"
         },
@@ -183,42 +166,42 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "x1": 0.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC ASSA",
           "quality": "published-comparison",
-          "issued": "2026-09-11T00:00:00Z",
-          "valid_start": "2026-09-11T00:00:00Z",
-          "valid_end": "2026-09-11T12:00:00Z",
+          "issued": "2026-09-12T00:00:00Z",
+          "valid_start": "2026-09-12T00:00:00Z",
+          "valid_end": "2026-09-12T12:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "ASSA_1_FULLDISK"
         },
         "ccmc_magpy_los": {
-          "m1": 3.0,
+          "m1": 2.0,
           "x1": 1.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC MagPy HMI LOS",
           "quality": "published-comparison",
-          "issued": "2026-09-11T03:15:47Z",
-          "valid_start": "2026-09-11T00:00:00Z",
-          "valid_end": "2026-09-12T00:00:00Z",
+          "issued": "2026-09-12T00:10:58Z",
+          "valid_start": "2026-09-11T21:00:00Z",
+          "valid_end": "2026-09-12T21:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "MagPy-HMI-LOS_FULLDISK"
         },
         "ccmc_magpy": {
-          "m1": 1.0,
-          "x1": 1.0,
+          "m1": 2.0,
+          "x1": 2.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC MagPy SHARP",
           "quality": "published-comparison",
-          "issued": "2026-09-11T03:02:11Z",
-          "valid_start": "2026-09-11T00:00:00Z",
-          "valid_end": "2026-09-12T00:00:00Z",
+          "issued": "2026-09-12T00:01:33Z",
+          "valid_start": "2026-09-11T21:00:00Z",
+          "valid_end": "2026-09-12T21:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "MagPy_SHARP_HMI_CEA_FULLDISK"
         },
         "ccmc_sps": {
           "m1": null,
-          "x1": 5.0,
+          "x1": 1.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC SPS",
           "quality": "published-comparison",
-          "issued": "2026-09-10T17:00:00Z",
-          "valid_start": "2026-09-10T17:00:00Z",
-          "valid_end": "2026-09-11T17:00:00Z",
+          "issued": "2026-09-11T17:00:00Z",
+          "valid_start": "2026-09-11T17:00:00Z",
+          "valid_end": "2026-09-12T17:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "SPS_FULLDISK"
         }
@@ -227,7 +210,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14521",
       "label": "AR 14521",
-      "location": "N09W67",
+      "location": "N09W79",
       "mcintosh": "HSX",
       "quality": {
         "level": "fallback",
@@ -270,7 +253,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14523",
       "label": "AR 14523",
-      "location": "N10W56",
+      "location": "N10W70",
       "mcintosh": "",
       "quality": {
         "level": "fallback",
@@ -301,15 +284,15 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14524",
       "label": "AR 14524",
-      "location": "N12W27",
+      "location": "N12W40",
       "mcintosh": "HSX",
       "quality": {
         "level": "research",
-        "message": "SHARP NRT record age 3.0 h; shared 3-region HARP; |LON_FWT|=15.5°"
+        "message": "SHARP NRT record age 3.0 h; shared 5-region HARP; |LON_FWT|=19.9°"
       },
       "members": {
         "sharpmag": {
-          "m1": 6.1,
+          "m1": 5.1,
           "x1": 0.2,
           "source": "WXF sharp-mag-20260903-xstruct-history-v3 (independently calibrated magnetic M1/X1)",
           "quality": "research-shared-harp",
@@ -346,16 +329,16 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14525",
       "label": "AR 14525",
-      "location": "N11W10",
-      "mcintosh": "CRI",
+      "location": "N11W24",
+      "mcintosh": "CRO",
       "quality": {
         "level": "research",
-        "message": "SHARP NRT record age 3.0 h; shared 3-region HARP; |LON_FWT|=15.5°"
+        "message": "SHARP NRT record age 3.0 h; shared 5-region HARP; |LON_FWT|=19.9°"
       },
       "members": {
         "sharpmag": {
-          "m1": 5.1,
-          "x1": 0.3,
+          "m1": 6.9,
+          "x1": 0.4,
           "source": "WXF sharp-mag-20260903-xstruct-history-v3 (independently calibrated magnetic M1/X1)",
           "quality": "research-shared-harp",
           "method": "sharp_magnetic",
@@ -369,15 +352,9 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "method": "official_swpc"
         },
         "mcstat": {
-          "m1": 2.0,
+          "m1": 4.0,
           "x1": 0.0,
           "source": "SolarMonitor MCSTAT regional forecast",
-          "quality": "published-comparison"
-        },
-        "mcevol": {
-          "m1": 1.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCEVOL regional forecast",
           "quality": "published-comparison"
         }
       },
@@ -391,20 +368,20 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14526",
       "label": "AR 14526",
-      "location": "S02W16",
+      "location": "S02W31",
       "mcintosh": "",
       "quality": {
         "level": "research",
-        "message": "SHARP NRT record age 3.0 h; shared 2-region HARP; |LON_FWT|=0.6°"
+        "message": "SHARP NRT record age 3.0 h; shared 5-region HARP; |LON_FWT|=19.9°"
       },
       "members": {
         "sharpmag": {
-          "m1": 2.0,
-          "x1": 0.5,
+          "m1": 6.9,
+          "x1": 0.4,
           "source": "WXF sharp-mag-20260903-xstruct-history-v3 (independently calibrated magnetic M1/X1)",
           "quality": "research-shared-harp",
           "method": "sharp_magnetic",
-          "component_id": "HARP13959"
+          "component_id": "HARP13953"
         },
         "swpc": {
           "m1": 0.0,
@@ -415,29 +392,29 @@ window.FLARE_GUIDANCE_PAYLOAD = {
         }
       },
       "drivers": [
+        "M1+: rising total unsigned flux",
         "M1+: elevated active magnetic area",
-        "M1+: lower mean free-energy density",
-        "X1+ direct: elevated absolute net current helicity",
-        "X1+ direct: elevated active magnetic area"
+        "X1+ direct: elevated active magnetic area",
+        "X1+ direct: rising total unsigned current helicity"
       ]
     },
     {
       "id": "AR14527",
       "label": "AR 14527",
-      "location": "N04W03",
+      "location": "N04W18",
       "mcintosh": "HSX",
       "quality": {
         "level": "research",
-        "message": "SHARP NRT record age 3.0 h; shared 2-region HARP; |LON_FWT|=0.6°"
+        "message": "SHARP NRT record age 3.0 h; shared 5-region HARP; |LON_FWT|=19.9°"
       },
       "members": {
         "sharpmag": {
-          "m1": 2.0,
-          "x1": 0.5,
+          "m1": 6.9,
+          "x1": 0.4,
           "source": "WXF sharp-mag-20260903-xstruct-history-v3 (independently calibrated magnetic M1/X1)",
           "quality": "research-shared-harp",
           "method": "sharp_magnetic",
-          "component_id": "HARP13959"
+          "component_id": "HARP13953"
         },
         "swpc": {
           "m1": 1.0,
@@ -460,25 +437,25 @@ window.FLARE_GUIDANCE_PAYLOAD = {
         }
       },
       "drivers": [
+        "M1+: rising total unsigned flux",
         "M1+: elevated active magnetic area",
-        "M1+: lower mean free-energy density",
-        "X1+ direct: elevated absolute net current helicity",
-        "X1+ direct: elevated active magnetic area"
+        "X1+ direct: elevated active magnetic area",
+        "X1+ direct: rising total unsigned current helicity"
       ]
     },
     {
       "id": "AR14528",
       "label": "AR 14528",
-      "location": "S11E11",
+      "location": "S11W03",
       "mcintosh": "HSX",
       "quality": {
         "level": "research",
-        "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=17.9°"
+        "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=4.7°"
       },
       "members": {
         "sharpmag": {
           "m1": 0.9,
-          "x1": 0.1,
+          "x1": 0.2,
           "source": "WXF sharp-mag-20260903-xstruct-history-v3 (independently calibrated magnetic M1/X1)",
           "quality": "research",
           "method": "sharp_magnetic",
@@ -507,23 +484,23 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "drivers": [
         "M1+: lower mean free-energy density",
         "M1+: elevated mean magnetic shear",
-        "X1+ direct: elevated active magnetic area",
-        "X1+ direct: elevated mean magnetic shear"
+        "X1+ direct: elevated mean magnetic shear",
+        "X1+ direct: elevated active magnetic area"
       ]
     },
     {
       "id": "AR14529",
       "label": "AR 14529",
-      "location": "N12E10",
+      "location": "N12W04",
       "mcintosh": "HAX",
       "quality": {
         "level": "research",
-        "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=16.1°"
+        "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=3.2°"
       },
       "members": {
         "sharpmag": {
-          "m1": 1.3,
-          "x1": 0.1,
+          "m1": 1.7,
+          "x1": 0.2,
           "source": "WXF sharp-mag-20260903-xstruct-history-v3 (independently calibrated magnetic M1/X1)",
           "quality": "research",
           "method": "sharp_magnetic",
@@ -543,32 +520,32 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "quality": "published-comparison"
         },
         "mcevol": {
-          "m1": 0.0,
+          "m1": 1.0,
           "x1": 0.0,
           "source": "SolarMonitor MCEVOL regional forecast",
           "quality": "published-comparison"
         }
       },
       "drivers": [
-        "M1+: falling total unsigned flux",
-        "M1+: elevated mean magnetic shear",
+        "M1+: nearer disk center",
+        "M1+: elevated active magnetic area",
         "X1+ direct: elevated active magnetic area",
-        "X1+ direct: rising absolute net current helicity"
+        "X1+ direct: elevated absolute net current helicity"
       ]
     },
     {
       "id": "AR14530",
       "label": "AR 14530",
-      "location": "N19W21",
-      "mcintosh": "DRI",
+      "location": "N19W35",
+      "mcintosh": "DAO",
       "quality": {
         "level": "research",
-        "message": "SHARP NRT record age 3.0 h; shared 3-region HARP; |LON_FWT|=15.5°"
+        "message": "SHARP NRT record age 3.0 h; shared 5-region HARP; |LON_FWT|=19.9°"
       },
       "members": {
         "sharpmag": {
-          "m1": 5.1,
-          "x1": 0.3,
+          "m1": 6.9,
+          "x1": 0.4,
           "source": "WXF sharp-mag-20260903-xstruct-history-v3 (independently calibrated magnetic M1/X1)",
           "quality": "research-shared-harp",
           "method": "sharp_magnetic",
@@ -582,15 +559,9 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "method": "official_swpc"
         },
         "mcstat": {
-          "m1": 6.0,
-          "x1": 0.0,
+          "m1": 12.0,
+          "x1": 2.0,
           "source": "SolarMonitor MCSTAT regional forecast",
-          "quality": "published-comparison"
-        },
-        "mcevol": {
-          "m1": 0.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCEVOL regional forecast",
           "quality": "published-comparison"
         }
       },
@@ -604,20 +575,20 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   ],
   "solar_monitor": {
     "source": "SolarMonitor",
-    "source_url": "https://www.solarmonitor.org/forecast.php?date=20260910&region=&indexnum=1",
-    "retrieved_at": "2026-09-11T16:30:51Z",
-    "table_date": "2026-09-10",
-    "valid_start": "2026-09-10T00:00:00Z",
-    "valid_end": "2026-09-11T00:00:00Z",
-    "wxf_valid_start": "2026-09-11T00:00:00Z",
-    "wxf_valid_end": "2026-09-12T00:00:00Z",
+    "source_url": "https://www.solarmonitor.org/forecast.php?date=20260911&region=&indexnum=1",
+    "retrieved_at": "2026-09-12T00:20:58Z",
+    "table_date": "2026-09-11",
+    "valid_start": "2026-09-11T00:00:00Z",
+    "valid_end": "2026-09-12T00:00:00Z",
+    "wxf_valid_start": "2026-09-12T00:00:00Z",
+    "wxf_valid_end": "2026-09-13T00:00:00Z",
     "window_alignment": "latest issue-date comparison; not asserted as an exact WXF target-window match",
     "regional_forecasts": 7,
     "full_disk_method": "maximum regional probability (dominant-region proxy)",
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-09-11T16:30:51Z",
+    "generated_at": "2026-09-12T00:20:58Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
@@ -637,7 +608,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "ok": true,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=SIDC_Operator_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=SIDC_Operator_FULLDISK&time.min=2026-09-06T21%3A00%3A00.0&time.max=2026-09-11T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=SIDC_Operator_FULLDISK&time.min=2026-09-07T21%3A00%3A00.0&time.max=2026-09-12T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -671,20 +642,20 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 5,
-      "issued": "2026-09-10T12:30:03Z",
-      "valid_start": "2026-09-10T12:30:00Z",
-      "valid_end": "2026-09-11T12:30:00Z",
-      "m1": 27.0,
+      "records": 4,
+      "issued": "2026-09-11T12:30:03Z",
+      "valid_start": "2026-09-11T12:30:00Z",
+      "valid_end": "2026-09-12T12:30:00Z",
+      "m1": 34.0,
       "x1": 1.0,
       "selected_record": {
-        "start_window": "2026-09-10T12:30:00.0Z",
-        "end_window": "2026-09-11T12:30:00.0Z",
-        "issue_time": "2026-09-10T12:30:03.0Z",
+        "start_window": "2026-09-11T12:30:00.0Z",
+        "end_window": "2026-09-12T12:30:00.0Z",
+        "issue_time": "2026-09-11T12:30:03.0Z",
         "C": "-1",
         "M": "-1",
-        "CPlus": 0.8,
-        "MPlus": 0.27,
+        "CPlus": 0.88,
+        "MPlus": 0.34,
         "X": 0.01,
         "C_uncertainty": "-1",
         "M_uncertainty": "-1",
@@ -703,8 +674,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
         "X_value_higher": "-1",
         "C_level": "-1",
         "M_level": "-1",
-        "CPlus_level": 0.8,
-        "MPlus_level": 0.27,
+        "CPlus_level": 0.88,
+        "MPlus_level": 0.34,
         "X_level": 0.01
       }
     },
@@ -714,7 +685,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "ok": false,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=MO_TOT1_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MO_TOT1_FULLDISK&time.min=2026-09-06T21%3A00%3A00.0&time.max=2026-09-11T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MO_TOT1_FULLDISK&time.min=2026-09-07T21%3A00%3A00.0&time.max=2026-09-12T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -754,10 +725,10 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "ccmc_ccmc_amos": {
       "dataset_id": "AMOS_v1_FULLDISK",
       "label": "CCMC AMOS",
-      "ok": true,
+      "ok": false,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=AMOS_v1_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=AMOS_v1_FULLDISK&time.min=2026-09-06T21%3A00%3A00.0&time.max=2026-09-11T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=AMOS_v1_FULLDISK&time.min=2026-09-07T21%3A00%3A00.0&time.max=2026-09-12T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -791,42 +762,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 5,
-      "issued": "2026-09-11T00:30:00Z",
-      "valid_start": "2026-09-11T00:00:00Z",
-      "valid_end": "2026-09-12T00:00:00Z",
-      "m1": null,
-      "x1": 0.0,
-      "selected_record": {
-        "start_window": "2026-09-11T00:00:00.0Z",
-        "end_window": "2026-09-12T00:00:00.0Z",
-        "issue_time": "2026-09-11T00:30:00.0Z",
-        "C": 0.8958,
-        "M": 0.0066,
-        "CPlus": "-1",
-        "MPlus": "-1",
-        "X": 0,
-        "C_uncertainty": "-1",
-        "M_uncertainty": "-1",
-        "CPlus_uncertainty": "-1",
-        "MPlus_uncertainty": "-1",
-        "X_uncertainty": "-1",
-        "C_value_lower": "-1",
-        "M_value_lower": "-1",
-        "CPlus_value_lower": "-1",
-        "MPlus_value_lower": "-1",
-        "X_value_lower": "-1",
-        "C_value_higher": "-1",
-        "M_value_higher": "-1",
-        "CPlus_value_higher": "-1",
-        "MPlus_value_higher": "-1",
-        "X_value_higher": "-1",
-        "C_level": "-1",
-        "M_level": "-1",
-        "CPlus_level": "-1",
-        "MPlus_level": "-1",
-        "X_level": "-1"
-      }
+      "records": 4,
+      "detail": "Forecast window does not meaningfully overlap target (2026-09-11T00:00:00Z to 2026-09-12T00:00:00Z)"
     },
     "ccmc_ccmc_asap": {
       "dataset_id": "ASAP_1_FULLDISK",
@@ -834,7 +771,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "ok": false,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=ASAP_1_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=ASAP_1_FULLDISK&time.min=2026-09-06T21%3A00%3A00.0&time.max=2026-09-11T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=ASAP_1_FULLDISK&time.min=2026-09-07T21%3A00%3A00.0&time.max=2026-09-12T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -877,7 +814,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "ok": true,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=ASSA_24H_1_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=ASSA_24H_1_FULLDISK&time.min=2026-09-06T21%3A00%3A00.0&time.max=2026-09-11T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=ASSA_24H_1_FULLDISK&time.min=2026-09-07T21%3A00%3A00.0&time.max=2026-09-12T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -911,18 +848,18 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 116,
-      "issued": "2026-09-11T00:00:00Z",
-      "valid_start": "2026-09-11T00:00:00Z",
-      "valid_end": "2026-09-12T00:00:00Z",
+      "records": 100,
+      "issued": "2026-09-12T00:00:00Z",
+      "valid_start": "2026-09-12T00:00:00Z",
+      "valid_end": "2026-09-13T00:00:00Z",
       "m1": null,
       "x1": 0.0,
       "selected_record": {
-        "start_window": "2026-09-11T00:00:00.0Z",
-        "end_window": "2026-09-12T00:00:00.0Z",
-        "issue_time": "2026-09-11T00:00:00.0Z",
+        "start_window": "2026-09-12T00:00:00.0Z",
+        "end_window": "2026-09-13T00:00:00.0Z",
+        "issue_time": "2026-09-12T00:00:00.0Z",
         "C": 0.8479,
-        "M": 0.2256,
+        "M": 0.2431,
         "CPlus": "-1",
         "MPlus": "-1",
         "X": 0,
@@ -954,7 +891,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "ok": true,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=ASSA_1_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=ASSA_1_FULLDISK&time.min=2026-09-06T21%3A00%3A00.0&time.max=2026-09-11T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=ASSA_1_FULLDISK&time.min=2026-09-07T21%3A00%3A00.0&time.max=2026-09-12T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -988,18 +925,18 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 116,
-      "issued": "2026-09-11T00:00:00Z",
-      "valid_start": "2026-09-11T00:00:00Z",
-      "valid_end": "2026-09-11T12:00:00Z",
+      "records": 100,
+      "issued": "2026-09-12T00:00:00Z",
+      "valid_start": "2026-09-12T00:00:00Z",
+      "valid_end": "2026-09-12T12:00:00Z",
       "m1": null,
       "x1": 0.0,
       "selected_record": {
-        "start_window": "2026-09-11T00:00:00.0Z",
-        "end_window": "2026-09-11T12:00:00.0Z",
-        "issue_time": "2026-09-11T00:00:00.0Z",
+        "start_window": "2026-09-12T00:00:00.0Z",
+        "end_window": "2026-09-12T12:00:00.0Z",
+        "issue_time": "2026-09-12T00:00:00.0Z",
         "C": 0.61,
-        "M": 0.12,
+        "M": 0.13,
         "CPlus": "-1",
         "MPlus": "-1",
         "X": 0,
@@ -1031,7 +968,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "ok": false,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=BoM_flare1_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=BoM_flare1_FULLDISK&time.min=2026-09-06T21%3A00%3A00.0&time.max=2026-09-11T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=BoM_flare1_FULLDISK&time.min=2026-09-07T21%3A00%3A00.0&time.max=2026-09-12T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -1074,7 +1011,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "ok": false,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=MAG4_LOS_FEr_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MAG4_LOS_FEr_FULLDISK&time.min=2026-09-06T21%3A00%3A00.0&time.max=2026-09-11T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MAG4_LOS_FEr_FULLDISK&time.min=2026-09-07T21%3A00%3A00.0&time.max=2026-09-12T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -1117,7 +1054,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "ok": false,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=MAG4_LOS_r_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MAG4_LOS_r_FULLDISK&time.min=2026-09-06T21%3A00%3A00.0&time.max=2026-09-11T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MAG4_LOS_r_FULLDISK&time.min=2026-09-07T21%3A00%3A00.0&time.max=2026-09-12T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -1160,7 +1097,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "ok": true,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=MagPy-HMI-LOS_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MagPy-HMI-LOS_FULLDISK&time.min=2026-09-06T21%3A00%3A00.0&time.max=2026-09-11T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MagPy-HMI-LOS_FULLDISK&time.min=2026-09-07T21%3A00%3A00.0&time.max=2026-09-12T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -1194,20 +1131,20 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 100,
-      "issued": "2026-09-11T03:15:47Z",
-      "valid_start": "2026-09-11T00:00:00Z",
-      "valid_end": "2026-09-12T00:00:00Z",
-      "m1": 3.0,
+      "records": 87,
+      "issued": "2026-09-12T00:10:58Z",
+      "valid_start": "2026-09-11T21:00:00Z",
+      "valid_end": "2026-09-12T21:00:00Z",
+      "m1": 2.0,
       "x1": 1.0,
       "selected_record": {
-        "start_window": "2026-09-11T00:00:00.0Z",
-        "end_window": "2026-09-12T00:00:00.0Z",
-        "issue_time": "2026-09-11T03:15:47.0Z",
+        "start_window": "2026-09-11T21:00:00.0Z",
+        "end_window": "2026-09-12T21:00:00.0Z",
+        "issue_time": "2026-09-12T00:10:58.0Z",
         "C": "-1",
         "M": "-1",
         "CPlus": "-1",
-        "MPlus": 0.03,
+        "MPlus": 0.02,
         "X": 0.01,
         "C_uncertainty": "-1",
         "M_uncertainty": "-1",
@@ -1237,7 +1174,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "ok": true,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=MagPy_SHARP_HMI_CEA_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MagPy_SHARP_HMI_CEA_FULLDISK&time.min=2026-09-06T21%3A00%3A00.0&time.max=2026-09-11T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MagPy_SHARP_HMI_CEA_FULLDISK&time.min=2026-09-07T21%3A00%3A00.0&time.max=2026-09-12T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -1271,26 +1208,26 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 112,
-      "issued": "2026-09-11T03:02:11Z",
-      "valid_start": "2026-09-11T00:00:00Z",
-      "valid_end": "2026-09-12T00:00:00Z",
-      "m1": 1.0,
-      "x1": 2.0,
+      "records": 96,
+      "issued": "2026-09-12T00:01:33Z",
+      "valid_start": "2026-09-11T21:00:00Z",
+      "valid_end": "2026-09-12T21:00:00Z",
+      "m1": 2.0,
+      "x1": 3.0,
       "selected_record": {
-        "start_window": "2026-09-11T00:00:00.0Z",
-        "end_window": "2026-09-12T00:00:00.0Z",
-        "issue_time": "2026-09-11T03:02:11.0Z",
+        "start_window": "2026-09-11T21:00:00.0Z",
+        "end_window": "2026-09-12T21:00:00.0Z",
+        "issue_time": "2026-09-12T00:01:33.0Z",
         "C": "-1",
         "M": "-1",
         "CPlus": "-1",
-        "MPlus": 0.01,
-        "X": 0.02,
+        "MPlus": 0.02,
+        "X": 0.03,
         "C_uncertainty": "-1",
         "M_uncertainty": "-1",
         "CPlus_uncertainty": "-1",
         "MPlus_uncertainty": 0.01,
-        "X_uncertainty": 0.013,
+        "X_uncertainty": 0.017,
         "C_value_lower": "-1",
         "M_value_lower": "-1",
         "CPlus_value_lower": "-1",
@@ -1314,7 +1251,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "ok": true,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=SPS_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=SPS_FULLDISK&time.min=2026-09-06T21%3A00%3A00.0&time.max=2026-09-11T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=SPS_FULLDISK&time.min=2026-09-07T21%3A00%3A00.0&time.max=2026-09-12T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -1349,20 +1286,20 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "m_parameter": "MPlus",
       "x_parameter": "X",
       "records": 4,
-      "issued": "2026-09-10T17:00:00Z",
-      "valid_start": "2026-09-10T17:00:00Z",
-      "valid_end": "2026-09-11T17:00:00Z",
+      "issued": "2026-09-11T17:00:00Z",
+      "valid_start": "2026-09-11T17:00:00Z",
+      "valid_end": "2026-09-12T17:00:00Z",
       "m1": null,
-      "x1": 5.0,
+      "x1": 1.0,
       "selected_record": {
-        "start_window": "2026-09-10T17:00:00.0Z",
-        "end_window": "2026-09-11T17:00:00.0Z",
-        "issue_time": "2026-09-10T17:00:00.0Z",
-        "C": 0.65,
-        "M": 0.15,
+        "start_window": "2026-09-11T17:00:00.0Z",
+        "end_window": "2026-09-12T17:00:00.0Z",
+        "issue_time": "2026-09-11T17:00:00.0Z",
+        "C": 0.55,
+        "M": 0.1,
         "CPlus": "-1",
         "MPlus": "-1",
-        "X": 0.05,
+        "X": 0.01,
         "C_uncertainty": "-1",
         "M_uncertainty": "-1",
         "CPlus_uncertainty": "-1",

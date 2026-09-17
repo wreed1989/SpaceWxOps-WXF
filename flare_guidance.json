@@ -138,9 +138,9 @@
           "x1": 0.0,
           "source": "SIDC 24-hour Global Flare Forecast",
           "quality": "published-comparison",
-          "issued": "2026-09-16T09:55:34Z",
-          "valid_start": "2026-09-16T09:55:34Z",
-          "valid_end": "2026-09-17T09:55:34Z",
+          "issued": "2026-09-17T08:40:51Z",
+          "valid_start": "2026-09-17T08:40:51Z",
+          "valid_end": "2026-09-18T08:40:51Z",
           "note": "Human-operator-moderated global forecast published by SIDC."
         },
         "ccmc_amos": {
@@ -365,7 +365,7 @@
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20260916&region=&indexnum=1",
-    "retrieved_at": "2026-09-17T04:55:37Z",
+    "retrieved_at": "2026-09-17T17:01:48Z",
     "table_date": "2026-09-16",
     "valid_start": "2026-09-16T00:00:00Z",
     "valid_end": "2026-09-17T00:00:00Z",
@@ -377,12 +377,12 @@
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-09-17T04:55:37Z",
+    "generated_at": "2026-09-17T17:01:48Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
       "url": "https://www.sidc.be/WMO/FlareForecast.php",
-      "issued": "2026-09-16T09:55:34Z",
+      "issued": "2026-09-17T08:40:51Z",
       "m1": 0.0,
       "x1": 0.0
     },
@@ -431,7 +431,7 @@
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 4,
+      "records": 5,
       "issued": "2026-09-16T12:30:05Z",
       "valid_start": "2026-09-16T12:30:00Z",
       "valid_end": "2026-09-17T12:30:00Z",
@@ -671,7 +671,7 @@
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 104,
+      "records": 115,
       "issued": "2026-09-17T00:00:00Z",
       "valid_start": "2026-09-17T00:00:00Z",
       "valid_end": "2026-09-18T00:00:00Z",
@@ -748,7 +748,7 @@
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 104,
+      "records": 115,
       "issued": "2026-09-17T00:00:00Z",
       "valid_start": "2026-09-17T00:00:00Z",
       "valid_end": "2026-09-17T12:00:00Z",
@@ -1031,7 +1031,7 @@
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 100,
+      "records": 112,
       "issued": "2026-09-17T03:07:37Z",
       "valid_start": "2026-09-17T00:00:00Z",
       "valid_end": "2026-09-18T00:00:00Z",

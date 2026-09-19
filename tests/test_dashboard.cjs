@@ -61,8 +61,12 @@ for (const id of ['chHssScienceCore', 'chhssDataClient', 'fdChHssEngine']) {
   assert.equal(audit.persistenceAtValidTime({rows:rows.slice(1)},'2026-09-01T12:00:00Z'),null);
   const data=context.window.CHHSSData;
   // A rejected AIA mask must still allow independently validated OMNI data.
-  context.fetch=async url=>({ok:true,headers:{get(){return null;}},text:async()=>JSON.stringify(url.endsWith('recurrence.json')?before.recurrence:bad)});
+  const requests=[];
+  context.fetch=async url=>{requests.push(new URL(url));return {ok:true,headers:{get(){return null;}},text:async()=>JSON.stringify(new URL(url).pathname.endsWith('recurrence.json')?before.recurrence:bad)};};
   await data.refresh(true);
+  assert.equal(requests.length,2);
+  assert.ok(requests.every(url=>url.searchParams.get('_chhss')===String(Clock.now())));
+  assert.equal(data.getState().url,data.defaultURL);
   assert.equal(data.current(),null);
   assert.ok(data.persistenceRows().length>0);
   assert.match(data.getState().error,/checksum/);

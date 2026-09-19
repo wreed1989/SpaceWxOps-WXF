@@ -29159,7 +29159,7 @@ window.CHHSSData = (() => {
   const DEFAULT='https://raw.githubusercontent.com/wreed1989/SpaceWxOps-WXF/main/chhss-data/feed.json';
   const KEY='spaceWx.chhss.feed.v1';
   let url=DEFAULT;try{url=localStorage.getItem(KEY)||DEFAULT;}catch{}
-  const CLIENT_VERSION='2026-09-18.2';
+  const CLIENT_VERSION='2026-09-18.3';
   let state={feed:null,recurrence:null,recurrenceError:'',loading:false,source:'none',error:'',lastAttempt:null,lastSuccess:null},inflight=null,recurrenceFlight=null,lastTry=0,dbPromise=null;
   const q=x=>document.querySelector(x),num=x=>typeof x==='number'&&Number.isFinite(x),date=x=>Number.isFinite(Date.parse(x))?Date.parse(x):null;
   const fmt=x=>num(x)?x.toFixed(1):'—';
@@ -29169,6 +29169,9 @@ window.CHHSSData = (() => {
     if(u.protocol!=='https:' && !(u.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(u.hostname)))throw new Error('Use public HTTPS or a local processing server.');
     return u.href;
   }
+  // Raw GitHub's edge cache can retain an older commit despite no-store. Keep
+  // the saved endpoint stable, but give each refresh a fresh public cache key.
+  function fetchURL(input){const u=new URL(publicURL(input));u.searchParams.set('_chhss',String(Date.now()));return u.href;}
   function database(){
     if(dbPromise)return dbPromise;
     dbPromise=new Promise(resolve=>{try{const r=indexedDB.open('spaceWx.chhss.feed',1);r.onupgradeneeded=()=>r.result.createObjectStore('cache');r.onsuccess=()=>resolve(r.result);r.onerror=()=>resolve(null);}catch{resolve(null);}});return dbPromise;
@@ -29190,7 +29193,7 @@ window.CHHSSData = (() => {
     recurrenceFlight=(async()=>{
       const abort=new AbortController(),timer=setTimeout(()=>abort.abort(),12000);
       try{
-        const response=await fetch(new URL('recurrence.json',publicURL(url)).href,{cache:'no-store',credentials:'omit',signal:abort.signal,referrerPolicy:'no-referrer'});
+        const response=await fetch(fetchURL(new URL('recurrence.json',publicURL(url)).href),{cache:'no-store',credentials:'omit',signal:abort.signal,referrerPolicy:'no-referrer'});
         if(!response.ok)throw new Error('OMNI publication HTTP '+response.status);
         const body=await response.text();if(body.length>4*1024*1024)throw new Error('Recurrence exceeds 4 MB.');
         useRecurrence(JSON.parse(body));
@@ -29250,7 +29253,7 @@ window.CHHSSData = (() => {
     inflight=(async()=>{await initPromise;
       const abort=new AbortController(),timer=setTimeout(()=>abort.abort(),12000);
       try{
-        const response=await fetch(publicURL(url),{cache:'no-store',credentials:'omit',signal:abort.signal,referrerPolicy:'no-referrer'});
+        const response=await fetch(fetchURL(url),{cache:'no-store',credentials:'omit',signal:abort.signal,referrerPolicy:'no-referrer'});
         if(!response.ok)throw new Error(response.status===404?'Worker feed not published yet (HTTP 404).':'Feed HTTP '+response.status);
         if(Number(response.headers.get('Content-Length'))>40*1024*1024)throw new Error('Feed exceeds 40 MB.');
         const body=await response.text();if(body.length>40*1024*1024)throw new Error('Feed exceeds 40 MB.');

@@ -88,5 +88,7 @@ if __name__ == '__main__':
     parser.add_argument('--root', type=Path, default=Path('chhss-data'))
     root = parser.parse_args().root
     from .particles import publish as publish_particles
+    from .nairas import publish as publish_nairas
     publish_particles(root)
+    publish_nairas(root)
     build(root)

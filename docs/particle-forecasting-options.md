@@ -1,37 +1,40 @@
 # SEP/proton and electron forecasting options
 
 Updated September 19, 2026 UTC. The dashboard now displays published UMASEP,
-HESPERIA REleASE and SWPC REFM products. The remaining options below are future
+HESPERIA REleASE, SWPC REFM and NAIRAS products. The remaining options below are future
 integrations.
 
 ## Available now
 
-- **SEP / Proton:** UMASEP ≥10 and ≥100 MeV provider charts, plus the HESPERIA
-  REleASE ACE EPAM chart. NASA numerical submissions show the energy channel,
-  source issue time, valid window and published prediction. All-clear statements
-  retain the provider's event threshold; they are not a zero-flux prediction.
+- **SEP / Proton:** interactive plots built from GOES numeric ≥10 and ≥50 MeV
+  observations, with UMASEP's published validity windows and event thresholds.
+  Choose 6, 24 or 72 hours of history. All-clear statements are not future flux
+  curves or zero-flux predictions. A published peak, when supplied in pfu, appears
+  as a point with a horizontal validity bar; its position does not claim peak timing.
+  Missing observations remain gaps; zero cannot be shown on the logarithmic axis.
 - **Electron Forecast:** SWPC REFM daily >2 MeV GEO fluence, 14/30/60-day observed
-  history and the latest three subsequent UTC forecast days. Negative fill values
-  remain gaps. This is environmental guidance, not spacecraft failure probability.
-- These products appear in Model and can be selected individually from Monitor's
-  Radiation catalog. They refresh automatically; **Refresh forecasts** only
-  retrieves published outputs. The old Configure + run interface was a concept
-  interface without a connected solver and has been removed from these pages.
+  history and three subsequent UTC forecast days. There is only one value per day,
+  which explains the coarse appearance. The compact display uses daily markers
+  with straight dashed joins and does not invent an hourly forecast. Negative fill
+  values remain gaps.
+- **Radiation Dose · 20 km:** native interactive north/south polar maps from the
+  complete 1° global NAIRAS effective-dose-rate grid. Select current hourly nowcast
+  or latest UMASEP-coupled SEP event forecast. Hover/click a map cell or enter
+  latitude/longitude. See [radiation dose details](radiation-dose.md).
+- All three products appear in Model and individually in Monitor's Radiation
+  catalog. **Refresh** retrieves published outputs; no local solver is implied.
 
-NASA ISWA's API does not provide browser CORS access. `chhss.particles` retrieves
-five numeric feeds during the existing hourly publication job and publishes
-`chhss-data/particle-forecasts.json`. Each source fails independently and retains
-its original successful retrieval time. The downloadable HTML embeds a dated
-snapshot and refreshes it from the public repository. Provider charts use ISWA's
-latest-file redirect every five minutes, independently of the hourly numeric
-relay. Read the issue and valid times printed on those images; successful loading
-does not prove that the upstream model issued a new forecast. Expired numerical
-windows are labelled explicitly. REFM is fetched directly from SWPC.
+NASA ISWA does not grant browser CORS access. The existing hourly publisher relays
+UMASEP and REleASE numeric submissions, GOES ≥10/≥50 MeV observations, and REFM to
+`chhss-data/particle-forecasts.json`. Each source fails independently and preserves
+its original successful retrieval time. The downloaded HTML embeds dated numeric
+snapshots, then refreshes from the public repository. GOES and REFM also refresh
+directly from NOAA. No provider chart images are required by these pages.
 
-Source IDs, verified against the [NASA ISWA catalog](https://iswa.ccmc.gsfc.nasa.gov/catalog/data-feeds):
-UMASEP images 1647/1650, numerical 1653/1656; REleASE ACE image 1221, numerical
-1218/1219/1220 (30/60/90-minute products). No retired UMASEP version is selected.
-Attribution for HESPERIA and EU funding appears with its chart.
+ISWA numeric IDs: UMASEP **1653 / 1655** (≥10 / ≥50 MeV); REleASE ACE
+**1218 / 1219 / 1220** (30/60/90-minute products). REleASE's differential energy
+bands are displayed separately in numerical details, never relabelled as integral
+10 or 50 MeV. HESPERIA / EU funding attribution remains in those details.
 
 ## Broader integration options
 

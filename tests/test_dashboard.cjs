@@ -353,3 +353,39 @@ assert.equal(risk.derive({samples:{ap:runningAp}},now+8*3600000,policy).samples.
 vm.runInContext(html.match(/      function riskContributorThreshold\([^]*?\n      \}/)[0],styleContext);
 assert.equal(styleContext.riskContributorThreshold('proton_flux_10',10),25);
 assert.equal(styleContext.riskContributorThreshold('electron_fluence',1.1e8),2e8);
+
+// Belt shading follows a fresh GEO electron sample, independently of Ap and
+// 24-hour fluence. Preview data must remain detached from the live telemetry.
+const beltInput={samples:structuredClone(samples),electronFlux:{value:80,time}};
+const liveBelt=risk.beltState(beltInput,risk.derive(beltInput,now,policy),'live',now);
+assert.equal(liveBelt.loadingKnown,true);
+const loadedInput={...beltInput,electronFlux:{value:8000,time}};
+assert.ok(risk.beltState(loadedInput,risk.derive(loadedInput,now,policy),'live',now).intensity>liveBelt.intensity);
+const staleFlux={...beltInput,electronFlux:{value:8000,time:new Date(now-21*60000).toISOString()}};
+assert.equal(risk.beltState(staleFlux,risk.derive(staleFlux,now,policy),'live',now).loadingKnown,false);
+const contam={...beltInput,samples:{...samples,proton:{value:10,time}}};
+assert.equal(risk.beltState(contam,risk.derive(contam,now,policy),'live',now).contaminated,true);
+assert.equal(risk.beltState(contam,risk.derive(contam,now,policy),'live',now).loadingKnown,false);
+const noProton={...beltInput,samples:{ap:samples.ap,electron:samples.electron}};
+assert.equal(risk.beltState(noProton,risk.derive(noProton,now,policy),'live',now).loadingKnown,false);
+assert.equal(risk.beltState({...beltInput,archive:true},risk.derive({...beltInput,archive:true},now,policy),'live',now).loadingKnown,false);
+const scenarios=Object.fromEntries(['quiet','storm','recovery'].map(mode=>{const s=risk.previewSnapshot(mode,now);return [mode,risk.beltState(s,risk.derive(s,now,policy),mode,now)];}));
+assert.ok(scenarios.storm.inner<scenarios.quiet.inner); // Inward extension.
+assert.ok(scenarios.storm.outer<scenarios.quiet.outer); // Outer-edge compression.
+assert.ok(scenarios.storm.intensity<scenarios.quiet.intensity); // Dropout, not automatic storm loading.
+assert.ok(scenarios.recovery.intensity>scenarios.quiet.intensity);
+assert.ok(scenarios.recovery.outer>scenarios.storm.outer);
+assert.equal(risk.previewSnapshot('live',now),null);
+assert.equal(beltInput.electronFlux.value,80);
+assert.equal(beltInput.samples.proton.value,2);
+assert.ok(Math.abs(Math.hypot(...risk.orbitPoint('GEO',1.2))-6.61)<1e-9);
+assert.ok(Math.abs(Math.hypot(...risk.orbitPoint('MEO',1.2))-4.17)<1e-9);
+assert.ok(Math.abs(Math.hypot(...risk.orbitPoint('HEO',0))-1.15)<1e-9);
+assert.ok(Math.abs(Math.hypot(...risk.orbitPoint('HEO',Math.PI))-7.2)<1e-9);
+assert.ok(Math.abs(Math.hypot(...risk.beltPoint(4,.2,.6))-4*Math.cos(.2)**2)<1e-9);
+for(const mode of ['Quiet','Storm','Recovery']){
+ assert.ok(risk.markup().includes('Preview: '+mode));
+ assert.ok(scripts.find(([,a])=>a.includes('id="spaceWxHeliosphereEngine"'))[2].includes('Preview: '+mode));
+}
+assert.doesNotMatch(html,/Preview: (quiet|storm|recovery)/);
+console.log('Belt geometry, energy proxy, proton contamination gate and isolated scenarios passed');

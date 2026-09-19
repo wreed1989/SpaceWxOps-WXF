@@ -325,13 +325,13 @@ const risk=products.window.SpaceWxSatelliteRisk;
 const now=Date.parse('2026-09-19T06:00Z'),time=new Date(now).toISOString();
 let policyValues;
 const policy=values=>{policyValues=values;return Object.fromEntries(['LEO','MEO','GEO','HEO'].map(o=>[o,values.proton>=10?[{level:2}]:[]]));};
-const samples={ap:{value:5,time},proton:{value:2,time},electron:{value:2e7,time,coverageOK:true}};
+const samples={ap:{value:5,time},proton:{value:2,time},electron:{value:2e7,time,coverageOK:true,protonCheckOK:true}};
 let riskModel=risk.derive({samples},now,policy);
-assert.equal(riskModel.complete,true);assert.equal(risk.label(riskModel,'LEO'),'Nominal');
+assert.equal(riskModel.complete,true);assert.equal(risk.label(riskModel,'LEO'),'Below triggers');
 riskModel=risk.derive({samples:{...samples,proton:{value:100,time}}},now,policy);
-assert.equal(risk.label(riskModel,'GEO'),'High');
+assert.equal(risk.label(riskModel,'GEO'),'Trigger 2 · partial');
 riskModel=risk.derive({samples:{...samples,electron:{value:2e7,time,coverageOK:false},proton:{value:100,time}}},now,policy);
-assert.equal(riskModel.complete,false);assert.equal(risk.label(riskModel,'GEO'),'At least High');assert.ok(Number.isNaN(policyValues.electron));
+assert.equal(riskModel.complete,false);assert.equal(risk.label(riskModel,'GEO'),'Trigger 2 · partial');assert.ok(Number.isNaN(policyValues.electron));
 riskModel=risk.derive({samples:{...samples,electron:{value:2e7,time,coverageOK:false}}},now,policy);
 assert.equal(risk.label(riskModel,'GEO'),'Incomplete');
 riskModel=risk.derive({samples},now+5*3600000,policy);
@@ -339,7 +339,7 @@ assert.equal(risk.label(riskModel,'GEO'),'Unavailable');assert.ok(Number.isNaN(p
 assert.equal(risk.label(risk.derive({samples,archive:true},now,policy),'GEO'),'Unavailable');
 assert.equal(risk.derive({samples:{ap:{value:-1,time},proton:{value:20,time:'invalid'},electron:{value:1e8,time:new Date(now+3600000).toISOString()}}},now,policy).anyFresh,false);
 const coverageContext=vm.createContext({timeOf:r=>r.time_tag,toNumber:v=>v==null?NaN:Number(v)});
-vm.runInContext(html.match(/      function electronCoverageHours\(rows\) \{[^]*?\n      \}/)[0],coverageContext);
+vm.runInContext(html.match(/      function electronCoverageHours\(rows, windowEnd\) \{[^]*?\n      \}/)[0],coverageContext);
 const coverageRows=Array.from({length:289},(_,i)=>({time_tag:new Date(now-i*300000).toISOString(),flux:0}));
 assert.equal(coverageContext.electronCoverageHours(coverageRows),24);
 assert.equal(coverageContext.electronCoverageHours(coverageRows.slice(0,100)),8.25);
@@ -442,3 +442,53 @@ assert.ok(!stormRisk.GEO.some(r=>r.risk==='Satellite Drag'||r.risk==='Internal C
 policyContext.state.rules={electron:{yellow:7e8,red:8e8}};
 assert.ok(!policyContext.calculateSatelliteRisk(5,.2,6e8).GEO.some(r=>r.risk==='Internal Charging'));
 console.log('Surface/internal charging separation, LEO drag and saved-threshold policy passed');
+
+// Screening is a highest-trigger classification, never a probability or dose.
+policyContext.state.rules={ap:{yellow:32,red:56,purple:111},proton:{yellow:10,red:40,purple:1000},electron:{yellow:1.1e8,red:4.8e8}};
+assert.equal(policyContext.calculateSatelliteRisk(56,0,0).LEO.find(r=>r.risk==='Satellite Drag').level,2);
+assert.equal(policyContext.calculateSatelliteRisk(111,0,0).LEO.find(r=>r.risk==='Surface Charging').level,3);
+assert.equal(policyContext.calculateSatelliteRisk(0,40,0).GEO.find(r=>r.risk==='Single Event Upsets').level,2);
+assert.equal(policyContext.calculateSatelliteRisk(0,0,4.8e8).GEO.find(r=>r.risk==='Internal Charging').level,2);
+assert.equal(Object.values(policyContext.calculateSatelliteRisk(NaN,NaN,NaN)).flat().length,0);
+assert.ok(!Object.values(policyContext.calculateSatelliteRisk(150,2000,6e8)).flat().some(r=>/Dose|Cumulative/.test(r.risk)));
+assert.ok(!policyContext.calculateSatelliteRisk(0,0,6e8).LEO.some(r=>r.risk==='Internal Charging'));
+const policyFn=v=>policyContext.calculateSatelliteRisk(v.ap,v.proton,v.electron);
+for(const mode of ['quiet','storm','recovery']){
+ const snapshot=risk.previewSnapshot(mode,now),model=risk.derive(snapshot,now,policyFn);
+ assert.equal(model.complete,true);
+ assert.equal(model.levels.GEO,mode==='storm'?3:mode==='recovery'?2:0);
+ assert.equal(model.levels.LEO,mode==='storm'?3:0);
+}
+const contaminatedModel=risk.derive(contam,now,policyFn);
+assert.ok(Number.isNaN(contaminatedModel.values.electron));
+assert.equal(contaminatedModel.complete,false);
+assert.ok(!contaminatedModel.matrix.GEO.some(r=>r.risk==='Internal Charging'));
+assert.equal(risk.beltState({...beltInput,electronFlux:{value:80,time:new Date(now-15*60000).toISOString()}},risk.derive(beltInput,now,policy),'live',now).loadingKnown,false);
+
+// Fluence integrates a clipped 24 h window in seconds. It never bridges a long
+// outage, double-counts duplicate timestamps, or integrates negative sentinels.
+coverageContext.byTime=(a,b)=>Date.parse(a.time_tag)-Date.parse(b.time_tag);
+vm.runInContext(['electronFluenceRows','electronProtonWindowQuality'].map(name=>html.match(new RegExp('      function '+name+'\\([^]*?\\n      \\}'))[0]).join('\n'),coverageContext);
+const fullFlux=Array.from({length:301},(_,i)=>({time_tag:new Date(now-(300-i)*300000).toISOString(),flux:100}));
+assert.equal(coverageContext.electronFluenceRows(fullFlux).at(-1).fluence,8640000);
+assert.equal(coverageContext.electronFluenceRows(fullFlux).at(-1).coverageHours,24);
+const gapFlux=fullFlux.filter((_,i)=>i<100||i>130);
+assert.ok(coverageContext.electronFluenceRows(gapFlux).at(-1).coverageHours<23);
+assert.ok(Math.abs(coverageContext.electronFluenceRows(gapFlux).at(-1).fluence-100*coverageContext.electronFluenceRows(gapFlux).at(-1).coverageHours*3600)<1e-6);
+assert.equal(coverageContext.electronFluenceRows([...fullFlux,fullFlux[50],{time_tag:time,flux:-99999}]).at(-1).fluence,8640000);
+const ramp=[{time_tag:new Date(now-24*3600000-150000).toISOString(),flux:0},{time_tag:new Date(now-24*3600000+150000).toISOString(),flux:100},{time_tag:time,flux:100}];
+assert.equal(coverageContext.electronFluenceRows(ramp).at(-1).fluence,11250); // Half of first trapezoid only; huge gap omitted.
+const protonHistory=fullFlux.map(row=>({...row,flux:1}));
+assert.equal(coverageContext.electronProtonWindowQuality(fullFlux,protonHistory).protonCheckOK,true);
+const oldEvent=protonHistory.map((row,i)=>({...row,flux:i===200?10:1}));
+const affected=coverageContext.electronProtonWindowQuality(fullFlux,oldEvent);
+assert.equal(affected.protonCheckOK,false);
+assert.match(affected.qualityReason,/Proton event/);
+assert.equal(coverageContext.electronProtonWindowQuality(fullFlux,protonHistory.slice(30)).protonCheckOK,false);
+assert.equal(coverageContext.electronProtonWindowQuality(fullFlux,protonHistory.slice(0,-4)).protonCheckOK,false); // Ends before electron window.
+assert.equal(coverageContext.electronProtonWindowQuality([],[]).protonCheckOK,false);
+const postEvent={...beltInput,samples:{...samples,electron:{...samples.electron,...affected}}};
+assert.equal(risk.derive(postEvent,now,policyFn).samples.electron.fresh,false);
+assert.equal(risk.beltState(postEvent,risk.derive(postEvent,now,policyFn),'live',now).loadingKnown,true); // Current flux can recover before the contaminated fluence window clears.
+assert.doesNotMatch(html,/probability of Surface Charging|probability of Single Event Upsets|High SEU and Total Dose risk/);
+console.log('Scientific screening, exact configured triggers, preview parity, contamination history and fluence integration passed');

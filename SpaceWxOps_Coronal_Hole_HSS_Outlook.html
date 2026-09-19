@@ -425,7 +425,7 @@
 <script id="satelliteRiskScene">
 (()=>{
   'use strict';
-  const ORBITS=['LEO','MEO','GEO','HEO'],COLORS=['#34d399','#facc15','#ef4444','#a855f7'],NAMES=['Nominal','Elevated','High','Severe'];
+  const ORBITS=['LEO','MEO','GEO','HEO'],COLORS=['#34d399','#facc15','#ef4444','#a855f7'],NAMES=['Below triggers','Trigger 1','Trigger 2','Trigger 3'];
   const TAU=2*Math.PI,RE=56,CX=500,CY=270,W=1000,H=580;
   const limits={ap:4*3600000,proton:20*60000,electron:20*60000};
   const clamp=(v,lo=0,hi=1)=>Math.max(lo,Math.min(hi,v));
@@ -436,8 +436,9 @@
     for(const key of Object.keys(limits)){
       const sample=snapshot.samples?.[key]||{},time=Date.parse(sample.time),valid=Number.isFinite(sample.value)&&sample.value>=0&&Number.isFinite(time)&&time<=now+300000;
       const end=Date.parse(sample.validThrough),anchor=key==='ap'&&Number.isFinite(end)&&end>=time&&end<=time+3*3600000?end:time;
-      const fresh=!snapshot.archive&&valid&&now-anchor<=limits[key]&&sample.coverageOK!==false;
-      samples[key]={...sample,fresh,status:snapshot.archive?'Archive':!valid?'Unavailable':sample.coverageOK===false?'Incomplete 24 h coverage':fresh?'Current':'Stale'};values[key]=fresh?sample.value:NaN;
+      const quality=key==='electron'?(sample.protonCheckOK===true&&samples.proton?.fresh&&samples.proton.value<10):true;
+      const fresh=!snapshot.archive&&valid&&now-anchor<=limits[key]&&(key==='electron'?sample.coverageOK===true:sample.coverageOK!==false)&&quality;
+      samples[key]={...sample,fresh,status:snapshot.archive?'Archive':!valid?'Unavailable':(key==='electron'&&sample.coverageOK!==true)?'Incomplete 24 h coverage':!quality?(samples.proton?.fresh&&samples.proton.value>=10?'Possible proton contamination':!samples.proton?.fresh?'Proton check unavailable':sample.qualityReason||'Proton check unavailable'):fresh?'Current':'Stale'};values[key]=fresh?sample.value:NaN;
     }
     const count=Object.values(samples).filter(s=>s.fresh).length,complete=count===3;
     const matrix=policy?policy(values):Object.fromEntries(ORBITS.map(o=>[o,[]]));
@@ -445,19 +446,20 @@
     const status=snapshot.archive?'ARCHIVE · LIVE ASSESSMENT OFF':complete?'LIVE OBSERVATIONS':count?'PARTIAL INPUTS':Object.values(samples).some(s=>s.time)?'STALE / UNAVAILABLE':'AWAITING DATA';
     return {samples,values,complete,anyFresh:count>0,status,matrix,levels,selected:snapshot.selected||'LEO',archive:!!snapshot.archive};
   }
-  function label(model,orbit){const level=model.levels[orbit]||0;return !model.anyFresh?'Unavailable':!model.complete?(level?'At least '+NAMES[level]:'Incomplete'):NAMES[level];}
+  function label(model,orbit){const level=model.levels[orbit]||0;return !model.anyFresh?'Unavailable':!model.complete?(level?NAMES[level]+' · partial':'Incomplete'):NAMES[level];}
   function previewSnapshot(mode,now=Date.now()){
     const values={quiet:{ap:5,proton:.2,electron:3e7,flux:80},storm:{ap:140,proton:4,electron:1.5e7,flux:8},recovery:{ap:18,proton:.4,electron:6e8,flux:8000}}[mode];
     if(!values)return null;
     const time=new Date(now).toISOString();
-    return {preview:true,samples:Object.fromEntries(Object.keys(limits).map(key=>[key,{value:values[key],time,coverageOK:true}])),electronFlux:{value:values.flux,time}};
+    return {preview:true,samples:Object.fromEntries(Object.keys(limits).map(key=>[key,{value:values[key],time,coverageOK:true,protonCheckOK:true}])),electronFlux:{value:values.flux,time}};
   }
   function beltState(snapshot,model,mode='live',now=Date.now()){
     const sample=snapshot.electronFlux||{},time=Date.parse(sample.time),fluxValid=Number.isFinite(sample.value)&&sample.value>=0&&Number.isFinite(time)&&time<=now+300000&&now-time<=20*60000&&!model.archive;
     // Conservative display gate, independent of user alert thresholds. GOES
     // electrons are unreliable during significant solar-proton events (SWPC).
     const contaminated=model.samples.proton.fresh&&model.values.proton>=10;
-    const loadingKnown=fluxValid&&model.samples.proton.fresh&&!contaminated;
+    const coincident=Math.abs(time-Date.parse(model.samples.proton.time))<=10*60000;
+    const loadingKnown=fluxValid&&model.samples.proton.fresh&&coincident&&!contaminated;
     const loading=loadingKnown?clamp(Math.log10(1+sample.value)/4):null;
     const protonKnown=model.samples.proton.fresh,solarFlux=protonKnown?model.values.proton:null;
     const activity=model.samples.ap.fresh?clamp((model.values.ap-15)/125):null;
@@ -469,7 +471,7 @@
       :mode==='storm'?'Storm example · inward broadening, outer-edge compression and electron dropout'
       :mode==='recovery'?'Recovery example · replenished, brighter outer electron belt'
       :contaminated?'GOES electrons may be proton-contaminated · loading unavailable'
-      :loadingKnown?(activity===null?'GOES electron particles · reference geometry; Ap unavailable':'Ap-driven illustrative geometry · GOES electron particles')
+      :loadingKnown?(activity===null?'GOES electron particles · reference geometry; ap unavailable':'3 h ap-driven illustrative geometry · GOES electron particles')
       :model.archive?'Archive · reference geometry only':fluxValid?'Proton check unavailable · loading unavailable':'GOES electron loading unavailable · reference shading';
     return {inner,outer,spread,loading,loadingKnown,activity,contaminated,flux:fluxValid?sample.value:null,time:sample.time,explanation,
       // Unknown data renders a muted reference belt, not an empty belt.
@@ -507,8 +509,8 @@
     <div class="sr-belt-key"><span><i class="sr-inner-key"></i>Inner belt · mainly trapped protons</span><span><i class="sr-outer-key"></i>Outer belt · electrons</span><span><i class="sr-solar-key"></i>Solar protons · passing</span></div>
     <div class="sr-belt-state"><span data-sr-belt-state></span><b data-sr-flux></b><b data-sr-protons></b></div>
     <div class="sr-orbits">${ORBITS.map(o=>`<button data-risk-orbit="${o}" aria-pressed="false">${o}<small data-sr-level="${o}">Unavailable</small></button>`).join('')}</div>
-    <div class="sr-drivers">${[['ap','PLANETARY Ap'],['proton','≥10 MeV SOLAR PROTONS · PFU'],['electron','>2 MeV · 24 H FLUENCE']].map(([k,t])=>`<div class="sr-driver" data-sr-driver="${k}"><span>${t}</span><b>—</b><small>Awaiting data</small></div>`).join('')}</div>
-    <div class="sr-caption">${compact?"More dots = stronger particle flux · qualitative GOES proxy. Amber inner belt is a reference.":"More dots = stronger particle flux, not a failure probability. GOES is a local GEO proxy; amber inner-belt protons are a reference. Geometry and motion are illustrative."}</div>
+    <div class="sr-drivers">${[['ap','PLANETARY 3 H ap'],['proton','≥10 MeV SOLAR PROTONS · PFU'],['electron','>2 MeV · 24 H · e⁻ cm⁻² sr⁻¹']].map(([k,t])=>`<div class="sr-driver" data-sr-driver="${k}"><span>${t}</span><b>—</b><small>Awaiting data</small></div>`).join('')}</div>
+    <div class="sr-caption">${compact?"Dots: current GOES flux. Orbit color: highest local trigger, not failure probability. Amber belt: reference.":"Dots show current GOES flux; orbit colors show the highest local screening trigger, including 24 h electron exposure. Neither is a failure probability. Amber protons and belt boundaries are illustrative."}</div>
     <div class="sr-info" hidden role="region" aria-label="Radiation belts explained">
       <div class="sr-info-heading"><strong>Van Allen belts &amp; satellite effects</strong><button data-sr-close aria-label="Close radiation belt explanation">×</button></div>
       <p>Earth’s magnetic field holds energetic particles in two broad zones: an inner belt rich in trapped protons and an outer belt dominated by electrons. The lower-density slot separates them. Satellites crossing these regions receive radiation that can disrupt electronics or accumulate damage.</p>
@@ -530,11 +532,11 @@
         <p><strong>MEO:</strong> navigation-like orbits spend time in the radiation belts, making internal charging, cumulative dose, and single-event effects important. Surface charging remains possible and depends on the local plasma and spacecraft.</p>
         <p><strong>GEO:</strong> hot plasma injections can drive surface charging; penetrating energetic electrons can drive internal charging. Solar protons and heavy ions can cause single-event effects. The two charging mechanisms involve different energies and timescales.</p>
         <p><strong>HEO:</strong> exposure changes along the orbit: belt crossings add radiation, high-altitude dwell can expose spacecraft to hot plasma, and a sufficiently low perigee can introduce drag. Inclination and orbit phase matter.</p>
-        <p>These are overlapping concerns, not exclusive categories. Orbit colors summarize the existing Ap/proton/electron-fluence screening rules and your alert thresholds. Ap is a broad activity proxy, not a local surface-potential or drag prediction. Fewer electron dots do not mean that drag or surface-charging risk is low.</p>
+        <p>These are overlapping concerns, not exclusive categories. Orbit colors show the highest crossed local trigger in the analysis below. Three-hour ap is a broad activity proxy, not a local surface-potential or drag prediction. “Below triggers” does not mean safe; total dose is not calculated. Fewer electron dots do not mean that drag or surface-charging risk is low.</p>
       </details>
       <details data-overlay-details><summary>Live inputs, previews, and limits</summary>
-        <p>GOES samples a local part of the outer belt at GEO. Particle counts use a bounded logarithmic scale. Ap changes schematic geometry, not particle loading. Orbit colors retain your alert rules and 24-hour electron-fluence screening; changing an alert threshold does not create more particles.</p>
-        <p>Particle samples expire after 20 minutes. Missing electron data, a missing proton check, or solar-proton flux ≥10 PFU gives a muted reference cloud with no animated electron tracers. This conservative contamination gate is separate from your alert thresholds. Missing solar-proton data hides its streaks and is labeled unavailable, not quiet.</p>
+        <p>GOES samples a local part of the outer belt at GEO. Particle counts use a bounded logarithmic scale. Three-hour ap changes schematic geometry, not particle loading. Orbit colors use your alert rules and 24-hour electron-fluence screening; changing a threshold does not create particles. A high 24-hour exposure can keep a color active after instantaneous electron flux falls.</p>
+        <p>Particle samples expire after 20 minutes. Missing electron data, a missing proton check, or solar-proton flux ≥10 PFU gives a muted reference cloud with no animated electron tracers. The proton and electron samples must be within 10 minutes. This conservative local gate is separate from your alert thresholds and is not an official NOAA correction. The 24-hour screening also requires a full 24-hour window of electron and proton coverage (interpolation only across gaps ≤10 minutes) and no ≥10 PFU sample in that window; an affected window remains unassessed after current flux recovers. Missing solar-proton data hides its streaks and is labeled unavailable, not quiet.</p>
         <p>Quiet, Storm (one possible dropout), and Recovery (possible replenishment) are synthetic examples; neither storm outcome is guaranteed. They never enter live alerts or impact analysis. The diagram has no global trapped-proton measurement, spacecraft charging solver, or particle trajectory calculation.</p>
         <p>Reference belts span roughly 1.2–2.4 and 3–7 Earth radii from the centre, with energy-dependent boundaries. Representative orbits: LEO 1.13 Rᴇ; MEO 4.17 Rᴇ; GEO 6.61 Rᴇ; HEO 1.15–7.2 Rᴇ.</p>
       </details>
@@ -10568,75 +10570,67 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
       const RADIO_BURST_HIGH_IMPACT_FREQS = new Set([1415, 8800, 15400]);
 
       const RISK_LEVELS = [
-        { text: "Nominal", color: "#34d399" },
-        { text: "Elevated", color: "#facc15" },
-        { text: "High", color: "#ef4444" },
-        { text: "Severe", color: "#a855f7" }
+        { text: "Below triggers", color: "#34d399" },
+        { text: "Trigger 1", color: "#facc15" },
+        { text: "Trigger 2", color: "#ef4444" },
+        { text: "Trigger 3", color: "#a855f7" }
       ];
 
+      // Environmental review triggers, not calibrated spacecraft failure risks.
       const RISK_RULES = [
         {
-          risk: "Surface Charging",
-          guide: "Low-energy electrons can build charge on spacecraft surfaces.",
-          description: "Low-energy electrons build up on spacecraft surfaces, creating electrostatic discharge risk that can damage electronics. Hot-plasma injections, eclipse and auroral crossings can matter. This dashboard uses Ap as a broad activity proxy; it does not measure local plasma, spacecraft surface potential or discharge probability.",
-          drivers: "Planetary Ap activity proxy; local plasma and surface potential are not measured.",
+          risk: "Surface Charging", metric: "ap",
+          guide: "Hot plasma can charge spacecraft surfaces unevenly.",
+          description: "Surface charging depends on lower-energy electrons and ions, sunlight, emitted electrons and surface materials. Differential charging can cause discharges. Planetary activity only flags conditions worth reviewing; it does not measure local plasma or spacecraft potential.",
+          drivers: "Three-hour planetary ap: broad activity proxy for all orbit classes.",
+          basis: "Local configurable triggers, not universal charging thresholds or NOAA G-scale labels. NOAA G levels use Kp; daily Ap is a different index.",
+          action: "Review local plasma, eclipse/orbit phase and charging telemetry against the spacecraft charging plan. Do not infer discharge probability from this color.",
+          source: "https://www.spenvis.oma.be/help/background/charging/charging.html", sourceLabel: "ESA charging physics",
           orbits: ["LEO", "MEO", "GEO", "HEO"],
-          levels: [[1, 1], [3, 2], [5, 3]],
-          contributors: [
-            ["geomagnetic_storm", 1, 32, "Ap at or above 32"],
-            ["geomagnetic_storm", 2, 56, "Ap at or above 56"],
-            ["geomagnetic_storm", 3, 111, "Ap at or above 111"]
-          ]
+          contributors: [["geomagnetic_storm", 1, 32], ["geomagnetic_storm", 2, 56], ["geomagnetic_storm", 3, 111]]
         },
         {
-          risk: "Internal Charging",
-          guide: "High-energy electrons can penetrate shielding and charge internal dielectrics.",
-          description: "High-energy electrons penetrate satellite shielding and accumulate inside dielectric materials such as circuit boards and cable insulation. A later discharge can cause destructive component damage.",
-          drivers: "24-hour ≥2 MeV electron fluence.",
-          orbits: ["MEO", "GEO", "HEO"],
-          levels: [[1, 1], [3, 2]],
-          contributors: [
-            ["electron_fluence", 1, 1.1e8, "24h electron fluence at or above 1.1e8"],
-            ["electron_fluence", 2, 4.8e8, "24h electron fluence at or above 4.8e8"]
-          ]
+          risk: "Internal Charging", metric: "electron",
+          guide: "Penetrating electrons can charge internal insulation and isolated conductors.",
+          description: "Energetic electrons can accumulate charge behind shielding; discharge depends on the electron spectrum, shielding, materials and charge leakage. GOES >2 MeV fluence is an exposure proxy at GEO, not a local MEO/HEO measurement or a charging probability. Internal charging is also possible in susceptible LEO hardware.",
+          drivers: "GOES >2 MeV electron fluence over the preceding 24 hours; units e⁻ cm⁻² sr⁻¹.",
+          basis: "The saved 24-hour triggers are local settings, not validated universal damage thresholds. NOAA’s 1,000 e⁻ cm⁻² s⁻¹ electron-flux alert criterion is a different quantity and timescale.",
+          action: "Review exposure history, local/orbit-resolved radiation and hardware charging limits. A flux dropout does not instantly dissipate stored charge. LEO is not numerically assessed by this GEO proxy.",
+          source: "https://www.swpc.noaa.gov/products/goes-electron-flux", sourceLabel: "NOAA GOES electron interpretation",
+          orbits: ["LEO", "MEO", "GEO", "HEO"], screenOrbits: ["MEO", "GEO", "HEO"],
+          contributors: [["electron_fluence", 1, 1.1e8], ["electron_fluence", 2, 4.8e8]]
         },
         {
-          risk: "Single Event Upsets",
-          guide: "Energetic particles can flip bits or disrupt electronics.",
-          description: "A high-energy particle can strike a sensitive node and deposit enough charge to flip a bit, corrupt data, crash software, or trigger a false command path.",
-          drivers: "≥10 MeV proton flux.",
+          risk: "Single Event Upsets", metric: "proton",
+          guide: "Individual energetic particles can upset or damage electronics.",
+          description: "Protons and heavy ions can produce single-event effects through deposited charge, directly or via secondary particles. An upset does not require accumulated charging. This solar-proton channel omits trapped-proton and galactic-cosmic-ray exposure; actual rates need spectra, shielding, orbit and device response.",
+          drivers: "GOES ≥10 MeV solar-proton flux; PFU = protons cm⁻² s⁻¹ sr⁻¹.",
+          basis: "Local triggers are not SEU probabilities. NOAA S1/S2/S3 begin at 10/100/1,000 PFU; the saved 40 PFU middle default is a local trigger, not S2. Your settings are retained.",
+          action: "Review particle spectra, error counters and spacecraft-specific event procedures. Use device response and shielding to estimate an upset rate; do not command spacecraft from this proxy alone.",
+          source: "https://www.spenvis.oma.be/help/models/longupset.html", sourceLabel: "ESA upset-rate requirements",
           orbits: ["LEO", "MEO", "GEO", "HEO"],
-          levels: [[1, 1], [3, 2], [5, 3]],
-          contributors: [
-            ["proton_flux_10", 1, 10, "≥10 MeV proton flux at or above 10 PFU"],
-            ["proton_flux_10", 2, 100, "≥10 MeV proton flux at or above 100 PFU"],
-            ["proton_flux_10", 3, 1000, "≥10 MeV proton flux at or above 1000 PFU"]
-          ]
+          contributors: [["proton_flux_10", 1, 10], ["proton_flux_10", 2, 100], ["proton_flux_10", 3, 1000]]
         },
         {
-          risk: "Total Dose",
-          guide: "Accumulated radiation degrades components and solar arrays.",
-          description: "Total dose is the cumulative degradation of components from ionizing radiation. It gradually reduces the operating margin of solar arrays, sensors, and microelectronics.",
-          drivers: "≥10 MeV proton flux and 24-hour ≥2 MeV electron fluence.",
-          orbits: ["LEO", "MEO", "GEO", "HEO"],
-          levels: [[1, 1], [4, 2]],
-          contributors: [
-            ["proton_flux_10", 1, 10, "≥10 MeV proton flux at or above 10 PFU"],
-            ["electron_fluence", 3, 4.8e8, "24h electron fluence at or above 4.8e8"]
-          ]
+          risk: "Cumulative Radiation Damage", metric: null,
+          guide: "Ionizing dose and displacement damage accumulate over exposure history.",
+          description: "Total ionizing dose affects electronics and insulating materials; displacement damage degrades devices including solar cells and detectors. They are distinct effects. Instantaneous integral flux and one day of electron fluence cannot determine either accumulated damage metric.",
+          drivers: "Not calculated: requires energy spectra, orbit history, shielding, material response and exposure integration.",
+          basis: "No dose score or color is assigned. Satellite absorbed dose is expressed in Gy or rad for a specified material; human effective dose in mSv from NAIRAS is not a spacecraft dose estimate.",
+          action: "Review the mission radiation budget and dosimeter/model results. Particle loss from the belts does not reverse accumulated damage.",
+          source: "https://science.nasa.gov/science-research/heliophysics/how-nasa-prepares-spacecraft-for-the-harsh-radiation-of-space/", sourceLabel: "NASA radiation effects",
+          orbits: ["LEO", "MEO", "GEO", "HEO"], contributors: []
         },
         {
-          risk: "Satellite Drag",
-          guide: "Geomagnetic heating expands the atmosphere and increases LEO drag.",
-          description: "Geomagnetic storm energy heats and expands the upper atmosphere, increasing density at LEO altitudes and causing faster orbital decay. Maneuver planning and conjunction screening may be affected.",
-          drivers: "Planetary Ap storm thresholds.",
-          orbits: ["LEO"],
-          levels: [[1, 1], [3, 2], [5, 3]],
-          contributors: [
-            ["geomagnetic_storm", 1, 32, "Ap at or above 32"],
-            ["geomagnetic_storm", 2, 56, "Ap at or above 56"],
-            ["geomagnetic_storm", 3, 111, "Ap at or above 111"]
-          ]
+          risk: "Satellite Drag", metric: "ap",
+          guide: "Storm heating can increase thermospheric density and drag.",
+          description: "Geomagnetic heating can increase density at low satellite altitudes. Drag also depends on solar EUV, altitude, location, time and spacecraft area-to-mass ratio. This index does not predict density, orbital decay or conjunction error. HEO can experience drag near a sufficiently low perigee.",
+          drivers: "Three-hour planetary ap: LEO activity screening only.",
+          basis: "Local review triggers, not physical drag thresholds. The HEO reference orbit in the drawing does not define your spacecraft’s perigee.",
+          action: "Review a thermospheric density model, orbit determination and conjunction products; apply mission procedures before changing maneuvers. HEO drag needs the actual perigee and is not numerically assessed here.",
+          source: "https://www.swpc.noaa.gov/impacts/satellite-drag", sourceLabel: "NOAA satellite drag",
+          orbits: ["LEO", "HEO"], screenOrbits: ["LEO"],
+          contributors: [["geomagnetic_storm", 1, 32], ["geomagnetic_storm", 2, 56], ["geomagnetic_storm", 3, 111]]
         }
       ];
 
@@ -10662,7 +10656,7 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
         },
         GEO: {
           label: "GEO",
-          headline: "Strategic and tactical SATCOM plus OPIR are GEO-heavy; charging and internal charging are the main space-weather concern.",
+          headline: "Strategic and tactical SATCOM plus OPIR are GEO-heavy; surface and internal charging are distinct space-weather concerns.",
           environment: "Geosynchronous spacecraft are exposed to energetic electrons and substorm injections that can drive surface charging, internal charging, SEUs, and long-term dose effects.",
           missions: [
             { name: "Narrowband Tactical SATCOM", bands: "UHF", risk: "Charging affects spacecraft; UHF users can be affected by scintillation and auroral/ionospheric disruption." },
@@ -10673,10 +10667,10 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
         },
         HEO: {
           label: "HEO",
-          headline: "High-latitude comms and warning missions trade long dwell for repeated belt crossings and auroral-zone exposure.",
-          environment: "HEO risk changes by orbit phase: radiation-belt crossings drive dose/SEUs, while high-latitude dwell increases auroral charging and scintillation exposure.",
+          headline: "Highly elliptical missions experience changing plasma and radiation along their orbits; ground-link effects are separate.",
+          environment: "HEO exposure depends on perigee, apogee and inclination: belt crossings add radiation, hot plasma can cause charging at altitude, and low perigee can introduce drag. High latitude alone does not determine spacecraft charging.",
           missions: [
-            { name: "High-Latitude Comms", bands: "UHF/EHF depending system", risk: "Auroral charging and high-latitude scintillation can matter near dwell regions; belt crossings add radiation stress." },
+            { name: "High-Latitude Comms", bands: "UHF/EHF depending system", risk: "Local plasma controls spacecraft charging; high-latitude ionospheric scintillation affects ground links. Belt crossings add radiation exposure." },
             { name: "High-Latitude Warning / OPIR", bands: "IR sensors, TT&C/downlink RF", risk: "SEUs, particle hits/noise, and cumulative dose vary strongly with orbit phase." },
             { name: "Transfer / Highly Elliptic Ops", bands: "Mission-specific TT&C", risk: "Rapidly changing radiation environment complicates anomaly attribution and operations timing." }
           ]
@@ -10755,16 +10749,28 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
       window.SpaceWxRiskTelemetry = () => ({ ...riskTelemetry, selected: state.riskOrbit, archive: !!state.archive.active });
       window.SpaceWxRiskPolicy = values => calculateSatelliteRisk(values.ap, values.proton, values.electron);
 
-      function electronCoverageHours(rows) {
+      function electronCoverageHours(rows, windowEnd) {
         const times = [...new Set(rows.filter(row => Number.isFinite(toNumber(row.flux)) && toNumber(row.flux) >= 0)
           .map(row => Date.parse(timeOf(row))).filter(Number.isFinite))].sort((a, b) => a - b);
-        const end = times.at(-1), start = end - 24 * 3600000;
+        const end = Number.isFinite(windowEnd) ? windowEnd : times.at(-1), start = end - 24 * 3600000;
         let covered = 0;
         for (let i = 1; i < times.length; i++) {
           const dt = times[i] - times[i - 1];
-          if (dt <= 10 * 60000) covered += Math.max(0, times[i] - Math.max(start, times[i - 1]));
+          if (dt <= 10 * 60000) covered += Math.max(0, Math.min(end, times[i]) - Math.max(start, times[i - 1]));
         }
         return covered / 3600000;
+      }
+
+      function electronProtonWindowQuality(electrons, protons) {
+        const end = Math.max(...electrons.filter(row => Number.isFinite(toNumber(row.flux)) && toNumber(row.flux) >= 0)
+          .map(row => Date.parse(timeOf(row))).filter(Number.isFinite));
+        const coverage = electronCoverageHours(protons, end);
+        const contaminated = protons.some(row => {
+          const time = Date.parse(timeOf(row));
+          return time >= end - 24 * 3600000 && time <= end && toNumber(row.flux) >= 10;
+        });
+        return { protonCheckOK: Number.isFinite(end) && coverage >= 24 - 1 / 3600 && !contaminated,
+          qualityReason: contaminated ? "Proton event in 24 h window" : "Incomplete 24 h proton check" };
       }
 
       // Catalog panels reuse the same observations as the original Shift charts.
@@ -12701,8 +12707,8 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
 
       function nairasDoseLevel(doseMrem) {
         if (doseMrem >= 30) return { text: "Extreme", color: "#ff00ff" };
-        if (doseMrem >= 10) return { text: "High", color: "#dc3545" };
-        if (doseMrem >= 3) return { text: "Elevated", color: "#ffc107" };
+        if (doseMrem >= 10) return { text: "Trigger 2", color: "#dc3545" };
+        if (doseMrem >= 3) return { text: "Trigger 1", color: "#ffc107" };
         return { text: "Normal", color: "#198754" };
       }
 
@@ -13921,9 +13927,9 @@ function dedupeRadioBurstRows(rows) {
               { label: "Current", value: fmt(latestNumber(rows, ["ap_value"]), 0) }
             ],
             thresholds: [
-              { label: `Minor: Ap ${fmt(state.rules.ap.yellow, 0)}`, level: "yellow", hit: toNumber(peak?.ap_value) >= state.rules.ap.yellow },
-              { label: `Major: Ap ${fmt(state.rules.ap.red, 0)}`, level: "red", hit: toNumber(peak?.ap_value) >= state.rules.ap.red },
-              { label: `Severe: Ap ${fmt(state.rules.ap.purple, 0)}`, level: "magenta", hit: toNumber(peak?.ap_value) >= state.rules.ap.purple }
+              { label: `Local trigger 1: 3 h ap ${fmt(state.rules.ap.yellow, 0)}`, level: "yellow", hit: toNumber(peak?.ap_value) >= state.rules.ap.yellow },
+              { label: `Local trigger 2: 3 h ap ${fmt(state.rules.ap.red, 0)}`, level: "red", hit: toNumber(peak?.ap_value) >= state.rules.ap.red },
+              { label: `Local trigger 3: 3 h ap ${fmt(state.rules.ap.purple, 0)}`, level: "magenta", hit: toNumber(peak?.ap_value) >= state.rules.ap.purple }
             ],
             series: [{ label: "Max Ap", rows, value: (row) => toNumber(row.ap_value), format: (value) => fmt(value, 0) }]
           };
@@ -13938,9 +13944,9 @@ function dedupeRadioBurstRows(rows) {
               { label: "\u2265 50 MeV", value: `${fmt(latestNumber(rows50, ["flux"]), 2)} PFU` }
             ],
             thresholds: [
-              { label: `\u2265 10 MeV: Near PCA (${fmt(state.rules.proton.yellow, 0)} PFU)`, level: "yellow", hit: toNumber(maxRow(rows10, "flux")?.flux) >= state.rules.proton.yellow },
-              { label: `\u2265 10 MeV: PCA (${fmt(state.rules.proton.red, 0)} PFU)`, level: "red", hit: toNumber(maxRow(rows10, "flux")?.flux) >= state.rules.proton.red },
-              { label: `\u2265 10 MeV: PCA / High SEU and Total Dose risk (${fmt(state.rules.proton.purple, 0)} PFU)`, level: "magenta", hit: toNumber(maxRow(rows10, "flux")?.flux) >= state.rules.proton.purple },
+              { label: `\u2265 10 MeV: Local exposure trigger 1 (${fmt(state.rules.proton.yellow, 0)} PFU)`, level: "yellow", hit: toNumber(maxRow(rows10, "flux")?.flux) >= state.rules.proton.yellow },
+              { label: `\u2265 10 MeV: Local exposure trigger 2 (${fmt(state.rules.proton.red, 0)} PFU)`, level: "red", hit: toNumber(maxRow(rows10, "flux")?.flux) >= state.rules.proton.red },
+              { label: `\u2265 10 MeV: Local solar-proton exposure trigger 3 (${fmt(state.rules.proton.purple, 0)} PFU)`, level: "magenta", hit: toNumber(maxRow(rows10, "flux")?.flux) >= state.rules.proton.purple },
               { label: `\u2265 50 MeV: Proton Event (${fmt(state.rules.proton50.red, 0)} PFU)`, level: "red", hit: toNumber(maxRow(rows50, "flux")?.flux) >= state.rules.proton50.red }
             ],
             series: [
@@ -13957,8 +13963,8 @@ function dedupeRadioBurstRows(rows) {
             { label: "Latest", value: scientific(latestNumber(eRows, ["fluence"])) }
           ],
           thresholds: [
-            { label: `Moderate: ${scientificPower(state.rules.electron.yellow)}`, level: "yellow", hit: toNumber(peak?.fluence) >= state.rules.electron.yellow },
-            { label: `High: ${scientificPower(state.rules.electron.red)}`, level: "red", hit: toNumber(peak?.fluence) >= state.rules.electron.red }
+            { label: `Local trigger 1: ${scientificPower(state.rules.electron.yellow)}`, level: "yellow", hit: toNumber(peak?.fluence) >= state.rules.electron.yellow },
+            { label: `Local trigger 2: ${scientificPower(state.rules.electron.red)}`, level: "red", hit: toNumber(peak?.fluence) >= state.rules.electron.red }
           ],
           series: [{ label: "Fluence", rows: eRows, value: (row) => toNumber(row.fluence), format: scientific }]
         };
@@ -14477,7 +14483,7 @@ function dedupeRadioBurstRows(rows) {
           });
           return;
         }
-        plot("electronPlot", [lineTrace(rows, "flux", "Electron Flux", "#a855f7", { fill: true, unit: "pfu", valueFormat: 2, showlegend: false })].filter(Boolean), {
+        plot("electronPlot", [lineTrace(rows, "flux", "Electron Flux", "#a855f7", { fill: true, unit: "e⁻ cm⁻² s⁻¹ sr⁻¹", valueFormat: 2, showlegend: false })].filter(Boolean), {
           yaxis: electronFluxAxis(rows),
           shapes: electronFluxAxis(rows).range[1] >= 1000 ? thresholdShapes([1000]) : [],
           showlegend: false,
@@ -14511,11 +14517,13 @@ function dedupeRadioBurstRows(rows) {
       function renderRiskSuite(v) {
         const latest = (rows, field) => rows.filter(row => Number.isFinite(toNumber(row[field])) && toNumber(row[field]) >= 0 && timeOf(row)).sort(byTime).at(-1);
         const electrons = electronRows2Mev();
+        const protons = protonRowsAtThreshold(normalizeRows(state.data.proton), 10);
+        const protonQuality = electronProtonWindowQuality(electrons, protons);
         const apRow = latest(apHistoryRows(), "ap_value");
         riskTelemetry = { electronFlux: { value: v.electronFlux, time: timeOf(latest(electrons, 'flux')) }, samples: {
           ap: { value: v.ap, time: timeOf(apRow), validThrough: apRow?.interval_end },
-          proton: { value: v.proton, time: timeOf(latest(protonRowsAtThreshold(normalizeRows(state.data.proton), 10), 'flux')) },
-          electron: { value: v.electron, time: timeOf(latest(electrons, 'flux')), coverageOK: electronCoverageHours(electrons) >= 23 }
+          proton: { value: v.proton, time: timeOf(latest(protons, 'flux')) },
+          electron: { value: v.electron, time: timeOf(latest(electrons, 'flux')), coverageOK: electronCoverageHours(electrons) >= 24 - 1 / 3600, ...protonQuality }
         } };
         renderMilitaryRiskOverview(v);
         renderRisk(v);
@@ -16860,16 +16868,14 @@ function dedupeRadioBurstRows(rows) {
       }
 
       function riskDriverNote(kind, level) {
-        if (kind === "ap") return level >= 3 ? "Severe Storming" : level === 2 ? "Major Storming" : level === 1 ? "Minor Storming" : "Quiet";
-        if (kind === "proton") return level >= 3 ? "High SEU/Total Dose risk" : level === 2 ? "Moderate probability of Single Event Upsets" : level === 1 ? "Elevated probability of Single Event Upsets" : "Background";
-        if (kind === "electron") return level >= 2 ? "High probability of Surface Charging" : level === 1 ? "Moderate probability of Surface Charging" : "Below Threshold";
-        return "Nominal";
+        const mechanism = { ap: "activity proxy for surface charging / LEO drag", proton: "solar-proton exposure proxy for single-event effects", electron: "24 h exposure proxy for internal charging" }[kind];
+        return `${level ? `Local trigger ${level}` : "Below configured triggers"} · ${mechanism || "environmental screening"}`;
       }
 
       function riskDriverMetric(label, value, unit, kind) {
         const numeric = toNumber(value);
         const level = riskDriverLevel(kind, numeric);
-        const info = RISK_LEVELS[level] || RISK_LEVELS[0];
+        const info = Number.isFinite(numeric) ? RISK_LEVELS[level] || RISK_LEVELS[0] : { color: "#94a3b8" };
         return `
           <button class="risk-metric ${state.riskDriver === kind ? "active" : ""}" data-risk-driver="${escapeHtml(kind)}" style="--metric-accent:${escapeHtml(info.color)}" type="button">
             <span class="risk-metric-label">${escapeHtml(label)}</span>
@@ -16880,10 +16886,10 @@ function dedupeRadioBurstRows(rows) {
       function riskDriverDetail(value, unit, kind) {
         const numeric = toNumber(value);
         const level = riskDriverLevel(kind, numeric);
-        const info = RISK_LEVELS[level] || RISK_LEVELS[0];
-        const label = kind === "ap" ? "Ap" : kind === "proton" ? "≥10 MeV Protons" : "≥2MeV Electron Fluence";
+        const info = Number.isFinite(numeric) ? RISK_LEVELS[level] || RISK_LEVELS[0] : { color: "#94a3b8" };
+        const label = kind === "ap" ? "Planetary 3 h ap" : kind === "proton" ? "≥10 MeV Solar Protons" : ">2 MeV Electron Fluence · 24 h";
         const display = kind === "electron"
-          ? scientific(numeric)
+          ? `${scientific(numeric)} e⁻ cm⁻² sr⁻¹`
           : `${kind === "ap" ? fmt(numeric, 0) : fmt(numeric, 2)}${unit ? ` ${unit}` : ""}`;
         return `
           <div class="risk-driver-popover" style="--metric-accent:${escapeHtml(info.color)}">
@@ -16922,17 +16928,24 @@ function dedupeRadioBurstRows(rows) {
           const hit = activeByRisk.get(rule.risk);
           const level = hit?.level || 0;
           const levelInfo = RISK_LEVELS[level] || RISK_LEVELS[0];
-          const triggers = hit?.reasons?.length ? hit.reasons.join("; ") : (model.complete ? "No active threshold triggers." : "Incomplete current inputs; no complete assessment available.");
+          const assessed = rule.metric && (rule.screenOrbits || rule.orbits).includes(orbit);
+          const sample = model.samples[rule.metric];
+          const status = !rule.metric ? "Not calculated" : !assessed ? "Not locally assessed" : !sample?.fresh ? "Unavailable" : levelInfo.text;
+          const triggers = !assessed ? rule.drivers : !sample?.fresh ? sample?.status || "Input unavailable" : hit?.reasons?.join("; ") || "Below configured triggers; this does not establish spacecraft safety.";
+          const thresholds = rule.contributors.map(([phenomenon, triggerLevel, threshold]) => `Trigger ${triggerLevel}: ${riskPhenomenonLabel(phenomenon)} ≥ ${formatRiskThreshold(phenomenon, riskContributorThreshold(phenomenon, threshold))}`).join("; ");
           const riskNameColor = level > 0 ? levelInfo.color : "var(--text)";
           return `
             <details class="risk-detail" ${level > 0 ? "open" : ""}>
               <summary>
-                <span class="risk-name" style="color:${riskNameColor}">${escapeHtml(rule.risk)}</span>
+                <span class="risk-name" style="color:${riskNameColor}">${escapeHtml(rule.risk)} · ${escapeHtml(status)}</span>
               </summary>
               <div class="risk-copy">
                 <span class="risk-copy-line"><strong>Why it matters:</strong> ${escapeHtml(rule.description || rule.guide || "No additional guide text available.")}</span>
                 <span class="risk-copy-line"><strong>Threshold drivers:</strong> ${escapeHtml(rule.drivers || "Operational thresholds listed in the alert rules.")}</span>
                 <span class="risk-copy-line"><strong>Current:</strong> ${escapeHtml(triggers)}</span>
+                ${assessed ? `<span class="risk-copy-line"><strong>Your configured triggers:</strong> ${escapeHtml(thresholds)}</span>` : ""}
+                <span class="risk-copy-line"><strong>Scientific basis:</strong> ${escapeHtml(rule.basis)} <a href="${escapeHtml(rule.source)}" target="_blank" rel="noopener">${escapeHtml(rule.sourceLabel)}</a></span>
+                <span class="risk-copy-line"><strong>Decision support:</strong> ${escapeHtml(rule.action)}</span>
               </div>
             </details>
           `;
@@ -16941,16 +16954,18 @@ function dedupeRadioBurstRows(rows) {
           <div class="risk-orbit-tabs">
             ${orbits.map((item) => `<button class="risk-orbit-tab ${item === orbit ? "active" : ""}" data-risk-orbit="${item}" type="button">${item}</button>`).join("")}
           </div>
-          <div class="risk-orbit-panel level-${maxLevel}" style="--risk-fill:${Math.max(8, (maxLevel / 3) * 100)}%">
+          <div class="risk-orbit-panel level-${maxLevel}">
             <div class="risk-status"><strong>${escapeHtml(context.label || orbit)} Risk Review</strong><span class="risk-level-text" style="color:${info.color}">${escapeHtml(info.text)}</span></div>
-            <div class="risk-bar"></div>
+            <p class="risk-context-sub">Environmental screening, not a spacecraft failure forecast. Orbit color is the highest crossed local trigger; it is shared with the animation. “Below triggers” is not an all-clear. Dose and unsampled local hazards remain unassessed.</p>
+            <p class="risk-context-sub">Dots show current GOES particle flux; internal-charging screening uses the preceding 24 hours. Fewer dots can coexist with an active exposure trigger. Previews are synthetic and never change this live analysis.</p>
             <div class="risk-section-label">Live driver inputs</div>
             <div class="risk-metrics">
-              ${riskDriverMetric("Ap", v.ap, "", "ap")}
+              ${riskDriverMetric("3 h ap", v.ap, "", "ap")}
               ${riskDriverMetric("≥10 MeV Protons", v.proton, "PFU", "proton")}
-              ${riskDriverMetric("≥2MeV Electron Fluence", v.electron, "", "electron")}
+              ${riskDriverMetric(">2 MeV · 24 h fluence", v.electron, "", "electron")}
             </div>
             ${driverDetail}
+            <p class="risk-context-sub">Input status: ${escapeHtml(model.samples[state.riskDriver]?.status || "Unavailable")}. Input validity does not establish that every hazard is assessed.</p>
             <div class="risk-context-grid">
               <div class="risk-context-block">
                 <strong>Orbit context</strong>
@@ -16970,7 +16985,8 @@ function dedupeRadioBurstRows(rows) {
                 </div>
               `).join("")}
             </div>
-            <div class="risk-section-label">Threshold status</div>
+            <div class="risk-section-label">Threshold status and decision support</div>
+            <p class="risk-context-sub">Reference criteria: <a href="https://www.swpc.noaa.gov/noaa-scales-explanation" target="_blank" rel="noopener">NOAA G / S scales</a> · <a href="https://www.gfz.de/en/section/geomagnetism/data-products-services/kp-index/related-indices" target="_blank" rel="noopener">GFZ ap / Ap definitions</a>. These local triggers do not implement NOAA SEAESRT hazard quotients.</p>
             <div class="risk-detail-list">${rows}</div>
           </div>
         `;
@@ -19959,11 +19975,11 @@ function dedupeRadioBurstRows(rows) {
       function renderSettingsForm() {
         const meta = {
           xray: ["X-Ray Flux", "Flare Class: M1 / M5 / X1"],
-          ap: ["Geomagnetic Storming", "Ap: Minor / Major / Severe"],
+          ap: ["Geomagnetic Activity", "3 h ap · local triggers; daily Ap and NOAA G levels are different"],
           radio: ["Radio Burst", "SFU at 245 / 410 / 610 / 1415 / 2695 / 4695 / 8800 / 15400 MHz"],
-          proton: ["≥10 MeV Protons", "PFU"],
+          proton: ["≥10 MeV Protons", "PFU · local triggers; NOAA S1/S2/S3: 10/100/1,000"],
           proton50: ["≥50 MeV Protons", "PFU"],
-          electron: ["Electron Fluence", "24-hour e/cm2, e.g. 1.1e8"]
+          electron: ["Electron Fluence", "24 h >2 MeV · e⁻ cm⁻² sr⁻¹ · local exposure triggers"]
         };
         els.settingsGrid.innerHTML = Object.entries(state.rules).map(([key, rule]) => `
           <label class="setting-row ${rule.placeholder ? "compact" : ""}">
@@ -21871,7 +21887,7 @@ function dedupeRadioBurstRows(rows) {
         return { ...axis('e⁻ cm⁻² sr⁻¹ / 24 h'), ...particleLinearAxis(rows.map(row => toNumber(row.fluence)), 1e8), tickformat: '~s' };
       }
 
-      function electronFluxAxis(rows = [], label = 'pfu') {
+      function electronFluxAxis(rows = [], label = 'e⁻ cm⁻² s⁻¹ sr⁻¹') {
         return { ...axis(label), ...particleLinearAxis(rows.map(row => toNumber(row.flux))) };
       }
 
@@ -22301,24 +22317,28 @@ function seonRadCode(text) {
       }
 
       function electronFluenceRows(inputRows) {
-        const rows = (inputRows || electronRows2Mev()).map((row) => ({
-          ...row,
-          time_tag: timeOf(row),
-          flux: toNumber(row.flux)
-        })).filter((row) => row.time_tag && Number.isFinite(row.flux)).sort(byTime);
+        const unique = new Map();
+        for (const row of inputRows || electronRows2Mev()) {
+          const t = Date.parse(timeOf(row)), flux = toNumber(row.flux);
+          if (Number.isFinite(t) && Number.isFinite(flux) && flux >= 0) unique.set(t, { ...row, time_tag: timeOf(row), flux });
+        }
+        const rows = [...unique.values()].sort(byTime), times = rows.map(row => Date.parse(row.time_tag));
         const out = [];
         let start = 0;
-        for (let i = 0; i < rows.length; i += 1) {
-          const t = new Date(rows[i].time_tag).getTime();
-          while (start < i && t - new Date(rows[start].time_tag).getTime() > 24 * 3600000) start += 1;
-          let fluence = 0;
-          for (let j = start + 1; j <= i; j += 1) {
-            const t0 = new Date(rows[j - 1].time_tag).getTime();
-            const t1 = new Date(rows[j].time_tag).getTime();
-            const dt = Math.max(0, Math.min(t1 - t0, 10 * 60000)) / 1000;
-            fluence += ((rows[j - 1].flux + rows[j].flux) / 2) * dt;
+        for (let i = 0; i < rows.length; i++) {
+          const boundary = times[i] - 24 * 3600000;
+          while (start < i && times[start + 1] <= boundary) start++;
+          let fluence = 0, covered = 0;
+          for (let j = start + 1; j <= i; j++) {
+            const t0 = times[j - 1], t1 = times[j], dt = t1 - t0, from = Math.max(t0, boundary);
+            // Interpolate only across short sampling gaps; never invent flux
+            // across a longer outage. Clip the first segment to the window.
+            if (dt <= 0 || dt > 10 * 60000 || from >= t1) continue;
+            const f0 = rows[j - 1].flux + (rows[j].flux - rows[j - 1].flux) * (from - t0) / dt;
+            fluence += (f0 + rows[j].flux) / 2 * (t1 - from) / 1000;
+            covered += t1 - from;
           }
-          out.push({ ...rows[i], fluence });
+          out.push({ ...rows[i], fluence, coverageHours: covered / 3600000 });
         }
         return out;
       }
@@ -22331,27 +22351,19 @@ function seonRadCode(text) {
       }
 
       function calculateSatelliteRisk(apIndex, protonFlux, electronFluence) {
-        const latest = {
-          geomagnetic_storm: Number.isFinite(apIndex) ? apIndex : 0,
-          proton_flux_10: Number.isFinite(protonFlux) ? protonFlux : 0,
-          electron_fluence: Number.isFinite(electronFluence) ? electronFluence : 0
-        };
-        const matrix = Object.fromEntries(["LEO", "MEO", "GEO", "HEO"].map((orbit) => [orbit, []]));
+        const latest = { geomagnetic_storm: apIndex, proton_flux_10: protonFlux, electron_fluence: electronFluence };
+        const matrix = Object.fromEntries(["LEO", "MEO", "GEO", "HEO"].map(orbit => [orbit, []]));
         for (const orbit of Object.keys(matrix)) {
           for (const rule of RISK_RULES) {
-            if (!rule.orbits.includes(orbit)) continue;
-            let score = 0;
-            const reasons = [];
-            for (const [phenomenon, points, threshold, reason] of rule.contributors) {
-              const actualThreshold = riskContributorThreshold(phenomenon, threshold);
-              if ((latest[phenomenon] || 0) >= actualThreshold) {
-                score += points;
-                reasons.push(`${riskPhenomenonLabel(phenomenon)} at or above ${formatRiskThreshold(phenomenon, actualThreshold)}`);
-              }
-            }
+            if (!(rule.screenOrbits || rule.orbits).includes(orbit)) continue;
             let level = 0;
-            for (const [requiredScore, mappedLevel] of rule.levels) {
-              if (score >= requiredScore) level = mappedLevel;
+            const reasons = [];
+            for (const [phenomenon, triggerLevel, threshold] of rule.contributors) {
+              const actualThreshold = riskContributorThreshold(phenomenon, threshold);
+              if (Number.isFinite(latest[phenomenon]) && latest[phenomenon] >= actualThreshold) {
+                level = Math.max(level, triggerLevel);
+                reasons.push(`Trigger ${triggerLevel}: ${riskPhenomenonLabel(phenomenon)} ≥ ${formatRiskThreshold(phenomenon, actualThreshold)}`);
+              }
             }
             if (level > 0) matrix[orbit].push({ risk: rule.risk, level, reasons });
           }
@@ -22365,19 +22377,19 @@ function seonRadCode(text) {
           : phenomenon === 'proton_flux_10' ? (fallback >= 1000 ? 'purple' : fallback >= 100 ? 'red' : 'yellow')
           : fallback >= 4.8e8 ? 'red' : 'yellow';
         const configured = state.rules[key]?.[level];
-        return Number.isFinite(configured) && configured > 0 ? configured : fallback;
+        return Number.isFinite(configured) && configured >= 0 ? configured : fallback;
       }
 
       function riskPhenomenonLabel(phenomenon) {
-        if (phenomenon === "geomagnetic_storm") return "Ap";
-        if (phenomenon === "proton_flux_10") return "10 MeV Protons";
-        if (phenomenon === "electron_fluence") return "Electron Fluence";
+        if (phenomenon === "geomagnetic_storm") return "3 h ap";
+        if (phenomenon === "proton_flux_10") return "≥10 MeV solar protons";
+        if (phenomenon === "electron_fluence") return ">2 MeV electron fluence · 24 h";
         return phenomenon;
       }
 
       function formatRiskThreshold(phenomenon, value) {
-        if (phenomenon === "electron_fluence") return scientific(value);
-        return Number.isInteger(value) ? String(value) : fmt(value, 2);
+        if (phenomenon === "electron_fluence") return `${scientific(value)} e⁻ cm⁻² sr⁻¹`;
+        return `${Number.isInteger(value) ? String(value) : fmt(value, 2)}${phenomenon === "proton_flux_10" ? " PFU" : ""}`;
       }
 
       function potentialRiskGuides(orbit) {

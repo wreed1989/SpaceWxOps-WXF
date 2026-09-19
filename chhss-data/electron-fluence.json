@@ -1,6 +1,6 @@
 {
   "schemaVersion": "WXF-EF-0.1",
-  "issuedAt": "2026-09-19T20:18:23.096676+00:00",
+  "issuedAt": "2026-09-19T20:22:20.181711+00:00",
   "horizonHours": 24,
   "units": "electrons cm^-2 sr^-1",
   "fluxUnits": "electrons cm^-2 s^-1 sr^-1",
@@ -221,96 +221,96 @@
       "low": null,
       "median": null,
       "high": null,
-      "fluxLow": 180.12369543699074,
-      "fluxMedian": 374.1965717991498,
-      "fluxHigh": 476.1021503369375
+      "fluxLow": 180.12369543699057,
+      "fluxMedian": 374.19657179914947,
+      "fluxHigh": 476.10215033693703
     },
     {
       "time": "2026-09-19T22:00:00+00:00",
       "low": null,
       "median": null,
       "high": null,
-      "fluxLow": 142.6365232301958,
-      "fluxMedian": 329.96959683466736,
-      "fluxHigh": 495.66999206852523
+      "fluxLow": 142.63652323019565,
+      "fluxMedian": 329.9695968346671,
+      "fluxHigh": 495.6699920685248
     },
     {
       "time": "2026-09-19T23:00:00+00:00",
-      "low": 30045890.26097199,
+      "low": 30045890.260971982,
       "median": 31865336.998544477,
-      "high": 33345047.826201733,
-      "fluxLow": 104.18980634822447,
-      "fluxMedian": 301.94549729402803,
-      "fluxHigh": 504.84103292870384
+      "high": 33345047.826201726,
+      "fluxLow": 104.1898063482243,
+      "fluxMedian": 301.94549729402746,
+      "fluxHigh": 504.84103292870293
     },
     {
       "time": "2026-09-20T00:00:00+00:00",
-      "low": 29023670.60459405,
-      "median": 31053960.664524965,
-      "high": 32995437.931955483,
-      "fluxLow": 117.10477508580638,
-      "fluxMedian": 268.15782594479896,
-      "fluxHigh": 441.2204010773775
+      "low": 29023670.604594048,
+      "median": 31053960.664524954,
+      "high": 32995437.931955475,
+      "fluxLow": 117.10477508580628,
+      "fluxMedian": 268.1578259447987,
+      "fluxHigh": 441.2204010773771
     },
     {
       "time": "2026-09-20T01:00:00+00:00",
-      "low": 28249365.7756362,
+      "low": 28249365.775636192,
       "median": 30483748.774872676,
-      "high": 33208482.55862642,
-      "fluxLow": 96.91020907417567,
-      "fluxMedian": 266.88340270410845,
-      "fluxHigh": 427.1941678137957
+      "high": 33208482.558626417,
+      "fluxLow": 96.91020907417558,
+      "fluxMedian": 266.8834027041082,
+      "fluxHigh": 427.19416781379556
     },
     {
       "time": "2026-09-20T02:00:00+00:00",
       "low": 27434416.350798845,
       "median": 30266589.61992666,
-      "high": 33946483.847313814,
+      "high": 33946483.8473138,
       "fluxLow": 104.23352645874064,
       "fluxMedian": 258.1606601470114,
       "fluxHigh": 489.54803154969585
     },
     {
       "time": "2026-09-20T03:00:00+00:00",
-      "low": 26865941.976861544,
+      "low": 26865941.97686154,
       "median": 30172931.407657605,
-      "high": 34219868.756239586,
+      "high": 34219868.75623958,
       "fluxLow": 91.54893616195142,
-      "fluxMedian": 260.10536892709234,
-      "fluxHigh": 614.0905328338282
+      "fluxMedian": 260.10536892709257,
+      "fluxHigh": 614.0905328338288
     },
     {
       "time": "2026-09-20T04:00:00+00:00",
-      "low": 26317002.840637,
+      "low": 26317002.84063699,
       "median": 30009839.300941546,
-      "high": 35016439.16879833,
-      "fluxLow": 107.49802939630648,
-      "fluxMedian": 253.98108313777607,
-      "fluxHigh": 642.4066972485238
+      "high": 35016439.16879832,
+      "fluxLow": 107.49802939630658,
+      "fluxMedian": 253.9810831377763,
+      "fluxHigh": 642.4066972485243
     },
     {
       "time": "2026-09-20T05:00:00+00:00",
       "low": 26118988.539222017,
-      "median": 30070721.486418054,
-      "high": 36512578.32506581,
-      "fluxLow": 68.97658821837055,
-      "fluxMedian": 247.6707120345602,
+      "median": 30070721.486418046,
+      "high": 36512578.3250658,
+      "fluxLow": 68.97658821837061,
+      "fluxMedian": 247.67071203456044,
       "fluxHigh": 662.8416727819537
     },
     {
       "time": "2026-09-20T06:00:00+00:00",
-      "low": 25775417.40650191,
-      "median": 30292870.825107493,
-      "high": 37853546.11817014,
-      "fluxLow": 77.32021642579399,
-      "fluxMedian": 236.81193876734443,
-      "fluxHigh": 570.8159319830237
+      "low": 25775417.406501908,
+      "median": 30292870.8251075,
+      "high": 37853546.11817015,
+      "fluxLow": 77.32021642579406,
+      "fluxMedian": 236.81193876734466,
+      "fluxHigh": 570.8159319830246
     },
     {
       "time": "2026-09-20T07:00:00+00:00",
       "low": 25450137.604922846,
       "median": 30395864.29850176,
-      "high": 38073292.86392228,
+      "high": 38073292.863922276,
       "fluxLow": 85.35113443832027,
       "fluxMedian": 232.72500866659274,
       "fluxHigh": 666.7904332124805
@@ -318,11 +318,11 @@
     {
       "time": "2026-09-20T08:00:00+00:00",
       "low": 25158086.082176376,
-      "median": 30724110.66694691,
+      "median": 30724110.666946903,
       "high": 39486783.82499322,
-      "fluxLow": 71.01456138888804,
-      "fluxMedian": 241.9987473917324,
-      "fluxHigh": 675.4738857880184
+      "fluxLow": 71.0145613888881,
+      "fluxMedian": 241.99874739173262,
+      "fluxHigh": 675.473885788019
     },
     {
       "time": "2026-09-20T09:00:00+00:00",
@@ -331,7 +331,7 @@
       "high": 41254923.719895,
       "fluxLow": 90.1084860788758,
       "fluxMedian": 243.73603004645122,
-      "fluxHigh": 688.000033266589
+      "fluxHigh": 688.0000332665888
     },
     {
       "time": "2026-09-20T10:00:00+00:00",
@@ -344,26 +344,26 @@
     },
     {
       "time": "2026-09-20T11:00:00+00:00",
-      "low": 24182791.959776834,
+      "low": 24182791.95977683,
       "median": 31251002.74170528,
-      "high": 44512031.02096495,
+      "high": 44512031.02096494,
       "fluxLow": 103.65463944933849,
       "fluxMedian": 273.6620918747147,
       "fluxHigh": 893.238570672755
     },
     {
       "time": "2026-09-20T12:00:00+00:00",
-      "low": 23557870.506704953,
+      "low": 23557870.50670495,
       "median": 31264614.047063384,
       "high": 47172691.39498151,
-      "fluxLow": 99.01193056004168,
-      "fluxMedian": 327.34960449282664,
-      "fluxHigh": 1056.5427246632846
+      "fluxLow": 99.01193056004176,
+      "fluxMedian": 327.3496044928269,
+      "fluxHigh": 1056.5427246632855
     },
     {
       "time": "2026-09-20T13:00:00+00:00",
-      "low": 22938490.32109712,
-      "median": 31383107.687561963,
+      "low": 22938490.321097113,
+      "median": 31383107.687561974,
       "high": 50382081.88723688,
       "fluxLow": 114.22250053854134,
       "fluxMedian": 383.0547184947856,
@@ -371,25 +371,25 @@
     },
     {
       "time": "2026-09-20T14:00:00+00:00",
-      "low": 22313462.432794638,
+      "low": 22313462.432794634,
       "median": 31433814.5586047,
-      "high": 53057461.713513955,
+      "high": 53057461.71351397,
       "fluxLow": 140.13427520201174,
       "fluxMedian": 450.3832663005576,
       "fluxHigh": 1290.9912940826412
     },
     {
       "time": "2026-09-20T15:00:00+00:00",
-      "low": 20948021.76621677,
+      "low": 20948021.766216766,
       "median": 30907890.000424746,
-      "high": 57663169.72417456,
-      "fluxLow": 163.75110857634928,
+      "high": 57663169.72417457,
+      "fluxLow": 163.7511085763493,
       "fluxMedian": 477.3390568786649,
-      "fluxHigh": 1563.580030527242
+      "fluxHigh": 1563.5800305272417
     },
     {
       "time": "2026-09-20T16:00:00+00:00",
-      "low": 19109552.098198596,
+      "low": 19109552.098198593,
       "median": 30149081.721736487,
       "high": 61016570.443958715,
       "fluxLow": 134.21564916984607,
@@ -407,29 +407,29 @@
     },
     {
       "time": "2026-09-20T18:00:00+00:00",
-      "low": 15568285.95954267,
+      "low": 15568285.959542667,
       "median": 28984315.528600007,
       "high": 69065694.69683893,
-      "fluxLow": 104.53862969336473,
-      "fluxMedian": 458.47300290162264,
-      "fluxHigh": 1769.1463918045727
+      "fluxLow": 104.53862969336464,
+      "fluxMedian": 458.4730029016222,
+      "fluxHigh": 1769.1463918045724
     },
     {
       "time": "2026-09-20T19:00:00+00:00",
-      "low": 14213603.82635285,
-      "median": 28814996.302806303,
+      "low": 14213603.826352846,
+      "median": 28814996.302806295,
       "high": 72262678.32903893,
       "fluxLow": 88.16687316585995,
       "fluxMedian": 443.9016383685316,
-      "fluxHigh": 1462.966180273587
+      "fluxHigh": 1462.9661802735873
     },
     {
       "time": "2026-09-20T20:00:00+00:00",
-      "low": 13249776.93881659,
-      "median": 28631285.759129338,
+      "low": 13249776.938816587,
+      "median": 28631285.759129334,
       "high": 74578224.51107898,
-      "fluxLow": 97.28566444576524,
-      "fluxMedian": 403.9002430332201,
+      "fluxLow": 97.28566444576515,
+      "fluxMedian": 403.90024303321974,
       "fluxHigh": 1367.7243042171544
     }
   ],
@@ -540,10 +540,10 @@
   "outOfTrainingRange": [],
   "inputQuality": {
     "rawSamples": 2816,
-    "acceptedSamples": 2811,
+    "acceptedSamples": 2812,
     "otherElectronSpacecraft": 0,
     "highProtonSamples": 0,
-    "missingProtonSamples": 5,
+    "missingProtonSamples": 4,
     "completeElectronHours": 227,
     "hourCount": 237,
     "firstHourEnd": "2026-09-10T01:00:00+00:00",
@@ -552,7 +552,7 @@
   "modelSHA256": "aab8912d60f913bb75224db917b82ecb4c8728da552e93b109686e55c01767ee",
   "externalGuidance": {
     "source": "https://services.swpc.noaa.gov/text/3-day-forecast.txt",
-    "retrievedAt": "2026-09-19T20:18:23.222208+00:00",
+    "retrievedAt": "2026-09-19T20:22:20.241052+00:00",
     "bulletin": ":Product: 3-Day Forecast\n:Issued: 2026 Sep 19 1230 UTC\n# Prepared by the U.S. Dept. of Commerce, NOAA, Space Weather Prediction Center\n#\nA. NOAA Geomagnetic Activity Observation and Forecast\n\nThe greatest observed 3 hr Kp over the past 24 hours was 3 (below NOAA\nScale levels).\nThe greatest expected 3 hr Kp for Sep 19-Sep 21 2026 is 2.67 (below NOAA\nScale levels).\n\nNOAA Kp index breakdown Sep 19-Sep 21 2026\n\n             Sep 19       Sep 20       Sep 21\n00-03UT       2.33         1.67         1.67     \n03-06UT       2.67         2.00         2.00     \n06-09UT       1.67         1.67         1.67     \n09-12UT       1.67         1.33         1.33     \n12-15UT       1.67         0.67         0.67     \n15-18UT       0.67         1.33         1.33     \n18-21UT       0.67         1.33         1.33     \n21-00UT       1.67         1.67         1.67     \n\nRationale: No G1 (Minor) or greater geomagnetic storms are expected.  No\nsignificant transient or recurrent solar wind features are forecast.\n\nB. NOAA Solar Radiation Activity Observation and Forecast\n\nSolar radiation, as observed by NOAA GOES-18 over the past 24 hours, was\nbelow S-scale storm level thresholds.\n\nSolar Radiation Storm Forecast for Sep 19-Sep 21 2026\n\n              Sep 19  Sep 20  Sep 21\nS1 or greater    1%      1%      1%\n\nRationale: No S1 (Minor) or greater solar radiation storms are expected.\nNo significant active region activity favorable for radiation storm\nproduction is forecast.\n\nC. NOAA Radio Blackout Activity and Forecast\n\nNo radio blackouts were observed over the past 24 hours.\n\nRadio Blackout Forecast for Sep 19-Sep 21 2026\n\n              Sep 19        Sep 20        Sep 21\nR1-R2            1%            1%            1%\nR3 or greater    1%            1%            1%\n\nRationale: No R1 (Minor) or greater radio blackouts are expected.  No\nsignificant active region flare activity is forecast.\n",
     "usedAsModelInput": false
   }

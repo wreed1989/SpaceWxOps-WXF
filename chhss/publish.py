@@ -69,6 +69,7 @@ def build(root, now=None):
                 'failedDays': latest.get('failed', 0)}},
             'history': ordered[-90:], 'historyCount': len(ordered),
             'verification': verification, 'verificationPeriod': verification_period,
+            'verificationAppliesToCurrent': bool(current and verification and verification.get('methodVersion')==current.get('measurementEngine')),
             'verificationURL': f'backfill/{verification_period}/validation.json' if verification else None}
     write(root / 'feed.json', feed)
     # A rolling 90-day measurement ledger is sufficient for current operations.

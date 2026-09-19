@@ -72,6 +72,26 @@ class ScienceTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             aia_quality.validate(None, 0x400)
 
+    def test_thermal_screen_separates_cool_corona_from_dark_filament(self):
+        y,x=np.indices((256,256));rho=np.hypot(x-127.5,y-127.5)/120
+        valid=rho<=.97
+        hole=(abs(x-92)<10)&(abs(y-115)<16)
+        filament=(abs(x-170)<10)&(abs(y-130)<16)
+        channels={w:np.full(rho.shape,100.) for w in [171,193,211]}
+        for w in channels:channels[w][hole|filament]=20
+        channels[171][hole]=70
+        mask,labels,diagnostics=core.segment(channels,valid,rho)
+        self.assertEqual(diagnostics['rawComponents'],2)
+        self.assertEqual(diagnostics['components'],1)
+        self.assertGreater(mask[hole].sum(),400)
+        self.assertEqual(mask[filament].sum(),0)
+        self.assertEqual(labels.max(),1)
+        # There is no minimum desired count: an all-filament scene has zero CHs.
+        channels[171][hole]=20
+        mask,labels,diagnostics=core.segment(channels,valid,rho)
+        self.assertEqual(mask.sum(),0)
+        self.assertEqual(diagnostics['components'],0)
+
     def test_registered_fits_path(self):
         import astropy.units as u
         import sunpy.map
@@ -85,7 +105,7 @@ class ScienceTests(unittest.TestCase):
                 'DSUN_OBS': 149597870700., 'RSUN_OBS': 959.23, 'RSUN_REF': 695700000.,
                 'HGLN_OBS': 0., 'HGLT_OBS': 0., 'DATE-OBS': '2026-09-01T12:00:00Z',
                 'QUALITY': 0, 'EXPTIME': 2., 'TELESCOP': 'SDO', 'WAVEUNIT': 'angstrom'}
-        maps = {w: sunpy.map.Map(image, {**base, 'INSTRUME': 'AIA', 'DETECTOR': 'AIA',
+        maps = {w: sunpy.map.Map(np.where(image==20,70,image) if w==171 else image, {**base, 'INSTRUME': 'AIA', 'DETECTOR': 'AIA',
                     'WAVELNTH': w, 'BUNIT': 'DN'}) for w in [171, 193, 211]}
         hmi = sunpy.map.Map(np.full((n, n), 10.), {**base, 'INSTRUME': 'HMI',
                               'DETECTOR': 'HMI', 'WAVELNTH': 6173, 'BUNIT': 'G'})
@@ -112,6 +132,18 @@ class PublicationTests(unittest.TestCase):
             payload=html.split('<script type="application/json" id="chhssBootstrap">',1)[1].split('</script>',1)[0]
             self.assertEqual(json.loads(payload),feed)
             self.assertNotIn('<script>bad()',html)
+            solar={'observed':[{'time-tag':'2026-08','ssn':76}], 'predicted':[{'time-tag':'2026-09','predicted_ssn':80}], 'retrievedAt':'2026-09-19T00:00:00Z'}
+            publish.write(root/'solar.json',solar)
+            html=build_dashboard(root/'dashboard.html',root/'feed.json',root/'solar.json').read_text()
+            embedded=html.split('<script type="application/json" id="solarCycleBootstrap">',1)[1].split('</script>',1)[0]
+            self.assertEqual(json.loads(embedded),solar)
+
+    def test_prior_detector_scores_do_not_validate_current_recipe(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            publish.write(root/'current.json',{'measurementEngine':core.VERSION})
+            publish.write(root/'backfill'/'2026-09-01_2026-09-08'/'validation.json',{'methodVersion':'prior-detector','pairs':[]})
+            self.assertFalse(publish.build(root)['verificationAppliesToCurrent'])
 
     def test_failure_keeps_original_observation_age_and_no_old_scores(self):
         with tempfile.TemporaryDirectory() as directory:

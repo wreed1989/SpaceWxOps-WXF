@@ -10148,7 +10148,7 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
       const ENLIL_ANIMATION_DIRECTORY_URL = "https://services.swpc.noaa.gov/images/animations/enlil/";
       const ENLIL_LATEST_IMAGE_URL = `${ENLIL_ANIMATION_DIRECTORY_URL}latest.jpg`;
       const ENLIL_PRODUCT_URL = "https://www.spaceweather.gov/products/wsa-enlil-solar-wind-prediction";
-      const HUXT_FORECAST_URL = "https://www.spaceweatherlive.com/en/solar-activity/huxt-forecast.html";
+      const HUXT_FORECAST_URL = "https://swxforecastlab.org/forecasts.html";
       const HUXT_ENSEMBLE_IMAGE_URL = "https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_forecast_latest.png";
       const STEREO_WHERE_URL = "https://stereo-ssc.nascom.nasa.gov/where.shtml";
       const STEREO_WHERE_IMAGE_URL = "https://stereo-ssc.nascom.nasa.gov/where/where_is_stereo.gif";
@@ -17297,11 +17297,8 @@ function dedupeRadioBurstRows(rows) {
           renderShiftHuxtModel(panel);
           return;
         }
-        const cmeRows = normalizeRows(state.data.donkiCme);
-        const models = collectDonkiCmeModels(cmeRows).filter((item) => item.kind === "WSA-ENLIL");
-        const latest = models[0];
-        const modelTime = latest ? formatAnyTime(latest.modelTime || latest.analysisTime || latest.cmeTime) : "SWPC Latest";
-        const speedText = latest && Number.isFinite(latest.speed) ? ` | ${fmt(latest.speed, 0)} km/s` : "";
+        const modelTime = "SWPC published forecast — times on chart";
+        const speedText = "";
         setText("shiftEnlilHeader", modelTime);
         panel.innerHTML = `
           <div class="shift-model-frame">
@@ -29159,7 +29156,7 @@ window.CHHSSData = (() => {
   const DEFAULT='https://raw.githubusercontent.com/wreed1989/SpaceWxOps-WXF/main/chhss-data/feed.json';
   const KEY='spaceWx.chhss.feed.v1';
   let url=DEFAULT;try{url=localStorage.getItem(KEY)||DEFAULT;}catch{}
-  const CLIENT_VERSION='2026-09-18.3';
+  const CLIENT_VERSION='2026-09-19.1';
   let state={feed:null,recurrence:null,recurrenceError:'',loading:false,source:'none',error:'',notice:'',lastAttempt:null,lastSuccess:null},inflight=null,recurrenceFlight=null,lastTry=0,dbPromise=null;
   const q=x=>document.querySelector(x),num=x=>typeof x==='number'&&Number.isFinite(x),date=x=>Number.isFinite(Date.parse(x))?Date.parse(x):null;
   const fmt=x=>num(x)?x.toFixed(1):'—';
@@ -29284,7 +29281,7 @@ window.CHHSSData = (() => {
   function mount(){
     const target=q('#fdRecurrenceCompare')||q('#card-ch-hss');if(!target||q('#chhssDataService'))return;
     const panel=document.createElement('section');panel.id='chhssDataService';
-    panel.innerHTML=`<div class="chds-heading"><strong>Data connection</strong><span data-chds-state>Awaiting producer</span><button type="button" data-chds-refresh>Refresh data</button><button type="button" data-chds-export>Export verification</button><button type="button" data-chds-archive>Export archive</button></div><div class="chds-facts"><div><span>MEASUREMENT</span><b data-chds-observation>—</b></div><div><span>SIGNED POLARITY · E / M / W</span><b data-chds-signs>— / — / —</b></div><div><span>HISTORICAL BACKFILL</span><b data-chds-history>Not connected</b></div><div><span>PAIRED SPEED TARGETS</span><b data-chds-n>—</b></div></div><p data-chds-error role="status"></p><details><summary>Connection &amp; verification details</summary><label class="chds-url">Public feed URL <input type="url" data-chds-url aria-label="Public coronal hole feed URL"><button type="button" data-chds-save>Save</button></label><p>One product, one published measurement recipe. Signed HMI is matched to the actual AIA mask. Mixed/weak or poorly sampled regions remain unknown. The processing worker—not this browser—runs the backfill. Live input availability and forecast validation are separate checks.</p><div data-chds-scores></div><p data-chds-omni></p><p data-chds-source></p></details>`;
+    panel.innerHTML=`<div class="chds-heading"><strong>Data connection</strong><span data-chds-state>Awaiting producer</span><button type="button" data-chds-refresh>Refresh data</button><button type="button" data-chds-export>Export verification</button><button type="button" data-chds-archive>Export archive</button></div><div class="chds-facts"><div><span>MEASUREMENT</span><b data-chds-observation>—</b></div><div><span>SIGNED POLARITY · E / M / W</span><b data-chds-signs>— / — / —</b></div><div><span>HISTORICAL BACKFILL</span><b data-chds-history>Not connected</b></div><div><span>ARCHIVED PAIRED SPEED TARGETS</span><b data-chds-n>—</b></div></div><p data-chds-error role="status"></p><details><summary>Connection &amp; verification details</summary><label class="chds-url">Public feed URL <input type="url" data-chds-url aria-label="Public coronal hole feed URL"><button type="button" data-chds-save>Save</button></label><p>One product, one published measurement recipe. Signed HMI is matched to the actual AIA mask. Mixed/weak or poorly sampled regions remain unknown. The processing worker—not this browser—runs the backfill. Live input availability and forecast validation are separate checks.</p><div data-chds-scores></div><p data-chds-omni></p><p data-chds-source></p></details>`;
     target.before(panel);panel.querySelector('[data-chds-url]').value=url;
     panel.addEventListener('click',async e=>{const b=e.target.closest('button');if(!b)return;e.stopPropagation();
       if(b.hasAttribute('data-chds-refresh')){await refresh(true);window.SpaceWxChHss?.refresh(true);}
@@ -29308,7 +29305,7 @@ window.CHHSSData = (() => {
     for(let i=0;i<7;i++){const t=new Date(Date.UTC(anchor.getUTCFullYear(),anchor.getUTCMonth(),anchor.getUTCDate()+i));if(dailySpeed(t)===null)missing.push(t.toISOString().slice(0,10));}
     set('omni',persistenceRows().length?`OMNI daily recurrence: ${7-missing.length} / 7 forecast dates have at least 18 valid hourly speeds at T−27d.${missing.length?' Withheld for missing coverage: '+missing.join(', ')+'.':''} Gaps are not filled or treated as quiet wind.`:'OMNI daily recurrence: no valid hourly speeds received.');
     const scores=panel.querySelector('[data-chds-scores]');const metric=r?.metrics;
-    const msg=metric?`Retrospective period ${f.verificationPeriod||'reported in provenance'}: ${metric.n} paired daily-mean targets; MAE ${fmt(metric.mae)} km/s; recurrence MAE ${fmt(metric.recurrenceMae)} km/s. ${r.provenance?.icmeCoverage||''}. ${r.promotion?.reason||'Research only; no operational promotion.'}`:'No verification results have been published for a current dataset. A connected feed is not a validation claim.';
+    const msg=metric?`${f.verificationAppliesToCurrent?"Same detector recipe; research validation only.":"Earlier detector recipe; these scores do not validate the current identification method."} Retrospective period ${f.verificationPeriod||'reported in provenance'}: ${metric.n} paired daily-mean targets; MAE ${fmt(metric.mae)} km/s; recurrence MAE ${fmt(metric.recurrenceMae)} km/s. ${r.provenance?.icmeCoverage||''}. ${r.promotion?.reason||'Research only; no operational promotion.'}`:'No verification results have been published for a current dataset. A connected feed is not a validation claim.';
     if(scores.textContent!==msg)scores.textContent=msg;
   }
   function start(){initPromise=initialize();mount();setInterval(()=>{mount();paint();},2000);setInterval(()=>{if(!document.hidden)refresh();},300000);}
@@ -29754,7 +29751,7 @@ async function fetchHapiArchive(dataset, parameters, start, end, timeoutMs = 600
               bounded(fetchChHssPersistence(),20000,{rows:readChHssOmniCache()||[],error:'Recurrence query timed out; valid cached rows only.'}),
               bounded(fetchEnlilHuxtNumeric(),8000,{enlil:null,huxt:null,error:'Numeric model comparison unavailable within ingest budget.'})
             ]);
-            ch.holes=geometry.holes||[];ch.source=geometry.source||'';ch.sourceDetail=geometry.detail||'';
+            ch.holes=geometry.holes||[];ch.reviewCandidates=geometry.reviewCandidates||[];ch.source=geometry.source||'';ch.sourceDetail=geometry.detail||'';
             ch.sourceTimeVerified=geometry.sourceTimeVerified===true;
             ch.sourceTime=ch.sourceTimeVerified?geometry.time:null;ch.fetchedAt=new Date().toISOString();
             ch.previewUrl=geometry.previewUrl||'';ch.compositeUrl=geometry.compositeUrl||'';ch.rawPreviewUrl=geometry.rawPreviewUrl||geometry.measured?.rawPreviewUrl||'';
@@ -34877,7 +34874,7 @@ async function fetchChHssPersistence() {
     if(!holes.length)for(const k of ['E','M','W']){
       const w=m.window[k];if(w.ch>0)holes.push({id:'CORE-'+k,lat:w.centroidLat??0,lon:w.centroidCmd??({E:-30,M:0,W:30}[k]),width:20,areaDisk:w.ch/(Math.PI*m.radius*m.radius),source:p.source.instrument,time:p.observationTime,quantitative:true,isAggregate:true});
     }
-    return {holes,source:'Registered '+p.source.instrument,detail:p.measurementEngine+' · signed FITS/WCS measurement package · research calibration pending',time:p.observationTime,sourceTimeVerified:true,previewUrl:p.preview.url,rawPreviewUrl:p.preview.url,compositeUrl:p.preview.url,measured:m,hmiPolarity:p.hmiPolarity,aiaEligibility:registeredAiaEligibility(p),measurementEngine:p.measurementEngine,registeredPack:p,error:''};
+    return {holes,reviewCandidates:p.reviewCandidates||[],source:'Registered '+p.source.instrument,detail:p.measurementEngine+' · signed FITS/WCS measurement package · research calibration pending',time:p.observationTime,sourceTimeVerified:true,previewUrl:p.preview.url,rawPreviewUrl:p.preview.url,compositeUrl:p.preview.url,measured:m,hmiPolarity:p.hmiPolarity,aiaEligibility:registeredAiaEligibility(p),measurementEngine:p.measurementEngine,registeredPack:p,error:''};
   }
   async function loadRegisteredSciencePack(force=false) {
     const ch=ensureChHssState();
@@ -35015,8 +35012,8 @@ window.SpaceWxRecurrenceCompare = (function () {
     default: 0.781
   });
   const defaults = {
-    product: "aia193", refMode: "carrington", customDays: 27.2753, alignHours: 0,
-    overlays: { grid: true, sectors: true, cores: true, limb: true, holes: true, polarity: true, cursor: true },
+    product: "measurement", refMode: "carrington", customDays: 27.2753, alignHours: 0,
+    overlays: { grid: true, sectors: true, cores: true, limb: true, holes: true, polarity: true, cursor: true, candidates: false },
     viewMode: "sideBySide", swipe: 50
   };
   const rc = {
@@ -35200,7 +35197,8 @@ window.SpaceWxRecurrenceCompare = (function () {
   function measuredHoleSign(h,ch) {
     if(!ch?.hmiPolarity?.numeric || !ch?.sourceTimeVerified || !ch?.registeredPack)return null;
     const t=Date.parse(ch.sourceTime);if(!Number.isFinite(t)||Date.now()-t>21600000)return null;
-    const p=h.polarity,q=h.polarityQA;
+    const p=h.polarity,q=h.polarityEvidence||h.polarityQA;
+    if(ch.registeredPack.polarity?.degraded && q?.temporalAgreement!==true)return null;
     return (p===1||p===-1)&&q&&Number.isFinite(q.fluxImbalance)&&Math.abs(q.fluxImbalance)>=.15&&Math.sign(q.fluxImbalance)===p&&Number.isFinite(q.meanBr)&&Math.abs(q.meanBr)>=1&&q.nValid>=100&&q.nValid<=q.nMasked&&q.validMaskedPixelFraction>=.8 ? p : null;
   }
   function polarityKnown(v) { return Number.isFinite(+v) && Math.abs(+v) >= 0.5; }
@@ -35368,14 +35366,14 @@ window.SpaceWxRecurrenceCompare = (function () {
     return holes;
   }
   function engineHoles() {
-    const ch=chState();return (ch?.holes||[]).filter(h=>Number.isFinite(h.lon)&&Number.isFinite(h.lat)).map((h,i)=>({...normalizeHole({id:h.id,label:h.id,lat:h.lat,lon:h.lon,width:h.width,latSpan:h.latSpan,areaPct:Number.isFinite(h.areaDisk)?h.areaDisk*100:null,polarity:measuredHoleSign(h,ch),source:h.source||ch.source,ring:contourAllowed('current')?h.ring:null},i),isAggregate:h.isAggregate===true||/^(SUVI195|AIA-MT|AIA193|CORE)-[EMW]$/.test(h.id||'')}));
+    const ch=chState();return (ch?.holes||[]).filter(h=>Number.isFinite(h.lon)&&Number.isFinite(h.lat)).map((h,i)=>({...normalizeHole({id:h.id,label:h.id,lat:h.lat,lon:h.lon,width:h.width,latSpan:h.latSpan,areaPct:Number.isFinite(h.areaDisk)?h.areaDisk*100:null,polarity:measuredHoleSign(h,ch),source:h.source||ch.source,identification:h.identification,thermalEvidence:h.thermalEvidence,ring:contourAllowed('current')?h.ring:null},i),isAggregate:h.isAggregate===true||/^(SUVI195|AIA-MT|AIA193|CORE)-[EMW]$/.test(h.id||'')}));
   }
   function normalizeHole(h, i) {
     const lon = +h.lon, lat = +h.lat;
     const id = String(h.id || h.label || ("CH-" + pad(i + 1)));
     const label = String(h.label || prettyLabel(id, h.source)).slice(0, 18);
     return {
-      id, label, lat, lon,
+      id, label, lat, lon, identification:h.identification||"Candidate; classification unverified", reviewOnly:h.reviewOnly===true, thermalEvidence:h.thermalEvidence||null,
       width: window.CHHSSScience.num(h.width),
       latSpan: window.CHHSSScience.num(h.latSpan),
       areaPct: window.CHHSSScience.num(h.areaPct),
@@ -35396,6 +35394,8 @@ window.SpaceWxRecurrenceCompare = (function () {
   }
   function markerLabel(h) {
     const s = String(h.label || h.id || "");
+    const index = String(h.id||s).match(/-(\d{1,3})$/);
+    if(index)return (h.reviewOnly?"P":"CH")+index[1];
     const m = s.match(/(\d{4,})/);
     if (m) return m[1].slice(-5);
     if (/east/i.test(s)) return "E";
@@ -35413,7 +35413,7 @@ window.SpaceWxRecurrenceCompare = (function () {
     return out;
   }
   function holesFor(pane) {
-    if(pane==='current')return engineHoles();
+    if(pane==='current'){const ch=chState(),reviews=loadPrefs().overlays.candidates?(ch?.reviewCandidates||[]).map((h,i)=>normalizeHole({...h,label:h.id,areaPct:h.areaDisk*100,reviewOnly:true,polarity:null,source:'Excluded dark patch'},i)):[];return [...engineHoles(),...reviews];}
     const t=window.CHHSSScience.stamp(rc.frameMeta.reference?.date);
     return rc.refHoles.filter(h=>t!==null&&window.CHHSSScience.stamp(h.time)!==null&&Math.abs(t-window.CHHSSScience.stamp(h.time))<2*3600000);
   }
@@ -35423,6 +35423,8 @@ window.SpaceWxRecurrenceCompare = (function () {
     return hemi + ew;
   }
   function paintMarkers(root, pane, holes, overlays) {
+    const summary=root.querySelector('[data-ch-identification-summary]'),ch=chState();
+    if(summary){const n=ch?.holes?.length||0,signed=engineHoles().filter(h=>polarityKnown(h.polarity)).length,excluded=ch?.reviewCandidates?.length||0;summary.textContent=ch?.registeredPack?`${n} CH candidates · ${signed} with signed magnetic support · ${n-signed} provisional · ${excluded} excluded dark patches. Research identification; candidate count is not a confirmed hole count.`:'Awaiting registered multi-wavelength identification.';}
     const layer = $(`.fd-rc-markers[data-pane="${pane}"]`, root);
     const rail = $(`.fd-rc-hole-rail[data-pane="${pane}"]`, root);
     if (!layer) return;
@@ -35435,8 +35437,8 @@ window.SpaceWxRecurrenceCompare = (function () {
       const pol = polarityWord(h.polarity);
       const active = h.uid === selectedId;
       const paired = h.uid === pairId;
-      const cls = ["fd-rc-hole-marker", pol.cls, active ? "active" : "", paired ? "paired" : ""].filter(Boolean).join(" ");
-      const title = `${h.label} · ${hemiCmd(h.lat, h.lon)} · ${pol.word} · click to inspect`;
+      const cls = ["fd-rc-hole-marker", pol.cls, h.reviewOnly ? "review" : "", active ? "active" : "", paired ? "paired" : ""].filter(Boolean).join(" ");
+      const title = `${h.label} · ${h.identification} · ${hemiCmd(h.lat, h.lon)} · ${pol.word} · click to inspect`;
       return `<button type="button" class="${cls}" style="left:${p.x.toFixed(2)}%;top:${p.y.toFixed(2)}%" data-rc-hole="${esc(h.uid)}" data-pane="${pane}" aria-pressed="${active}" title="${esc(title)}">${esc(markerLabel(h))}${overlays.polarity ? " " + pol.short : ""}</button>`;
     }).join("");
     if (rail) {
@@ -35547,6 +35549,7 @@ window.SpaceWxRecurrenceCompare = (function () {
     return { ...best, dist: bestD, overlap: null };
   }
   function estimateWind(feature,slice,ch) {
+    if(feature?.reviewOnly)return {available:false,note:"Excluded dark patch. It contributes no pixels to the CH mask or HSS forecast."};
     const A=slice?.quantitative!==false&&Number.isFinite(slice?.A)?slice.A:null;
     if(feature?.pane==='reference'||!Number.isFinite(A)||A<.02||!ch?.measured?.ok||ch?.assessment?.status==='no-assessment')return {available:false,note:'No valid current 20° core forecast for this selection. Whole-hole area and reference-epoch pixels are not substituted.'};
     const mid=vrsnakSpeed(A),band=window.CHHSSScience.speedBand(mid),lag=slice.lags.v,anchor=ch.sourceTimeVerified?new Date(ch.sourceTime).getTime():Date.now();
@@ -35598,12 +35601,12 @@ window.SpaceWxRecurrenceCompare = (function () {
       : `<p class="fd-rc-empty">No prior-rotation catalog feature is linked. Recurrence is an analyst comparison — feature continuity is not confirmed.</p>`;
     body.innerHTML = `
       <div class="fd-rc-metrics">
-        <div><span>TYPE</span><strong>${sel.kind === "hole" ? (sel.isAggregate ? "Core aggregate" : "CH candidate") : "Unannotated"}</strong></div>
+        <div><span>TYPE</span><strong>${sel.kind === "hole" ? (sel.isAggregate ? "Core aggregate" : sel.reviewOnly ? "Excluded dark patch" : "CH candidate") : "Unannotated"}</strong></div>
         <div><span>SOURCE</span><strong>${esc(sel.source || "—")}</strong></div>
         <div><span>SECTOR / CORE</span><strong>${esc(sel.sector || "—")} / ${esc(coreAt(sel.lon) || "outside")}</strong></div>
         <div><span>POLARITY</span><strong><span class="fd-rc-polarity ${pol.cls}">${esc(pol.word)}</span></strong></div>
       </div>
-      <div class="fd-rc-block"><h5>Classification</h5><div class="fd-rc-kv"><div><span>Area</span><strong>${Number.isFinite(sel.areaPct) ? sel.areaPct.toFixed(2) + "% of disk" : "—"}</strong></div><div><span>Width</span><strong>${Number.isFinite(sel.width) ? sel.width.toFixed(0) + (sel.isAggregate ? "° analysis core (not hole width)" : "°") : "—"}</strong></div><div><span>Polarity src</span><strong>${polarityKnown(polVal) ? esc((slice && slice.polaritySource) || (ch && ch.hmiPolarity && ch.hmiPolarity.source) || "catalog / HMI") : "unavailable — not from AIA pixels"}</strong></div></div></div>
+      <div class="fd-rc-block"><h5>Classification</h5><p class="fd-rc-note-inline">${esc(sel.identification||"Unverified")}${sel.thermalEvidence ? " · normalized 171/193 contrast "+sel.thermalEvidence.cool193Ratio.toFixed(2)+", 171/211 "+sel.thermalEvidence.cool211Ratio.toFixed(2)+" · "+esc(sel.thermalEvidence.reason) : ""}</p><div class="fd-rc-kv"><div><span>Area</span><strong>${Number.isFinite(sel.areaPct) ? sel.areaPct.toFixed(2) + "% of disk" : "—"}</strong></div><div><span>Width</span><strong>${Number.isFinite(sel.width) ? sel.width.toFixed(0) + (sel.isAggregate ? "° analysis core (not hole width)" : "°") : "—"}</strong></div><div><span>Polarity src</span><strong>${polarityKnown(polVal) ? esc((slice && slice.polaritySource) || (ch && ch.hmiPolarity && ch.hmiPolarity.source) || "catalog / HMI") : "unavailable — not from AIA pixels"}</strong></div></div></div>
       <div class="fd-rc-block"><h5>Recurrence assessment</h5>${recHtml}<p class="fd-rc-note-inline">Carrington lon from synodic L0 (${CARRINGTON_SYNODIC_DAYS} d); not a WCS solution. Left pane is the analog, right pane is now.</p></div>
       <div class="fd-rc-block"><h5>Outlook core-speed context</h5>${windHtml}</div>
       <div class="fd-rc-inspect-actions"><button type="button" class="fd-button" data-rc-clear>CLEAR SELECT</button><button type="button" class="fd-button" data-rc-scroll>JUMP TO OUTLOOK</button></div>`;
@@ -35685,12 +35688,12 @@ window.SpaceWxRecurrenceCompare = (function () {
   }
   function shellHtml() {
     return `<div class="fd-rc-head"><div><span class="fd-eyebrow">RECURRENCE COMPARE · ANALYST WORKSPACE</span><h3>Prior Carrington rotation (left) vs current disk (right)</h3><p>Matched products are requested for both epochs. Both images share one center and limb radius; this is disk normalization, not automatic coronal-hole tracking. Default offset is the synodic Carrington period <b>27.2753 d</b>. Numbered hole markers work like flare AR labels: click a marker or a card to inspect polarity and outlook / recurrence wind — never from an AIA pixel.</p></div><div class="fd-rc-badges"><span class="fd-rc-badge warn" id="fdRcContinuity">Recurrence analog — analyst comparison; feature continuity not confirmed</span><span class="fd-rc-badge live" id="fdRcOffsetBadge">Δ 27.2753 d</span></div></div>
-      <div class="fd-rc-controls">
+      <div class="wx-ch-summary" data-ch-identification-summary></div><div class="fd-rc-controls">
         <label class="fd-rc-field"><span>Image product (both panes)</span><select id="fdRcProduct" aria-label="Recurrence image product"><option value="measurement">Current measurement raster / matching reference</option><option value="aia193">AIA 193 (CH standard)</option><option value="composite">AIA 211/193/171 composite</option><option value="aia211">AIA 211</option><option value="suvi195">SWPC SUVI 195 (current only)</option><option value="hmi">HMI LOS magnetogram</option></select></label>
         <label class="fd-rc-field"><span>Reference mode</span><select id="fdRcRefMode" aria-label="Recurrence reference mode"><option value="carrington">Prior Carrington (27.2753 d)</option><option value="calendar">27 calendar days</option><option value="custom">Custom offset</option></select></label>
         <label class="fd-rc-field fd-rc-custom"><span>Custom days</span><input id="fdRcCustomDays" type="number" min="20" max="35" step="0.0001" value="27.2753" aria-label="Custom recurrence offset in days"></label>
         <label class="fd-rc-field fd-rc-align"><span>Fine alignment</span><input id="fdRcAlign" type="range" min="-12" max="12" step="1" value="0" aria-label="Fine alignment plus or minus 12 hours"><em id="fdRcAlignReadout">±0 h</em></label>
-        <div class="fd-rc-field"><span class="fd-rc-tog-label">Overlays</span><div class="fd-rc-toggles" id="fdRcToggles"><button type="button" class="fd-rc-tog" data-rc-tog="grid">GRID</button><button type="button" class="fd-rc-tog" data-rc-tog="sectors">E/M/W SECTORS</button><button type="button" class="fd-rc-tog" data-rc-tog="cores">20° CORES</button><button type="button" class="fd-rc-tog" data-rc-tog="limb">LIMB</button><button type="button" class="fd-rc-tog" data-rc-tog="holes">HOLES</button><button type="button" class="fd-rc-tog" data-rc-tog="polarity">POLARITY</button><button type="button" class="fd-rc-tog" data-rc-tog="cursor">CURSOR</button></div></div>
+        <div class="fd-rc-field"><span class="fd-rc-tog-label">Overlays</span><div class="fd-rc-toggles" id="fdRcToggles"><button type="button" class="fd-rc-tog" data-rc-tog="candidates" title="Review dark patches excluded from the CH mask">EXCLUDED PATCHES</button><button type="button" class="fd-rc-tog" data-rc-tog="grid">GRID</button><button type="button" class="fd-rc-tog" data-rc-tog="sectors">E/M/W SECTORS</button><button type="button" class="fd-rc-tog" data-rc-tog="cores">20° CORES</button><button type="button" class="fd-rc-tog" data-rc-tog="limb">LIMB</button><button type="button" class="fd-rc-tog" data-rc-tog="holes">HOLES</button><button type="button" class="fd-rc-tog" data-rc-tog="polarity">POLARITY</button><button type="button" class="fd-rc-tog" data-rc-tog="cursor">CURSOR</button></div></div>
         <div class="fd-rc-field"><span>Compare</span><div class="fd-rc-modes" id="fdRcModes"><button type="button" data-rc-mode="sideBySide">SIDE BY SIDE</button><button type="button" data-rc-mode="blink">BLINK</button><button type="button" data-rc-mode="swipe">SWIPE</button></div></div>
         <button type="button" class="fd-button" id="fdRcReload">RELOAD IMAGERY</button>
       </div>
@@ -35924,6 +35927,127 @@ window.SpaceWxRecurrenceCompare = (function () {
 
 </script>
 
+<!-- SOLAR_CYCLE_BOOTSTRAP_SLOT -->
+<style id="solarContextStyles">
+#fdCmeProducts{display:block;align-self:start}
+.fd-model-layout:has(#fdCmeProducts){grid-template-columns:minmax(0,1fr);align-content:start}.fd-model-layout:has(#fdCmeProducts) .fd-model-list-body{display:flex;flex-wrap:wrap}.fd-model-layout:has(#fdCmeProducts) .fd-model-lane{flex:1;min-width:130px}.fd-model-layout:has(#fdCmeProducts) .fd-model-lane small{display:none}
+.wx-context{padding:20px;color:#d5e7f0;background:#091722;min-width:0}.wx-context h2{margin:0 0 6px;font-size:20px}.wx-context p{color:#a9bfcd;line-height:1.6}.wx-context a{color:#6cd2ed}.wx-context .wx-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:14px 0}.wx-context button{background:#142a3a;color:#d5e7f0;border:1px solid #385064;padding:7px 12px;border-radius:5px;cursor:pointer}.wx-context button[aria-pressed=true]{border-color:#66d2ed;background:#164156}.wx-context button:disabled{opacity:.5;cursor:default}.wx-context .wx-facts{display:flex;gap:24px;flex-wrap:wrap;padding:14px 0;border-block:1px solid #263d4d}.wx-context .wx-facts strong{display:block;font-size:19px;color:#fff}.wx-context .wx-facts span{font-size:12px;color:#94adbd}.wx-context .wx-status{font-size:12px;overflow-wrap:anywhere}.wx-context .wx-cycle-plot{height:580px;min-height:360px}.wx-cme-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.wx-cme-card{background:#0d202f;border:1px solid #294153;border-radius:8px;padding:16px;min-width:0}.wx-cme-card h3{margin:0 0 6px}.wx-cme-card img{width:100%;height:auto;display:block;background:#050b12;min-height:160px;object-fit:contain}.wx-cme-card input[type=range]{width:100%}.wx-cme-card .wx-planned{display:inline-block;color:#e6c987;font-size:11px;border:1px solid #726446;border-radius:4px;padding:3px 7px;margin-bottom:10px}.wx-cme-card:last-child{grid-column:1/-1}.fd-rc-hole-marker.review{border-style:dashed;opacity:.75}.wx-ch-summary{padding:9px 14px;color:#b9d2df;font-size:12px;border-bottom:1px solid #2b4253}.wx-context [hidden]{display:none!important}@media(max-width:1000px){.wx-cme-grid{grid-template-columns:1fr}.wx-context{padding:12px}}
+</style>
+<script id="solarCycleProduct">
+(() => {
+  'use strict';
+  const URLS={observed:'https://services.swpc.noaa.gov/json/solar-cycle/observed-solar-cycle-indices.json',predicted:'https://services.swpc.noaa.gov/json/solar-cycle/predicted-solar-cycle.json'};
+  const CACHE='spacewx-solar-cycle-v1';
+  const number=v=>v!==null&&v!==undefined&&v!==''&&Number.isFinite(+v)&&+v>=0?+v:null;
+  const month=v=>typeof v==='string'&&/^\d{4}-(0[1-9]|1[0-2])$/.test(v)?v:null;
+  function parse(rows,kind){
+    if(!Array.isArray(rows))throw Error('Expected monthly NOAA records');
+    const fields=kind==='observed'?['ssn','smoothed_ssn','f10.7','smoothed_f10.7']:['predicted_ssn','low_ssn','high_ssn','predicted_f10.7','low_f10.7','high_f10.7'];
+    const result=new Map();
+    for(const row of rows){const date=month(row?.['time-tag']);if(!date)continue;const out={date};for(const key of fields)out[key]=number(row[key]);if(fields.some(k=>out[k]!==null))result.set(date,out);}
+    if(!result.size)throw Error('No valid monthly NOAA values');
+    return [...result.values()].sort((a,b)=>a.date.localeCompare(b.date));
+  }
+  function phase(rows){
+    const smooth=rows.filter(r=>r.date>='2019-12'&&r.smoothed_ssn!==null);
+    if(smooth.length<7)return {label:'Insufficient smoothed data',detail:'Cycle 25 began in December 2019.'};
+    const last=smooth.at(-1),prior=smooth.at(-7),delta=last.smoothed_ssn-prior.smoothed_ssn;
+    const peak=smooth.reduce((a,b)=>a.smoothed_ssn>=b.smoothed_ssn?a:b);
+    return {label:delta < -5?'Declining smoothed trend':delta>5?'Rising smoothed trend':'Near-flat smoothed trend',detail:`Cycle 25 · latest smooth ${last.date}: ${last.smoothed_ssn.toFixed(1)} SSN. Highest smoothed value so far: ${peak.smoothed_ssn.toFixed(1)} (${peak.date}). Trend compares six months; maximum date remains retrospective.`};
+  }
+  function traces(observed,predicted){
+    const result=[];
+    for(const [i,key,label,color] of [[0,'ssn','Sunspot number','#69d9f0'],[1,'f10.7','F10.7','#f2bb68']]){
+      const axes={xaxis:i?'x2':'x',yaxis:i?'y2':'y'},x=observed.map(r=>r.date+'-01'),xp=predicted.map(r=>r.date+'-01');
+      const base={type:'scatter',mode:'lines',connectgaps:false,...axes};
+      result.push({...base,x,y:observed.map(r=>r[key]),name:label+' monthly',line:{color,width:1},opacity:.5});
+      result.push({...base,x,y:observed.map(r=>r['smoothed_'+key]),name:label+' 13-month smooth',line:{color,width:2.5}});
+      result.push({...base,x:xp,y:predicted.map(r=>r['low_'+key]),showlegend:false,hoverinfo:'skip',line:{width:0}});
+      result.push({...base,x:xp,y:predicted.map(r=>r['high_'+key]),name:label+' NOAA range',fill:'tonexty',fillcolor:i?'rgba(242,187,104,.14)':'rgba(105,217,240,.14)',line:{width:0},hovertemplate:'%{x|%Y-%m}: %{y}<extra>NOAA published range</extra>'});
+      result.push({...base,x:xp,y:predicted.map(r=>r['predicted_'+key]),name:label+' predicted smooth',line:{color,width:2,dash:'dash'}});
+    }
+    return result;
+  }
+  let data={observed:null,predicted:null,observedAt:null,predictedAt:null},loading=null;
+  function restore(){
+    let saved;try{saved=JSON.parse(localStorage.getItem(CACHE)||'null');}catch{}
+    let embedded;try{embedded=JSON.parse(document.getElementById('solarCycleBootstrap')?.textContent||'null');}catch{}
+    for(const source of [embedded,saved])if(source)for(const kind of ['observed','predicted']){
+      const stamp=source[kind+'At']||source.retrievedAt;
+      if(!stamp||!Number.isFinite(Date.parse(stamp))||Date.parse(stamp)>Date.now()+300000)continue;
+      try{parse(source[kind],kind);if(!data[kind+'At']||stamp>data[kind+'At']){data[kind]=source[kind];data[kind+'At']=stamp;}}catch{}
+    }
+  }
+  restore();
+  async function refresh(){
+    if(loading)return loading;
+    loading=(async()=>{
+      const results=await Promise.allSettled(Object.entries(URLS).map(async([kind,url])=>{
+        const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),15000);
+        try{const r=await fetch(url,{signal:ctrl.signal,credentials:'omit',cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const raw=await r.json();parse(raw,kind);data[kind]=raw;data[kind+'At']=new Date().toISOString();}finally{clearTimeout(timer);}
+      }));
+      try{localStorage.setItem(CACHE,JSON.stringify(data));}catch{}
+      return results.map((r,i)=>r.status==='rejected'?Object.keys(URLS)[i]+': '+r.reason.message:null).filter(Boolean);
+    })();
+    try{return await loading;}finally{loading=null;}
+  }
+  function mount(frame){
+    const root=document.createElement('div');root.className='wx-context';
+    root.innerHTML=`<h2>Solar Cycle</h2><p>Monthly sunspot number and 10.7 cm radio flux · NOAA SWPC observed and predicted indices</p><div class="wx-facts" data-cycle-facts></div><div class="wx-actions"><button data-cycle-range="2019-12" aria-pressed="true">Cycle 25</button><button data-cycle-range="2008-12" aria-pressed="false">Cycles 24–25</button><button data-cycle-range="1749-01" aria-pressed="false">Full record</button><button data-cycle-refresh>Refresh feeds</button></div><div class="wx-cycle-plot" data-cycle-plot></div><p class="wx-status" data-cycle-status role="status"></p><p class="wx-status">Solid curves: observations and centered 13-month smoothing, which lags the latest monthly value by six months. Dashed curves: NOAA predicted smoothed indices; shading: NOAA low/high published range. Missing values remain gaps. Historical F10.7 coverage begins later than sunspot counts.</p><p class="wx-status">Cycle phase is background context for activity rates and recurrent solar wind. It does not change individual flare, CME-arrival or HSS forecasts in this dashboard.</p><p class="wx-status"><a href="${URLS.observed}" target="_blank" rel="noopener">Observed feed</a> · <a href="${URLS.predicted}" target="_blank" rel="noopener">Predicted feed</a> · <a href="https://www.swpc.noaa.gov/products/solar-cycle-progression" target="_blank" rel="noopener">NOAA cycle progression</a></p>`;
+    frame.appendChild(root);let start='2019-12',errors=[];
+    function paint(){
+      const obs=data.observed?parse(data.observed,'observed'):[],pred=data.predicted?parse(data.predicted,'predicted'):[];
+      const latest=obs.at(-1),trend=phase(obs),facts=root.querySelector('[data-cycle-facts]');facts.replaceChildren();
+      for(const [label,value] of [['Latest observed month',latest?.date||'Unavailable'],['Sunspot number',latest?.ssn??'—'],['F10.7 · sfu',latest?.['f10.7']??'—'],['Cycle phase estimate',trend.label]]){const el=document.createElement('div'),a=document.createElement('span'),b=document.createElement('strong');a.textContent=label;b.textContent=value;el.append(a,b);facts.append(el);}
+      const stamp=k=>data[k+'At']?data[k+'At'].replace('T',' ').slice(0,19)+' UTC':'unavailable';
+      root.querySelector('[data-cycle-status]').textContent=`${trend.detail} Observed retrieved: ${stamp('observed')}; predicted retrieved: ${stamp('predicted')}. ${errors.length?'Refresh incomplete; retained dated values where available. '+errors.join(' · '):''}`;
+      if(!window.Plotly)return;
+      const end=pred.at(-1)?.date||latest?.date||new Date().toISOString().slice(0,7),gridcolor='#294153';
+      window.Plotly.react(root.querySelector('[data-cycle-plot]'),traces(obs.filter(r=>r.date>=start),pred.filter(r=>r.date>=start)),{paper_bgcolor:'#091722',plot_bgcolor:'#091722',font:{color:'#baceda',size:11},margin:{l:58,r:18,t:15,b:86},legend:{orientation:'h',traceorder:'normal',y:-.18,font:{size:10}},hovermode:'x unified',xaxis:{domain:[0,1],anchor:'y',range:[start+'-01',end+'-28'],gridcolor,showticklabels:false},yaxis:{domain:[.56,1],title:'Sunspot number',rangemode:'tozero',gridcolor},xaxis2:{domain:[0,1],anchor:'y2',matches:'x',range:[start+'-01',end+'-28'],gridcolor},yaxis2:{domain:[0,.43],title:'F10.7 (sfu)',rangemode:'tozero',gridcolor}},{responsive:true,displaylogo:false});
+    }
+    async function update(){const button=root.querySelector('[data-cycle-refresh]');button.disabled=true;try{errors=await refresh();if(root.isConnected)paint();}finally{button.disabled=false;}}
+    root.addEventListener('click',e=>{const range=e.target.closest('[data-cycle-range]');if(range){start=range.dataset.cycleRange;root.querySelectorAll('[data-cycle-range]').forEach(b=>b.setAttribute('aria-pressed',String(b===range)));paint();}if(e.target.closest('[data-cycle-refresh]'))update();});
+    paint();update();return root;
+  }
+  window.SpaceWxSolarCycle={mount,refresh,parse,phase,traces};
+})();
+</script>
+<script id="cmeSolarWindProduct">
+(() => {
+  'use strict';
+  const DIRECTORY='https://services.swpc.noaa.gov/images/animations/enlil/';
+  const HUXT='https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_forecast_latest.png';
+  function framesFrom(html){
+    const names=[...html.matchAll(/href=["']([^"']+\.jpg)["']/gi)].map(m=>m[1]).filter(x=>/^enlil_[a-z0-9_]+_\d{8}T\d{6}\.jpg$/i.test(x));
+    const groups=new Map();for(const name of new Set(names)){const m=name.match(/^(.*)_(\d{8}T\d{6})\.jpg$/);const stamp=m[2],valid=`${stamp.slice(0,4)}-${stamp.slice(4,6)}-${stamp.slice(6,8)}T${stamp.slice(9,11)}:${stamp.slice(11,13)}:${stamp.slice(13,15)}Z`;if(!Number.isFinite(Date.parse(valid)))continue;const list=groups.get(m[1])||[];list.push({url:DIRECTORY+name,valid,run:m[1]});groups.set(m[1],list);}
+    return [...groups.values()].map(a=>a.sort((a,b)=>a.valid.localeCompare(b.valid))).sort((a,b)=>b.at(-1).valid.localeCompare(a.at(-1).valid))[0]||[];
+  }
+  let dispose=null;
+  function unmount(){if(dispose)dispose();dispose=null;}
+  function mount(root){
+    unmount();root.classList.add('wx-context');
+    root.innerHTML=`<h2>CME | Solar Wind</h2><p>Compare the providers’ latest published heliospheric forecasts. Each panel keeps its own model timing and provenance.</p><div class="wx-cme-grid"><section class="wx-cme-card"><h3>SWPC WSA–ENLIL</h3><p class="wx-status">Official solar-wind and CME propagation visualization</p><img data-enlil-image alt="NOAA SWPC WSA–ENLIL model forecast"><div class="wx-actions"><button data-enlil-play disabled>Play</button><button data-cme-refresh>Refresh products</button></div><input data-enlil-slider type="range" min="0" max="0" value="0" disabled aria-label="ENLIL forecast frame"><p class="wx-status" data-enlil-status role="status">Loading SWPC forecast frames…</p><a data-enlil-expand href="https://services.swpc.noaa.gov/images/animations/enlil/latest.jpg" target="_blank" rel="noopener">Expand chart</a> · <a href="https://www.spaceweather.gov/products/wsa-enlil-solar-wind-prediction" target="_blank" rel="noopener">SWPC product and interpretation</a></section><section class="wx-cme-card"><h3>HUXt</h3><p class="wx-status">University of Reading / SWx Forecast Lab · WSA ambient wind + DONKI CMEs</p><img data-huxt-image alt="Published HUXt WSA and DONKI solar-wind forecast"><p class="wx-status" data-huxt-status role="status">Loading published HUXt forecast…</p><p class="wx-status">Read issue and forecast-valid times on the provider’s chart. The retrieval time is not a new model run. This panel displays published output; it does not execute a local ensemble.</p><a href="${HUXT}" target="_blank" rel="noopener">Expand chart</a> · <a href="https://swxforecastlab.org/forecasts.html" target="_blank" rel="noopener">HUXt forecast products</a></section><section class="wx-cme-card"><span class="wx-planned">PLANNED · NOT CONNECTED</span><h3>PyCAT</h3><p>Reserved for the Python CME Analysis Tool being developed by NOAA SWPC and the UK Met Office. Its role is coronagraph-based CME geometry analysis, providing inputs for propagation models such as WSA–ENLIL.</p><p class="wx-status">No PyCAT measurements, model runs or arrival predictions are available in this dashboard yet.</p><a href="https://cpaess.ucar.edu/abstract-sww-2025/next-generation-noaaswpc-cme-analysis-tool-pycat" target="_blank" rel="noopener">PyCAT development overview</a></section></div>`;
+    let frames=[],index=0,timer=null,disposed=false,request=null,retrieved=null,displayToken=0,framePending=false,refreshError="";
+    const img=root.querySelector('[data-enlil-image]'),slider=root.querySelector('[data-enlil-slider]'),play=root.querySelector('[data-enlil-play]'),status=root.querySelector('[data-enlil-status]'),huxt=root.querySelector('[data-huxt-image]'),hs=root.querySelector('[data-huxt-status]');
+    function stop(){clearInterval(timer);timer=null;play.textContent='Play';}
+    function show(){const f=frames[index];if(!f)return;const token=++displayToken;framePending=true;slider.value=index;root.querySelector("[data-enlil-expand]").href=f.url;img.onload=()=>{if(token!==displayToken)return;framePending=false;status.textContent=`Run ${f.run} · forecast frame valid ${f.valid.replace('T',' ')} · ${index+1}/${frames.length}. Retrieved ${retrieved}. Frame validity is not CME arrival time. ${refreshError}`;};img.onerror=()=>{framePending=false;stop();img.hidden=true;status.textContent='ENLIL image unavailable. Use the SWPC product link or refresh.';};img.hidden=false;img.src=f.url;}
+    async function update(){
+      stop();request?.abort();const ctrl=new AbortController();request=ctrl;const timeout=setTimeout(()=>ctrl.abort(),15000);const stamp=new Date().toISOString();
+      huxt.onload=()=>{hs.textContent=`Published forecast loaded. Retrieved ${stamp.replace('T',' ')}. Model issue time is printed on the chart.`;};huxt.onerror=()=>{huxt.hidden=true;hs.textContent='HUXt image unavailable. Use the provider link or refresh.';};huxt.hidden=false;huxt.src=HUXT+'?refresh='+Date.now();
+      refreshError='';status.textContent='Refreshing SWPC frames…';
+      try{const r=await fetch(DIRECTORY,{signal:ctrl.signal,cache:'no-store',credentials:'omit'});if(!r.ok)throw Error('HTTP '+r.status);const found=framesFrom(await r.text());if(!found.length)throw Error('No forecast frames listed');if(disposed||request!==ctrl)return;frames=found;retrieved=stamp.replace('T',' ');index=Math.max(0,frames.findIndex(f=>Date.parse(f.valid)>=Date.now()));slider.max=frames.length-1;slider.disabled=false;play.disabled=frames.length<2;show();}
+      catch(e){if(disposed||request!==ctrl)return;if(frames.length){refreshError='Refresh failed; retaining previously retrieved run.';show();}else{slider.disabled=play.disabled=true;img.hidden=false;img.onload=()=>{status.textContent='SWPC latest image loaded; frame directory unavailable. Read model times on image. Retrieved '+stamp.replace('T',' ')+'.';};img.onerror=()=>{img.hidden=true;status.textContent='SWPC ENLIL unavailable. Use the product link or refresh.';};img.src=DIRECTORY+'latest.jpg?refresh='+Date.now();}}
+      finally{clearTimeout(timeout);}
+    }
+    root.querySelector('[data-cme-refresh]').onclick=update;
+    slider.oninput=()=>{stop();index=+slider.value;show();};
+    play.onclick=()=>{if(timer){stop();return;}play.textContent='Pause';timer=setInterval(()=>{if(!root.isConnected){stop();return;}if(!framePending){index=(index+1)%frames.length;show();}},600);};
+    dispose=()=>{disposed=true;stop();request?.abort();};update();
+  }
+  window.SpaceWxCME={mount,unmount,framesFrom};
+})();
+</script>
+
 <script id="fdDeskScript">
 (function () {
   "use strict";
@@ -35960,16 +36084,11 @@ window.SpaceWxRecurrenceCompare = (function () {
   ];
   const PIPELINES = {
     huxt: {
-      name: "HUXt Solar Wind + CME",
-      family: "Ambient / CME",
-      maturity: "READY",
-      compute: "CPU ensemble",
-      members: 128,
-      description: "Reduced-physics heliospheric propagation with fast arrival-time ensembles.",
-      inputs: "SWiG/WSA2 boundary · GONG magnetogram · cone CME",
-      provenance: "HUXt 5.0.0 · HXT-20260825-1200Z-0042",
-      summary: ["68%", "18:40Z", "12.5 h", "128 / 128"],
-      labels: ["Earth impact", "Median arrival", "P10–P90 spread", "Members"]
+      name: "CME | Solar Wind", family: "ENLIL · HUXt · PyCAT",
+      maturity: "PUBLISHED PRODUCTS", compute: "Provider forecasts", members: 0,
+      description: "SWPC WSA–ENLIL and Reading HUXt forecasts; PyCAT analysis placeholder.",
+      inputs: "Provider model boundaries and CME analyses", provenance: "NOAA SWPC · SWx Forecast Lab",
+      summary: [], labels: []
     },
     swig: {
       name: "Coronal Hole / HSS Outlook",
@@ -35982,18 +36101,6 @@ window.SpaceWxRecurrenceCompare = (function () {
       provenance: "CHHSS-Outlook-2026-09 · CHHSS-Model1-audit-02 · 2 WS WXF",
       summary: ["LIVE", "Outlook", "T−27d", "HMI"],
       labels: ["Engine", "Outlook", "Analog", "Polarity"]
-    },
-    osprei: {
-      name: "OSPREI CME Morphology",
-      family: "CME details",
-      maturity: "RESEARCH",
-      compute: "CPU ensemble",
-      members: 64,
-      description: "ForeCAT → ANTEATR → FIDO sensitivity ensemble for deflection, expansion and in-situ profiles.",
-      inputs: "CME geometry · coronal field · ambient wind",
-      provenance: "OSPREI concept adapter · licensing review required",
-      summary: ["64", "3-stage", "±18°", "REVIEW"],
-      labels: ["Members", "Coupling", "Direction spread", "Readiness"]
     },
     flare: {
       name: "Solar Flare Probability",
@@ -36068,6 +36175,7 @@ window.SpaceWxRecurrenceCompare = (function () {
       name: "Solar + Source Region",
       domain: "solar",
       products: [
+        ["solar.cycle", "Solar Cycle", "CONTEXT"],
         ["realtime.xray", "GOES X-ray", "LIVE"],
         ["forecast.flare", "Flare Guidance", "FCST"],
         ["forecast.imagery", "Solar Imagery", "IMG"],
@@ -36174,7 +36282,6 @@ window.SpaceWxRecurrenceCompare = (function () {
   const PIPELINE_BUNDLES = {
     huxt: ["brief.hmi", "forecast.imagery", "forecast.solar-system", "realtime.imf", "realtime.speed", "realtime.plasma"],
     swig: ["events.recurrence", "brief.recurrence", "forecast.imagery", "brief.enlil", "realtime.speed"],
-    osprei: ["forecast.imagery", "forecast.solar-system", "forecast.donki", "brief.enlil"],
     flare: ["brief.hmi", "brief.suvi", "realtime.xray", "forecast.flare"],
     sep: ["realtime.proton", "realtime.epam", "realtime.imf", "realtime.speed"],
     charging: ["realtime.electron", "realtime.proton", "realtime.ap", "realtime.dst", "forecast.risk"]
@@ -37024,6 +37131,8 @@ window.SpaceWxRecurrenceCompare = (function () {
     base.snapshots = Array.isArray(base.snapshots) ? base.snapshots.slice(0, 10) : [];
     base.activity = Array.isArray(base.activity) ? base.activity.slice(0, 30) : [];
     base.run = Object.assign(defaultState().run, base.run || {});
+    if (!PIPELINES[base.selectedModel]) base.selectedModel = "huxt";
+    if (!PIPELINES[base.run.model] || base.run.model === "huxt") base.run = {...defaultState().run, status:"idle", progress:0, id:null};
     base.playing = false;
     return base;
   }
@@ -37522,7 +37631,9 @@ window.SpaceWxRecurrenceCompare = (function () {
     frame.className = `fd-product-frame${options.bare ? " bare" : ""}${options.className ? ` ${options.className}` : ""}`;
     frame.dataset.product = key;
     if (!options.bare) frame.innerHTML = `<div class="fd-product-toolbar"><div><span>${product.domain === "official" ? "OFFICIAL SWPC" : esc(product.badge)}</span><strong>${esc(product.label)}</strong></div><div class="fd-product-tools"><button type="button" data-fd-replace="${esc(key)}" aria-label="Replace product">↔</button><button type="button" data-fd-focus="${esc(key)}" aria-label="Focus product">↗</button></div></div>`;
-    if (key === HOURLY_GEOMAG_PRODUCT) {
+    if (key === "solar.cycle") {
+      window.SpaceWxSolarCycle.mount(frame);
+    } else if (key === HOURLY_GEOMAG_PRODUCT) {
       mountHourlyGeomagProduct(frame);
     } else {
       const card = findCard(key);
@@ -37907,7 +38018,7 @@ window.SpaceWxRecurrenceCompare = (function () {
 
   function renderProductWorkspace() {
     const count = visiblePaneCount();
-    setWorkbench("EVIDENCE", count === 1 ? (PRODUCT_LOOKUP.get(state.paneProducts[0]) || {}).label || "Product viewer" : `${count}-up comparison`, "All panes share the valid-time controller below.", "product");
+    setWorkbench("EVIDENCE", count === 1 ? (PRODUCT_LOOKUP.get(state.paneProducts[0]) || {}).label || "Product viewer" : `${count}-up comparison`, state.paneProducts.includes("solar.cycle") ? "Solar-cycle curves use monthly dates and their own range controls." : "All panes share the valid-time controller below.", "product");
     stage.innerHTML = `<div class="fd-pane-grid" data-layout="${state.layout}" id="fdPaneGrid"></div>`;
     const grid = $("#fdPaneGrid", stage);
     for (let index = 0; index < count; index += 1) {
@@ -38643,11 +38754,19 @@ window.SpaceWxRecurrenceCompare = (function () {
     setInspectorTitle("Coronal Hole / HSS Outlook");
   }
 
+  function renderCmeModel(pipeline) {
+    setWorkbench("MODEL PRODUCTS", pipeline.name, "Published ENLIL and HUXt forecasts · PyCAT planned", false);
+    stage.innerHTML = `<div class="fd-model-layout"><section class="fd-model-list"><div class="fd-panel-heading"><h2>Model stack</h2></div><div class="fd-model-list-body">${Object.entries(PIPELINES).map(([key,item])=>`<button type="button" class="fd-model-lane${key===state.selectedModel?' active':''}" data-fd-model="${key}"><strong>${esc(item.name)}</strong><span>${esc(item.maturity)}</span><small>${esc(item.description)}</small></button>`).join('')}</div></section><section class="fd-model-canvas" id="fdCmeProducts"></section></div>`;
+    window.SpaceWxCME.mount($("#fdCmeProducts", stage));
+    setInspectorTitle("CME | Solar Wind");
+  }
   function renderModel() {
+    window.SpaceWxCME?.unmount();
     if (window.SpaceWxRecurrenceCompare && typeof window.SpaceWxRecurrenceCompare.unmount === "function") {
       try { window.SpaceWxRecurrenceCompare.unmount(); } catch (ignore) {}
     }
     const pipeline = PIPELINES[state.selectedModel];
+    if (state.selectedModel === "huxt") { renderCmeModel(pipeline); return; }
     if (state.selectedModel === "flare") {
       renderFlareModel(pipeline);
       return;
@@ -38670,6 +38789,7 @@ window.SpaceWxRecurrenceCompare = (function () {
     const pipeline = PIPELINES[state.selectedModel];
     const run = state.run;
     const completed = run.status === "complete";
+    if (state.selectedModel === "huxt") return `<section class="fd-inspector-section"><h3>Published model products</h3><p class="fd-note">SWPC WSA–ENLIL and University of Reading HUXt are independent forecasts. Compare their issue times and CME inputs before interpreting differences.</p></section><section class="fd-inspector-section"><h3>PyCAT</h3><p class="fd-note">Planned CME geometry analysis. No connected analysis service or output yet.</p></section><section class="fd-inspector-section"><h3>Solar-cycle context</h3><button type="button" class="fd-button" data-fd-product="solar.cycle">OPEN SOLAR CYCLE</button><p class="fd-note">Monthly activity context is separate from event arrival predictions.</p></section>`;
     if (state.selectedModel === "flare") {
       const guidance = flareGuidanceSnapshot();
       return `<section class="fd-inspector-section"><h3>Current flare guidance</h3><div class="fd-meta-list"><div><span>ACCESS</span><strong>AVAILABLE WITHOUT A RUN</strong></div><div><span>REGION</span><strong id="fdFlareInspectorRegion">${esc(guidance.selectedRegion)}</strong></div><div><span>VALIDITY</span><strong id="fdFlareInspectorValid">${esc(guidance.valid)}</strong></div><div><span>THRESHOLDS</span><strong>M1+ · X1+</strong></div><div><span>ACTIVE REGIONS</span><strong id="fdFlareInspectorRegionCount">${guidance.activeRegions || "Awaiting ingest"}</strong></div><div><span>DATA SOURCES</span><strong id="fdFlareInspectorData">3 INTERNAL DATA STREAMS</strong></div></div><div class="fd-button-row"><button type="button" class="fd-button primary" data-fd-region-analysis>OPEN REGION WORKBENCH</button></div></section><section class="fd-inspector-section"><h3>Method integration</h3><div class="fd-meta-list"><div><span>OFFICIAL</span><strong>SWPC · PINNED FIRST</strong></div><div><span>WXF</span><strong>DIRECT M1+ · DIRECT X1+ · FULL-DISK UNION</strong></div><div><span>HISTORY</span><strong>CAUSAL EVENT FEATURES · ACTIVE</strong></div><div><span>IMAGERY</span><strong>HMI CONTINUUM + MAGNETOGRAM LOOP</strong></div></div></section><section class="fd-inspector-section"><h3>Dataset checks</h3><div class="fd-meta-list"><div><span>MORPHOLOGY</span><strong>NOAA/SWPC SRS</strong></div><div><span>EVOLUTION</span><strong>SDO/HMI 24-HOUR LOOP</strong></div><div><span>HISTORY</span><strong>NOAA EDITED EVENTS</strong></div><div><span>MAGNETIC</span><strong>JSOC SHARP CEA</strong></div></div></section><div class="fd-note">All operational analysis remains in this page. External research methods affect guidance only where their logic or validated model artifacts are installed and auditable.</div>`;
@@ -38694,6 +38814,7 @@ window.SpaceWxRecurrenceCompare = (function () {
   function productInspector() {
     const key = state.paneProducts[state.activePane] || state.paneProducts[0];
     const product = PRODUCT_LOOKUP.get(key);
+    if(key==="solar.cycle") return `<section class="fd-inspector-section"><h3>Solar Cycle</h3><p class="fd-note">NOAA monthly sunspot and F10.7 indices. Dates on each curve are observation or prediction months; this product does not use the shared event-time slider.</p><p class="fd-note">Select Cycle 25, Cycles 24–25 or the full record. The phase label is an inferred smoothed trend, with the six-month observation lag shown on the chart.</p></section>`;
     return `<section class="fd-inspector-section"><h3>${esc(product ? product.label : "Evidence pane")}</h3><div class="fd-meta-list"><div><span>KEY</span><strong>${esc(key || "Empty")}</strong></div><div><span>SOURCE</span><strong>${esc(product ? product.badge : "Unavailable")}</strong></div><div><span>VALID TIME</span><strong>T+${String(state.globalHour).padStart(3, "0")} h</strong></div><div><span>LAYOUT</span><strong>${esc(state.layout.toUpperCase())}</strong></div></div></section><section class="fd-inspector-section"><h3>Pane assignment</h3><div class="fd-button-row">${Array.from({ length: visiblePaneCount() }, (_, index) => `<button type="button" class="fd-button${state.activePane === index ? " primary" : ""}" data-fd-pane="${index}">PANE ${index + 1}</button>`).join("")}</div></section><div class="fd-note">Product cards are mounted as singletons. A product cannot silently duplicate across panes; selecting it again activates its existing pane.</div>`;
   }
 
@@ -38730,6 +38851,10 @@ window.SpaceWxRecurrenceCompare = (function () {
     const valid = new Date(Date.UTC(2026, 7, 25, Number(state.cycle)) + state.globalHour * 3600000);
     $("#fdInitTime", app).textContent = `25 AUG · ${state.cycle}Z`;
     $("#fdValidTime", app).textContent = valid.toLocaleString("en-GB", { day: "2-digit", month: "short", hour: "2-digit", timeZone: "UTC", hour12: false }).replace(",", " ·") + "Z";
+    const independentTime=(state.view==="product" && visiblePaneCount()===1 && state.paneProducts[0]==="solar.cycle") || (state.view!=="product" && state.preset==="model" && state.selectedModel==="huxt");
+    $("#fdGlobalTime",app).disabled=independentTime;
+    $("[data-fd-play]",app).disabled=independentTime;
+    if(independentTime){$("#fdInitTime",app).textContent="ON PRODUCT";$("#fdValidTime",app).textContent="PROVIDER DATES";$("#fdLeadTime",app).textContent="OWN CONTROLS";if(!run.id)$("#fdRunStatus",app).textContent="PUBLISHED PRODUCTS";}
     $$("[data-fd-layout]", app).forEach((button) => button.classList.toggle("active", button.dataset.fdLayout === state.layout));
     $$(".fd-product-button", app).forEach((button) => button.classList.toggle("active", state.paneProducts.includes(button.dataset.fdProduct)));
   }
@@ -38788,6 +38913,7 @@ window.SpaceWxRecurrenceCompare = (function () {
   }
 
   function configureRun() {
+    if (state.selectedModel === "huxt") { renderModel(); toast("Published forecasts are available directly; no local run is configured."); return; }
     const pipeline = PIPELINES[state.selectedModel];
     if (state.selectedModel === "swig") {
       $("#fdModalTitle", app).textContent = "Coronal hole forecast";
@@ -38807,6 +38933,7 @@ window.SpaceWxRecurrenceCompare = (function () {
   }
 
   function startRun() {
+    if (state.selectedModel === "huxt") { closeOverlays(); renderModel(); return; }
     const pipeline = PIPELINES[state.selectedModel];
     state.modelConfig = {
       members: clamp(Number($("#fdRunMembers", app).value) || pipeline.members, 1, 512),

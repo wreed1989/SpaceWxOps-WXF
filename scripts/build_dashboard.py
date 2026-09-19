@@ -11,7 +11,7 @@ ROOT=Path(__file__).resolve().parents[1]
 SLOT='<!-- CHHSS_BOOTSTRAP_SLOT -->'
 
 
-def build(output, feed=None):
+def build(output, feed=None, solar_cycle=None):
     html=(ROOT/'SpaceWxOps_Coronal_Hole_HSS_Outlook.html').read_text()
     payload=json.loads(Path(feed or ROOT/'chhss-data/feed.json').read_text())
     if payload.get('schemaVersion')!='chhss-feed-1':
@@ -21,6 +21,15 @@ def build(output, feed=None):
     if html.count(SLOT)!=1:
         raise ValueError('Canonical HTML must contain one bootstrap slot')
     html=html.replace(SLOT, SLOT+'\n<script type="application/json" id="chhssBootstrap">'+encoded+'</script>')
+    if solar_cycle:
+        solar=json.loads(Path(solar_cycle).read_text())
+        if not all(isinstance(solar.get(k),list) and solar[k] for k in ['observed','predicted']) or not solar.get('retrievedAt'):
+            raise ValueError('Solar-cycle snapshot requires both full NOAA arrays and retrieval time')
+        slot='<!-- SOLAR_CYCLE_BOOTSTRAP_SLOT -->'
+        if html.count(slot)!=1:
+            raise ValueError('Canonical HTML must contain one solar-cycle slot')
+        encoded=json.dumps(solar,separators=(',',':'),allow_nan=False).replace('<','\\u003c').replace('\u2028','\\u2028').replace('\u2029','\\u2029')
+        html=html.replace(slot,slot+'\n<script type="application/json" id="solarCycleBootstrap">'+encoded+'</script>')
     output=Path(output)
     output.parent.mkdir(parents=True,exist_ok=True)
     output.write_text(html)
@@ -31,5 +40,6 @@ if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--feed',type=Path)
+    parser.add_argument('--solar-cycle',type=Path,help='Full observed/predicted NOAA snapshot with original retrieval time')
     args=parser.parse_args()
-    print(build(args.output,args.feed))
+    print(build(args.output,args.feed,args.solar_cycle))

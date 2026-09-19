@@ -81,6 +81,12 @@ python build_dataset_manifest.py
 
 The canonical dashboard is [`SpaceWxOps_Coronal_Hole_HSS_Outlook.html`](SpaceWxOps_Coronal_Hole_HSS_Outlook.html). It contains the active-region HMI loop, SWPC/WXF comparisons, and registered coronal-hole/HSS tools. The old dashboard path redirects here. Run `python embed_dashboard_data.py` to update its offline flare payload and model report.
 
+The Solar Cycle catalog product plots NOAA's full observed and predicted monthly
+indices. **CME | Solar Wind** contains published SWPC ENLIL and Reading HUXt
+products plus a clearly marked PyCAT placeholder. The CH detector now screens
+dark components for cool-corona contrast and reports magnetic support separately.
+See [solar product methods and controls](docs/solar-products.md).
+
 CH/HSS acquisition and historical verification use the maintained `chhss/` package. See [CHHSS_Setup.md](CHHSS_Setup.md) for the current feed contract, September 2026 acceptance range, reproducible commands, and evidence retention. Full recent backfill datasets live in versioned release assets; compact products and checksummed manifests stay in Git.
 
 See [docs/CONSOLIDATION.md](docs/CONSOLIDATION.md) for the dependency inventory and retirement decisions.

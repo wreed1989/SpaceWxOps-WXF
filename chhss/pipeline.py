@@ -175,10 +175,24 @@ def make_pack(acq,when=None,size=512):
             ring=[v for v in ring if np.isfinite(v['lat']) and np.isfinite(v['lon'])]
             contours.append({'id':hid,'lat':lat0,'lon':lon0,'nPix':n,'areaPct':float(100*n/(np.pi*R*R)),'ring':ring,'points':[[float(x/size*100),float(y/size*100)] for y,x in points]})
             if not holes[-1].get('ring'):holes[-1]['ring']=ring
+    reviews=[]
+    for entry in detector.get('componentEvidence',[]):
+        if entry['accepted']:
+            h=holes[entry['component']-1]
+            h['thermalEvidence']=entry
+            h['identification']='magnetically-supported candidate' if h['polarity'] in [-1,1] else 'provisional EUV candidate; magnetic sign unresolved'
+        else:
+            y=int(round(entry['centroidYPx']));x=int(round(entry['centroidXPx']))
+            if np.isfinite(lat[y,x]) and np.isfinite(cmd[y,x]):
+                reviews.append({'id':f'PATCH-{entry["candidate"]:02d}','lat':float(lat[y,x]),'lon':float(cmd[y,x]),
+                                'areaDisk':float(entry['pixels']/(np.pi*R*R)),'quantitative':False,
+                                'identification':'excluded dark patch','thermalEvidence':entry,'reason':entry['reason']})
     data=np.maximum(channels[193],0);lo,hi=np.percentile(data[valid],[1,99.7]);norm=np.nan_to_num(np.clip((np.log1p(data)-np.log1p(lo))/max(1e-9,np.log1p(hi)-np.log1p(lo)),0,1));rgb=np.stack([norm**.55,norm**1.1*.8,norm**2*.28],axis=-1);rgb[rho>1.06]=0
     out=io.BytesIO();Image.fromarray(np.flipud((rgb*255).astype(np.uint8))).save(out,format='PNG')
     pol={'schemaVersion':'chhss-polarity-1','source':'HMI LOS FITS + matched AIA mask','units':'G','quantity':'B_R','radialApproximation':'B_LOS/mu; no vector information','registrationQuality':'wcs-reprojected','observationTime':iso(ht),'euvObservationTime':iso(et),'muMin':.4,'maskId':mask_id,'sector':sectors,'hmiQuality':hsrc['quality'],'degraded':hsrc['degraded'],'qualityFlags':hsrc['qualityFlags'],'temporalReference':prior_src,'hmiSource':hsrc,'hmiPrebin':'4x4 arithmetic mean; then WCS bilinear to 512 grid'}
     pack={'schemaVersion':'chhss-science-1','product':'Coronal Hole / HSS Outlook','measurementEngine':VERSION,'observationTime':iso(et),'availableAt':iso(datetime.now(UTC)),'generatedAt':iso(datetime.now(UTC)),'historical':when is not None,'maskId':mask_id,'source':{'instrument':'AIA193','euv':sources,'hmi':hsrc},'preview':{'url':'data:image/png;base64,'+base64.b64encode(out.getvalue()).decode(),'role':'Unannotated numerical AIA193 raster; display stretch never drives segmentation'},'measured':{'ok':True,'width':size,'height':size,'cx':cx,'cy':size-1-cy,'radius':R,'scienceRadius':.97*R,'imageProduct':'aia193','maskId':mask_id,'rasterEncoding':'runs-u8-v1','maskRuns':encode_runs(raster),'coreLabelRuns':encode_runs(cl),'geometry':{'registration':'wcs','northUp':True,'b0Deg':float(np.degrees(b0)),'limbRadiusPx':R,'scienceRadiusPx':.97*R,'cx':cx,'cy':size-1-cy,'sourceWCSHeader':target.wcs.to_header_string()},'window':win,'sector':{},'contours':contours},'holes':holes,'polarity':pol,'detector':detector,'notes':['Automatic multi-passband low-intensity candidate mask, not CHIMERA or a manually validated CH catalogue.','AIA and HMI use observed WCS, observer position and actual timestamps, including TAI conversion.','Polarity is independent per core and component; unknown is not quiet or neutral.','No trained forecast coefficients, local Bz prediction, source-to-Earth connectivity certification or Dst-to-G conversion.']}
+    pack['reviewCandidates']=reviews
+    pack['notes'][0]='Multi-passband dark regions require cool-corona contrast before entering the mask; excluded patches remain available for review. This is not CHIMERA or a validated catalogue.'
     assert digest(decode_runs(pack['measured']['maskRuns'],(size,size)).tobytes())==mask_id
     return pack
 

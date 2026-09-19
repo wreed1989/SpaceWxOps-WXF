@@ -1,8 +1,8 @@
 # WXF experimental rolling electron fluence
 
-**The severe criterion is removed. The office criterion is 1.1 × 10⁸ electrons cm⁻² sr⁻¹ in the preceding rolling 24 hours.** It screens accumulated exposure relevant to internal charging; it is not a universal spacecraft-damage threshold. User Alert Settings still control plot styling. Existing legacy severe defaults are migrated away; unrelated custom settings are retained.
+**The office criteria are 1.1e8 and 4.8e8 electrons cm⁻² sr⁻¹ in the preceding rolling 24 hours. The obsolete 5.8e8 trigger is removed.** The earlier removal of 4.8e8 was a mistake and is corrected. These screen accumulated exposure relevant to internal charging; they are not universal spacecraft-damage thresholds. User Alert Settings still control plot styling; unrelated custom settings are retained.
 
-**Current WXF (v0.1) remains the default. WXF-EF-0.3 is a live shadow candidate with CME-arrival, IPS/HSS-event phase and solar-wind discriminators.** It is selectable in the Electron Forecast card, and both numerical forecasts are preserved per issue. The initial v0.2 candidate failed its prespecified range-coverage gate. The subsequent v0.3 event-phase candidate was evaluated on those same development dates, so prospective verification is still required before promotion. No percentage-growth method is used.
+**Current WXF (v0.1) remains the default. WXF-EF-0.3 is a live shadow candidate with CME-arrival, IPS/HSS-event phase and solar-wind discriminators.** It is selectable in the Electron Forecast card, and both numerical forecasts are preserved per issue. The initial v0.2 candidate failed its prespecified range-coverage gate. A broader five-fold chronological historical test now supplies statistical evidence: it supports skill over persistence, but does not establish added CME/HSS skill over measured drivers. Live verification complements historical testing; it is not the only valid form of verification. No percentage-growth method is used.
 
 ## What the new candidate adds
 
@@ -62,7 +62,7 @@ Training: **February 2020–February 2026**, 12,156 eligible three-hourly origin
 
 The initial v0.2 comparison is preserved separately in [evaluation-arrivals-v02.json](evaluation-arrivals-v02.json). The current candidate and event-phase results are in [evaluation.json](evaluation.json).
 
-The larger-history observed-driver model reduced mean absolute error about **9.1%** versus current WXF in this cohort. The combined candidate reduced it about **6.1%**, but its RMS log error was worse than current WXF and its range covered only **84.4%**, below the prespecified 85–95% gate. Adding CME guidance to the recurrence version worsened average error in this development interval. The v0.2 paired weekly-block comparison and regime results are retained in the initial experiment report; no unfavorable ablation is omitted.
+The larger-history observed-driver model reduced mean absolute error about **9.1%** versus current WXF in this cohort. The initial v0.2 combined candidate reduced it about **6.1%**, but its RMS log error was worse than current WXF and its range covered only **84.4%**, below the prespecified 85–95% gate. Adding CME guidance to the recurrence version worsened average error in this development interval. The v0.2 paired weekly-block comparison and regime results are retained in the initial experiment report; no unfavorable ablation is omitted.
 
 The initial v0.2 candidate's daily-mean error improvement over current WXF had a 95% weekly-block bootstrap interval of approximately **−0.55 to +2.76 million** electrons cm⁻² sr⁻¹. It includes no improvement. This bootstrap contains only 13 calendar-week blocks and is not proof of universal skill. Forecast origins and adjacent storm days are correlated. Proton screening and gaps exclude difficult periods; these results do not cover every operational hour.
 
@@ -72,9 +72,40 @@ The September 1–18 check has only **34 usable origins on 7 dates**: v0.3 MAE *
 
 The June–August interval had already been examined during v0.1 development. Initial v0.2 evaluation exposed an excessively strict missing-spacecraft guard; correcting it restored already-masked missing observations without changing the model settings, splits or gate. September is therefore an additional **retrospective check**, not untouched prospective validation. Historical input receipt times and all revisions are unavailable. The experiment supports further evaluation, not a claim that CME/HSS discriminators have already demonstrated reliable additional skill.
 
+## Chronological historical validation (2022–August 2026)
+
+Historical data **can** validate forecast skill with statistical support. The new [fixed test plan](hindcast-plan.json) refits the existing recipe separately for five test periods: 2022, 2023, 2024, 2025 and January–August 2026. Each fold trains only on earlier years, calibrates whole error paths on the following six months, then evaluates later targets. A 24-hour target embargo separates partitions. No model settings were adjusted after inspecting this comparison, and no deployed artifact was replaced. The current feature recipe is refitted on each fold's earlier archive, including GOES-16; these are not historical predictions from today's GOES-19-only frozen model.
+
+There are **8,999 eligible three-hourly forecasts on 1,291 dates** (6,554 GOES-16 / 2,445 GOES-19). The denominator and exclusions are reported: only **66.2%** of scheduled origins satisfy the strict history and future-truth quality gates. This fraction is not operational uptime. Proton contamination, gaps and spacecraft transitions exclude some difficult periods. The 2025 fold includes transfer to GOES-19 before that spacecraft appears in its training data; per-spacecraft results are reported.
+
+| Recipe / baseline | +24 h mean absolute error | RMS log error | Nominal 90% range coverage |
+|---|---:|---:|---:|
+| Current feature recipe, refitted | 2.087e7 | 0.602 | 88.7% |
+| Expanded measured drivers | 2.035e7 | 0.599 | 88.9% |
+| Measured drivers + recurrence | 2.048e7 | 0.598 | 88.6% |
+| Full IPS/HSS + CME guidance | 2.043e7 | 0.598 | 88.0% |
+| Diurnal persistence | 2.290e7 | 0.762 | — |
+| Constant-flux persistence | 2.975e7 | 0.942 | — |
+
+The full recipe improves mean absolute error **10.8% versus diurnal persistence**. Paired, fold-stratified seven-day block bootstrap (2,000 resamples) gives an improvement of **2.47e6**, with a **95% interval of 0.97e6–3.93e6** electrons cm⁻² sr⁻¹. A 27-day block sensitivity also stays positive (1.11e6–3.71e6). Whole blocks retain adjacent forecast origins rather than treating storm hours as independent samples.
+
+Against expanded measured drivers, the corresponding improvement is **−8.41e4**, with a seven-day interval of **−4.02e5 to +2.35e5**; the 27-day sensitivity also spans zero. Against the refitted current feature recipe, the interval also spans zero. Thus the test supplies statistical support over persistence, while it does **not** establish extra average skill from the added event/recurrence predictors. Full-guidance interval coverage is 89.2%, 88.5% and 88.0% at +6/+12/+24 hours. Pooled coverage must not conceal the per-year differences, which are retained in the full report.
+
+At the **4.8e8** criterion, the once-per-day sample contains **17 exceedance dates**. The full recipe's median forecast has **11 hits, 6 misses and 9 false alarms**. At **1.1e8**, it has 149 hits, 50 misses and 20 false alarms across 199 exceedance dates. These are dates, not independent storm episodes. The higher-trigger sample is small; the counts do not establish a reliable satellite-failure probability or universal event detection rate.
+
+This is a chronological out-of-sample test of a fixed recipe, using historical archives. Model design had already been informed by other historical analyses, and provider receipt/revision histories are incomplete; the intervals are conditional on that design and archive, not corrected for every prior modeling choice. Historical HUXt speed inputs are absent, so this test cannot validate their future contribution. A live trial adds checks of actual receipt times, revisions, outages and new regimes. It does not invalidate statistically supported historical results.
+
+Full reproducible statistics: [hindcast-evaluation.json](hindcast-evaluation.json). Every paired prediction: [hindcast-predictions.csv.gz](hindcast-predictions.csv.gz). Prediction-table SHA-256 is recorded in the report. Reproduce with:
+
+```sh
+python research/electron_fluence/hindcast.py --hourly work/electron-experiment/hourly.csv --arrivals work/electron-arrivals --impacts work/donki-events --output work/electron-hindcast
+```
+
+The current publication includes a compact historical summary in the model methods disclosure. The original development reports remain dated records rather than being silently rewritten with the new thresholds or results.
+
 ## Dashboard, outages and verification
 
-In Electron Forecast, select **WXF model → Candidate · IPS/HSS + CME · research** to compare the new forecast. Current WXF remains the default and keeps its original trees and calibration errors. The severe criterion is removed from both views, default alert rules and satellite-risk policy. Flux and fluence have separate physical units; fluence alert bands are never applied to flux. Hover panels are opaque, the y-axis cannot go below zero, and the existing resizing and page-scroll behavior remain intact.
+In Electron Forecast, select **WXF model → Candidate · IPS/HSS + CME · research** to compare the new forecast. Current WXF remains the default and keeps its original trees and calibration errors. Both 1.1e8 and 4.8e8 appear in the default alert rules and satellite-risk policy; 5.8e8 is removed. All electron-fluence plots use scientific-notation ticks, a zero floor and a default 2e8 upper axis, expanding to 1.25 times the highest visible observation or forecast bound when needed. Threshold overlays do not stretch a quiet plot. Flux and fluence have separate physical units; fluence alert bands are never applied to flux. Hover panels are opaque, the y-axis cannot go below zero, and the existing resizing and page-scroll behavior remain intact.
 
 A Scoreboard or DONKI event-feed outage does not remove current WXF. The candidate switches to its separately evaluated observed-driver plus recurrence variant; its mode is visible. Any candidate checksum or calculation failure leaves current WXF available. No model is automatically retuned or promoted.
 
@@ -106,7 +137,7 @@ python research/electron_fluence/refresh.py --cache work/electron-current --outp
 
 Acquire DONKI IPS/HSS with `impacts.acquire(cache, start, stop)` for each year with `version=ALL`; the exact URLs are in the manifest. `model.py --cache work/electron-history --output work/electron-experiment` can prepare the hourly table after the original experiment creates its model artifact. HUXt runtime dependencies are included in the root `requirements-chhss.txt`; run `huxt_run.py --cache work/huxt --output chhss-data/huxt-forecast.json` to reproduce a new current run.
 
-The initial arrival experiment uses the [prespecified plan](experiment-plan.json) and writes candidate artifacts; it does not replace the published model. [model-manifest.json](model-manifest.json) records the current, candidate and outage-fallback checksums and code/runtime versions. All deployed estimators use non-executable numeric NPZ arrays with `allow_pickle=False`; scikit-learn is needed only for training. Numeric export is checked against the trained estimator on 200 predictor vectors. Tests cover future-data exclusion, submission gating, provider deduplication, spacecraft transitions, recurrence timing, contamination, missing exposure, portable inference, severe-rule migration and feed-outage behavior.
+The initial arrival experiment uses the [prespecified plan](experiment-plan.json) and writes candidate artifacts; it does not replace the published model. [model-manifest.json](model-manifest.json) records the current, candidate and outage-fallback checksums and code/runtime versions. All deployed estimators use non-executable numeric NPZ arrays with `allow_pickle=False`; scikit-learn is needed only for training. Numeric export is checked against the trained estimator on 200 predictor vectors. Tests cover future-data exclusion, submission gating, provider deduplication, spacecraft transitions, recurrence timing, contamination, missing exposure, portable inference, 4.8e8 restoration and 5.8e8 migration and feed-outage behavior.
 
 ## Scientific references
 
@@ -118,3 +149,5 @@ The initial arrival experiment uses the [prespecified plan](experiment-plan.json
 - [SWPC REFM](https://www.swpc.noaa.gov/products/relativistic-electron-forecast-model): separate daily fluence product; its UTC-day totals are not relabelled rolling totals.
 
 - [HUXt examples supplied by the user](https://github.com/University-of-Reading-Space-Science/HUXt/blob/master/huxt/notebooks/HUXt_examples.ipynb), [HUXt scientific description](https://doi.org/10.3389/fphy.2022.1005621), [NOAA operational inputs](https://nomads.ncep.noaa.gov/pub/data/nccf/com/wsa_enlil/prod/) and [DONKI API documentation](https://ccmc.gsfc.nasa.gov/tools/DONKI/).
+
+- [Hyndman and Athanasopoulos, time-series cross-validation](https://otexts.com/fpp3/tscv.html): rolling-origin evaluation trains on observations preceding each test target.

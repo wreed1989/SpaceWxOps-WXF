@@ -208,7 +208,7 @@ assert.equal(monitor.resize({cols:12,rows:30},504,72,1000,'height').cols,12);
 assert.equal(monitor.resize({cols:12,rows:30},504,72,1000,'width').rows,30);
 assert.equal(monitor.resize({cols:24,rows:30},0,-12,1000,'height').rows,29);
 // Alert edits use the same live rule object for Monitor and model plots.
-const configured={proton:{yellow:10,red:40,purple:1000},proton50:{red:10},electron:{yellow:1.1e8}};
+const configured={proton:{yellow:10,red:40,purple:1000},proton50:{red:10},electron:{yellow:1.1e8,red:4.8e8}};
 const styleContext=vm.createContext({window:{},state:{rules:configured},isLightTheme:()=>false,readableThresholdColor:c=>c});
 for(const name of ['transparentize','alertLevelFromRule','particleThresholds','particleAlertColor','particleThresholdOverlay','particleRange','particleLinearAxis','hoverLabelStyle']){
   vm.runInContext(html.match(new RegExp('      function '+name+'\\([^]*?\\n      \\}'))[0],styleContext);
@@ -448,11 +448,11 @@ assert.ok(!policyContext.calculateSatelliteRisk(5,.2,6e8).GEO.some(r=>r.risk==='
 console.log('Surface/internal charging separation, LEO drag and saved-threshold policy passed');
 
 // Screening is a highest-trigger classification, never a probability or dose.
-policyContext.state.rules={ap:{yellow:32,red:56,purple:111},proton:{yellow:10,red:40,purple:1000},electron:{yellow:1.1e8}};
+policyContext.state.rules={ap:{yellow:32,red:56,purple:111},proton:{yellow:10,red:40,purple:1000},electron:{yellow:1.1e8,red:4.8e8}};
 assert.equal(policyContext.calculateSatelliteRisk(56,0,0).LEO.find(r=>r.risk==='Satellite Drag').level,2);
 assert.equal(policyContext.calculateSatelliteRisk(111,0,0).LEO.find(r=>r.risk==='Surface Charging').level,3);
 assert.equal(policyContext.calculateSatelliteRisk(0,40,0).GEO.find(r=>r.risk==='Single Event Upsets').level,2);
-assert.equal(policyContext.calculateSatelliteRisk(0,0,6e8).GEO.find(r=>r.risk==='Internal Charging').level,1);
+assert.equal(policyContext.calculateSatelliteRisk(0,0,6e8).GEO.find(r=>r.risk==='Internal Charging').level,2);
 assert.equal(Object.values(policyContext.calculateSatelliteRisk(NaN,NaN,NaN)).flat().length,0);
 assert.ok(!Object.values(policyContext.calculateSatelliteRisk(150,2000,6e8)).flat().some(r=>/Dose|Cumulative/.test(r.risk)));
 assert.ok(!policyContext.calculateSatelliteRisk(0,0,6e8).LEO.some(r=>r.risk==='Internal Charging'));
@@ -460,7 +460,7 @@ const policyFn=v=>policyContext.calculateSatelliteRisk(v.ap,v.proton,v.electron)
 for(const mode of ['quiet','storm','recovery']){
  const snapshot=risk.previewSnapshot(mode,now),model=risk.derive(snapshot,now,policyFn);
  assert.equal(model.complete,true);
- assert.equal(model.levels.GEO,mode==='storm'?3:mode==='recovery'?1:0);
+ assert.equal(model.levels.GEO,mode==='storm'?3:mode==='recovery'?2:0);
  assert.equal(model.levels.LEO,mode==='storm'?3:0);
 }
 const contaminatedModel=risk.derive(contam,now,policyFn);
@@ -500,10 +500,19 @@ console.log('Scientific screening, exact configured triggers, preview parity, co
 // The WXF model shares the same canonical downloadable page.
 require("../research/electron_fluence/test_dashboard.cjs");
 
-// Default and saved legacy electron rules retire the severe criterion.
+// Keep 4.8e8, remove obsolete 5.8e8, and repair the prior missing-red default.
 const rulesContext=vm.createContext({structuredClone,toNumber:Number,readAlertSetting:()=>JSON.stringify({radio:{yellow:5000},electron:{yellow:1.1e8,red:4.8e8,audible:true}})});
 vm.runInContext(html.match(/      const DEFAULT_RULES = \{[^]*?\n      \};/)[0]+'\n'+html.match(/      function loadRules\([^]*?\n      \}/)[0],rulesContext);
 assert.equal(rulesContext.loadRules().electron.yellow,1.1e8);
-assert.equal(rulesContext.loadRules().electron.red,undefined);
+assert.equal(rulesContext.loadRules().electron.red,4.8e8);
+rulesContext.readAlertSetting=()=>JSON.stringify({radio:{yellow:5000},electron:{yellow:1.1e8,red:4.8e8,purple:5.8e8}});
+assert.equal(rulesContext.loadRules().electron.red,4.8e8);assert.equal(rulesContext.loadRules().electron.purple,undefined);
+rulesContext.readAlertSetting=()=>JSON.stringify({radio:{yellow:5000},electron:{yellow:1.1e8,red:5.8e8}});
+assert.equal(rulesContext.loadRules().electron.red,4.8e8);
+rulesContext.readAlertSetting=()=>JSON.stringify({radio:{yellow:5000},electron:{yellow:1.1e8}});
+assert.equal(rulesContext.loadRules().electron.red,4.8e8);
 rulesContext.readAlertSetting=()=>JSON.stringify({radio:{yellow:5000},electron:{yellow:2e8,red:9e8}});
 assert.equal(rulesContext.loadRules().electron.red,9e8);
+
+assert.equal(refmChart.layout.yaxis.tickformat,'.1e');
+assert.equal(styleContext.riskContributorThreshold('electron_fluence',4.8e8),4.8e8);

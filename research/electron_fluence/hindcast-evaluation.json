@@ -1,0 +1,3907 @@
+{
+  "schemaVersion": "wxf-electron-hindcast-1",
+  "plan": {
+    "version": "wxf-electron-hindcast-1",
+    "specifiedBeforeThisEvaluation": true,
+    "trainingStart": "2020-02-01",
+    "testYears": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "testEndExclusive": "2026-09-01",
+    "calibration": "Six calendar months immediately before each test year; never train trees on calibration or test targets",
+    "embargoHours": 24,
+    "estimator": {
+      "trees": 192,
+      "minLeaf": 12,
+      "maxDepth": 14,
+      "maxFeatures": 0.8,
+      "seed": 1989
+    },
+    "variants": [
+      "currentFeatureRecipe",
+      "observedDrivers",
+      "observedAndRecurrence",
+      "fullEventGuidance"
+    ],
+    "comparisons": [
+      "currentFeatureRecipe",
+      "observedDrivers",
+      "observedAndRecurrence",
+      "diurnalPersistence",
+      "persistence"
+    ],
+    "metrics": "MAE, RMS log error and nominal 90% interval coverage at 6/12/24 h, per fold and pooled; threshold contingency on once-per-day origins at 1.1e8 and 4.8e8",
+    "statisticalSupport": "2000 paired block bootstrap resamples, stratified by test fold, with 7-calendar-day blocks and 27-day sensitivity. Whole blocks retain every eligible origin. Confidence intervals are conditional on this archive and fixed design, not post-selection-adjusted guarantees.",
+    "selection": "No hyperparameter tuning, retrospective artifact replacement or automatic promotion based on these results; publish every variant and fold",
+    "limits": [
+      "Historical receipt times and some provider revisions are unavailable",
+      "GOES-16/19 handoff changes measurement location; report by spacecraft and expose unseen-spacecraft folds",
+      "The recipe was developed after inspecting other historical dates, so this is chronological out-of-sample hindcasting, not a pristine blind operational trial",
+      "Reconstructed HUXt future speed and new CH geometry are not included without paired historical inputs"
+    ]
+  },
+  "folds": [
+    {
+      "year": 2022,
+      "trainingOrigins": 2962,
+      "calibrationOrigins": 1219,
+      "calibrationPaths": 159,
+      "trainingTargetEndsBefore": "2021-07-01",
+      "calibrationTargetEndsBefore": "2022-01-01",
+      "firstTestOrigin": "2022-01-01T03:00:00+00:00",
+      "lastTestOrigin": "2022-12-30T21:00:00+00:00",
+      "trainSpacecraft": [
+        "GOES-16"
+      ],
+      "testSpacecraft": [
+        "GOES-16"
+      ],
+      "scores": {
+        "originCount": 2375,
+        "dates": 328,
+        "spacecraftOrigins": {
+          "GOES-16": 2375
+        },
+        "models": {
+          "currentFeatureRecipe": {
+            "leads": {
+              "6": {
+                "mae": 6286510.261190345,
+                "rmsle": 0.18677168981328282,
+                "coverage": 0.8572631578947368,
+                "meanIntervalWidth": 29743200.173668522
+              },
+              "12": {
+                "mae": 14872808.336814836,
+                "rmsle": 0.3711889315117508,
+                "coverage": 0.8336842105263158,
+                "meanIntervalWidth": 66722154.232618034
+              },
+              "24": {
+                "mae": 33351571.7645469,
+                "rmsle": 0.7010807268295735,
+                "coverage": 0.8332631578947368,
+                "meanIntervalWidth": 161550609.9065604
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 328,
+                "exceedanceDays": 70,
+                "hits": 58,
+                "misses": 12,
+                "falseAlarms": 11,
+                "correctNegatives": 247,
+                "detectionRate": 0.8285714285714286,
+                "falseAlarmRatio": 0.15942028985507245,
+                "criticalSuccessIndex": 0.7160493827160493,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 328,
+                "exceedanceDays": 8,
+                "hits": 4,
+                "misses": 4,
+                "falseAlarms": 5,
+                "correctNegatives": 315,
+                "detectionRate": 0.5,
+                "falseAlarmRatio": 0.5555555555555556,
+                "criticalSuccessIndex": 0.3076923076923077,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "observedDrivers": {
+            "leads": {
+              "6": {
+                "mae": 6164149.146060327,
+                "rmsle": 0.1854845691863096,
+                "coverage": 0.8526315789473684,
+                "meanIntervalWidth": 28832106.489763536
+              },
+              "12": {
+                "mae": 14266198.018311607,
+                "rmsle": 0.36285488541721306,
+                "coverage": 0.8345263157894737,
+                "meanIntervalWidth": 62504368.35210174
+              },
+              "24": {
+                "mae": 31292558.722556435,
+                "rmsle": 0.6912299205343643,
+                "coverage": 0.8378947368421052,
+                "meanIntervalWidth": 157027658.5745644
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 328,
+                "exceedanceDays": 70,
+                "hits": 58,
+                "misses": 12,
+                "falseAlarms": 9,
+                "correctNegatives": 249,
+                "detectionRate": 0.8285714285714286,
+                "falseAlarmRatio": 0.13432835820895522,
+                "criticalSuccessIndex": 0.7341772151898734,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 328,
+                "exceedanceDays": 8,
+                "hits": 4,
+                "misses": 4,
+                "falseAlarms": 4,
+                "correctNegatives": 316,
+                "detectionRate": 0.5,
+                "falseAlarmRatio": 0.5,
+                "criticalSuccessIndex": 0.3333333333333333,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "observedAndRecurrence": {
+            "leads": {
+              "6": {
+                "mae": 6188139.54328652,
+                "rmsle": 0.18534486761494826,
+                "coverage": 0.8572631578947368,
+                "meanIntervalWidth": 29183288.608382028
+              },
+              "12": {
+                "mae": 14414037.625002814,
+                "rmsle": 0.36120151558061714,
+                "coverage": 0.8294736842105264,
+                "meanIntervalWidth": 62388919.32685584
+              },
+              "24": {
+                "mae": 31412179.762301236,
+                "rmsle": 0.6884287397840101,
+                "coverage": 0.8290526315789474,
+                "meanIntervalWidth": 150420441.39866138
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 328,
+                "exceedanceDays": 70,
+                "hits": 57,
+                "misses": 13,
+                "falseAlarms": 8,
+                "correctNegatives": 250,
+                "detectionRate": 0.8142857142857143,
+                "falseAlarmRatio": 0.12307692307692308,
+                "criticalSuccessIndex": 0.7307692307692307,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 328,
+                "exceedanceDays": 8,
+                "hits": 4,
+                "misses": 4,
+                "falseAlarms": 3,
+                "correctNegatives": 317,
+                "detectionRate": 0.5,
+                "falseAlarmRatio": 0.42857142857142855,
+                "criticalSuccessIndex": 0.36363636363636365,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "fullEventGuidance": {
+            "leads": {
+              "6": {
+                "mae": 6167972.707224658,
+                "rmsle": 0.1855358225462771,
+                "coverage": 0.8614736842105263,
+                "meanIntervalWidth": 29700763.488336753
+              },
+              "12": {
+                "mae": 14302853.609827427,
+                "rmsle": 0.36342116058661267,
+                "coverage": 0.8357894736842105,
+                "meanIntervalWidth": 63886232.850075796
+              },
+              "24": {
+                "mae": 31308261.869024634,
+                "rmsle": 0.6922348023086469,
+                "coverage": 0.8218947368421052,
+                "meanIntervalWidth": 148865150.89283973
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 328,
+                "exceedanceDays": 70,
+                "hits": 55,
+                "misses": 15,
+                "falseAlarms": 8,
+                "correctNegatives": 250,
+                "detectionRate": 0.7857142857142857,
+                "falseAlarmRatio": 0.12698412698412698,
+                "criticalSuccessIndex": 0.7051282051282052,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 328,
+                "exceedanceDays": 8,
+                "hits": 4,
+                "misses": 4,
+                "falseAlarms": 4,
+                "correctNegatives": 316,
+                "detectionRate": 0.5,
+                "falseAlarmRatio": 0.5,
+                "criticalSuccessIndex": 0.3333333333333333,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "diurnalPersistence": {
+            "leads": {
+              "6": {
+                "mae": 6488193.152622383,
+                "rmsle": 0.20572009937517488
+              },
+              "12": {
+                "mae": 15086236.88891864,
+                "rmsle": 0.4357426987527695
+              },
+              "24": {
+                "mae": 33673780.32860786,
+                "rmsle": 0.9405503678595656
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 328,
+                "exceedanceDays": 70,
+                "hits": 50,
+                "misses": 20,
+                "falseAlarms": 6,
+                "correctNegatives": 252,
+                "detectionRate": 0.7142857142857143,
+                "falseAlarmRatio": 0.10714285714285714,
+                "criticalSuccessIndex": 0.6578947368421053,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 328,
+                "exceedanceDays": 8,
+                "hits": 2,
+                "misses": 6,
+                "falseAlarms": 3,
+                "correctNegatives": 317,
+                "detectionRate": 0.25,
+                "falseAlarmRatio": 0.6,
+                "criticalSuccessIndex": 0.18181818181818182,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "persistence": {
+            "leads": {
+              "6": {
+                "mae": 7863857.835215859,
+                "rmsle": 0.21698457583080472
+              },
+              "12": {
+                "mae": 21171664.983522516,
+                "rmsle": 0.5294498834766875
+              },
+              "24": {
+                "mae": 40832061.55364944,
+                "rmsle": 1.124647343230947
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 328,
+                "exceedanceDays": 70,
+                "hits": 48,
+                "misses": 22,
+                "falseAlarms": 4,
+                "correctNegatives": 254,
+                "detectionRate": 0.6857142857142857,
+                "falseAlarmRatio": 0.07692307692307693,
+                "criticalSuccessIndex": 0.6486486486486487,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 328,
+                "exceedanceDays": 8,
+                "hits": 3,
+                "misses": 5,
+                "falseAlarms": 1,
+                "correctNegatives": 319,
+                "detectionRate": 0.375,
+                "falseAlarmRatio": 0.25,
+                "criticalSuccessIndex": 0.3333333333333333,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "year": 2023,
+      "trainingOrigins": 5277,
+      "calibrationOrigins": 1285,
+      "calibrationPaths": 167,
+      "trainingTargetEndsBefore": "2022-07-01",
+      "calibrationTargetEndsBefore": "2023-01-01",
+      "firstTestOrigin": "2023-01-01T00:00:00+00:00",
+      "lastTestOrigin": "2023-12-30T21:00:00+00:00",
+      "trainSpacecraft": [
+        "GOES-16"
+      ],
+      "testSpacecraft": [
+        "GOES-16"
+      ],
+      "scores": {
+        "originCount": 1913,
+        "dates": 271,
+        "spacecraftOrigins": {
+          "GOES-16": 1913
+        },
+        "models": {
+          "currentFeatureRecipe": {
+            "leads": {
+              "6": {
+                "mae": 3017168.1546513317,
+                "rmsle": 0.1537710086799903,
+                "coverage": 0.8897020386826974,
+                "meanIntervalWidth": 17107433.390668865
+              },
+              "12": {
+                "mae": 6535428.771032746,
+                "rmsle": 0.32078382989469856,
+                "coverage": 0.891270256142185,
+                "meanIntervalWidth": 37391282.62592174
+              },
+              "24": {
+                "mae": 13720210.703289215,
+                "rmsle": 0.6510002494012438,
+                "coverage": 0.9069524307370622,
+                "meanIntervalWidth": 81123979.82158801
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 271,
+                "exceedanceDays": 32,
+                "hits": 23,
+                "misses": 9,
+                "falseAlarms": 6,
+                "correctNegatives": 233,
+                "detectionRate": 0.71875,
+                "falseAlarmRatio": 0.20689655172413793,
+                "criticalSuccessIndex": 0.6052631578947368,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 271,
+                "exceedanceDays": 0,
+                "hits": 0,
+                "misses": 0,
+                "falseAlarms": 0,
+                "correctNegatives": 271,
+                "detectionRate": null,
+                "falseAlarmRatio": null,
+                "criticalSuccessIndex": null,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "observedDrivers": {
+            "leads": {
+              "6": {
+                "mae": 2960370.0933329137,
+                "rmsle": 0.1520888949099166,
+                "coverage": 0.8881338212232096,
+                "meanIntervalWidth": 16812994.115131367
+              },
+              "12": {
+                "mae": 6547225.109010116,
+                "rmsle": 0.31537464886141925,
+                "coverage": 0.8964976476738108,
+                "meanIntervalWidth": 37371947.24579713
+              },
+              "24": {
+                "mae": 13970331.5204141,
+                "rmsle": 0.6498006024715465,
+                "coverage": 0.9017250392054365,
+                "meanIntervalWidth": 76586816.25989577
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 271,
+                "exceedanceDays": 32,
+                "hits": 20,
+                "misses": 12,
+                "falseAlarms": 7,
+                "correctNegatives": 232,
+                "detectionRate": 0.625,
+                "falseAlarmRatio": 0.25925925925925924,
+                "criticalSuccessIndex": 0.5128205128205128,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 271,
+                "exceedanceDays": 0,
+                "hits": 0,
+                "misses": 0,
+                "falseAlarms": 0,
+                "correctNegatives": 271,
+                "detectionRate": null,
+                "falseAlarmRatio": null,
+                "criticalSuccessIndex": null,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "observedAndRecurrence": {
+            "leads": {
+              "6": {
+                "mae": 2996718.2903992673,
+                "rmsle": 0.15327632674224254,
+                "coverage": 0.8881338212232096,
+                "meanIntervalWidth": 16970091.574091364
+              },
+              "12": {
+                "mae": 6607540.421318046,
+                "rmsle": 0.31730952665913864,
+                "coverage": 0.8964976476738108,
+                "meanIntervalWidth": 39122971.996660344
+              },
+              "24": {
+                "mae": 13967508.250702024,
+                "rmsle": 0.6508230673796961,
+                "coverage": 0.9053842132775745,
+                "meanIntervalWidth": 81481988.04184109
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 271,
+                "exceedanceDays": 32,
+                "hits": 22,
+                "misses": 10,
+                "falseAlarms": 6,
+                "correctNegatives": 233,
+                "detectionRate": 0.6875,
+                "falseAlarmRatio": 0.21428571428571427,
+                "criticalSuccessIndex": 0.5789473684210527,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 271,
+                "exceedanceDays": 0,
+                "hits": 0,
+                "misses": 0,
+                "falseAlarms": 0,
+                "correctNegatives": 271,
+                "detectionRate": null,
+                "falseAlarmRatio": null,
+                "criticalSuccessIndex": null,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "fullEventGuidance": {
+            "leads": {
+              "6": {
+                "mae": 2976160.963486919,
+                "rmsle": 0.15260083354496487,
+                "coverage": 0.8923157344485102,
+                "meanIntervalWidth": 17520720.462390084
+              },
+              "12": {
+                "mae": 6641092.487388677,
+                "rmsle": 0.31511701261629393,
+                "coverage": 0.8964976476738108,
+                "meanIntervalWidth": 38849152.164340444
+              },
+              "24": {
+                "mae": 14257686.290664868,
+                "rmsle": 0.6452111109948776,
+                "coverage": 0.8959749085206482,
+                "meanIntervalWidth": 78683529.47516501
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 271,
+                "exceedanceDays": 32,
+                "hits": 21,
+                "misses": 11,
+                "falseAlarms": 8,
+                "correctNegatives": 231,
+                "detectionRate": 0.65625,
+                "falseAlarmRatio": 0.27586206896551724,
+                "criticalSuccessIndex": 0.525,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 271,
+                "exceedanceDays": 0,
+                "hits": 0,
+                "misses": 0,
+                "falseAlarms": 0,
+                "correctNegatives": 271,
+                "detectionRate": null,
+                "falseAlarmRatio": null,
+                "criticalSuccessIndex": null,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "diurnalPersistence": {
+            "leads": {
+              "6": {
+                "mae": 3068934.4996321206,
+                "rmsle": 0.17209843157637295
+              },
+              "12": {
+                "mae": 7247355.508688264,
+                "rmsle": 0.370244867387223
+              },
+              "24": {
+                "mae": 16165599.9727667,
+                "rmsle": 0.8318536618374089
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 271,
+                "exceedanceDays": 32,
+                "hits": 21,
+                "misses": 11,
+                "falseAlarms": 6,
+                "correctNegatives": 233,
+                "detectionRate": 0.65625,
+                "falseAlarmRatio": 0.2222222222222222,
+                "criticalSuccessIndex": 0.5526315789473685,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 271,
+                "exceedanceDays": 0,
+                "hits": 0,
+                "misses": 0,
+                "falseAlarms": 0,
+                "correctNegatives": 271,
+                "detectionRate": null,
+                "falseAlarmRatio": null,
+                "criticalSuccessIndex": null,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "persistence": {
+            "leads": {
+              "6": {
+                "mae": 3605949.970721301,
+                "rmsle": 0.203014970085735
+              },
+              "12": {
+                "mae": 9719259.38856436,
+                "rmsle": 0.4894633352354019
+              },
+              "24": {
+                "mae": 19340718.596078385,
+                "rmsle": 1.0430120616641259
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 271,
+                "exceedanceDays": 32,
+                "hits": 20,
+                "misses": 12,
+                "falseAlarms": 6,
+                "correctNegatives": 233,
+                "detectionRate": 0.625,
+                "falseAlarmRatio": 0.23076923076923078,
+                "criticalSuccessIndex": 0.5263157894736842,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 271,
+                "exceedanceDays": 0,
+                "hits": 0,
+                "misses": 0,
+                "falseAlarms": 1,
+                "correctNegatives": 270,
+                "detectionRate": null,
+                "falseAlarmRatio": 1.0,
+                "criticalSuccessIndex": 0.0,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "trainingOrigins": 7479,
+      "calibrationOrigins": 1001,
+      "calibrationPaths": 132,
+      "trainingTargetEndsBefore": "2023-07-01",
+      "calibrationTargetEndsBefore": "2024-01-01",
+      "firstTestOrigin": "2024-01-01T03:00:00+00:00",
+      "lastTestOrigin": "2024-12-30T21:00:00+00:00",
+      "trainSpacecraft": [
+        "GOES-16"
+      ],
+      "testSpacecraft": [
+        "GOES-16"
+      ],
+      "scores": {
+        "originCount": 1785,
+        "dates": 257,
+        "spacecraftOrigins": {
+          "GOES-16": 1785
+        },
+        "models": {
+          "currentFeatureRecipe": {
+            "leads": {
+              "6": {
+                "mae": 635503.1738413997,
+                "rmsle": 0.14556591865412835,
+                "coverage": 0.911484593837535,
+                "meanIntervalWidth": 2591900.5953517207
+              },
+              "12": {
+                "mae": 1408442.5416689266,
+                "rmsle": 0.2791824092008908,
+                "coverage": 0.9086834733893557,
+                "meanIntervalWidth": 5351898.063989952
+              },
+              "24": {
+                "mae": 3164447.810589498,
+                "rmsle": 0.5265738866820552,
+                "coverage": 0.9198879551820728,
+                "meanIntervalWidth": 12804152.177159388
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 257,
+                "exceedanceDays": 1,
+                "hits": 0,
+                "misses": 1,
+                "falseAlarms": 0,
+                "correctNegatives": 256,
+                "detectionRate": 0.0,
+                "falseAlarmRatio": null,
+                "criticalSuccessIndex": 0.0,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 257,
+                "exceedanceDays": 0,
+                "hits": 0,
+                "misses": 0,
+                "falseAlarms": 0,
+                "correctNegatives": 257,
+                "detectionRate": null,
+                "falseAlarmRatio": null,
+                "criticalSuccessIndex": null,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "observedDrivers": {
+            "leads": {
+              "6": {
+                "mae": 638944.6396376172,
+                "rmsle": 0.14560917147502692,
+                "coverage": 0.9030812324929972,
+                "meanIntervalWidth": 2475116.063171593
+              },
+              "12": {
+                "mae": 1424204.903871756,
+                "rmsle": 0.28056539986815776,
+                "coverage": 0.9030812324929972,
+                "meanIntervalWidth": 5208025.368340287
+              },
+              "24": {
+                "mae": 3293373.5768158888,
+                "rmsle": 0.5360658249588159,
+                "coverage": 0.9187675070028011,
+                "meanIntervalWidth": 12851313.01353299
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 257,
+                "exceedanceDays": 1,
+                "hits": 0,
+                "misses": 1,
+                "falseAlarms": 0,
+                "correctNegatives": 256,
+                "detectionRate": 0.0,
+                "falseAlarmRatio": null,
+                "criticalSuccessIndex": 0.0,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 257,
+                "exceedanceDays": 0,
+                "hits": 0,
+                "misses": 0,
+                "falseAlarms": 0,
+                "correctNegatives": 257,
+                "detectionRate": null,
+                "falseAlarmRatio": null,
+                "criticalSuccessIndex": null,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "observedAndRecurrence": {
+            "leads": {
+              "6": {
+                "mae": 636872.9421026743,
+                "rmsle": 0.14537636461267958,
+                "coverage": 0.907563025210084,
+                "meanIntervalWidth": 2505806.0041901213
+              },
+              "12": {
+                "mae": 1413394.1509130425,
+                "rmsle": 0.27988702071078575,
+                "coverage": 0.9098039215686274,
+                "meanIntervalWidth": 5457923.303551966
+              },
+              "24": {
+                "mae": 3249033.5300412616,
+                "rmsle": 0.5323008539804284,
+                "coverage": 0.9226890756302522,
+                "meanIntervalWidth": 12786692.933331788
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 257,
+                "exceedanceDays": 1,
+                "hits": 0,
+                "misses": 1,
+                "falseAlarms": 0,
+                "correctNegatives": 256,
+                "detectionRate": 0.0,
+                "falseAlarmRatio": null,
+                "criticalSuccessIndex": 0.0,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 257,
+                "exceedanceDays": 0,
+                "hits": 0,
+                "misses": 0,
+                "falseAlarms": 0,
+                "correctNegatives": 257,
+                "detectionRate": null,
+                "falseAlarmRatio": null,
+                "criticalSuccessIndex": null,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "fullEventGuidance": {
+            "leads": {
+              "6": {
+                "mae": 637809.0030517053,
+                "rmsle": 0.14563288454666404,
+                "coverage": 0.9148459383753501,
+                "meanIntervalWidth": 2580767.5340722534
+              },
+              "12": {
+                "mae": 1416848.6353035483,
+                "rmsle": 0.27961537985235807,
+                "coverage": 0.9137254901960784,
+                "meanIntervalWidth": 5539841.640466165
+              },
+              "24": {
+                "mae": 3226698.0582600576,
+                "rmsle": 0.5323025260249052,
+                "coverage": 0.9210084033613445,
+                "meanIntervalWidth": 12648366.699789701
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 257,
+                "exceedanceDays": 1,
+                "hits": 0,
+                "misses": 1,
+                "falseAlarms": 0,
+                "correctNegatives": 256,
+                "detectionRate": 0.0,
+                "falseAlarmRatio": null,
+                "criticalSuccessIndex": 0.0,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 257,
+                "exceedanceDays": 0,
+                "hits": 0,
+                "misses": 0,
+                "falseAlarms": 0,
+                "correctNegatives": 257,
+                "detectionRate": null,
+                "falseAlarmRatio": null,
+                "criticalSuccessIndex": null,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "diurnalPersistence": {
+            "leads": {
+              "6": {
+                "mae": 676827.5259806614,
+                "rmsle": 0.1576005772852139
+              },
+              "12": {
+                "mae": 1554955.306870043,
+                "rmsle": 0.3229244815948992
+              },
+              "24": {
+                "mae": 3550100.110536654,
+                "rmsle": 0.6616285505971067
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 257,
+                "exceedanceDays": 1,
+                "hits": 0,
+                "misses": 1,
+                "falseAlarms": 0,
+                "correctNegatives": 256,
+                "detectionRate": 0.0,
+                "falseAlarmRatio": null,
+                "criticalSuccessIndex": 0.0,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 257,
+                "exceedanceDays": 0,
+                "hits": 0,
+                "misses": 0,
+                "falseAlarms": 0,
+                "correctNegatives": 257,
+                "detectionRate": null,
+                "falseAlarmRatio": null,
+                "criticalSuccessIndex": null,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "persistence": {
+            "leads": {
+              "6": {
+                "mae": 898502.243633671,
+                "rmsle": 0.1855732005398964
+              },
+              "12": {
+                "mae": 2391721.8611514466,
+                "rmsle": 0.4277220340119303
+              },
+              "24": {
+                "mae": 4735957.467692319,
+                "rmsle": 0.8504688868852708
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 257,
+                "exceedanceDays": 1,
+                "hits": 0,
+                "misses": 1,
+                "falseAlarms": 0,
+                "correctNegatives": 256,
+                "detectionRate": 0.0,
+                "falseAlarmRatio": null,
+                "criticalSuccessIndex": 0.0,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 257,
+                "exceedanceDays": 0,
+                "hits": 0,
+                "misses": 0,
+                "falseAlarms": 0,
+                "correctNegatives": 257,
+                "detectionRate": null,
+                "falseAlarmRatio": null,
+                "criticalSuccessIndex": null,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "year": 2025,
+      "trainingOrigins": 9264,
+      "calibrationOrigins": 1013,
+      "calibrationPaths": 137,
+      "trainingTargetEndsBefore": "2024-07-01",
+      "calibrationTargetEndsBefore": "2025-01-01",
+      "firstTestOrigin": "2025-01-01T00:00:00+00:00",
+      "lastTestOrigin": "2025-12-16T21:00:00+00:00",
+      "trainSpacecraft": [
+        "GOES-16"
+      ],
+      "testSpacecraft": [
+        "GOES-16",
+        "GOES-19"
+      ],
+      "scores": {
+        "originCount": 1714,
+        "dates": 255,
+        "spacecraftOrigins": {
+          "GOES-19": 1233,
+          "GOES-16": 481
+        },
+        "models": {
+          "currentFeatureRecipe": {
+            "leads": {
+              "6": {
+                "mae": 5873036.060510733,
+                "rmsle": 0.13514238555730562,
+                "coverage": 0.8780630105017503,
+                "meanIntervalWidth": 33589394.89511236
+              },
+              "12": {
+                "mae": 12392118.574025247,
+                "rmsle": 0.26632000990656907,
+                "coverage": 0.867561260210035,
+                "meanIntervalWidth": 59985537.1918726
+              },
+              "24": {
+                "mae": 26252446.101339664,
+                "rmsle": 0.5472358726200415,
+                "coverage": 0.8891481913652275,
+                "meanIntervalWidth": 168132194.11017954
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 255,
+                "exceedanceDays": 52,
+                "hits": 35,
+                "misses": 17,
+                "falseAlarms": 1,
+                "correctNegatives": 202,
+                "detectionRate": 0.6730769230769231,
+                "falseAlarmRatio": 0.027777777777777776,
+                "criticalSuccessIndex": 0.660377358490566,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 255,
+                "exceedanceDays": 6,
+                "hits": 4,
+                "misses": 2,
+                "falseAlarms": 1,
+                "correctNegatives": 248,
+                "detectionRate": 0.6666666666666666,
+                "falseAlarmRatio": 0.2,
+                "criticalSuccessIndex": 0.5714285714285714,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "observedDrivers": {
+            "leads": {
+              "6": {
+                "mae": 5850920.312253939,
+                "rmsle": 0.13516700179623978,
+                "coverage": 0.8903150525087514,
+                "meanIntervalWidth": 36017228.998562
+              },
+              "12": {
+                "mae": 12453450.809877153,
+                "rmsle": 0.26379989761262623,
+                "coverage": 0.8943990665110851,
+                "meanIntervalWidth": 67922870.99122302
+              },
+              "24": {
+                "mae": 26125155.006899126,
+                "rmsle": 0.5449774754642013,
+                "coverage": 0.896732788798133,
+                "meanIntervalWidth": 169083449.98099104
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 255,
+                "exceedanceDays": 52,
+                "hits": 34,
+                "misses": 18,
+                "falseAlarms": 1,
+                "correctNegatives": 202,
+                "detectionRate": 0.6538461538461539,
+                "falseAlarmRatio": 0.02857142857142857,
+                "criticalSuccessIndex": 0.6415094339622641,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 255,
+                "exceedanceDays": 6,
+                "hits": 4,
+                "misses": 2,
+                "falseAlarms": 1,
+                "correctNegatives": 248,
+                "detectionRate": 0.6666666666666666,
+                "falseAlarmRatio": 0.2,
+                "criticalSuccessIndex": 0.5714285714285714,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "observedAndRecurrence": {
+            "leads": {
+              "6": {
+                "mae": 5857152.844891367,
+                "rmsle": 0.13558848435176263,
+                "coverage": 0.8873978996499416,
+                "meanIntervalWidth": 35376841.34734083
+              },
+              "12": {
+                "mae": 12486118.02728065,
+                "rmsle": 0.266125162262136,
+                "coverage": 0.8792298716452742,
+                "meanIntervalWidth": 63991494.96540371
+              },
+              "24": {
+                "mae": 26399276.256542146,
+                "rmsle": 0.5473277162117546,
+                "coverage": 0.8850641773628938,
+                "meanIntervalWidth": 171869528.8877768
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 255,
+                "exceedanceDays": 52,
+                "hits": 35,
+                "misses": 17,
+                "falseAlarms": 1,
+                "correctNegatives": 202,
+                "detectionRate": 0.6730769230769231,
+                "falseAlarmRatio": 0.027777777777777776,
+                "criticalSuccessIndex": 0.660377358490566,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 255,
+                "exceedanceDays": 6,
+                "hits": 4,
+                "misses": 2,
+                "falseAlarms": 1,
+                "correctNegatives": 248,
+                "detectionRate": 0.6666666666666666,
+                "falseAlarmRatio": 0.2,
+                "criticalSuccessIndex": 0.5714285714285714,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "fullEventGuidance": {
+            "leads": {
+              "6": {
+                "mae": 5872813.666683994,
+                "rmsle": 0.13496483505805518,
+                "coverage": 0.8838973162193698,
+                "meanIntervalWidth": 35543422.905956455
+              },
+              "12": {
+                "mae": 12454926.418847091,
+                "rmsle": 0.26443160644135494,
+                "coverage": 0.8850641773628938,
+                "meanIntervalWidth": 70329369.04795529
+              },
+              "24": {
+                "mae": 26039238.240757152,
+                "rmsle": 0.5462612370060284,
+                "coverage": 0.8786464410735122,
+                "meanIntervalWidth": 179090721.6554031
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 255,
+                "exceedanceDays": 52,
+                "hits": 35,
+                "misses": 17,
+                "falseAlarms": 1,
+                "correctNegatives": 202,
+                "detectionRate": 0.6730769230769231,
+                "falseAlarmRatio": 0.027777777777777776,
+                "criticalSuccessIndex": 0.660377358490566,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 255,
+                "exceedanceDays": 6,
+                "hits": 4,
+                "misses": 2,
+                "falseAlarms": 2,
+                "correctNegatives": 247,
+                "detectionRate": 0.6666666666666666,
+                "falseAlarmRatio": 0.3333333333333333,
+                "criticalSuccessIndex": 0.5,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "diurnalPersistence": {
+            "leads": {
+              "6": {
+                "mae": 6417924.068366096,
+                "rmsle": 0.14737956146561038
+              },
+              "12": {
+                "mae": 14119852.047093652,
+                "rmsle": 0.30088158060937664
+              },
+              "24": {
+                "mae": 29998812.56813856,
+                "rmsle": 0.6318176085512887
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 255,
+                "exceedanceDays": 52,
+                "hits": 36,
+                "misses": 16,
+                "falseAlarms": 6,
+                "correctNegatives": 197,
+                "detectionRate": 0.6923076923076923,
+                "falseAlarmRatio": 0.14285714285714285,
+                "criticalSuccessIndex": 0.6206896551724138,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 255,
+                "exceedanceDays": 6,
+                "hits": 4,
+                "misses": 2,
+                "falseAlarms": 0,
+                "correctNegatives": 249,
+                "detectionRate": 0.6666666666666666,
+                "falseAlarmRatio": 0.0,
+                "criticalSuccessIndex": 0.6666666666666666,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "persistence": {
+            "leads": {
+              "6": {
+                "mae": 8669137.520869361,
+                "rmsle": 0.1714403139098254
+              },
+              "12": {
+                "mae": 23272646.783600193,
+                "rmsle": 0.4049915411853725
+              },
+              "24": {
+                "mae": 42940488.681617275,
+                "rmsle": 0.8097320483159344
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 255,
+                "exceedanceDays": 52,
+                "hits": 32,
+                "misses": 20,
+                "falseAlarms": 1,
+                "correctNegatives": 202,
+                "detectionRate": 0.6153846153846154,
+                "falseAlarmRatio": 0.030303030303030304,
+                "criticalSuccessIndex": 0.6037735849056604,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 255,
+                "exceedanceDays": 6,
+                "hits": 4,
+                "misses": 2,
+                "falseAlarms": 2,
+                "correctNegatives": 247,
+                "detectionRate": 0.6666666666666666,
+                "falseAlarmRatio": 0.3333333333333333,
+                "criticalSuccessIndex": 0.5,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "year": 2026,
+      "trainingOrigins": 11200,
+      "calibrationOrigins": 791,
+      "calibrationPaths": 114,
+      "trainingTargetEndsBefore": "2025-07-01",
+      "calibrationTargetEndsBefore": "2026-01-01",
+      "firstTestOrigin": "2026-01-16T06:00:00+00:00",
+      "lastTestOrigin": "2026-08-30T03:00:00+00:00",
+      "trainSpacecraft": [
+        "GOES-16",
+        "GOES-19"
+      ],
+      "testSpacecraft": [
+        "GOES-19"
+      ],
+      "scores": {
+        "originCount": 1212,
+        "dates": 180,
+        "spacecraftOrigins": {
+          "GOES-19": 1212
+        },
+        "models": {
+          "currentFeatureRecipe": {
+            "leads": {
+              "6": {
+                "mae": 5336379.489337852,
+                "rmsle": 0.08973521832241566,
+                "coverage": 0.9298679867986799,
+                "meanIntervalWidth": 33549847.966320276
+              },
+              "12": {
+                "mae": 11612670.05338797,
+                "rmsle": 0.1915812284117898,
+                "coverage": 0.9216171617161716,
+                "meanIntervalWidth": 83184456.16951579
+              },
+              "24": {
+                "mae": 26139931.313424848,
+                "rmsle": 0.4733756197005906,
+                "coverage": 0.9067656765676567,
+                "meanIntervalWidth": 155204580.0707917
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 180,
+                "exceedanceDays": 44,
+                "hits": 35,
+                "misses": 9,
+                "falseAlarms": 3,
+                "correctNegatives": 133,
+                "detectionRate": 0.7954545454545454,
+                "falseAlarmRatio": 0.07894736842105263,
+                "criticalSuccessIndex": 0.7446808510638298,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 180,
+                "exceedanceDays": 3,
+                "hits": 0,
+                "misses": 3,
+                "falseAlarms": 3,
+                "correctNegatives": 174,
+                "detectionRate": 0.0,
+                "falseAlarmRatio": 1.0,
+                "criticalSuccessIndex": 0.0,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "observedDrivers": {
+            "leads": {
+              "6": {
+                "mae": 5286101.162264147,
+                "rmsle": 0.08869902303339719,
+                "coverage": 0.9224422442244224,
+                "meanIntervalWidth": 31303678.07247736
+              },
+              "12": {
+                "mae": 11534906.97057983,
+                "rmsle": 0.19040887887754152,
+                "coverage": 0.9183168316831684,
+                "meanIntervalWidth": 77495003.38569571
+              },
+              "24": {
+                "mae": 25920770.499534708,
+                "rmsle": 0.4678360320050482,
+                "coverage": 0.9117161716171617,
+                "meanIntervalWidth": 148874316.69491914
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 180,
+                "exceedanceDays": 44,
+                "hits": 36,
+                "misses": 8,
+                "falseAlarms": 2,
+                "correctNegatives": 134,
+                "detectionRate": 0.8181818181818182,
+                "falseAlarmRatio": 0.05263157894736842,
+                "criticalSuccessIndex": 0.782608695652174,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 180,
+                "exceedanceDays": 3,
+                "hits": 1,
+                "misses": 2,
+                "falseAlarms": 3,
+                "correctNegatives": 174,
+                "detectionRate": 0.3333333333333333,
+                "falseAlarmRatio": 0.75,
+                "criticalSuccessIndex": 0.16666666666666666,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "observedAndRecurrence": {
+            "leads": {
+              "6": {
+                "mae": 5329519.621466964,
+                "rmsle": 0.08863465272181018,
+                "coverage": 0.9273927392739274,
+                "meanIntervalWidth": 31828720.485548127
+              },
+              "12": {
+                "mae": 11630962.344437914,
+                "rmsle": 0.18990876612572524,
+                "coverage": 0.9249174917491749,
+                "meanIntervalWidth": 79746423.30952239
+              },
+              "24": {
+                "mae": 26315414.641371716,
+                "rmsle": 0.4677767301414793,
+                "coverage": 0.9133663366336634,
+                "meanIntervalWidth": 151609793.8220308
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 180,
+                "exceedanceDays": 44,
+                "hits": 36,
+                "misses": 8,
+                "falseAlarms": 5,
+                "correctNegatives": 131,
+                "detectionRate": 0.8181818181818182,
+                "falseAlarmRatio": 0.12195121951219512,
+                "criticalSuccessIndex": 0.7346938775510204,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 180,
+                "exceedanceDays": 3,
+                "hits": 1,
+                "misses": 2,
+                "falseAlarms": 3,
+                "correctNegatives": 174,
+                "detectionRate": 0.3333333333333333,
+                "falseAlarmRatio": 0.75,
+                "criticalSuccessIndex": 0.16666666666666666,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "fullEventGuidance": {
+            "leads": {
+              "6": {
+                "mae": 5387052.370789521,
+                "rmsle": 0.09067393108023912,
+                "coverage": 0.9273927392739274,
+                "meanIntervalWidth": 31570437.26481865
+              },
+              "12": {
+                "mae": 11787654.18533484,
+                "rmsle": 0.19326508857861385,
+                "coverage": 0.9216171617161716,
+                "meanIntervalWidth": 76479864.16754973
+              },
+              "24": {
+                "mae": 26280260.33823267,
+                "rmsle": 0.46682028388612096,
+                "coverage": 0.9108910891089109,
+                "meanIntervalWidth": 146433953.802396
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 180,
+                "exceedanceDays": 44,
+                "hits": 38,
+                "misses": 6,
+                "falseAlarms": 3,
+                "correctNegatives": 133,
+                "detectionRate": 0.8636363636363636,
+                "falseAlarmRatio": 0.07317073170731707,
+                "criticalSuccessIndex": 0.8085106382978723,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 180,
+                "exceedanceDays": 3,
+                "hits": 3,
+                "misses": 0,
+                "falseAlarms": 3,
+                "correctNegatives": 174,
+                "detectionRate": 1.0,
+                "falseAlarmRatio": 0.5,
+                "criticalSuccessIndex": 0.5,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "diurnalPersistence": {
+            "leads": {
+              "6": {
+                "mae": 5854351.379901918,
+                "rmsle": 0.09536551807226501
+              },
+              "12": {
+                "mae": 13351185.917588266,
+                "rmsle": 0.21118306206436996
+              },
+              "24": {
+                "mae": 30884125.440284338,
+                "rmsle": 0.5269652827946961
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 180,
+                "exceedanceDays": 44,
+                "hits": 37,
+                "misses": 7,
+                "falseAlarms": 5,
+                "correctNegatives": 131,
+                "detectionRate": 0.8409090909090909,
+                "falseAlarmRatio": 0.11904761904761904,
+                "criticalSuccessIndex": 0.7551020408163265,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 180,
+                "exceedanceDays": 3,
+                "hits": 2,
+                "misses": 1,
+                "falseAlarms": 1,
+                "correctNegatives": 176,
+                "detectionRate": 0.6666666666666666,
+                "falseAlarmRatio": 0.3333333333333333,
+                "criticalSuccessIndex": 0.5,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          },
+          "persistence": {
+            "leads": {
+              "6": {
+                "mae": 8377552.167337131,
+                "rmsle": 0.1252082604333032
+              },
+              "12": {
+                "mae": 22109933.106947064,
+                "rmsle": 0.3036312438503411
+              },
+              "24": {
+                "mae": 42649405.14454664,
+                "rmsle": 0.6381811156408548
+              }
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 180,
+                "exceedanceDays": 44,
+                "hits": 31,
+                "misses": 13,
+                "falseAlarms": 4,
+                "correctNegatives": 132,
+                "detectionRate": 0.7045454545454546,
+                "falseAlarmRatio": 0.11428571428571428,
+                "criticalSuccessIndex": 0.6458333333333334,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              },
+              "high": {
+                "value": 480000000.0,
+                "dailyOrigins": 180,
+                "exceedanceDays": 3,
+                "hits": 2,
+                "misses": 1,
+                "falseAlarms": 1,
+                "correctNegatives": 176,
+                "detectionRate": 0.6666666666666666,
+                "falseAlarmRatio": 0.3333333333333333,
+                "criticalSuccessIndex": 0.5,
+                "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "pooled": {
+    "originCount": 8999,
+    "dates": 1291,
+    "spacecraftOrigins": {
+      "GOES-16": 6554,
+      "GOES-19": 2445
+    },
+    "models": {
+      "currentFeatureRecipe": {
+        "leads": {
+          "6": {
+            "mae": 4263890.817232451,
+            "rmsle": 0.15165451587909212,
+            "coverage": 0.8886542949216579,
+            "meanIntervalWidth": 22916746.48704499
+          },
+          "12": {
+            "mae": 9518158.941703012,
+            "rmsle": 0.30356305569610215,
+            "coverage": 0.8790976775197245,
+            "meanIntervalWidth": 49247977.512434825
+          },
+          "24": {
+            "mae": 20867160.209763367,
+            "rmsle": 0.60168855492239,
+            "coverage": 0.8866540726747416,
+            "meanIntervalWidth": 115347795.90106186
+          }
+        },
+        "thresholds": {
+          "moderate": {
+            "value": 110000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 199,
+            "hits": 151,
+            "misses": 48,
+            "falseAlarms": 21,
+            "correctNegatives": 1071,
+            "detectionRate": 0.7587939698492462,
+            "falseAlarmRatio": 0.12209302325581395,
+            "criticalSuccessIndex": 0.6863636363636364,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          },
+          "high": {
+            "value": 480000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 17,
+            "hits": 8,
+            "misses": 9,
+            "falseAlarms": 9,
+            "correctNegatives": 1265,
+            "detectionRate": 0.47058823529411764,
+            "falseAlarmRatio": 0.5294117647058824,
+            "criticalSuccessIndex": 0.3076923076923077,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          }
+        }
+      },
+      "observedDrivers": {
+        "leads": {
+          "6": {
+            "mae": 4209222.182026856,
+            "rmsle": 0.15080494842687867,
+            "coverage": 0.8867651961329036,
+            "meanIntervalWidth": 22750436.84360193
+          },
+          "12": {
+            "mae": 9364906.058107534,
+            "rmsle": 0.29940486391475785,
+            "coverage": 0.8839871096788532,
+            "meanIntervalWidth": 48847703.09838409
+          },
+          "24": {
+            "mae": 20348731.250861343,
+            "rmsle": 0.5990879143641353,
+            "coverage": 0.8886542949216579,
+            "meanIntervalWidth": 112527566.11296679
+          }
+        },
+        "thresholds": {
+          "moderate": {
+            "value": 110000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 199,
+            "hits": 148,
+            "misses": 51,
+            "falseAlarms": 19,
+            "correctNegatives": 1073,
+            "detectionRate": 0.7437185929648241,
+            "falseAlarmRatio": 0.11377245508982035,
+            "criticalSuccessIndex": 0.6788990825688074,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          },
+          "high": {
+            "value": 480000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 17,
+            "hits": 9,
+            "misses": 8,
+            "falseAlarms": 8,
+            "correctNegatives": 1266,
+            "detectionRate": 0.5294117647058824,
+            "falseAlarmRatio": 0.47058823529411764,
+            "criticalSuccessIndex": 0.36,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          }
+        }
+      },
+      "observedAndRecurrence": {
+        "leads": {
+          "6": {
+            "mae": 4229904.374247618,
+            "rmsle": 0.15103742046468085,
+            "coverage": 0.888987665296144,
+            "meanIntervalWidth": 22831345.109617732
+          },
+          "12": {
+            "mae": 9433759.907207541,
+            "rmsle": 0.29953501161190094,
+            "coverage": 0.8819868874319369,
+            "meanIntervalWidth": 48793466.979617424
+          },
+          "24": {
+            "mae": 20476268.154154666,
+            "rmsle": 0.5982079040772309,
+            "coverage": 0.8858762084676075,
+            "meanIntervalWidth": 112710665.73594964
+          }
+        },
+        "thresholds": {
+          "moderate": {
+            "value": 110000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 199,
+            "hits": 150,
+            "misses": 49,
+            "falseAlarms": 20,
+            "correctNegatives": 1072,
+            "detectionRate": 0.7537688442211056,
+            "falseAlarmRatio": 0.11764705882352941,
+            "criticalSuccessIndex": 0.684931506849315,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          },
+          "high": {
+            "value": 480000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 17,
+            "hits": 9,
+            "misses": 8,
+            "falseAlarms": 7,
+            "correctNegatives": 1267,
+            "detectionRate": 0.5294117647058824,
+            "falseAlarmRatio": 0.4375,
+            "criticalSuccessIndex": 0.375,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          }
+        }
+      },
+      "fullEventGuidance": {
+        "leads": {
+          "6": {
+            "mae": 4231129.044488232,
+            "rmsle": 0.15105955223329018,
+            "coverage": 0.8917657517501945,
+            "meanIntervalWidth": 23096779.46476726
+          },
+          "12": {
+            "mae": 9427396.690772448,
+            "rmsle": 0.2997046380142191,
+            "coverage": 0.8850983442604734,
+            "meanIntervalWidth": 49913877.35935227
+          },
+          "24": {
+            "mae": 20432788.27887158,
+            "rmsle": 0.5977886189113938,
+            "coverage": 0.8800977886431826,
+            "meanIntervalWidth": 112356162.76713796
+          }
+        },
+        "thresholds": {
+          "moderate": {
+            "value": 110000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 199,
+            "hits": 149,
+            "misses": 50,
+            "falseAlarms": 20,
+            "correctNegatives": 1072,
+            "detectionRate": 0.7487437185929648,
+            "falseAlarmRatio": 0.11834319526627218,
+            "criticalSuccessIndex": 0.680365296803653,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          },
+          "high": {
+            "value": 480000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 17,
+            "hits": 11,
+            "misses": 6,
+            "falseAlarms": 9,
+            "correctNegatives": 1265,
+            "detectionRate": 0.6470588235294118,
+            "falseAlarmRatio": 0.45,
+            "criticalSuccessIndex": 0.4230769230769231,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          }
+        }
+      },
+      "diurnalPersistence": {
+        "leads": {
+          "6": {
+            "mae": 4509863.684272752,
+            "rmsle": 0.16659539902523002
+          },
+          "12": {
+            "mae": 10318108.974652844,
+            "rmsle": 0.3509773958176322
+          },
+          "24": {
+            "mae": 22901041.726977266,
+            "rmsle": 0.7621254227094564
+          }
+        },
+        "thresholds": {
+          "moderate": {
+            "value": 110000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 199,
+            "hits": 144,
+            "misses": 55,
+            "falseAlarms": 23,
+            "correctNegatives": 1069,
+            "detectionRate": 0.7236180904522613,
+            "falseAlarmRatio": 0.1377245508982036,
+            "criticalSuccessIndex": 0.6486486486486487,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          },
+          "high": {
+            "value": 480000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 17,
+            "hits": 8,
+            "misses": 9,
+            "falseAlarms": 4,
+            "correctNegatives": 1270,
+            "detectionRate": 0.47058823529411764,
+            "falseAlarmRatio": 0.3333333333333333,
+            "criticalSuccessIndex": 0.38095238095238093,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          }
+        }
+      },
+      "persistence": {
+        "leads": {
+          "6": {
+            "mae": 5799662.861995366,
+            "rmsle": 0.18901781206127005
+          },
+          "12": {
+            "mae": 15538551.681415213,
+            "rmsle": 0.45260805754663724
+          },
+          "24": {
+            "mae": 29749939.057620708,
+            "rmsle": 0.9424837993292506
+          }
+        },
+        "thresholds": {
+          "moderate": {
+            "value": 110000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 199,
+            "hits": 131,
+            "misses": 68,
+            "falseAlarms": 15,
+            "correctNegatives": 1077,
+            "detectionRate": 0.6582914572864321,
+            "falseAlarmRatio": 0.10273972602739725,
+            "criticalSuccessIndex": 0.6121495327102804,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          },
+          "high": {
+            "value": 480000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 17,
+            "hits": 9,
+            "misses": 8,
+            "falseAlarms": 5,
+            "correctNegatives": 1269,
+            "detectionRate": 0.5294117647058824,
+            "falseAlarmRatio": 0.35714285714285715,
+            "criticalSuccessIndex": 0.4090909090909091,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          }
+        }
+      }
+    }
+  },
+  "pairedComparisons": {
+    "currentFeatureRecipe": {
+      "7": {
+        "reference": "currentFeatureRecipe",
+        "blockDays": 7,
+        "resamples": 2000,
+        "blocksPerFold": [
+          52,
+          48,
+          49,
+          48,
+          32
+        ],
+        "maeImprovement": 434371.93089178443,
+        "bootstrap95": [
+          -84176.01475689288,
+          1021764.111137589
+        ],
+        "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+      },
+      "27": {
+        "reference": "currentFeatureRecipe",
+        "blockDays": 27,
+        "resamples": 2000,
+        "blocksPerFold": [
+          14,
+          14,
+          14,
+          13,
+          9
+        ],
+        "maeImprovement": 434371.93089178443,
+        "bootstrap95": [
+          -112399.32798698978,
+          1020422.8314040515
+        ],
+        "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+      }
+    },
+    "observedDrivers": {
+      "7": {
+        "reference": "observedDrivers",
+        "blockDays": 7,
+        "resamples": 2000,
+        "blocksPerFold": [
+          52,
+          48,
+          49,
+          48,
+          32
+        ],
+        "maeImprovement": -84057.0280102359,
+        "bootstrap95": [
+          -401805.77816997544,
+          234900.3804880124
+        ],
+        "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+      },
+      "27": {
+        "reference": "observedDrivers",
+        "blockDays": 27,
+        "resamples": 2000,
+        "blocksPerFold": [
+          14,
+          14,
+          14,
+          13,
+          9
+        ],
+        "maeImprovement": -84057.0280102359,
+        "bootstrap95": [
+          -450242.4944358635,
+          291003.0221231975
+        ],
+        "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+      }
+    },
+    "observedAndRecurrence": {
+      "7": {
+        "reference": "observedAndRecurrence",
+        "blockDays": 7,
+        "resamples": 2000,
+        "blocksPerFold": [
+          52,
+          48,
+          49,
+          48,
+          32
+        ],
+        "maeImprovement": 43479.87528308554,
+        "bootstrap95": [
+          -227179.82913076936,
+          342303.20368326374
+        ],
+        "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+      },
+      "27": {
+        "reference": "observedAndRecurrence",
+        "blockDays": 27,
+        "resamples": 2000,
+        "blocksPerFold": [
+          14,
+          14,
+          14,
+          13,
+          9
+        ],
+        "maeImprovement": 43479.87528308554,
+        "bootstrap95": [
+          -223270.48262433422,
+          318890.1613007539
+        ],
+        "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+      }
+    },
+    "diurnalPersistence": {
+      "7": {
+        "reference": "diurnalPersistence",
+        "blockDays": 7,
+        "resamples": 2000,
+        "blocksPerFold": [
+          52,
+          48,
+          49,
+          48,
+          32
+        ],
+        "maeImprovement": 2468253.4481056845,
+        "bootstrap95": [
+          974492.470144891,
+          3927407.128630083
+        ],
+        "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+      },
+      "27": {
+        "reference": "diurnalPersistence",
+        "blockDays": 27,
+        "resamples": 2000,
+        "blocksPerFold": [
+          14,
+          14,
+          14,
+          13,
+          9
+        ],
+        "maeImprovement": 2468253.4481056845,
+        "bootstrap95": [
+          1112559.479648654,
+          3708501.953332372
+        ],
+        "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+      }
+    },
+    "persistence": {
+      "7": {
+        "reference": "persistence",
+        "blockDays": 7,
+        "resamples": 2000,
+        "blocksPerFold": [
+          52,
+          48,
+          49,
+          48,
+          32
+        ],
+        "maeImprovement": 9317150.778749123,
+        "bootstrap95": [
+          7206528.535454976,
+          11634642.879797792
+        ],
+        "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+      },
+      "27": {
+        "reference": "persistence",
+        "blockDays": 27,
+        "resamples": 2000,
+        "blocksPerFold": [
+          14,
+          14,
+          14,
+          13,
+          9
+        ],
+        "maeImprovement": 9317150.778749123,
+        "bootstrap95": [
+          7154663.575874434,
+          11585888.253577115
+        ],
+        "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+      }
+    }
+  },
+  "regimes": {
+    "IPSlast72h": {
+      "originCount": 3572,
+      "dates": 659,
+      "spacecraftOrigins": {
+        "GOES-16": 2638,
+        "GOES-19": 934
+      },
+      "models": {
+        "currentFeatureRecipe": {
+          "leads": {
+            "6": {
+              "mae": 2839229.9689030237,
+              "rmsle": 0.17501270693859053,
+              "coverage": 0.8650615901455767,
+              "meanIntervalWidth": 13573567.671178777
+            },
+            "12": {
+              "mae": 6276026.454454067,
+              "rmsle": 0.34726362508193914,
+              "coverage": 0.8575027995520716,
+              "meanIntervalWidth": 31371324.51889377
+            },
+            "24": {
+              "mae": 14716583.62009004,
+              "rmsle": 0.6725331230973661,
+              "coverage": 0.8603023516237402,
+              "meanIntervalWidth": 81275307.03368478
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 659,
+              "exceedanceDays": 55,
+              "hits": 34,
+              "misses": 21,
+              "falseAlarms": 13,
+              "correctNegatives": 591,
+              "detectionRate": 0.6181818181818182,
+              "falseAlarmRatio": 0.2765957446808511,
+              "criticalSuccessIndex": 0.5,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 659,
+              "exceedanceDays": 4,
+              "hits": 2,
+              "misses": 2,
+              "falseAlarms": 2,
+              "correctNegatives": 653,
+              "detectionRate": 0.5,
+              "falseAlarmRatio": 0.5,
+              "criticalSuccessIndex": 0.3333333333333333,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "observedDrivers": {
+          "leads": {
+            "6": {
+              "mae": 2832862.520911834,
+              "rmsle": 0.17360175974377778,
+              "coverage": 0.8619820828667413,
+              "meanIntervalWidth": 13258368.673567686
+            },
+            "12": {
+              "mae": 6151958.349776617,
+              "rmsle": 0.3403545873374589,
+              "coverage": 0.8594624860022396,
+              "meanIntervalWidth": 30244538.984184206
+            },
+            "24": {
+              "mae": 14255251.288201552,
+              "rmsle": 0.6678093727948123,
+              "coverage": 0.8617021276595744,
+              "meanIntervalWidth": 78116387.73516765
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 659,
+              "exceedanceDays": 55,
+              "hits": 33,
+              "misses": 22,
+              "falseAlarms": 13,
+              "correctNegatives": 591,
+              "detectionRate": 0.6,
+              "falseAlarmRatio": 0.2826086956521739,
+              "criticalSuccessIndex": 0.4852941176470588,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 659,
+              "exceedanceDays": 4,
+              "hits": 3,
+              "misses": 1,
+              "falseAlarms": 1,
+              "correctNegatives": 654,
+              "detectionRate": 0.75,
+              "falseAlarmRatio": 0.25,
+              "criticalSuccessIndex": 0.6,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "observedAndRecurrence": {
+          "leads": {
+            "6": {
+              "mae": 2832798.9871438164,
+              "rmsle": 0.17390398412714167,
+              "coverage": 0.8636618141097424,
+              "meanIntervalWidth": 13372586.429700002
+            },
+            "12": {
+              "mae": 6167932.429269276,
+              "rmsle": 0.3397247145520036,
+              "coverage": 0.8577827547592385,
+              "meanIntervalWidth": 30460079.125664458
+            },
+            "24": {
+              "mae": 14264401.008429486,
+              "rmsle": 0.6653412244633777,
+              "coverage": 0.8563829787234043,
+              "meanIntervalWidth": 78088008.54220639
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 659,
+              "exceedanceDays": 55,
+              "hits": 32,
+              "misses": 23,
+              "falseAlarms": 13,
+              "correctNegatives": 591,
+              "detectionRate": 0.5818181818181818,
+              "falseAlarmRatio": 0.28888888888888886,
+              "criticalSuccessIndex": 0.47058823529411764,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 659,
+              "exceedanceDays": 4,
+              "hits": 3,
+              "misses": 1,
+              "falseAlarms": 0,
+              "correctNegatives": 655,
+              "detectionRate": 0.75,
+              "falseAlarmRatio": 0.0,
+              "criticalSuccessIndex": 0.75,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "fullEventGuidance": {
+          "leads": {
+            "6": {
+              "mae": 2838673.1197038926,
+              "rmsle": 0.1740858200915414,
+              "coverage": 0.8673012318029115,
+              "meanIntervalWidth": 13480531.450236654
+            },
+            "12": {
+              "mae": 6201450.885132395,
+              "rmsle": 0.34031210543563184,
+              "coverage": 0.8603023516237402,
+              "meanIntervalWidth": 30824855.577295527
+            },
+            "24": {
+              "mae": 14404426.884579217,
+              "rmsle": 0.667537713062787,
+              "coverage": 0.8482642777155656,
+              "meanIntervalWidth": 77154014.2314129
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 659,
+              "exceedanceDays": 55,
+              "hits": 33,
+              "misses": 22,
+              "falseAlarms": 13,
+              "correctNegatives": 591,
+              "detectionRate": 0.6,
+              "falseAlarmRatio": 0.2826086956521739,
+              "criticalSuccessIndex": 0.4852941176470588,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 659,
+              "exceedanceDays": 4,
+              "hits": 3,
+              "misses": 1,
+              "falseAlarms": 1,
+              "correctNegatives": 654,
+              "detectionRate": 0.75,
+              "falseAlarmRatio": 0.25,
+              "criticalSuccessIndex": 0.6,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "diurnalPersistence": {
+          "leads": {
+            "6": {
+              "mae": 3138782.0034511136,
+              "rmsle": 0.19559974882931191
+            },
+            "12": {
+              "mae": 7331789.706344912,
+              "rmsle": 0.4098008381323647
+            },
+            "24": {
+              "mae": 17169410.84140682,
+              "rmsle": 0.8896364951017286
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 659,
+              "exceedanceDays": 55,
+              "hits": 29,
+              "misses": 26,
+              "falseAlarms": 19,
+              "correctNegatives": 585,
+              "detectionRate": 0.5272727272727272,
+              "falseAlarmRatio": 0.3958333333333333,
+              "criticalSuccessIndex": 0.3918918918918919,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 659,
+              "exceedanceDays": 4,
+              "hits": 1,
+              "misses": 3,
+              "falseAlarms": 0,
+              "correctNegatives": 655,
+              "detectionRate": 0.25,
+              "falseAlarmRatio": 0.0,
+              "criticalSuccessIndex": 0.25,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "persistence": {
+          "leads": {
+            "6": {
+              "mae": 3834477.766307137,
+              "rmsle": 0.2120804290725849
+            },
+            "12": {
+              "mae": 10378601.372149358,
+              "rmsle": 0.48982410849763813
+            },
+            "24": {
+              "mae": 21513724.078570932,
+              "rmsle": 1.0310721651868264
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 659,
+              "exceedanceDays": 55,
+              "hits": 31,
+              "misses": 24,
+              "falseAlarms": 14,
+              "correctNegatives": 590,
+              "detectionRate": 0.5636363636363636,
+              "falseAlarmRatio": 0.3111111111111111,
+              "criticalSuccessIndex": 0.4492753623188406,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 659,
+              "exceedanceDays": 4,
+              "hits": 2,
+              "misses": 2,
+              "falseAlarms": 6,
+              "correctNegatives": 649,
+              "detectionRate": 0.5,
+              "falseAlarmRatio": 0.75,
+              "criticalSuccessIndex": 0.2,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        }
+      }
+    },
+    "HSSlast72h": {
+      "originCount": 2854,
+      "dates": 559,
+      "spacecraftOrigins": {
+        "GOES-16": 1774,
+        "GOES-19": 1080
+      },
+      "models": {
+        "currentFeatureRecipe": {
+          "leads": {
+            "6": {
+              "mae": 4344203.086872052,
+              "rmsle": 0.1702101419415116,
+              "coverage": 0.8791170287316048,
+              "meanIntervalWidth": 23768278.838350702
+            },
+            "12": {
+              "mae": 9968527.295784406,
+              "rmsle": 0.3325273141540353,
+              "coverage": 0.8703573931324456,
+              "meanIntervalWidth": 53263783.8888353
+            },
+            "24": {
+              "mae": 23449160.383368995,
+              "rmsle": 0.6117785726391594,
+              "coverage": 0.8798177995795375,
+              "meanIntervalWidth": 138581073.97742248
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 559,
+              "exceedanceDays": 92,
+              "hits": 67,
+              "misses": 25,
+              "falseAlarms": 9,
+              "correctNegatives": 458,
+              "detectionRate": 0.7282608695652174,
+              "falseAlarmRatio": 0.11842105263157894,
+              "criticalSuccessIndex": 0.6633663366336634,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 559,
+              "exceedanceDays": 6,
+              "hits": 5,
+              "misses": 1,
+              "falseAlarms": 6,
+              "correctNegatives": 547,
+              "detectionRate": 0.8333333333333334,
+              "falseAlarmRatio": 0.5454545454545454,
+              "criticalSuccessIndex": 0.4166666666666667,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "observedDrivers": {
+          "leads": {
+            "6": {
+              "mae": 4319638.3176674,
+              "rmsle": 0.16944516804458654,
+              "coverage": 0.8787666433076384,
+              "meanIntervalWidth": 23790675.743352246
+            },
+            "12": {
+              "mae": 9876478.645588847,
+              "rmsle": 0.3263902305899687,
+              "coverage": 0.8724597056762439,
+              "meanIntervalWidth": 53381960.83151068
+            },
+            "24": {
+              "mae": 23107347.227503147,
+              "rmsle": 0.6052880086427994,
+              "coverage": 0.8833216538192011,
+              "meanIntervalWidth": 135611031.65648025
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 559,
+              "exceedanceDays": 92,
+              "hits": 67,
+              "misses": 25,
+              "falseAlarms": 7,
+              "correctNegatives": 460,
+              "detectionRate": 0.7282608695652174,
+              "falseAlarmRatio": 0.0945945945945946,
+              "criticalSuccessIndex": 0.6767676767676768,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 559,
+              "exceedanceDays": 6,
+              "hits": 5,
+              "misses": 1,
+              "falseAlarms": 5,
+              "correctNegatives": 548,
+              "detectionRate": 0.8333333333333334,
+              "falseAlarmRatio": 0.5,
+              "criticalSuccessIndex": 0.45454545454545453,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "observedAndRecurrence": {
+          "leads": {
+            "6": {
+              "mae": 4327393.200506891,
+              "rmsle": 0.16947531632791255,
+              "coverage": 0.8805185704274702,
+              "meanIntervalWidth": 23816850.634118818
+            },
+            "12": {
+              "mae": 9884842.60087682,
+              "rmsle": 0.32510268347020344,
+              "coverage": 0.8724597056762439,
+              "meanIntervalWidth": 52843001.757140644
+            },
+            "24": {
+              "mae": 23118589.65810123,
+              "rmsle": 0.6007325428249575,
+              "coverage": 0.8766643307638402,
+              "meanIntervalWidth": 136079172.1950642
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 559,
+              "exceedanceDays": 92,
+              "hits": 66,
+              "misses": 26,
+              "falseAlarms": 7,
+              "correctNegatives": 460,
+              "detectionRate": 0.717391304347826,
+              "falseAlarmRatio": 0.0958904109589041,
+              "criticalSuccessIndex": 0.6666666666666666,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 559,
+              "exceedanceDays": 6,
+              "hits": 5,
+              "misses": 1,
+              "falseAlarms": 4,
+              "correctNegatives": 549,
+              "detectionRate": 0.8333333333333334,
+              "falseAlarmRatio": 0.4444444444444444,
+              "criticalSuccessIndex": 0.5,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "fullEventGuidance": {
+          "leads": {
+            "6": {
+              "mae": 4351636.059810708,
+              "rmsle": 0.17008124664258384,
+              "coverage": 0.8857743517869656,
+              "meanIntervalWidth": 24093647.567290083
+            },
+            "12": {
+              "mae": 10011315.126237325,
+              "rmsle": 0.3281812560656382,
+              "coverage": 0.873510861948143,
+              "meanIntervalWidth": 54839610.89799052
+            },
+            "24": {
+              "mae": 23585755.69169778,
+              "rmsle": 0.6063679910706387,
+              "coverage": 0.8682550805886475,
+              "meanIntervalWidth": 137904536.16265967
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 559,
+              "exceedanceDays": 92,
+              "hits": 67,
+              "misses": 25,
+              "falseAlarms": 7,
+              "correctNegatives": 460,
+              "detectionRate": 0.7282608695652174,
+              "falseAlarmRatio": 0.0945945945945946,
+              "criticalSuccessIndex": 0.6767676767676768,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 559,
+              "exceedanceDays": 6,
+              "hits": 5,
+              "misses": 1,
+              "falseAlarms": 7,
+              "correctNegatives": 546,
+              "detectionRate": 0.8333333333333334,
+              "falseAlarmRatio": 0.5833333333333334,
+              "criticalSuccessIndex": 0.38461538461538464,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "diurnalPersistence": {
+          "leads": {
+            "6": {
+              "mae": 4704108.399167861,
+              "rmsle": 0.19522320736341459
+            },
+            "12": {
+              "mae": 11203184.454953605,
+              "rmsle": 0.40807663686873935
+            },
+            "24": {
+              "mae": 26198702.739870794,
+              "rmsle": 0.8626616715667674
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 559,
+              "exceedanceDays": 92,
+              "hits": 56,
+              "misses": 36,
+              "falseAlarms": 6,
+              "correctNegatives": 461,
+              "detectionRate": 0.6086956521739131,
+              "falseAlarmRatio": 0.0967741935483871,
+              "criticalSuccessIndex": 0.5714285714285714,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 559,
+              "exceedanceDays": 6,
+              "hits": 3,
+              "misses": 3,
+              "falseAlarms": 2,
+              "correctNegatives": 551,
+              "detectionRate": 0.5,
+              "falseAlarmRatio": 0.4,
+              "criticalSuccessIndex": 0.375,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "persistence": {
+          "leads": {
+            "6": {
+              "mae": 5905509.258514764,
+              "rmsle": 0.2113146701534113
+            },
+            "12": {
+              "mae": 16333491.25547317,
+              "rmsle": 0.49343222593179453
+            },
+            "24": {
+              "mae": 33172819.750496417,
+              "rmsle": 1.0032236442516282
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 559,
+              "exceedanceDays": 92,
+              "hits": 54,
+              "misses": 38,
+              "falseAlarms": 6,
+              "correctNegatives": 461,
+              "detectionRate": 0.5869565217391305,
+              "falseAlarmRatio": 0.1,
+              "criticalSuccessIndex": 0.5510204081632653,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 559,
+              "exceedanceDays": 6,
+              "hits": 3,
+              "misses": 3,
+              "falseAlarms": 4,
+              "correctNegatives": 549,
+              "detectionRate": 0.5,
+              "falseAlarmRatio": 0.5714285714285714,
+              "criticalSuccessIndex": 0.3,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        }
+      }
+    },
+    "fastWind": {
+      "originCount": 2103,
+      "dates": 394,
+      "spacecraftOrigins": {
+        "GOES-16": 1262,
+        "GOES-19": 841
+      },
+      "models": {
+        "currentFeatureRecipe": {
+          "leads": {
+            "6": {
+              "mae": 8473760.325741136,
+              "rmsle": 0.18553247966373645,
+              "coverage": 0.896338563956253,
+              "meanIntervalWidth": 49569451.552545466
+            },
+            "12": {
+              "mae": 19991731.90650368,
+              "rmsle": 0.3421672051020819,
+              "coverage": 0.8882548739895387,
+              "meanIntervalWidth": 112867422.93134363
+            },
+            "24": {
+              "mae": 45736454.888349436,
+              "rmsle": 0.5786168586855708,
+              "coverage": 0.8925344745601521,
+              "meanIntervalWidth": 294024039.70231134
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 394,
+              "exceedanceDays": 122,
+              "hits": 98,
+              "misses": 24,
+              "falseAlarms": 11,
+              "correctNegatives": 261,
+              "detectionRate": 0.8032786885245902,
+              "falseAlarmRatio": 0.10091743119266056,
+              "criticalSuccessIndex": 0.7368421052631579,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 394,
+              "exceedanceDays": 10,
+              "hits": 8,
+              "misses": 2,
+              "falseAlarms": 9,
+              "correctNegatives": 375,
+              "detectionRate": 0.8,
+              "falseAlarmRatio": 0.5294117647058824,
+              "criticalSuccessIndex": 0.42105263157894735,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "observedDrivers": {
+          "leads": {
+            "6": {
+              "mae": 8248556.622361374,
+              "rmsle": 0.1840134718258196,
+              "coverage": 0.896338563956253,
+              "meanIntervalWidth": 49356569.35692377
+            },
+            "12": {
+              "mae": 19241350.301287077,
+              "rmsle": 0.3320450707389143,
+              "coverage": 0.89396100808369,
+              "meanIntervalWidth": 111533867.31600387
+            },
+            "24": {
+              "mae": 43277172.125596,
+              "rmsle": 0.5647309056133324,
+              "coverage": 0.8982406086543033,
+              "meanIntervalWidth": 284765763.8131378
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 394,
+              "exceedanceDays": 122,
+              "hits": 96,
+              "misses": 26,
+              "falseAlarms": 12,
+              "correctNegatives": 260,
+              "detectionRate": 0.7868852459016393,
+              "falseAlarmRatio": 0.1111111111111111,
+              "criticalSuccessIndex": 0.7164179104477612,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 394,
+              "exceedanceDays": 10,
+              "hits": 9,
+              "misses": 1,
+              "falseAlarms": 8,
+              "correctNegatives": 376,
+              "detectionRate": 0.9,
+              "falseAlarmRatio": 0.47058823529411764,
+              "criticalSuccessIndex": 0.5,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "observedAndRecurrence": {
+          "leads": {
+            "6": {
+              "mae": 8343979.288691414,
+              "rmsle": 0.1844288713331248,
+              "coverage": 0.8996671421778412,
+              "meanIntervalWidth": 49596080.43469625
+            },
+            "12": {
+              "mae": 19506796.23503772,
+              "rmsle": 0.3316450206913053,
+              "coverage": 0.8944365192582026,
+              "meanIntervalWidth": 110966003.70483029
+            },
+            "24": {
+              "mae": 43605024.54285236,
+              "rmsle": 0.5621746495030208,
+              "coverage": 0.891583452211127,
+              "meanIntervalWidth": 287337989.1657679
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 394,
+              "exceedanceDays": 122,
+              "hits": 96,
+              "misses": 26,
+              "falseAlarms": 12,
+              "correctNegatives": 260,
+              "detectionRate": 0.7868852459016393,
+              "falseAlarmRatio": 0.1111111111111111,
+              "criticalSuccessIndex": 0.7164179104477612,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 394,
+              "exceedanceDays": 10,
+              "hits": 9,
+              "misses": 1,
+              "falseAlarms": 7,
+              "correctNegatives": 377,
+              "detectionRate": 0.9,
+              "falseAlarmRatio": 0.4375,
+              "criticalSuccessIndex": 0.5294117647058824,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "fullEventGuidance": {
+          "leads": {
+            "6": {
+              "mae": 8343275.1001443835,
+              "rmsle": 0.18497689833036388,
+              "coverage": 0.9025202092249168,
+              "meanIntervalWidth": 50322016.0136882
+            },
+            "12": {
+              "mae": 19448831.78514508,
+              "rmsle": 0.3338632722417588,
+              "coverage": 0.8925344745601521,
+              "meanIntervalWidth": 114958249.13604586
+            },
+            "24": {
+              "mae": 43660852.72140549,
+              "rmsle": 0.563571735736459,
+              "coverage": 0.8839752734189253,
+              "meanIntervalWidth": 288609881.61825395
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 394,
+              "exceedanceDays": 122,
+              "hits": 95,
+              "misses": 27,
+              "falseAlarms": 12,
+              "correctNegatives": 260,
+              "detectionRate": 0.7786885245901639,
+              "falseAlarmRatio": 0.11214953271028037,
+              "criticalSuccessIndex": 0.7089552238805971,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 394,
+              "exceedanceDays": 10,
+              "hits": 9,
+              "misses": 1,
+              "falseAlarms": 9,
+              "correctNegatives": 375,
+              "detectionRate": 0.9,
+              "falseAlarmRatio": 0.5,
+              "criticalSuccessIndex": 0.47368421052631576,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "diurnalPersistence": {
+          "leads": {
+            "6": {
+              "mae": 8881459.180817252,
+              "rmsle": 0.22229204062298957
+            },
+            "12": {
+              "mae": 20457858.844087783,
+              "rmsle": 0.44283816221710287
+            },
+            "24": {
+              "mae": 45676716.75531942,
+              "rmsle": 0.8374226438673553
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 394,
+              "exceedanceDays": 122,
+              "hits": 76,
+              "misses": 46,
+              "falseAlarms": 3,
+              "correctNegatives": 269,
+              "detectionRate": 0.6229508196721312,
+              "falseAlarmRatio": 0.0379746835443038,
+              "criticalSuccessIndex": 0.608,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 394,
+              "exceedanceDays": 10,
+              "hits": 5,
+              "misses": 5,
+              "falseAlarms": 3,
+              "correctNegatives": 381,
+              "detectionRate": 0.5,
+              "falseAlarmRatio": 0.375,
+              "criticalSuccessIndex": 0.38461538461538464,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "persistence": {
+          "leads": {
+            "6": {
+              "mae": 11197643.841431044,
+              "rmsle": 0.2374716624655034
+            },
+            "12": {
+              "mae": 30415139.69261153,
+              "rmsle": 0.5326276753375091
+            },
+            "24": {
+              "mae": 57932734.34931038,
+              "rmsle": 1.0000004158999989
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 394,
+              "exceedanceDays": 122,
+              "hits": 72,
+              "misses": 50,
+              "falseAlarms": 3,
+              "correctNegatives": 269,
+              "detectionRate": 0.5901639344262295,
+              "falseAlarmRatio": 0.04,
+              "criticalSuccessIndex": 0.576,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 394,
+              "exceedanceDays": 10,
+              "hits": 5,
+              "misses": 5,
+              "falseAlarms": 3,
+              "correctNegatives": 381,
+              "detectionRate": 0.5,
+              "falseAlarmRatio": 0.375,
+              "criticalSuccessIndex": 0.38461538461538464,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        }
+      }
+    },
+    "CMEWindowNext24h": {
+      "originCount": 4213,
+      "dates": 744,
+      "spacecraftOrigins": {
+        "GOES-16": 3089,
+        "GOES-19": 1124
+      },
+      "models": {
+        "currentFeatureRecipe": {
+          "leads": {
+            "6": {
+              "mae": 3898702.840289666,
+              "rmsle": 0.15726913949038163,
+              "coverage": 0.8791834797056729,
+              "meanIntervalWidth": 19841410.432965513
+            },
+            "12": {
+              "mae": 8754621.666967077,
+              "rmsle": 0.30913337014531916,
+              "coverage": 0.8651792072157607,
+              "meanIntervalWidth": 43012827.7401931
+            },
+            "24": {
+              "mae": 18909148.1853193,
+              "rmsle": 0.6202868442988042,
+              "coverage": 0.878234037502967,
+              "meanIntervalWidth": 100856574.55572641
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 744,
+              "exceedanceDays": 101,
+              "hits": 81,
+              "misses": 20,
+              "falseAlarms": 13,
+              "correctNegatives": 630,
+              "detectionRate": 0.801980198019802,
+              "falseAlarmRatio": 0.13829787234042554,
+              "criticalSuccessIndex": 0.7105263157894737,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 744,
+              "exceedanceDays": 11,
+              "hits": 6,
+              "misses": 5,
+              "falseAlarms": 2,
+              "correctNegatives": 731,
+              "detectionRate": 0.5454545454545454,
+              "falseAlarmRatio": 0.25,
+              "criticalSuccessIndex": 0.46153846153846156,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "observedDrivers": {
+          "leads": {
+            "6": {
+              "mae": 3866199.3850460555,
+              "rmsle": 0.15608933607796036,
+              "coverage": 0.8775219558509376,
+              "meanIntervalWidth": 19708221.887574024
+            },
+            "12": {
+              "mae": 8628491.237659134,
+              "rmsle": 0.3047030524290908,
+              "coverage": 0.8718253026347021,
+              "meanIntervalWidth": 42869759.65572471
+            },
+            "24": {
+              "mae": 18538741.33884317,
+              "rmsle": 0.6182895991825006,
+              "coverage": 0.8822691668644671,
+              "meanIntervalWidth": 99136118.57203
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 744,
+              "exceedanceDays": 101,
+              "hits": 79,
+              "misses": 22,
+              "falseAlarms": 12,
+              "correctNegatives": 631,
+              "detectionRate": 0.7821782178217822,
+              "falseAlarmRatio": 0.13186813186813187,
+              "criticalSuccessIndex": 0.6991150442477876,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 744,
+              "exceedanceDays": 11,
+              "hits": 7,
+              "misses": 4,
+              "falseAlarms": 2,
+              "correctNegatives": 731,
+              "detectionRate": 0.6363636363636364,
+              "falseAlarmRatio": 0.2222222222222222,
+              "criticalSuccessIndex": 0.5384615384615384,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "observedAndRecurrence": {
+          "leads": {
+            "6": {
+              "mae": 3874292.424650099,
+              "rmsle": 0.15671681364281567,
+              "coverage": 0.8779966769522906,
+              "meanIntervalWidth": 19796998.624698345
+            },
+            "12": {
+              "mae": 8614524.946849113,
+              "rmsle": 0.3059116864319869,
+              "coverage": 0.8699264182292903,
+              "meanIntervalWidth": 42908840.30583726
+            },
+            "24": {
+              "mae": 18592580.590190258,
+              "rmsle": 0.6192541201050497,
+              "coverage": 0.8784713980536435,
+              "meanIntervalWidth": 99278490.26484604
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 744,
+              "exceedanceDays": 101,
+              "hits": 80,
+              "misses": 21,
+              "falseAlarms": 11,
+              "correctNegatives": 632,
+              "detectionRate": 0.7920792079207921,
+              "falseAlarmRatio": 0.12087912087912088,
+              "criticalSuccessIndex": 0.7142857142857143,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 744,
+              "exceedanceDays": 11,
+              "hits": 7,
+              "misses": 4,
+              "falseAlarms": 2,
+              "correctNegatives": 731,
+              "detectionRate": 0.6363636363636364,
+              "falseAlarmRatio": 0.2222222222222222,
+              "criticalSuccessIndex": 0.5384615384615384,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "fullEventGuidance": {
+          "leads": {
+            "6": {
+              "mae": 3867715.5933414223,
+              "rmsle": 0.15655236540713238,
+              "coverage": 0.88274388796582,
+              "meanIntervalWidth": 19897299.820569556
+            },
+            "12": {
+              "mae": 8649473.306939129,
+              "rmsle": 0.3052105280571999,
+              "coverage": 0.8737241870401139,
+              "meanIntervalWidth": 43179716.5234202
+            },
+            "24": {
+              "mae": 18739653.7570671,
+              "rmsle": 0.617769843012956,
+              "coverage": 0.8760977925468787,
+              "meanIntervalWidth": 96627007.27623147
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 744,
+              "exceedanceDays": 101,
+              "hits": 78,
+              "misses": 23,
+              "falseAlarms": 11,
+              "correctNegatives": 632,
+              "detectionRate": 0.7722772277227723,
+              "falseAlarmRatio": 0.12359550561797752,
+              "criticalSuccessIndex": 0.6964285714285714,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 744,
+              "exceedanceDays": 11,
+              "hits": 7,
+              "misses": 4,
+              "falseAlarms": 2,
+              "correctNegatives": 731,
+              "detectionRate": 0.6363636363636364,
+              "falseAlarmRatio": 0.2222222222222222,
+              "criticalSuccessIndex": 0.5384615384615384,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "diurnalPersistence": {
+          "leads": {
+            "6": {
+              "mae": 4151757.140526069,
+              "rmsle": 0.1742844425400082
+            },
+            "12": {
+              "mae": 9679913.47578245,
+              "rmsle": 0.36736250637499723
+            },
+            "24": {
+              "mae": 22096580.45382169,
+              "rmsle": 0.8134897464372961
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 744,
+              "exceedanceDays": 101,
+              "hits": 76,
+              "misses": 25,
+              "falseAlarms": 15,
+              "correctNegatives": 628,
+              "detectionRate": 0.7524752475247525,
+              "falseAlarmRatio": 0.16483516483516483,
+              "criticalSuccessIndex": 0.6551724137931034,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 744,
+              "exceedanceDays": 11,
+              "hits": 3,
+              "misses": 8,
+              "falseAlarms": 4,
+              "correctNegatives": 729,
+              "detectionRate": 0.2727272727272727,
+              "falseAlarmRatio": 0.5714285714285714,
+              "criticalSuccessIndex": 0.2,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "persistence": {
+          "leads": {
+            "6": {
+              "mae": 5380184.2191359,
+              "rmsle": 0.19413244170795158
+            },
+            "12": {
+              "mae": 14364625.15420056,
+              "rmsle": 0.4623385985368181
+            },
+            "24": {
+              "mae": 27642713.7840544,
+              "rmsle": 0.9847995980454086
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 744,
+              "exceedanceDays": 101,
+              "hits": 64,
+              "misses": 37,
+              "falseAlarms": 13,
+              "correctNegatives": 630,
+              "detectionRate": 0.6336633663366337,
+              "falseAlarmRatio": 0.16883116883116883,
+              "criticalSuccessIndex": 0.5614035087719298,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 744,
+              "exceedanceDays": 11,
+              "hits": 6,
+              "misses": 5,
+              "falseAlarms": 5,
+              "correctNegatives": 728,
+              "detectionRate": 0.5454545454545454,
+              "falseAlarmRatio": 0.45454545454545453,
+              "criticalSuccessIndex": 0.375,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        }
+      }
+    },
+    "GOES-16": {
+      "originCount": 6554,
+      "dates": 929,
+      "spacecraftOrigins": {
+        "GOES-16": 6554
+      },
+      "models": {
+        "currentFeatureRecipe": {
+          "leads": {
+            "6": {
+              "mae": 3547848.812044223,
+              "rmsle": 0.1662236764842385,
+              "coverage": 0.8799206591394568,
+              "meanIntervalWidth": 17648310.936245754
+            },
+            "12": {
+              "mae": 8100077.754215563,
+              "rmsle": 0.3289124959229535,
+              "coverage": 0.8713762587732682,
+              "meanIntervalWidth": 38846215.550716594
+            },
+            "24": {
+              "mae": 17798343.824948743,
+              "rmsle": 0.6300304010336607,
+              "coverage": 0.8812938663411657,
+              "meanIntervalWidth": 92778575.45177177
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 929,
+              "exceedanceDays": 110,
+              "hits": 83,
+              "misses": 27,
+              "falseAlarms": 18,
+              "correctNegatives": 801,
+              "detectionRate": 0.7545454545454545,
+              "falseAlarmRatio": 0.1782178217821782,
+              "criticalSuccessIndex": 0.6484375,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 929,
+              "exceedanceDays": 8,
+              "hits": 4,
+              "misses": 4,
+              "falseAlarms": 5,
+              "correctNegatives": 916,
+              "detectionRate": 0.5,
+              "falseAlarmRatio": 0.5555555555555556,
+              "criticalSuccessIndex": 0.3076923076923077,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "observedDrivers": {
+          "leads": {
+            "6": {
+              "mae": 3488371.2060658783,
+              "rmsle": 0.1652488839162772,
+              "coverage": 0.8764113518462008,
+              "meanIntervalWidth": 17267219.51802315
+            },
+            "12": {
+              "mae": 7892375.352406266,
+              "rmsle": 0.3239620560191169,
+              "coverage": 0.8733597802868477,
+              "meanIntervalWidth": 37505668.66654687
+            },
+            "24": {
+              "mae": 17162398.43076329,
+              "rmsle": 0.6277606891479495,
+              "coverage": 0.882056759231004,
+              "meanIntervalWidth": 89768328.80824262
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 929,
+              "exceedanceDays": 110,
+              "hits": 80,
+              "misses": 30,
+              "falseAlarms": 17,
+              "correctNegatives": 802,
+              "detectionRate": 0.7272727272727273,
+              "falseAlarmRatio": 0.17525773195876287,
+              "criticalSuccessIndex": 0.6299212598425197,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 929,
+              "exceedanceDays": 8,
+              "hits": 4,
+              "misses": 4,
+              "falseAlarms": 4,
+              "correctNegatives": 917,
+              "detectionRate": 0.5,
+              "falseAlarmRatio": 0.5,
+              "criticalSuccessIndex": 0.3333333333333333,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "observedAndRecurrence": {
+          "leads": {
+            "6": {
+              "mae": 3507454.295496152,
+              "rmsle": 0.16553538180249408,
+              "coverage": 0.8793103448275862,
+              "meanIntervalWidth": 17432973.20626254
+            },
+            "12": {
+              "mae": 7961807.035687751,
+              "rmsle": 0.32399866235447444,
+              "coverage": 0.8724443088190418,
+              "meanIntervalWidth": 37920217.937298246
+            },
+            "24": {
+              "mae": 17201097.75445242,
+              "rmsle": 0.626396142379384,
+              "coverage": 0.8799206591394568,
+              "meanIntervalWidth": 88889353.79049098
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 929,
+              "exceedanceDays": 110,
+              "hits": 81,
+              "misses": 29,
+              "falseAlarms": 15,
+              "correctNegatives": 804,
+              "detectionRate": 0.7363636363636363,
+              "falseAlarmRatio": 0.15625,
+              "criticalSuccessIndex": 0.648,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 929,
+              "exceedanceDays": 8,
+              "hits": 4,
+              "misses": 4,
+              "falseAlarms": 3,
+              "correctNegatives": 918,
+              "detectionRate": 0.5,
+              "falseAlarmRatio": 0.42857142857142855,
+              "criticalSuccessIndex": 0.36363636363636365,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "fullEventGuidance": {
+          "leads": {
+            "6": {
+              "mae": 3492229.311601504,
+              "rmsle": 0.16540817177439268,
+              "coverage": 0.8834299664327129,
+              "meanIntervalWidth": 17802240.306341305
+            },
+            "12": {
+              "mae": 7916755.405464675,
+              "rmsle": 0.3239495097790118,
+              "coverage": 0.8761061946902655,
+              "meanIntervalWidth": 38578124.335306555
+            },
+            "24": {
+              "mae": 17212589.159826085,
+              "rmsle": 0.6256032611093407,
+              "coverage": 0.8735123588648154,
+              "meanIntervalWidth": 87605794.34686743
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 929,
+              "exceedanceDays": 110,
+              "hits": 79,
+              "misses": 31,
+              "falseAlarms": 17,
+              "correctNegatives": 802,
+              "detectionRate": 0.7181818181818181,
+              "falseAlarmRatio": 0.17708333333333334,
+              "criticalSuccessIndex": 0.6220472440944882,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 929,
+              "exceedanceDays": 8,
+              "hits": 4,
+              "misses": 4,
+              "falseAlarms": 4,
+              "correctNegatives": 917,
+              "detectionRate": 0.5,
+              "falseAlarmRatio": 0.5,
+              "criticalSuccessIndex": 0.3333333333333333,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "diurnalPersistence": {
+          "leads": {
+            "6": {
+              "mae": 3683167.9063414503,
+              "rmsle": 0.1839088284397465
+            },
+            "12": {
+              "mae": 8540597.003286194,
+              "rmsle": 0.38514954506393784
+            },
+            "24": {
+              "mae": 19023957.53369265,
+              "rmsle": 0.831187483295659
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 929,
+              "exceedanceDays": 110,
+              "hits": 74,
+              "misses": 36,
+              "falseAlarms": 13,
+              "correctNegatives": 806,
+              "detectionRate": 0.6727272727272727,
+              "falseAlarmRatio": 0.14942528735632185,
+              "criticalSuccessIndex": 0.6016260162601627,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 929,
+              "exceedanceDays": 8,
+              "hits": 2,
+              "misses": 6,
+              "falseAlarms": 3,
+              "correctNegatives": 918,
+              "detectionRate": 0.25,
+              "falseAlarmRatio": 0.6,
+              "criticalSuccessIndex": 0.18181818181818182,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "persistence": {
+          "leads": {
+            "6": {
+              "mae": 4473486.899671716,
+              "rmsle": 0.20633875900585905
+            },
+            "12": {
+              "mae": 12059324.02318002,
+              "rmsle": 0.49169417904906093
+            },
+            "24": {
+              "mae": 23431839.18262166,
+              "rmsle": 1.027526241744488
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 929,
+              "exceedanceDays": 110,
+              "hits": 69,
+              "misses": 41,
+              "falseAlarms": 10,
+              "correctNegatives": 809,
+              "detectionRate": 0.6272727272727273,
+              "falseAlarmRatio": 0.12658227848101267,
+              "criticalSuccessIndex": 0.575,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 929,
+              "exceedanceDays": 8,
+              "hits": 3,
+              "misses": 5,
+              "falseAlarms": 2,
+              "correctNegatives": 919,
+              "detectionRate": 0.375,
+              "falseAlarmRatio": 0.4,
+              "criticalSuccessIndex": 0.3,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        }
+      }
+    },
+    "GOES-19": {
+      "originCount": 2445,
+      "dates": 362,
+      "spacecraftOrigins": {
+        "GOES-19": 2445
+      },
+      "models": {
+        "currentFeatureRecipe": {
+          "leads": {
+            "6": {
+              "mae": 6183293.394739058,
+              "rmsle": 0.1028823354703397,
+              "coverage": 0.9120654396728016,
+              "meanIntervalWidth": 37039170.45429988
+            },
+            "12": {
+              "mae": 13319428.513397384,
+              "rmsle": 0.22175024960330167,
+              "coverage": 0.8997955010224948,
+              "meanIntervalWidth": 77130655.58895887
+            },
+            "24": {
+              "mae": 29093345.316542525,
+              "rmsle": 0.5181240212819588,
+              "coverage": 0.9010224948875256,
+              "meanIntervalWidth": 175846229.77617317
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 362,
+              "exceedanceDays": 89,
+              "hits": 68,
+              "misses": 21,
+              "falseAlarms": 3,
+              "correctNegatives": 270,
+              "detectionRate": 0.7640449438202247,
+              "falseAlarmRatio": 0.04225352112676056,
+              "criticalSuccessIndex": 0.7391304347826086,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 362,
+              "exceedanceDays": 9,
+              "hits": 4,
+              "misses": 5,
+              "falseAlarms": 4,
+              "correctNegatives": 349,
+              "detectionRate": 0.4444444444444444,
+              "falseAlarmRatio": 0.5,
+              "criticalSuccessIndex": 0.3076923076923077,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "observedDrivers": {
+          "leads": {
+            "6": {
+              "mae": 6141515.554807328,
+              "rmsle": 0.10249465647255988,
+              "coverage": 0.914519427402863,
+              "meanIntervalWidth": 37448598.950695336
+            },
+            "12": {
+              "mae": 13312131.516253177,
+              "rmsle": 0.22047378236519158,
+              "coverage": 0.9124744376278119,
+              "meanIntervalWidth": 79250849.79215142
+            },
+            "24": {
+              "mae": 28889927.693774477,
+              "rmsle": 0.5144039413509611,
+              "coverage": 0.9063394683026584,
+              "meanIntervalWidth": 173535353.9637489
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 362,
+              "exceedanceDays": 89,
+              "hits": 68,
+              "misses": 21,
+              "falseAlarms": 2,
+              "correctNegatives": 271,
+              "detectionRate": 0.7640449438202247,
+              "falseAlarmRatio": 0.02857142857142857,
+              "criticalSuccessIndex": 0.7472527472527473,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 362,
+              "exceedanceDays": 9,
+              "hits": 5,
+              "misses": 4,
+              "falseAlarms": 4,
+              "correctNegatives": 349,
+              "detectionRate": 0.5555555555555556,
+              "falseAlarmRatio": 0.4444444444444444,
+              "criticalSuccessIndex": 0.38461538461538464,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "observedAndRecurrence": {
+          "leads": {
+            "6": {
+              "mae": 6166484.258148279,
+              "rmsle": 0.10251529100582099,
+              "coverage": 0.9149284253578732,
+              "meanIntervalWidth": 37302072.902906045
+            },
+            "12": {
+              "mae": 13379436.438880634,
+              "rmsle": 0.22097965962064967,
+              "coverage": 0.9075664621676892,
+              "meanIntervalWidth": 77940000.40430449
+            },
+            "24": {
+              "mae": 29255600.178550787,
+              "rmsle": 0.5150930561862841,
+              "coverage": 0.901840490797546,
+              "meanIntervalWidth": 176565421.76479873
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 362,
+              "exceedanceDays": 89,
+              "hits": 69,
+              "misses": 20,
+              "falseAlarms": 5,
+              "correctNegatives": 268,
+              "detectionRate": 0.7752808988764045,
+              "falseAlarmRatio": 0.06756756756756757,
+              "criticalSuccessIndex": 0.7340425531914894,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 362,
+              "exceedanceDays": 9,
+              "hits": 5,
+              "misses": 4,
+              "falseAlarms": 4,
+              "correctNegatives": 349,
+              "detectionRate": 0.5555555555555556,
+              "falseAlarmRatio": 0.4444444444444444,
+              "criticalSuccessIndex": 0.38461538461538464,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "fullEventGuidance": {
+          "leads": {
+            "6": {
+              "mae": 6211803.42049625,
+              "rmsle": 0.10318354186819126,
+              "coverage": 0.9141104294478528,
+              "meanIntervalWidth": 37289176.04731274
+            },
+            "12": {
+              "mae": 13476780.324272295,
+              "rmsle": 0.22201689208915612,
+              "coverage": 0.90920245398773,
+              "meanIntervalWidth": 80300186.28352223
+            },
+            "24": {
+              "mae": 29064765.794709686,
+              "rmsle": 0.515883855712996,
+              "coverage": 0.8977505112474438,
+              "meanIntervalWidth": 178701322.1235605
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 362,
+              "exceedanceDays": 89,
+              "hits": 70,
+              "misses": 19,
+              "falseAlarms": 3,
+              "correctNegatives": 270,
+              "detectionRate": 0.7865168539325843,
+              "falseAlarmRatio": 0.0410958904109589,
+              "criticalSuccessIndex": 0.7608695652173914,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 362,
+              "exceedanceDays": 9,
+              "hits": 7,
+              "misses": 2,
+              "falseAlarms": 5,
+              "correctNegatives": 348,
+              "detectionRate": 0.7777777777777778,
+              "falseAlarmRatio": 0.4166666666666667,
+              "criticalSuccessIndex": 0.5,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "diurnalPersistence": {
+          "leads": {
+            "6": {
+              "mae": 6725881.732764269,
+              "rmsle": 0.10717816601364227
+            },
+            "12": {
+              "mae": 15082858.856181283,
+              "rmsle": 0.23612543765400612
+            },
+            "24": {
+              "mae": 33293847.372289076,
+              "rmsle": 0.5346697360423587
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 362,
+              "exceedanceDays": 89,
+              "hits": 70,
+              "misses": 19,
+              "falseAlarms": 10,
+              "correctNegatives": 263,
+              "detectionRate": 0.7865168539325843,
+              "falseAlarmRatio": 0.125,
+              "criticalSuccessIndex": 0.7070707070707071,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 362,
+              "exceedanceDays": 9,
+              "hits": 6,
+              "misses": 3,
+              "falseAlarms": 1,
+              "correctNegatives": 352,
+              "detectionRate": 0.6666666666666666,
+              "falseAlarmRatio": 0.14285714285714285,
+              "criticalSuccessIndex": 0.6,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "persistence": {
+          "leads": {
+            "6": {
+              "mae": 9354573.805581955,
+              "rmsle": 0.1318002490367063
+            },
+            "12": {
+              "mae": 24864874.001281656,
+              "rmsle": 0.32544815203962074
+            },
+            "24": {
+              "mae": 46686064.44851793,
+              "rmsle": 0.6627121658522683
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 362,
+              "exceedanceDays": 89,
+              "hits": 62,
+              "misses": 27,
+              "falseAlarms": 5,
+              "correctNegatives": 268,
+              "detectionRate": 0.6966292134831461,
+              "falseAlarmRatio": 0.07462686567164178,
+              "criticalSuccessIndex": 0.6595744680851063,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 362,
+              "exceedanceDays": 9,
+              "hits": 6,
+              "misses": 3,
+              "falseAlarms": 3,
+              "correctNegatives": 350,
+              "detectionRate": 0.6666666666666666,
+              "falseAlarmRatio": 0.3333333333333333,
+              "criticalSuccessIndex": 0.5,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        }
+      }
+    }
+  },
+  "conclusion": "Historical chronological out-of-sample verification of the fixed recipe; no deployed model changed.",
+  "qualification": "CurrentFeatureRecipe is retrained on each fold past, including GOES-16; it is not the deployed GOES-19-only artifact. All methods use the same eligible origins. Availability statistics exclude calibration/training months and reflect strict retrospective truth-quality gates.",
+  "eligibleOriginFraction": 0.66208063566804,
+  "eligibleOriginDenominator": 13592,
+  "predictionsSHA256": "78ba9f93060a62d6be23fb28cbd464f57c02c10747d37b269437b8970b2a0a7d",
+  "inputs": {
+    "hourlySHA256": "64af8a09297681ed037abd21a5b92d08bdf2ada200553d6d902dca9fc80fe9c0",
+    "exampleSHA256": "875631efe68ae01f66ecdabe6d211cea47bee6b4c499e8f5393bbfc30db9de29",
+    "modelCodeSHA256": "e592febbea2237d1bebab4b1956fedab4c510f480045cbe081b2765ff2958354",
+    "hindcastCodeSHA256": "18fad380efa284b4f1c95d71a20497f60e3d407ec01848d268cb139f58f7b796",
+    "sourceManifestSHA256": "45ba7b3ddf8beec7e39e28bea4e0b52f124bef96d59f06b9b04d04f9683a7b12"
+  }
+}

@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 
 VERSION = 'WXF-EF-0.2'
-THRESHOLDS = {'moderate': 1.1e8}
+THRESHOLDS = {'moderate': 1.1e8, 'high': 4.8e8}
 HORIZON = 24
 SPLITS = {'trainStart': '2020-02-01', 'trainStop': '2026-03-01',
           'calibrationStart': '2026-03-01', 'calibrationStop': '2026-06-01',

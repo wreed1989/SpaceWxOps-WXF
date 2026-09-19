@@ -25,6 +25,18 @@ HERE = Path(__file__).resolve().parent
 FORECAST_URL = 'https://services.swpc.noaa.gov/text/3-day-forecast.txt'
 
 
+def historical_summary():
+    """Compact statistics for the recipe study, not scores of today's frozen run."""
+    report = json.loads((HERE/'hindcast-evaluation.json').read_text())
+    return {'schemaVersion': report['schemaVersion'], 'start': '2022-01-01', 'endExclusive': '2026-09-01',
+        'foldCount': len(report['folds']), 'originCount': report['pooled']['originCount'],
+        'dates': report['pooled']['dates'], 'eligibleOriginFraction': report['eligibleOriginFraction'],
+        'models': report['pooled']['models'], 'pairedComparisons': report['pairedComparisons'],
+        'qualification': report['qualification'],
+        'meaning': 'Chronological out-of-sample recipe comparison. Each fold refits using only earlier training/calibration targets; these are not predictions from the currently deployed frozen artifacts.',
+        'source': 'https://github.com/wreed1989/SpaceWxOps-WXF/blob/main/research/electron_fluence/hindcast-evaluation.json'}
+
+
 def refresh(cache, output, evidence):
     now = datetime.now(timezone.utc)
     metadata = json.loads((HERE/'model-manifest.json').read_text())
@@ -70,7 +82,7 @@ def refresh(cache, output, evidence):
             candidate = predict(data,load_model(candidate_path),issue,arrivals=arrivals,impacts=impacts if complete_guidance else None)
             guidance_mode=('IPS/HSS phase + CME arrivals + recurrence + observed drivers' if complete_guidance else 'External guidance incomplete; observed-driver + recurrence fallback')
             candidate.update({'guidanceMode':guidance_mode,'modelSHA256':metadata[key],
-                'promotionStatus':'Not promoted: IPS/HSS-phase candidate evaluated on previously inspected dates; prospective event-level verification pending',
+                'promotionStatus':'Historical hindcasts support improvement over persistence, but do not establish added CME/HSS skill over measured drivers. Candidate remains separate.',
                 'role':'shadow candidate'})
             result['candidate'] = candidate
         except Exception as exc:
@@ -82,6 +94,9 @@ def refresh(cache, output, evidence):
                   'status':'withheld', 'reason':'Input retrieval/quality failure: '+str(exc)[:240],
                   'forecast':[], 'evaluation':artifact['report']}
     result.setdefault('modelSHA256', metadata['modelSHA256'])
+    result['historicalValidation'] = historical_summary()
+    if isinstance(result.get('candidate'), dict):
+        result['candidate']['historicalValidation'] = result['historicalValidation']
     # Preserve as-issued external guidance for later development/verification.
     # It is context, NOT secretly substituted for historical future observations.
     try:

@@ -5,7 +5,7 @@ on:
     paths: ['.github/workflows/chhss-integration.yml', 'chhss/**']
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 concurrency:
   group: chhss-integration
   cancel-in-progress: true
@@ -18,6 +18,18 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
+      - name: Apply checked source migration on isolated branch
+        if: hashFiles('chhss/upgrade_science.py') != ''
+        run: |
+          python chhss/upgrade_science.py
+          python -m py_compile chhss/core.py chhss/pipeline.py
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add chhss/core.py chhss/pipeline.py
+          if ! git diff --cached --quiet; then
+            git commit -m 'Apply checked HMI observer metadata and quality migration'
+            git push origin HEAD:chhss-ingestion-20260918
+          fi
       - name: Install science runtime
         run: python -m pip install 'requests>=2.32,<3' 'numpy>=2,<3' 'scipy>=1.14,<2' 'astropy>=6,<8' 'sunpy[map,net]>=6,<8' 'reproject>=0.14,<1' 'Pillow>=11,<13' 'scikit-image>=0.25,<1'
       - name: Test real observation processing
@@ -27,6 +39,7 @@ jobs:
         run: |
           mkdir -p chhss-results/source
           cp chhss/*.py chhss-results/source/
+          git rev-parse HEAD > chhss-results/source-commit.txt
           python -m pip freeze > chhss-results/environment.txt
           if [ -d .chhss-cache ]; then
             find .chhss-cache -name '*.source.json' -print0 | tar --null -T - -czf chhss-results/acquisition-manifests.tar.gz

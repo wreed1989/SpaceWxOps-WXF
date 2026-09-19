@@ -1,0 +1,38 @@
+name: CH HSS FITS diagnostics
+on:
+  push:
+    branches: [chhss-ingestion-20260918]
+    paths: ['.github/workflows/chhss-fast-probe.yml']
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install 'sunpy[map]>=6,<8' 'requests>=2.32,<3'
+      - run: |
+          mkdir probe
+          python - <<'PY'
+          import requests,time,json,traceback,io
+          from pathlib import Path
+          import sunpy.map
+          from astropy.io import fits
+          out={}
+          for w in [171,193,211]:
+            t=time.monotonic();u=f'https://jsoc1.stanford.edu/data/aia/synoptic/2024/01/01/H1200/AIA20240101_1200_{w:04d}.fits'
+            try:
+              r=requests.get(u,timeout=(10,20));r.raise_for_status();p=Path('probe')/f'aia{w}.fits';p.write_bytes(r.content);m=sunpy.map.Map(p)
+              out[str(w)]={'seconds':time.monotonic()-t,'bytes':len(r.content),'instrument':str(m.instrument),'time':str(m.date),'wavelength':str(m.wavelength),'unit':str(m.unit),'quality':str(m.meta.get('quality')),'keys':list(m.meta),'observer':str(m.observer_coordinate),'header':dict(m.meta)}
+            except Exception as e:out[str(w)]={'error':str(e),'trace':traceback.format_exc(),'seconds':time.monotonic()-t}
+          Path('probe/diagnostic.json').write_text(json.dumps(out,indent=2,default=str));print(json.dumps(out,default=str))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fits-diagnostic
+          path: probe/

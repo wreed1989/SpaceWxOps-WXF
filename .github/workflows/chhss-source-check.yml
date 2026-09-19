@@ -1,0 +1,52 @@
+name: CHHSS source check
+on:
+  push:
+    branches: [chhss-data-integration]
+    paths: ['.github/workflows/chhss-source-check.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  sources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Capture public scientific source responses
+        shell: bash
+        run: |
+          mkdir -p source-check
+          python - <<'PY'
+          import json, pathlib, urllib.request, urllib.parse, concurrent.futures, hashlib, datetime
+          root=pathlib.Path('source-check')
+          query=lambda q:'https://vo-tap.oma.be/tap/sync?'+urllib.parse.urlencode(dict(REQUEST='doQuery',LANG='ADQL',FORMAT='json',QUERY=q,MAXREC=20000))
+          urls={
+            'tap_columns':query("SELECT column_name,datatype,unit,description FROM TAP_SCHEMA.columns WHERE table_name='rob_spoca_ch.epn_core'"),
+            'tap_latest':query('SELECT TOP 3 * FROM rob_spoca_ch.epn_core ORDER BY time_min DESC'),
+            'tap_datalink':query('SELECT TOP 2 * FROM rob_spoca_ch.datalink'),
+            'aia_directory':'https://sdo.oma.be/data/aia_science_level2/',
+            'hmi_directory':'https://sdo.oma.be/data/hmi_science_level1_5/',
+            'aia_synoptic':'https://sdo.oma.be/data/aia_synoptic/',
+            'omni_2025':'https://spdf.gsfc.nasa.gov/pub/data/omni/low_res_omni/omni2_2025.dat',
+            'omni_2024':'https://spdf.gsfc.nasa.gov/pub/data/omni/low_res_omni/omni2_2024.dat',
+            'jsoc':'https://jsoc1.stanford.edu/cgi-bin/ajax/jsoc_info?op=rs_list&ds=hmi.M_720s%5B%24%5D&key=T_OBS,QUALITY&seg=magnetogram',
+            'hek':'https://www.lmsal.com/hek/her?'+urllib.parse.urlencode(dict(cmd='search',type='column',event_type='ch',event_starttime='2026-09-17T00:00:00',event_endtime='2026-09-19T00:00:00',event_coordsys='helioprojective',x1=-1200,x2=1200,y1=-1200,y2=1200,result_limit=20))
+          }
+          def get(item):
+            key,url=item
+            result={'url':url,'retrievedAt':datetime.datetime.now(datetime.timezone.utc).isoformat()}
+            try:
+              with urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':'CHHSS-Outlook-source-test/1.0'}),timeout=60) as r:
+                data=r.read(12000000);result.update(status=r.status,bytes=len(data),contentType=r.headers.get('Content-Type'),cors=r.headers.get('Access-Control-Allow-Origin'),sha256=hashlib.sha256(data).hexdigest())
+                (root/(key+'.response')).write_bytes(data)
+            except Exception as e:result['error']=str(e)
+            print(key,json.dumps(result),flush=True)
+            return key,result
+          report=dict(concurrent.futures.ThreadPoolExecutor(4).map(get,urls.items()))
+          (root/'report.json').write_text(json.dumps(report,indent=2))
+          PY
+      - name: Upload source evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: chhss-source-evidence
+          path: source-check/
+          retention-days: 7

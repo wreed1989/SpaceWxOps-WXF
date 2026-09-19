@@ -1,0 +1,67 @@
+name: CHHSS FITS check
+on:
+  push:
+    branches: [chhss-data-integration]
+    paths: ['.github/workflows/chhss-fits-check.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  fits:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install 'sunpy[map]>=7,<8' 'reproject>=0.14,<1' requests
+      - name: Inspect actual files and latest source directories
+        run: |
+          mkdir -p fits-check
+          python - <<'PY'
+          import requests,json,pathlib,re,datetime,urllib.parse,concurrent.futures
+          from astropy.io import fits
+          import numpy as np
+          root=pathlib.Path('fits-check');report={}
+          def get(url):
+            r=requests.get(url,timeout=(15,90));r.raise_for_status();return r
+          def table(q):
+            p=get('https://vo-tap.oma.be/tap/sync?'+urllib.parse.urlencode(dict(REQUEST='doQuery',LANG='ADQL',FORMAT='json',QUERY=q,MAXREC=20000))).json()
+            return [dict(zip([c['name'] for c in p['columns']],r)) for r in p['data']]
+          row=table('SELECT TOP 1 * FROM rob_spoca_ch.epn_core ORDER BY time_min DESC')[0]
+          dl=table("SELECT * FROM rob_spoca_ch.datalink WHERE granule_uid='"+row['granule_uid']+"'")[0]
+          urls={'archive-mask':row['access_url'],'archive-aia':dl['ch_stat_aia_image_url'],'archive-hmi':dl['ch_stat_hmi_image_url'],'archive-provenance':dl['provenance_url']}
+          day=datetime.datetime.now(datetime.timezone.utc).date()
+          for key,path in [('current-hmi','hmi_science_level1_5/magnetogram'),('current-aia','aia_science_level2/0193')]:
+            for d in [day,day-datetime.timedelta(days=1),day-datetime.timedelta(days=2)]:
+              url='https://sdo.oma.be/data/'+path+'/'+d.strftime('%Y/%m/%d/')
+              try:
+                html=get(url).text;(root/(key+'-listing.html')).write_text(html)
+                names=sorted(set(re.findall(r'href="([^"]+\.fits(?:\.gz)?)"',html)))
+                report[key+'-directory']={'url':url,'files':names}
+                if names:urls[key]=urllib.parse.urljoin(url,names[-1]);break
+              except Exception as e:report[key+'-directory-error']=str(e)
+          def inspect(item):
+            key,url=item
+            try:
+              body=get(url).content;name=key+('.json' if key.endswith('provenance') else '.fits');f=root/name;f.write_bytes(body)
+              if key.endswith('provenance'):return key,{'url':url,'bytes':len(body),'body':json.loads(body)}
+              with fits.open(f) as hdus:
+                info=[]
+                for h in hdus:
+                  entry={'name':h.name,'header':dict(h.header),'shape':h.data.shape if h.data is not None else None}
+                  if h.data is not None and h.data.dtype.names:entry['tableColumns']=list(h.data.dtype.names);entry['sampleRows']=[str(x) for x in h.data[:2]]
+                  elif h.data is not None:
+                    d=np.asarray(h.data);entry.update(min=float(np.nanmin(d)),max=float(np.nanmax(d)),median=float(np.nanmedian(d)),uniqueFirst100=np.unique(d)[0:100].tolist() if key.endswith('mask') else [])
+                  info.append(entry)
+                return key,{'url':url,'bytes':len(body),'hdus':info}
+            except Exception as e:return key,{'url':url,'error':str(e)}
+          report.update(dict(concurrent.futures.ThreadPoolExecutor(3).map(inspect,urls.items())))
+          (root/'report.json').write_text(json.dumps(report,indent=2,default=str));print(json.dumps({k:{x:v for x,v in r.items() if x!='hdus'} for k,r in report.items()},default=str))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chhss-fits-evidence
+          path: fits-check/
+          retention-days: 7

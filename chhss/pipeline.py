@@ -116,6 +116,24 @@ def check_map(m,label,quality=True,expected_wave=None):
     if expected_wave and abs(m.wavelength.to_value(u.angstrom)-expected_wave)>1:raise ValueError('Wrong AIA wavelength')
     if label=='HMI' and (not m.unit or not m.unit.is_equivalent(u.G)):raise ValueError('HMI must contain signed gauss')
 
+def composite_rgb(channels,valid,rho):
+    """Display-only registered RGB: 211=red, 193=green, 171=blue.
+
+    Independent log stretches preserve each wavelength's structure. Neither
+    these display values nor their colours enter segmentation or HMI analysis.
+    """
+    layers=[]
+    for wave in [211,193,171]:
+        data=np.log1p(np.maximum(channels[wave],0))
+        lo,hi=np.percentile(data[valid&np.isfinite(data)],[1,99.7])
+        layers.append(np.nan_to_num(np.clip((data-lo)/max(hi-lo,1e-9),0,1)))
+    rgb=np.stack(layers,axis=-1)
+    # Off-limb WCS projection may have no 171/211 coverage. Do not render
+    # the remaining 193 channel as an artificial green ring.
+    common=np.logical_and.reduce([np.isfinite(channels[w]) for w in [211,193,171]])
+    rgb[(rho>1.06)|~common]=0
+    return np.flipud((rgb*255).astype(np.uint8))
+
 def make_pack(acq,when=None,size=512):
     import astropy.units as u
     from astropy.coordinates import SkyCoord
@@ -189,9 +207,13 @@ def make_pack(acq,when=None,size=512):
                                 'identification':'excluded dark patch','thermalEvidence':entry,'reason':entry['reason']})
     data=np.maximum(channels[193],0);lo,hi=np.percentile(data[valid],[1,99.7]);norm=np.nan_to_num(np.clip((np.log1p(data)-np.log1p(lo))/max(1e-9,np.log1p(hi)-np.log1p(lo)),0,1));rgb=np.stack([norm**.55,norm**1.1*.8,norm**2*.28],axis=-1);rgb[rho>1.06]=0
     out=io.BytesIO();Image.fromarray(np.flipud((rgb*255).astype(np.uint8))).save(out,format='PNG')
+    composite=io.BytesIO();Image.fromarray(composite_rgb(channels,valid,rho)).save(composite,format='PNG')
     pol={'schemaVersion':'chhss-polarity-1','source':'HMI LOS FITS + matched AIA mask','units':'G','quantity':'B_R','radialApproximation':'B_LOS/mu; no vector information','registrationQuality':'wcs-reprojected','observationTime':iso(ht),'euvObservationTime':iso(et),'muMin':.4,'maskId':mask_id,'sector':sectors,'hmiQuality':hsrc['quality'],'degraded':hsrc['degraded'],'qualityFlags':hsrc['qualityFlags'],'temporalReference':prior_src,'hmiSource':hsrc,'hmiPrebin':'4x4 arithmetic mean; then WCS bilinear to 512 grid'}
     pack={'schemaVersion':'chhss-science-1','product':'Coronal Hole / HSS Outlook','measurementEngine':VERSION,'observationTime':iso(et),'availableAt':iso(datetime.now(UTC)),'generatedAt':iso(datetime.now(UTC)),'historical':when is not None,'maskId':mask_id,'source':{'instrument':'AIA193','euv':sources,'hmi':hsrc},'preview':{'url':'data:image/png;base64,'+base64.b64encode(out.getvalue()).decode(),'role':'Unannotated numerical AIA193 raster; display stretch never drives segmentation'},'measured':{'ok':True,'width':size,'height':size,'cx':cx,'cy':size-1-cy,'radius':R,'scienceRadius':.97*R,'imageProduct':'aia193','maskId':mask_id,'rasterEncoding':'runs-u8-v1','maskRuns':encode_runs(raster),'coreLabelRuns':encode_runs(cl),'geometry':{'registration':'wcs','northUp':True,'b0Deg':float(np.degrees(b0)),'limbRadiusPx':R,'scienceRadiusPx':.97*R,'cx':cx,'cy':size-1-cy,'sourceWCSHeader':target.wcs.to_header_string()},'window':win,'sector':{},'contours':contours},'holes':holes,'polarity':pol,'detector':detector,'notes':['Automatic multi-passband low-intensity candidate mask, not CHIMERA or a manually validated CH catalogue.','AIA and HMI use observed WCS, observer position and actual timestamps, including TAI conversion.','Polarity is independent per core and component; unknown is not quiet or neutral.','No trained forecast coefficients, local Bz prediction, source-to-Earth connectivity certification or Dst-to-G conversion.']}
     pack['reviewCandidates']=reviews
+    pack['preview'].update(compositeUrl='data:image/png;base64,'+base64.b64encode(composite.getvalue()).decode(),
+                           compositeChannels={'red':211,'green':193,'blue':171},
+                           compositeRole='Unannotated RGB from the same registered FITS grid; per-channel log stretch for display only')
     pack['notes'][0]='Multi-passband dark regions require cool-corona contrast before entering the mask; excluded patches remain available for review. This is not CHIMERA or a validated catalogue.'
     assert digest(decode_runs(pack['measured']['maskRuns'],(size,size)).tobytes())==mask_id
     return pack
@@ -232,6 +254,28 @@ def backfill(acq,start,end,output,max_days=None):
         for row in cases:f.write(json.dumps(row,separators=(',',':'))+'\n')
     return report
 
+def composite_reference_index(acq,observed):
+    """Resolve NASA's actual browse filenames where directory CORS is unavailable.
+
+    Only the current prior-rotation neighbourhood is indexed; no image archive
+    or guessed cadence is created. An unavailable reference cannot fail science.
+    """
+    reference=date(observed)-timedelta(days=27.2753)
+    rows=[];errors=[]
+    for offset in [-1,0,1]:
+        day=reference+timedelta(days=offset)
+        directory=f'https://sdo.gsfc.nasa.gov/assets/img/browse/{day:%Y/%m/%d}/'
+        try:
+            path,_=acq.download(directory,f'sdo-browse/{day:%Y%m%d}.html',ttl=86400)
+            names=set(re.findall(r'\d{8}_\d{6}_1024_211193171\.jpg',path.read_text()))
+            for name in names:
+                stamp=datetime.strptime(name[:15],'%Y%m%d_%H%M%S').replace(tzinfo=UTC)
+                if abs((stamp-reference).total_seconds())<=36*3600:
+                    rows.append({'url':directory+name,'observationTime':iso(stamp)})
+        except Exception as e:errors.append(str(e))
+    return {'referenceTime':iso(reference),'product':'SDO AIA 211/193/171 RGB',
+            'images':sorted(rows,key=lambda row:row['observationTime']), 'errors':errors}
+
 def live(acq,output):
     now=datetime.now(UTC)
     status={'startedAt':iso(now),'product':'Coronal Hole / HSS Outlook','methodVersion':VERSION,
@@ -262,7 +306,9 @@ def live(acq,output):
         status.update(recurrence={'ok':False,'state':'failed','error':str(e)},recurrenceError=str(e))
     dump(output/'status.json',status)
     try:
-        pack=make_pack(acq);dump(output/'current.json',pack);stamp=pack['observationTime'].replace(':','').replace('-','')
+        pack=make_pack(acq)
+        pack['preview']['referenceComposites']=composite_reference_index(acq,pack['observationTime'])
+        dump(output/'current.json',pack);stamp=pack['observationTime'].replace(':','').replace('-','')
         dump(output/'live-ledger'/f'{stamp}.json',{'observationTime':pack['observationTime'],'availableAt':pack['availableAt'],'maskId':pack['maskId'],'windows':pack['measured']['window'],'polarity':pack['polarity']['sector'],'methodVersion':VERSION,'kind':'forward-collected measurement, not an issued human forecast'})
         status.update(measurement={'ok':True,'state':'complete'},observationTime=pack['observationTime'],maskId=pack['maskId'],degraded=pack['polarity']['degraded'],qualityFlags=pack['polarity']['qualityFlags'],perCore={k:v['polarity'] for k,v in pack['polarity']['sector'].items()})
     except Exception as e:status.update(measurement={'ok':False,'state':'failed','error':str(e)},error=str(e),trace=traceback.format_exc())

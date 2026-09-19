@@ -29156,7 +29156,7 @@ window.CHHSSData = (() => {
   const DEFAULT='https://raw.githubusercontent.com/wreed1989/SpaceWxOps-WXF/main/chhss-data/feed.json';
   const KEY='spaceWx.chhss.feed.v1';
   let url=DEFAULT;try{url=localStorage.getItem(KEY)||DEFAULT;}catch{}
-  const CLIENT_VERSION='2026-09-19.1';
+  const CLIENT_VERSION='2026-09-19.2';
   let state={feed:null,recurrence:null,recurrenceError:'',loading:false,source:'none',error:'',notice:'',lastAttempt:null,lastSuccess:null},inflight=null,recurrenceFlight=null,lastTry=0,dbPromise=null;
   const q=x=>document.querySelector(x),num=x=>typeof x==='number'&&Number.isFinite(x),date=x=>Number.isFinite(Date.parse(x))?Date.parse(x):null;
   const fmt=x=>num(x)?x.toFixed(1):'—';
@@ -29767,7 +29767,7 @@ async function fetchHapiArchive(dataset, parameters, start, end, timeoutMs = 600
             ch.audit={version:window.CHHSSScience.VERSION,operational:false,mode:'SHADOW / RESEARCH GUIDANCE',sourceTimeVerified:ch.sourceTimeVerified,registeredMask:!!ch.measured?.maskId,validation:'Not demonstrated for this measurement pipeline; full held-out event validation required.'};
           } catch(e) {ch.error=e?.message||String(e);ch.ingestFailed=true;}
           finally {ch.loading=false;ch.assessment=buildChHssAssessment(ch);ch.brief=ch.assessment.headline;}
-          ch.imageCandidates=ch.rawPreviewUrl?[ch.rawPreviewUrl]:chHssImageCandidates(ch.mapMode,ch.previewUrl);ch.imageUrl=ch.imageCandidates[0]||'';
+          ch.imageCandidates=chHssImageCandidates(ch.mapMode,ch.previewUrl);ch.imageUrl=ch.imageCandidates[0]||'';
           renderChHssOutlook();refreshChHssDependentPlots();window.SpaceWxRecurrenceCompare?.paint();
           return ch;
         })();
@@ -32805,72 +32805,11 @@ async function fetchChHssPersistence() {
         };
       }
       function maybePingChHss() { /* Shadow guidance: no autonomous CH/HSS alert promotion. */ }
-            function chHssImageCandidates(mode, previewUrl) {
-        const suvi = chHssHourBust(CH_HSS_SWPC_SUVI);
-        const suvi171 = chHssHourBust(CH_HSS_SWPC_SUVI_171);
-        const today = chHssYmd(new Date());
-        const yesterday = chHssYmd(chHssUtcDay(-1));
-        const hvDate = chHssHourStamp(-3 * 3600000);
-        const hvCh = `https://api.helioviewer.org/v2/takeScreenshot/?date=${encodeURIComponent(hvDate)}&imageScale=2.4&layers=[11,1,100]&events=[CH,all,1]&eventLabels=true&x0=0&y0=0&width=900&height=900&display=true&watermark=false`;
-        const hv193 = `https://api.helioviewer.org/v2/takeScreenshot/?date=${encodeURIComponent(hvDate)}&imageScale=2.4&layers=[11,1,100]&x0=0&y0=0&width=900&height=900&display=true&watermark=false`;
-        const aia = "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_0193.jpg";
-        const chimera = [
-          `https://www.solarmonitor.org/data/${today.path}/pngs/saia/saia_ch_00193_fd_${today.compact}_0000.png`,
-          `https://www.solarmonitor.org/data/${yesterday.path}/pngs/saia/saia_ch_00193_fd_${yesterday.compact}_0000.png`
-        ];
-        const synoptic = [
-          "https://services.swpc.noaa.gov/images/synop.jpg",
-          "https://services.swpc.noaa.gov/images/synoptic-map.jpg",
-          "https://soho.nascom.nasa.gov/data/synoptic/sunspots_and_ar/synop_w.gif"
-        ];
-        const preview = previewUrl ? [previewUrl] : [];
-        const composite = [
-          chHssHourBust(CH_HSS_SDO_COMPOSITE),
-          chHssHourBust(CH_HSS_SDO_COMPOSITE_F),
-          chHssHourBust(CH_HSS_SDO_COMPOSITE_512)
-        ];
-        const swpcDisplay = [
-          CH_HSS_SWPC_SUVI,
-          CH_HSS_SWPC_SUVI_195_PNG,
-          CH_HSS_SWPC_SUVI_171,
-          suvi,
-          suvi171
-        ];
-        const uniq = (list) => {
-          const seen = new Set();
-          const out = [];
-          for (const url of list) {
-            const key = String(url || "");
-            if (!key || seen.has(key)) continue;
-            seen.add(key);
-            out.push(url);
-          }
-          return out;
-        };
-        if (mode === "synoptic") return uniq([...synoptic, ...swpcDisplay]);
-        if (mode === "composite") {
-          // Prefer baked 211/193/171, then SDO composite, then Helioviewer.
-          // Always finish with SWPC SUVI so IL5/DoD desks still get a visible disk
-          // when sdo.gsfc.nasa.gov / helioviewer.org are blocked.
-          const ch = (typeof state !== "undefined" && state.chHss) ? state.chHss : {};
-          const isComp = (u) => {
-            const s = String(u || "");
-            return s.startsWith("data:") || /211193171|composed:AIA|211.?193.?171/i.test(s);
-          };
-          const baked = [];
-          if (isComp(ch.compositeUrl)) baked.push(ch.compositeUrl);
-          if (isComp(previewUrl) && previewUrl !== ch.compositeUrl) baked.push(previewUrl);
-          const hvComp = hvAiaCompositeUrl(900);
-          // SWPC SUVI first so the disk is live without NASA/Helioviewer.
-          // SDO 211/193/171 composite upgrades the pane if it arrives.
-          const sdoLead = composite.slice(0, 1);
-          const sdoRest = composite.slice(1);
-          return uniq([...baked, ...swpcDisplay, ...sdoLead, ...sdoRest, hvComp, ...preview]);
-        }
-        // AIA / SUVI 193-195: single-channel fallback raster + baked geometry-first mask.
-        if (mode === "aia") return uniq([...preview, ...swpcDisplay, aia, hv193]);
-        // AIA 193 + CH contours: Helioviewer event outlines. Visual comparison only.
-        return uniq([hvCh, ...chimera, hv193, aia, ...swpcDisplay]);
+      function chHssImageCandidates(mode, previewUrl) {
+        const registered=ensureChHssState();
+        if(mode==='composite')return registered.compositeUrl?[registered.compositeUrl]:[chHssHourBust(CH_HSS_SDO_COMPOSITE)];
+        if(mode==='synoptic')return ['https://services.swpc.noaa.gov/images/synop.jpg','https://services.swpc.noaa.gov/images/synoptic-map.jpg'];
+        return registered.rawPreviewUrl?[registered.rawPreviewUrl]:['https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_0193.jpg'];
       }
 
       function chHssHostLabel(url) {
@@ -32937,7 +32876,7 @@ async function fetchChHssPersistence() {
           if (failEl) {
             failEl.innerHTML = `<strong>Solar disk imagery did not load</strong>
               <span>Tried ${escapeHtml(tried.join(" · ") || "no hosts")}.</span>
-              <span>SDO and Helioviewer are often blocked on DoD networks. SWPC SUVI is the live fallback (same host as the original wall). Check feed health if this pane stays empty.</span>`;
+              <span>SDO and Helioviewer are often blocked on DoD networks. The selected product remains unavailable if its source cannot load. Check feed health or select another image product.</span>`;
           }
           if (statusEl) statusEl.style.display = "none";
         };
@@ -34100,15 +34039,21 @@ async function fetchChHssPersistence() {
       }
 
       
+      function measuredOutlineSvg(ch,imageUrl) {
+        if(!ch.registeredPack||!ch.measured?.ok||![ch.rawPreviewUrl,ch.compositeUrl].includes(imageUrl))return '';
+        const paths=(ch.measured.contours||[]).filter(c=>Array.isArray(c.points)&&c.points.length>=3).map(c=>'<path d="'+c.points.filter(q=>q.every(Number.isFinite)).map((q,i)=>(i?'L':'M')+q[0].toFixed(3)+','+q[1].toFixed(3)).join('')+'Z"/>').join('');
+        return '<svg class="ch-hss-geometry" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-label="Measured coronal-hole boundaries">'+paths+'</svg>';
+      }
       function chHssMapCaption(ch) {
         const mode = ch.mapMode || "ch";
         if (mode === "synoptic") {
           return "SWPC synoptic map — reference imagery only; no disk geometry measurement.";
         }
         if (mode === "ch") {
-          return "AIA 193 + CH contours — visual comparison only. Not used in Outlook area unless the source badge says catalog.";
+          return "AIA 193 measurement raster with the actual CH mask boundaries in cyan. No approximate ellipses are substituted.";
         }
         if (mode === "composite") {
+          if(ch.registeredPack?.preview?.compositeUrl)return 'Registered AIA RGB · red 211 Å / green 193 Å / blue 171 Å. Cyan outlines are measured CH boundaries on this exact grid. Each channel has a display-only log stretch.';
           if (ch.source === "AIA 211/193/171 MT") {
             return ch.sourceDetail || "SDO AIA 211/193/171 composite — multi-thermal CH candidate mask used for Outlook. Experimental image-derived; not CHIMERA/catalog. Not classified from RGB blue.";
           }
@@ -34333,6 +34278,7 @@ async function fetchChHssPersistence() {
           cadenceInline.textContent = `Outlook cadence: 1 hour (last ${last}). Solar imagery: 15 min.`;
         }
         const select = document.getElementById("chHssMapSource");
+        if(ch.mapMode==="aia")ch.mapMode="ch";
         if (select && select.value !== ch.mapMode) select.value = ch.mapMode;
         if (!root) { renderShiftChHssCall(); return; }
         const slices = ch.slices || {};
@@ -34371,6 +34317,7 @@ async function fetchChHssPersistence() {
               <div class="ch-hss-map-stack">
                 <div class="ch-hss-map-fit">
                   ${imgSrc ? `<img id="chHssMapImage" alt="Earth-facing solar disk for coronal-hole identification" referrerpolicy="no-referrer" data-idx="0" src="${escapeHtml(imgSrc)}">` : `<div class="ch-hss-empty">No CH map loaded</div>`}
+                  ${measuredOutlineSvg(ch,imgSrc)}
                   ${showStrips ? `<div class="ch-hss-slices" ${chHssDiskCss(ch.measured)} aria-hidden="true"><span class="ch-hss-disk-limb"></span>${sectorSpans}${coreSpans}</div>` : ""}
                 </div>
               </div>
@@ -34444,9 +34391,9 @@ async function fetchChHssPersistence() {
               <button type="button" data-ch-outlook="refresh">Refresh outlook now</button>
             </div>
             <details class="ch-hss-fold ch-hss-lab-ingest">
-              <summary>Optional lab ingest — live AIA/SUVI/catalogs are used automatically</summary>
+              <summary>Optional lab ingest — import a registered measurement package</summary>
               <div class="ch-hss-aia-import">
-                <p class="ch-hss-lab-note">The original wall ingests live SDO AIA, SWPC SUVI, HEK/CHIMERA, and OMNI on its own. This page does the same. Use these controls only for a co-timed lab case, not for routine ops.</p>
+                <p class="ch-hss-lab-note">The processing worker ingests AIA/HMI FITS and OMNI; this page reads its published, dated results. Use these controls only for a co-timed lab case, not for routine ops.</p>
                 <button type="button" data-ch-aia-import="pick">Lab: load AIA 171/193/211 files</button>
                 <input type="file" accept="image/jpeg,image/png,image/jp2,.jpg,.jpeg,.png,.jp2,.json,application/json" data-ch-aia-files multiple hidden>
                 <button type="button" data-ch-hmi-import="pick">Lab: load HMI signed JSON</button>
@@ -34874,7 +34821,7 @@ async function fetchChHssPersistence() {
     if(!holes.length)for(const k of ['E','M','W']){
       const w=m.window[k];if(w.ch>0)holes.push({id:'CORE-'+k,lat:w.centroidLat??0,lon:w.centroidCmd??({E:-30,M:0,W:30}[k]),width:20,areaDisk:w.ch/(Math.PI*m.radius*m.radius),source:p.source.instrument,time:p.observationTime,quantitative:true,isAggregate:true});
     }
-    return {holes,reviewCandidates:p.reviewCandidates||[],source:'Registered '+p.source.instrument,detail:p.measurementEngine+' · signed FITS/WCS measurement package · research calibration pending',time:p.observationTime,sourceTimeVerified:true,previewUrl:p.preview.url,rawPreviewUrl:p.preview.url,compositeUrl:p.preview.url,measured:m,hmiPolarity:p.hmiPolarity,aiaEligibility:registeredAiaEligibility(p),measurementEngine:p.measurementEngine,registeredPack:p,error:''};
+    return {holes,reviewCandidates:p.reviewCandidates||[],source:'Registered '+p.source.instrument,detail:p.measurementEngine+' · signed FITS/WCS measurement package · research calibration pending',time:p.observationTime,sourceTimeVerified:true,previewUrl:p.preview.url,rawPreviewUrl:p.preview.url,compositeUrl:p.preview.compositeUrl||'',measured:m,hmiPolarity:p.hmiPolarity,aiaEligibility:registeredAiaEligibility(p),measurementEngine:p.measurementEngine,registeredPack:p,error:''};
   }
   async function loadRegisteredSciencePack(force=false) {
     const ch=ensureChHssState();
@@ -35083,6 +35030,7 @@ window.SpaceWxRecurrenceCompare = (function () {
     d.setUTCMinutes(0, 0, 0);
     return d;
   }
+  function browseStamp(url){const m=url.match(/(\d{4})(\d\d)(\d\d)_(\d\d)(\d\d)(\d\d)_/);return m?Date.parse(`${m[1]}-${m[2]}-${m[3]}T${m[4]}:${m[5]}:${m[6]}Z`):NaN;}
   function sdoBrowse(time, code) {
     const y = time.getUTCFullYear(), m = pad(time.getUTCMonth() + 1), d = pad(time.getUTCDate());
     const h = pad(time.getUTCHours());
@@ -35134,24 +35082,35 @@ window.SpaceWxRecurrenceCompare = (function () {
       try {await loadImageInto(loaded,url,timeoutMs);}catch(e){loaded=new Image();await loadImageInto(loaded,url,Math.min(4000,timeoutMs));}
       if(token!==rc.token||!root.isConnected)return false;
       img.src=url;img.alt=host;rc.paneHost[pane]=host;rc.paneGeom[pane]=geom;
-      applyFrame(root,pane,loaded,geom,meta);setPaneChrome(root,pane,'is-loaded',host);return true;
+      applyFrame(root,pane,loaded,geom,meta);setPaneChrome(root,pane,'is-loaded',host);paintOverlays(root);return true;
     }catch(e){return false;}
   }
   async function fillPair(root,now,ref,prefs,token) {
     let spec=PRODUCTS[prefs.product]||PRODUCTS.aia193;const ch=chState();
     const measurement=prefs.product==='measurement';
-    if(measurement)spec=PRODUCTS[ch?.measured?.imageProduct||'aia193']||PRODUCTS.aia193;
+    if(measurement)spec=ch?.compositeUrl?PRODUCTS.composite:PRODUCTS.aia193;
     rc.frameMeta={current:{},reference:{}};rc.frames={current:null,reference:null};
     await Promise.all(['reference','current'].map(async pane=>{
       const requested=pane==='current'?now:ref;
       const oldImg=$(`.fd-rc-disk[data-pane="${pane}"] img`,root);if(oldImg)oldImg.removeAttribute('src');
       setPaneChrome(root,pane,'is-loading','LOADING');
       const label=$(`.fd-rc-time[data-pane="${pane}"]`,root);if(label)label.textContent=zulu(requested)+' · requested';
-      if(measurement&&pane==='current'){
-        const m=ch?.measured,raw=ch?.rawPreviewUrl||m?.rawPreviewUrl;
-        if(raw&&m?.ok){const meta={date:ch.sourceTimeVerified?ch.sourceTime:null,requested,measurement:{width:m.width,height:m.height,cx:m.cx,cy:m.cy,radius:m.radius,b0Deg:m.geometry?.b0Deg||0},product:ch?.measured?.imageProduct||'aia193'};
-          if(await tryUrl(root,pane,raw,'MEASUREMENT RASTER · '+ch.source,'measurement',token,6000,meta))return;}
+      if((measurement||prefs.product==='composite'||prefs.product==='aia193')&&pane==='current'){
+        const m=ch?.measured,raw=prefs.product==='composite'?ch?.compositeUrl:(measurement&&ch?.compositeUrl)?ch.compositeUrl:ch?.rawPreviewUrl||m?.rawPreviewUrl;
+        if(raw&&m?.ok){const meta={date:ch.sourceTimeVerified?ch.sourceTime:null,requested,measurement:{width:m.width,height:m.height,cx:m.cx,cy:m.cy,radius:m.radius,b0Deg:m.geometry?.b0Deg||0},product:raw===ch.compositeUrl?'composite':'aia193'};
+          if(await tryUrl(root,pane,raw,raw===ch.compositeUrl?'REGISTERED RGB · 211 / 193 / 171':'MEASUREMENT RASTER · AIA 193','measurement',token,6000,meta))return;}
         if(token===rc.token)setPaneChrome(root,pane,'is-failed','NO MEASUREMENT RASTER','<strong>No unannotated measurement raster yet.</strong><br>Refresh CH/HSS ingest or import a registered measurement pack.');return;
+      }
+      if(spec===PRODUCTS.composite){
+        if(pane==='current'&&await tryUrl(root,pane,hourBust(spec.sdoLatest),'SDO RGB composite · time unverified','sdo1024',token,7000,{requested,product:'composite'}))return;
+        if(pane==='reference'){
+          let urls=(ch?.registeredPack?.preview?.referenceComposites?.images||[]).filter(row=>Math.abs(Date.parse(row.observationTime)-ref)<2*3600000).sort((a,b)=>Math.abs(Date.parse(a.observationTime)-ref)-Math.abs(Date.parse(b.observationTime)-ref)).slice(0,3).map(row=>row.url);
+          const directory=`https://sdo.gsfc.nasa.gov/assets/img/browse/${ymd(ref).replaceAll('-','/')}/`;
+          if(!urls.length)try{const response=await fetch(directory,{signal:AbortSignal.timeout(6000)});if(response.ok){const listing=await response.text();urls=[...new Set(listing.match(/\d{8}_\d{6}_1024_211193171\.jpg/g)||[])].map(n=>directory+n).sort((a,b)=>Math.abs(browseStamp(a)-ref)-Math.abs(browseStamp(b)-ref)).filter(u=>Math.abs(browseStamp(u)-ref)<2*3600000).slice(0,3);}}catch{}
+          if(!urls.length)urls=sdoBrowse(ref,spec.sdoCode).slice(0,4);
+          for(const url of urls)if(await tryUrl(root,pane,url,'SDO RGB composite · 211 / 193 / 171','sdo1024',token,5000,{date:new Date(browseStamp(url)).toISOString(),requested,product:'composite'}))return;
+        }
+        if(token===rc.token)setPaneChrome(root,pane,'is-failed','RGB COMPOSITE UNAVAILABLE','<strong>No genuine RGB image available for this epoch.</strong><br>Select AIA 193 for the Helioviewer comparison. A single channel is never substituted for RGB.');return;
       }
       if(spec.kind==='suvi'){
         if(pane==='reference'){if(token===rc.token)setPaneChrome(root,pane,'is-failed','SUVI ARCHIVE NOT CONFIGURED','<strong>No matched SUVI archive adapter.</strong><br>AIA is not silently substituted for SUVI. Select AIA 193 for a same-instrument recurrence pair.');return;}
@@ -35325,7 +35284,12 @@ window.SpaceWxRecurrenceCompare = (function () {
     return ring;
   }
   function holeFootprint(h, pane, cls) {
-    const ring = (h.ring && h.ring.length >= 6) ? h.ring : holeEllipseRing(h);
+    if(h.reviewOnly)return '';
+    if(contourAllowed(pane)&&h.rasterContours?.length){
+      const tr=window.CHHSSScience.diskTransform(chState().measured);
+      return h.rasterContours.filter(points=>points?.length>=3).map(points=>'<path class="rc-ch-outline '+(cls||'')+'" d="'+points.filter(q=>q.every(Number.isFinite)).map((q,i)=>(i?'L':'M')+(tr.left+q[0]*tr.width/100).toFixed(3)+','+(tr.top+q[1]*tr.height/100).toFixed(3)).join('')+'Z"/>').join('');
+    }
+    const ring = (h.ring && h.ring.length >= 6) ? h.ring : null;
     const d = ringToPath(ring, pane);
     if (!d) return "";
     const klass = ["rc-ch-outline", cls || ""].filter(Boolean).join(" ");
@@ -35366,14 +35330,14 @@ window.SpaceWxRecurrenceCompare = (function () {
     return holes;
   }
   function engineHoles() {
-    const ch=chState();return (ch?.holes||[]).filter(h=>Number.isFinite(h.lon)&&Number.isFinite(h.lat)).map((h,i)=>({...normalizeHole({id:h.id,label:h.id,lat:h.lat,lon:h.lon,width:h.width,latSpan:h.latSpan,areaPct:Number.isFinite(h.areaDisk)?h.areaDisk*100:null,polarity:measuredHoleSign(h,ch),source:h.source||ch.source,identification:h.identification,thermalEvidence:h.thermalEvidence,ring:contourAllowed('current')?h.ring:null},i),isAggregate:h.isAggregate===true||/^(SUVI195|AIA-MT|AIA193|CORE)-[EMW]$/.test(h.id||'')}));
+    const ch=chState();return (ch?.holes||[]).filter(h=>Number.isFinite(h.lon)&&Number.isFinite(h.lat)).map((h,i)=>({...normalizeHole({id:h.id,label:h.id,lat:h.lat,lon:h.lon,width:h.width,latSpan:h.latSpan,areaPct:Number.isFinite(h.areaDisk)?h.areaDisk*100:null,polarity:measuredHoleSign(h,ch),source:h.source||ch.source,rasterContours:(ch.measured?.contours||[]).filter(c=>c.id===h.id).map(c=>c.points),identification:h.identification,thermalEvidence:h.thermalEvidence,ring:contourAllowed('current')?h.ring:null},i),isAggregate:h.isAggregate===true||/^(SUVI195|AIA-MT|AIA193|CORE)-[EMW]$/.test(h.id||'')}));
   }
   function normalizeHole(h, i) {
     const lon = +h.lon, lat = +h.lat;
     const id = String(h.id || h.label || ("CH-" + pad(i + 1)));
     const label = String(h.label || prettyLabel(id, h.source)).slice(0, 18);
     return {
-      id, label, lat, lon, identification:h.identification||"Candidate; classification unverified", reviewOnly:h.reviewOnly===true, thermalEvidence:h.thermalEvidence||null,
+      id, label, lat, lon, rasterContours:h.rasterContours||[], identification:h.identification||"Candidate; classification unverified", reviewOnly:h.reviewOnly===true, thermalEvidence:h.thermalEvidence||null,
       width: window.CHHSSScience.num(h.width),
       latSpan: window.CHHSSScience.num(h.latSpan),
       areaPct: window.CHHSSScience.num(h.areaPct),
@@ -35513,7 +35477,7 @@ window.SpaceWxRecurrenceCompare = (function () {
           const cls = h.uid === selectedId ? "is-selected" : (h.uid === pairId ? "is-analog" : "");
           return holeFootprint(h, pane, cls);
         }).join("") : "";
-        const extra = contourAllowed(pane) ? unusedContourMarkup(pane, holes, prefs.overlays) : '';
+        const extra = ''; // Each measured component is already rendered from its raster contour.
         svg.innerHTML = gridSvg(pane, prefs.overlays) + footprints + extra + (prefs.overlays.cursor ? cursorSvg(pane) : "");
       }
       paintMarkers(root, pane, holes, prefs.overlays);
@@ -35559,7 +35523,7 @@ window.SpaceWxRecurrenceCompare = (function () {
     return holesFor(pane).find((h) => h.uid === uid) || null;
   }
   function selectHole(pane, hole) {
-    if (!hole) { rc.selected = null; return; }
+    if (!hole || (rc.selected?.pane===pane && rc.selected?.uid===hole.uid)) { rc.selected = null; rc.cursor=null; return; }
     const other = pane === "current" ? rc.refHoles : holesFor("current");
     rc.selected = { ...hole, pane, kind: "hole", match: analogMatch(hole, other) };
   }
@@ -35689,7 +35653,7 @@ window.SpaceWxRecurrenceCompare = (function () {
   function shellHtml() {
     return `<div class="fd-rc-head"><div><span class="fd-eyebrow">RECURRENCE COMPARE · ANALYST WORKSPACE</span><h3>Prior Carrington rotation (left) vs current disk (right)</h3><p>Matched products are requested for both epochs. Both images share one center and limb radius; this is disk normalization, not automatic coronal-hole tracking. Default offset is the synodic Carrington period <b>27.2753 d</b>. Numbered hole markers work like flare AR labels: click a marker or a card to inspect polarity and outlook / recurrence wind — never from an AIA pixel.</p></div><div class="fd-rc-badges"><span class="fd-rc-badge warn" id="fdRcContinuity">Recurrence analog — analyst comparison; feature continuity not confirmed</span><span class="fd-rc-badge live" id="fdRcOffsetBadge">Δ 27.2753 d</span></div></div>
       <div class="wx-ch-summary" data-ch-identification-summary></div><div class="fd-rc-controls">
-        <label class="fd-rc-field"><span>Image product (both panes)</span><select id="fdRcProduct" aria-label="Recurrence image product"><option value="measurement">Current measurement raster / matching reference</option><option value="aia193">AIA 193 (CH standard)</option><option value="composite">AIA 211/193/171 composite</option><option value="aia211">AIA 211</option><option value="suvi195">SWPC SUVI 195 (current only)</option><option value="hmi">HMI LOS magnetogram</option></select></label>
+        <label class="fd-rc-field"><span>Image product (both panes)</span><select id="fdRcProduct" aria-label="Recurrence image product"><option value="measurement">Current measurement raster / matching reference</option><option value="aia193">AIA 193 (CH standard)</option><option value="composite">AIA 211/193/171 composite</option><option value="aia211">AIA 211</option><option value="hmi">HMI LOS magnetogram</option></select></label>
         <label class="fd-rc-field"><span>Reference mode</span><select id="fdRcRefMode" aria-label="Recurrence reference mode"><option value="carrington">Prior Carrington (27.2753 d)</option><option value="calendar">27 calendar days</option><option value="custom">Custom offset</option></select></label>
         <label class="fd-rc-field fd-rc-custom"><span>Custom days</span><input id="fdRcCustomDays" type="number" min="20" max="35" step="0.0001" value="27.2753" aria-label="Custom recurrence offset in days"></label>
         <label class="fd-rc-field fd-rc-align"><span>Fine alignment</span><input id="fdRcAlign" type="range" min="-12" max="12" step="1" value="0" aria-label="Fine alignment plus or minus 12 hours"><em id="fdRcAlignReadout">±0 h</em></label>
@@ -35849,6 +35813,7 @@ window.SpaceWxRecurrenceCompare = (function () {
     const root = document.getElementById("fdRecurrenceCompare");
     if (!root) return;
     const prefs = loadPrefs();
+    if(prefs.product==="suvi195"){prefs.product="measurement";savePrefs(prefs);}
     root.innerHTML = shellHtml();
     structuralAlignment(root);
     applyChrome(root, prefs);
@@ -35929,6 +35894,8 @@ window.SpaceWxRecurrenceCompare = (function () {
 
 <!-- SOLAR_CYCLE_BOOTSTRAP_SLOT -->
 <style id="solarContextStyles">
+.wx-context.wx-cycle{background:radial-gradient(ellipse at 85% 0,rgba(40,98,133,.16),transparent 45%),#091722!important;padding:24px!important}.wx-context.wx-cycle .wx-eyebrow{font-size:10px;font-weight:700;letter-spacing:.16em;color:#78a9bc;text-transform:uppercase}.wx-context.wx-cycle h2{font-size:27px;letter-spacing:-.04em;margin:7px 0}.wx-context.wx-cycle .wx-cycle-intro{margin:0 0 20px;font-size:12px;color:#a1b8c7}.wx-context.wx-cycle .wx-facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;border:0;padding:0}.wx-context.wx-cycle .wx-facts>div{background:linear-gradient(145deg,#112a3a,#0a1c29);padding:14px;border:1px solid #284353;border-radius:9px}.wx-context.wx-cycle .wx-facts strong{font-size:23px;font-variant-numeric:tabular-nums;margin-top:6px;letter-spacing:-.025em}.wx-context.wx-cycle .wx-facts>div:last-child strong{font-size:15px;line-height:1.4}.wx-context.wx-cycle .wx-facts>div:nth-child(2) strong{color:#71dfed}.wx-context.wx-cycle .wx-facts>div:nth-child(3) strong{color:#ffc786}.wx-context.wx-cycle .wx-facts span{font-size:10px;text-transform:uppercase;letter-spacing:.06em}.wx-context.wx-cycle .wx-actions{margin:20px 0 12px}.wx-context.wx-cycle .wx-actions button{border-radius:20px;padding:7px 14px;font-size:11px}.wx-context.wx-cycle [data-cycle-refresh]{margin-left:auto;background:transparent}.wx-context.wx-cycle .wx-chart-panel{background:#0b1d2a;border:1px solid #2a4558;border-radius:12px;padding:15px 12px 4px}.wx-context.wx-cycle .wx-plot-key{display:flex;flex-wrap:wrap;gap:17px;color:#a8becb;font-size:10px;padding:2px 12px 10px}.wx-context.wx-cycle .wx-plot-key span{display:flex;gap:6px;align-items:center}.wx-context.wx-cycle .wx-plot-key i{display:inline-block;width:20px;height:0;border-top:2px solid #88a9b9}.wx-context.wx-cycle .wx-plot-key .monthly{opacity:.45;border-top-width:1px}.wx-context.wx-cycle .wx-plot-key .smooth{border-color:#e1f0f5;border-top-width:3px}.wx-context.wx-cycle .wx-plot-key .prediction{border-top-style:dashed}.wx-context.wx-cycle .wx-plot-key .range{height:8px;background:#8eaabd33;border:1px solid #8eaabd77;border-radius:2px}.wx-context.wx-cycle .wx-cycle-plot{height:620px}.wx-context.wx-cycle details{border-top:1px solid #243e4f;padding-top:12px;margin-top:14px;font-size:11px;color:#a1b8c7}.wx-context.wx-cycle summary{cursor:pointer;color:#96b4c4}.wx-context.wx-cycle .wx-status{font-size:11px}.wx-context.wx-cycle .wx-method-note{font-size:11px;color:#8da7b8;margin:12px 0 0}.ch-hss-geometry{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}.ch-hss-geometry path{fill:#39d6ee1a;stroke:#76efff;stroke-width:.35;stroke-linejoin:round}.fd-wall-close{width:24px;height:24px;flex:0 0 24px;border:1px solid #395061;border-radius:4px;background:#112432;color:#c8dce6;font-size:18px;cursor:pointer;line-height:20px}.fd-wall-close:hover{background:#642f3b;border-color:#e8838e;color:#fff}.fd-swpc-workspace{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-content:start}.fd-swpc-workspace #fdChronSlot{min-height:500px}.fd-swpc-workspace .fd-coordinate-panel:first-child{border-color:#497a96}.fd-swpc-workspace .fd-coordinate-panel:first-child .fd-panel-heading h2{font-size:17px}.fd-swpc-workspace .fd-product-frame{min-height:0}.fd-swpc-workspace #fdGuideSlot{max-height:650px;overflow:auto}@media(max-width:900px){.wx-context.wx-cycle .wx-facts{grid-template-columns:repeat(2,minmax(0,1fr))}.wx-context.wx-cycle{padding:16px!important}.wx-context.wx-cycle .wx-cycle-plot{height:570px}}
+
 #fdCmeProducts{display:block;align-self:start}
 .fd-model-layout:has(#fdCmeProducts){grid-template-columns:minmax(0,1fr);align-content:start}.fd-model-layout:has(#fdCmeProducts) .fd-model-list-body{display:flex;flex-wrap:wrap}.fd-model-layout:has(#fdCmeProducts) .fd-model-lane{flex:1;min-width:130px}.fd-model-layout:has(#fdCmeProducts) .fd-model-lane small{display:none}
 .wx-context{padding:20px;color:#d5e7f0;background:#091722;min-width:0}.wx-context h2{margin:0 0 6px;font-size:20px}.wx-context p{color:#a9bfcd;line-height:1.6}.wx-context a{color:#6cd2ed}.wx-context .wx-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:14px 0}.wx-context button{background:#142a3a;color:#d5e7f0;border:1px solid #385064;padding:7px 12px;border-radius:5px;cursor:pointer}.wx-context button[aria-pressed=true]{border-color:#66d2ed;background:#164156}.wx-context button:disabled{opacity:.5;cursor:default}.wx-context .wx-facts{display:flex;gap:24px;flex-wrap:wrap;padding:14px 0;border-block:1px solid #263d4d}.wx-context .wx-facts strong{display:block;font-size:19px;color:#fff}.wx-context .wx-facts span{font-size:12px;color:#94adbd}.wx-context .wx-status{font-size:12px;overflow-wrap:anywhere}.wx-context .wx-cycle-plot{height:580px;min-height:360px}.wx-cme-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.wx-cme-card{background:#0d202f;border:1px solid #294153;border-radius:8px;padding:16px;min-width:0}.wx-cme-card h3{margin:0 0 6px}.wx-cme-card img{width:100%;height:auto;display:block;background:#050b12;min-height:160px;object-fit:contain}.wx-cme-card input[type=range]{width:100%}.wx-cme-card .wx-planned{display:inline-block;color:#e6c987;font-size:11px;border:1px solid #726446;border-radius:4px;padding:3px 7px;margin-bottom:10px}.wx-cme-card:last-child{grid-column:1/-1}.fd-rc-hole-marker.review{border-style:dashed;opacity:.75}.wx-ch-summary{padding:9px 14px;color:#b9d2df;font-size:12px;border-bottom:1px solid #2b4253}.wx-context [hidden]{display:none!important}@media(max-width:1000px){.wx-cme-grid{grid-template-columns:1fr}.wx-context{padding:12px}}
@@ -35959,9 +35926,9 @@ window.SpaceWxRecurrenceCompare = (function () {
     const result=[];
     for(const [i,key,label,color] of [[0,'ssn','Sunspot number','#69d9f0'],[1,'f10.7','F10.7','#f2bb68']]){
       const axes={xaxis:i?'x2':'x',yaxis:i?'y2':'y'},x=observed.map(r=>r.date+'-01'),xp=predicted.map(r=>r.date+'-01');
-      const base={type:'scatter',mode:'lines',connectgaps:false,...axes};
-      result.push({...base,x,y:observed.map(r=>r[key]),name:label+' monthly',line:{color,width:1},opacity:.5});
-      result.push({...base,x,y:observed.map(r=>r['smoothed_'+key]),name:label+' 13-month smooth',line:{color,width:2.5}});
+      const base={type:'scatter',mode:'lines',connectgaps:false,hovertemplate:'%{x|%b %Y}<br>%{y:.1f}<extra>%{fullData.name}</extra>',...axes};
+      result.push({...base,x,y:observed.map(r=>r[key]),name:label+' monthly',line:{color,width:1.2},opacity:.4});
+      result.push({...base,x,y:observed.map(r=>r['smoothed_'+key]),name:label+' 13-month smooth',line:{color,width:3}});
       result.push({...base,x:xp,y:predicted.map(r=>r['low_'+key]),showlegend:false,hoverinfo:'skip',line:{width:0}});
       result.push({...base,x:xp,y:predicted.map(r=>r['high_'+key]),name:label+' NOAA range',fill:'tonexty',fillcolor:i?'rgba(242,187,104,.14)':'rgba(105,217,240,.14)',line:{width:0},hovertemplate:'%{x|%Y-%m}: %{y}<extra>NOAA published range</extra>'});
       result.push({...base,x:xp,y:predicted.map(r=>r['predicted_'+key]),name:label+' predicted smooth',line:{color,width:2,dash:'dash'}});
@@ -35992,8 +35959,8 @@ window.SpaceWxRecurrenceCompare = (function () {
     try{return await loading;}finally{loading=null;}
   }
   function mount(frame){
-    const root=document.createElement('div');root.className='wx-context';
-    root.innerHTML=`<h2>Solar Cycle</h2><p>Monthly sunspot number and 10.7 cm radio flux · NOAA SWPC observed and predicted indices</p><div class="wx-facts" data-cycle-facts></div><div class="wx-actions"><button data-cycle-range="2019-12" aria-pressed="true">Cycle 25</button><button data-cycle-range="2008-12" aria-pressed="false">Cycles 24–25</button><button data-cycle-range="1749-01" aria-pressed="false">Full record</button><button data-cycle-refresh>Refresh feeds</button></div><div class="wx-cycle-plot" data-cycle-plot></div><p class="wx-status" data-cycle-status role="status"></p><p class="wx-status">Solid curves: observations and centered 13-month smoothing, which lags the latest monthly value by six months. Dashed curves: NOAA predicted smoothed indices; shading: NOAA low/high published range. Missing values remain gaps. Historical F10.7 coverage begins later than sunspot counts.</p><p class="wx-status">Cycle phase is background context for activity rates and recurrent solar wind. It does not change individual flare, CME-arrival or HSS forecasts in this dashboard.</p><p class="wx-status"><a href="${URLS.observed}" target="_blank" rel="noopener">Observed feed</a> · <a href="${URLS.predicted}" target="_blank" rel="noopener">Predicted feed</a> · <a href="https://www.swpc.noaa.gov/products/solar-cycle-progression" target="_blank" rel="noopener">NOAA cycle progression</a></p>`;
+    const root=document.createElement('div');root.className='wx-context wx-cycle';
+    root.innerHTML=`<div class="wx-eyebrow">Solar activity · long-term context</div><h2>Solar Cycle</h2><p class="wx-cycle-intro">A view of the Sun’s activity, from monthly observations to NOAA’s outlook.</p><div class="wx-facts" data-cycle-facts></div><div class="wx-actions"><button data-cycle-range="2019-12" aria-pressed="true">Cycle 25</button><button data-cycle-range="2008-12" aria-pressed="false">Cycles 24–25</button><button data-cycle-range="1749-01" aria-pressed="false">Full record</button><button data-cycle-refresh>Refresh feeds</button></div><div class="wx-chart-panel"><div class="wx-plot-key"><span><i class="monthly"></i>Monthly</span><span><i class="smooth"></i>13-month smooth</span><span><i class="prediction"></i>Predicted smooth</span><span><i class="range"></i>NOAA published range</span></div><div class="wx-cycle-plot" data-cycle-plot></div></div><p class="wx-status" data-cycle-status role="status"></p><details><summary>How to read this chart · sources &amp; timing</summary><p class="wx-status">Solid curves: observations and centered 13-month smoothing, which lags the latest monthly value by six months. Dashed curves: NOAA predicted smoothed indices; shading: NOAA low/high published range. Missing values remain gaps. Historical F10.7 coverage begins later than sunspot counts.</p><p class="wx-status">Cycle phase is background context for activity rates and recurrent solar wind. It does not change individual flare, CME-arrival or HSS forecasts in this dashboard.</p><p class="wx-status"><a href="${URLS.observed}" target="_blank" rel="noopener">Observed feed</a> · <a href="${URLS.predicted}" target="_blank" rel="noopener">Predicted feed</a> · <a href="https://www.swpc.noaa.gov/products/solar-cycle-progression" target="_blank" rel="noopener">NOAA cycle progression</a></p></details>`;
     frame.appendChild(root);let start='2019-12',errors=[];
     function paint(){
       const obs=data.observed?parse(data.observed,'observed'):[],pred=data.predicted?parse(data.predicted,'predicted'):[];
@@ -36002,8 +35969,17 @@ window.SpaceWxRecurrenceCompare = (function () {
       const stamp=k=>data[k+'At']?data[k+'At'].replace('T',' ').slice(0,19)+' UTC':'unavailable';
       root.querySelector('[data-cycle-status]').textContent=`${trend.detail} Observed retrieved: ${stamp('observed')}; predicted retrieved: ${stamp('predicted')}. ${errors.length?'Refresh incomplete; retained dated values where available. '+errors.join(' · '):''}`;
       if(!window.Plotly)return;
-      const end=pred.at(-1)?.date||latest?.date||new Date().toISOString().slice(0,7),gridcolor='#294153';
-      window.Plotly.react(root.querySelector('[data-cycle-plot]'),traces(obs.filter(r=>r.date>=start),pred.filter(r=>r.date>=start)),{paper_bgcolor:'#091722',plot_bgcolor:'#091722',font:{color:'#baceda',size:11},margin:{l:58,r:18,t:15,b:86},legend:{orientation:'h',traceorder:'normal',y:-.18,font:{size:10}},hovermode:'x unified',xaxis:{domain:[0,1],anchor:'y',range:[start+'-01',end+'-28'],gridcolor,showticklabels:false},yaxis:{domain:[.56,1],title:'Sunspot number',rangemode:'tozero',gridcolor},xaxis2:{domain:[0,1],anchor:'y2',matches:'x',range:[start+'-01',end+'-28'],gridcolor},yaxis2:{domain:[0,.43],title:'F10.7 (sfu)',rangemode:'tozero',gridcolor}},{responsive:true,displaylogo:false});
+      const end=pred.at(-1)?.date||latest?.date||new Date().toISOString().slice(0,7),gridcolor='rgba(128,161,183,.12)';
+      const boundary=latest?new Date(Date.UTC(+latest.date.slice(0,4),+latest.date.slice(5,7),1)).toISOString().slice(0,10):null;
+      const axis={gridcolor,zeroline:false,showline:false,tickfont:{size:11,color:'#91adbe'},fixedrange:false};
+      const annotation=(text,x,y,color)=>({text,x,y,xref:'paper',yref:'paper',showarrow:false,xanchor:'left',font:{color,size:12},align:'left'});
+      const layout={paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'#0b1d2a',font:{family:'Inter, system-ui, sans-serif',color:'#baceda',size:11},margin:{l:48,r:24,t:43,b:35},showlegend:false,hovermode:'x unified',hoverlabel:{bgcolor:'#173247',bordercolor:'#50788e',font:{color:'#eff8fc',size:12}},
+        xaxis:{...axis,domain:[0,1],anchor:'y',range:[start+'-01',end+'-28'],showticklabels:false},yaxis:{...axis,domain:[.59,1],rangemode:'tozero',nticks:5},
+        xaxis2:{...axis,domain:[0,1],anchor:'y2',matches:'x',range:[start+'-01',end+'-28'],tickformat:start==='1749-01'?'%Y':'%Y'},yaxis2:{...axis,domain:[0,.40],rangemode:'tozero',nticks:5},
+        annotations:[annotation('<b>SUNSPOT NUMBER</b>',0,1.09,'#71dfed'),annotation('<b>10.7 CM RADIO FLUX</b> <span style="color:#87a5b8">· sfu</span>',0,.49,'#ffc786')],shapes:[]};
+      if(boundary){for(const [lo,hi,ref] of [[.59,1,'x'],[0,.40,'x2']])layout.shapes.push({type:'rect',xref:ref,yref:'paper',x0:boundary,x1:end+'-28',y0:lo,y1:hi,line:{width:0},fillcolor:'rgba(127,164,187,.05)',layer:'below'},{type:'line',xref:ref,yref:'paper',x0:boundary,x1:boundary,y0:lo,y1:hi,line:{color:'#6e8ea266',width:1,dash:'dot'}});}
+      const series=traces(obs.filter(r=>r.date>=start),pred.filter(r=>r.date>=start));
+      window.Plotly.react(root.querySelector('[data-cycle-plot]'),series,layout,{responsive:true,displaylogo:false,modeBarButtonsToRemove:['select2d','lasso2d','autoScale2d'],toImageButtonOptions:{filename:'NOAA-solar-cycle',width:1600,height:1100,scale:2}});
     }
     async function update(){const button=root.querySelector('[data-cycle-refresh]');button.disabled=true;try{errors=await refresh();if(root.isConnected)paint();}finally{button.disabled=false;}}
     root.addEventListener('click',e=>{const range=e.target.closest('[data-cycle-range]');if(range){start=range.dataset.cycleRange;root.querySelectorAll('[data-cycle-range]').forEach(b=>b.setAttribute('aria-pressed',String(b===range)));paint();}if(e.target.closest('[data-cycle-refresh]'))update();});
@@ -36012,6 +35988,74 @@ window.SpaceWxRecurrenceCompare = (function () {
   window.SpaceWxSolarCycle={mount,refresh,parse,phase,traces};
 })();
 </script>
+<!-- CME_SCOREBOARD_BOOTSTRAP_SLOT -->
+<style id="cmeScoreboardStyles">
+.wx-scoreboard{grid-column:1/-1}.wx-scoreboard h3{font-size:20px}.wx-scoreboard .wx-score-controls{display:flex;gap:12px;flex-wrap:wrap;align-items:end;margin:18px 0}.wx-scoreboard label{display:grid;gap:6px;color:#9cb8ca;font-size:11px;flex:1;min-width:220px}.wx-scoreboard select{color:#d9eaf4;background:#152f41;border:1px solid #436377;border-radius:6px;padding:10px;width:100%}.wx-scoreboard .wx-score-summary{display:flex;gap:20px;flex-wrap:wrap;font-size:12px;border-block:1px solid #2c4759;padding:12px 0;color:#acc4d4}.wx-scoreboard .wx-score-summary strong{display:block;color:#e2f1f7;margin-top:4px}.wx-scoreboard .wx-score-table-wrap{overflow:auto}.wx-scoreboard table{width:100%;border-collapse:collapse;font-size:11px;white-space:nowrap}.wx-scoreboard th{color:#7fa5bd;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.05em;padding:10px;border-bottom:1px solid #39546a}.wx-scoreboard td{padding:10px;border-bottom:1px solid #21394a}.wx-scoreboard td:first-child{white-space:normal;min-width:150px}.wx-scoreboard .wx-score-plot{min-height:290px}.wx-scoreboard details{margin-top:12px;font-size:11px;color:#a7becd}.wx-scoreboard summary{cursor:pointer;color:#9cc6df}.wx-scoreboard .wx-score-note{white-space:pre-wrap;max-height:220px;overflow:auto;line-height:1.6}.wx-scoreboard .wx-score-run img{width:100%;max-height:720px;object-fit:contain;min-height:0}.wx-scoreboard .wx-score-run{margin-top:16px;border:1px solid #2c4b5f;border-radius:8px;padding:12px}.wx-scoreboard .wx-score-badge{font-size:10px;color:#9ddfda;letter-spacing:.08em;text-transform:uppercase}.wx-scoreboard .wx-score-error{color:#ecc58f}
+</style>
+<script id="cmeScoreboardProduct">
+(() => {
+  'use strict';
+  const OLD='https://kauai.ccmc.gsfc.nasa.gov/CMEscoreboard/WS/get/predictions',NEW='https://ccmc.gsfc.nasa.gov/CMESB-Earth/WS/get/predictions',CACHE='spacewx-cme-scoreboard-v1';
+  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const stamp=v=>typeof v==='string'&&Number.isFinite(Date.parse(v))?new Date(v).toISOString():null;
+  const num=v=>v!==null&&v!==undefined&&v!==''&&Number.isFinite(+v)?+v:null;
+  const limited=(v,lo,hi)=>{const n=num(v);return n!==null&&n>=lo&&n<=hi?n:null;};
+  const utc=v=>v?new Date(v).toISOString().slice(0,16).replace('T',' ')+'Z':'Not reported';
+  function urls(now=new Date()){
+    const end=now.toISOString().slice(0,10),start=new Date(now.getTime()-30*86400000).toISOString().slice(0,10);
+    const params=new URLSearchParams({CMEtimeStart:start,CMEtimeEnd:end,closeOutCMEsOnly:'false',skipNoArrivalObservedCMEs:'false'});
+    // NASA announced an unchanged-schema endpoint migration for September 30.
+    return (now>=new Date('2026-09-30T00:00:00Z')?[NEW,OLD]:[OLD,NEW]).map(u=>u+'?'+params);
+  }
+  function modelLinks(note){
+    const links=[];
+    for(const match of String(note||'').matchAll(/https:\/\/[^\s<>"']+/g)){
+      try{const u=new URL(match[0].replace(/[),.;]+$/,''));if(!/(^|\.)nasa\.gov$/.test(u.hostname))continue;if(!/\.(gif|png|jpg)(?:$|[?&])/i.test(u.href)&&!/filename=[^&]+\.(gif|png|jpg)/i.test(u.href))continue;links.push(u.href);}catch{}
+    }
+    return [...new Set(links)].sort((a,b)=>Number(/anim[._-]tim[._-]vel\.gif(?:$|&)/i.test(b))-Number(/anim[._-]tim[._-]vel\.gif(?:$|&)/i.test(a)));
+  }
+  function parse(rows){
+    if(!Array.isArray(rows))throw Error('Invalid NASA Scoreboard response');
+    return rows.filter(r=>r&&typeof r.cmeID==='string'&&stamp(r.observedTime)).map(r=>({id:r.cmeID,observed:stamp(r.observedTime),arrival:stamp(r.arrivalTime),noArrival:r.noArrivalObserved===true,kp:limited(r.maxKP,0,9),note:String(r.cmeNote||''),predictions:(Array.isArray(r.predictions)?r.predictions:[]).map((p,i)=>({id:r.cmeID+':'+i,method:String(p.predictedMethodName||'Unspecified method'),submitted:stamp(p.submissionTime),arrival:stamp(p.predictedArrivalTime),minus:limited(p.uncertaintyMinusInHrs,0,1000),plus:limited(p.uncertaintyPlusInHrs,0,1000),confidence:limited(p.confidenceInPercentage,0,100),kpLow:limited(p.predictedMaxKpLowerRange,0,9),kpHigh:limited(p.predictedMaxKpUpperRange,0,9),note:String(p.predictionNote||''),links:modelLinks(p.predictionNote),aggregate:/^(Average|Median) of all Methods$/i.test(p.predictedMethodName||'')})).sort((a,b)=>(b.submitted||'').localeCompare(a.submitted||''))})).sort((a,b)=>Number(!!a.arrival||a.noArrival)-Number(!!b.arrival||b.noArrival)||b.observed.localeCompare(a.observed));
+  }
+  function arrivalSeries(event){
+    return event.predictions.filter(p=>p.arrival).map(p=>({type:'scatter',mode:'markers',name:p.method,x:[p.arrival],y:[p.method+' · '+utc(p.submitted)],marker:{size:10,symbol:p.aggregate?'diamond':'circle',color:p.aggregate?'#c3a3e8':/M2M/.test(p.method)?'#72e1e4':'#edc28c'},error_x:p.minus!==null&&p.plus!==null?{type:'data',symmetric:false,array:[p.plus*3600000],arrayminus:[p.minus*3600000],color:'#759db5',thickness:2,width:5}:undefined,hovertemplate:`${esc(p.method)}<br>Arrival %{x|%d %b %H:%M} UTC<br>Submitted ${utc(p.submitted)}<extra></extra>`}));
+  }
+  let cached=null,inflight=null;
+  for(const read of [()=>JSON.parse(document.getElementById('cmeScoreboardBootstrap')?.textContent||'null'),()=>JSON.parse(localStorage.getItem(CACHE)||'null')])try{const c=read();if(c&&stamp(c.retrievedAt)&&(!cached||c.retrievedAt>cached.retrievedAt)){parse(c.rows);cached=c;}}catch{}
+  async function refresh(){
+    if(inflight)return inflight;
+    inflight=(async()=>{let last;for(const url of urls()){
+      const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),15000);
+      try{const r=await fetch(url,{signal:ctrl.signal,credentials:'omit',cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const rows=await r.json();parse(rows);cached={rows,source:url,retrievedAt:new Date().toISOString()};try{localStorage.setItem(CACHE,JSON.stringify(cached));}catch{}return cached;}catch(e){last=e;}finally{clearTimeout(timer);}}
+      throw last||Error('NASA Scoreboard unavailable');})();
+    try{return await inflight;}finally{inflight=null;}
+  }
+  function mount(root){
+    root.className='wx-cme-card wx-scoreboard';root.innerHTML=`<div class="wx-score-badge">NASA CCMC · agency submissions</div><h3>CME Arrival Scoreboard</h3><p class="wx-status">Additional CME forecasts from NASA M2M and other contributing agencies. Active and closed events from the last 30 days are included.</p><div class="wx-score-controls"><label>CME event<select data-score-event aria-label="CME Scoreboard event"></select></label><button data-score-refresh>Refresh Scoreboard</button></div><p class="wx-status" data-score-status role="status">Loading NASA predictions…</p><div data-score-content></div><p class="wx-status">Bars show each submitter’s reported arrival uncertainty; missing uncertainty stays unspecified. Provider averages and medians are labelled summaries, not additional independent model runs. No local consensus is calculated.</p><a href="https://ccmc.gsfc.nasa.gov/scoreboards/cme/earth/" target="_blank" rel="noopener">NASA CME Scoreboard · methods and provenance</a>`;
+    let events=[],selected=null,error='',timer=null;const select=root.querySelector('[data-score-event]'),status=root.querySelector('[data-score-status]'),content=root.querySelector('[data-score-content]');
+    function paint(){
+      events=cached?parse(cached.rows):[];
+      if(!events.some(e=>e.id===selected))selected=events[0]?.id||null;
+      select.innerHTML=events.map(e=>`<option value="${esc(e.id)}"${e.id===selected?' selected':''}>${esc(e.id)} · ${e.arrival?'Observed arrival':e.noArrival?'No arrival observed':'Arrival not yet reported'}</option>`).join('');select.disabled=!events.length;
+      status.classList.toggle('wx-score-error',!!error);status.textContent=`${cached?'Retrieved '+utc(cached.retrievedAt)+' · '+events.length+' events.':'No successful retrieval.'} ${error?'Refresh failed; retained dated results where available. '+error:''}`;
+      const event=events.find(e=>e.id===selected);if(!event){content.innerHTML='<p>No Scoreboard events in the returned current-date window.</p>';return;}
+      const outcome=event.arrival?utc(event.arrival):event.noArrival?'No arrival observed':'Arrival not yet reported';
+      content.innerHTML=`<div class="wx-score-summary"><div>CME first observed<strong>${utc(event.observed)}</strong></div><div>Observed Earth arrival<strong>${outcome}</strong></div><div>Submitted forecasts<strong>${event.predictions.filter(p=>!p.aggregate).length} + ${event.predictions.filter(p=>p.aggregate).length} provider summaries</strong></div></div><div class="wx-score-plot" data-score-plot></div><div class="wx-score-table-wrap"><table><thead><tr><th>Model / agency</th><th>Submitted UTC</th><th>Predicted Earth arrival</th><th>− / + hours</th><th>Kp range</th><th>Confidence</th></tr></thead><tbody>${event.predictions.map(p=>`<tr><td>${esc(p.method)}${p.aggregate?' · summary':''}</td><td>${utc(p.submitted)}</td><td>${utc(p.arrival)}</td><td>${p.minus??'—'} / ${p.plus??'—'}</td><td>${p.kpLow!==null&&p.kpHigh!==null?p.kpLow+'–'+p.kpHigh:'—'}</td><td>${p.confidence!==null?p.confidence+'%':'—'}</td></tr>`).join('')}</tbody></table></div><div data-score-model></div><details><summary>CME analysis &amp; submission notes</summary><p class="wx-score-note">${esc(event.note)}</p>${event.predictions.filter(p=>p.note).map(p=>`<details><summary>${esc(p.method)} · ${utc(p.submitted)}</summary><p class="wx-score-note">${esc(p.note)}</p></details>`).join('')}</details>`;
+      const available=event.predictions.filter(p=>p.links.length);if(available.length){const slot=content.querySelector('[data-score-model]');slot.className='wx-score-run';slot.innerHTML=`<label>Published run imagery<select data-score-run aria-label="Scoreboard model imagery">${available.map((p,i)=>`<option value="${i}">${esc(p.method)} · submitted ${utc(p.submitted)}</option>`).join('')}</select></label><p class="wx-status" data-score-image-status></p><a data-score-image-link target="_blank" rel="noopener"><img data-score-image alt="NASA linked CME propagation model output"><span>Open source model image ↗</span></a>`;
+        const show=()=>{const p=available[+slot.querySelector('select').value],img=slot.querySelector('img'),text=slot.querySelector('[data-score-image-status]');text.textContent=`${p.method} · submitted ${utc(p.submitted)}. Linked provider animation; valid times appear on the image.`;img.hidden=false;img.onerror=()=>{img.hidden=true;text.textContent='Linked imagery is unavailable. Open the source model image to retry.';};img.src=p.links[0];slot.querySelector('a').href=p.links[0];};slot.querySelector('select').onchange=show;show();}
+      const series=arrivalSeries(event),plot=content.querySelector('[data-score-plot]');
+      if(series.length&&window.Plotly)window.Plotly.react(plot,series,{height:Math.max(290,series.length*45+80),paper_bgcolor:'#0d202f',plot_bgcolor:'#0d202f',font:{color:'#b4cedd',size:10},margin:{l:12,r:24,t:25,b:48},showlegend:false,xaxis:{type:'date',title:'Predicted Earth arrival · UTC',gridcolor:'#29475b',tickformat:'%d %b\n%H:%M'},yaxis:{automargin:true,gridcolor:'#213b4e',autorange:'reversed'},shapes:event.arrival?[{type:'line',xref:'x',yref:'paper',x0:event.arrival,x1:event.arrival,y0:0,y1:1,line:{color:'#80dca5',dash:'dot',width:2}}]:[],annotations:event.arrival?[{xref:'x',yref:'paper',x:event.arrival,y:1.12,text:'Observed arrival',showarrow:false,font:{color:'#80dca5',size:10}}]:[]},{responsive:true,displaylogo:false});else plot.textContent='No arrival-time predictions reported for this event.';
+    }
+    async function update(){const button=root.querySelector('[data-score-refresh]');button.disabled=true;try{await refresh();error='';}catch(e){error=e.message;}finally{if(root.isConnected)paint();button.disabled=false;}}
+    select.onchange=()=>{selected=select.value;paint();};root.querySelector('[data-score-refresh]').onclick=update;paint();update();
+    timer=setInterval(()=>{if(root.isConnected)update();else clearInterval(timer);},15*60000);
+    return ()=>clearInterval(timer);
+  }
+  window.SpaceWxCMEScoreboard={mount,parse,refresh,arrivalSeries,modelLinks,urls};
+})();
+</script>
+
 <script id="cmeSolarWindProduct">
 (() => {
   'use strict';
@@ -36026,7 +36070,8 @@ window.SpaceWxRecurrenceCompare = (function () {
   function unmount(){if(dispose)dispose();dispose=null;}
   function mount(root){
     unmount();root.classList.add('wx-context');
-    root.innerHTML=`<h2>CME | Solar Wind</h2><p>Compare the providers’ latest published heliospheric forecasts. Each panel keeps its own model timing and provenance.</p><div class="wx-cme-grid"><section class="wx-cme-card"><h3>SWPC WSA–ENLIL</h3><p class="wx-status">Official solar-wind and CME propagation visualization</p><img data-enlil-image alt="NOAA SWPC WSA–ENLIL model forecast"><div class="wx-actions"><button data-enlil-play disabled>Play</button><button data-cme-refresh>Refresh products</button></div><input data-enlil-slider type="range" min="0" max="0" value="0" disabled aria-label="ENLIL forecast frame"><p class="wx-status" data-enlil-status role="status">Loading SWPC forecast frames…</p><a data-enlil-expand href="https://services.swpc.noaa.gov/images/animations/enlil/latest.jpg" target="_blank" rel="noopener">Expand chart</a> · <a href="https://www.spaceweather.gov/products/wsa-enlil-solar-wind-prediction" target="_blank" rel="noopener">SWPC product and interpretation</a></section><section class="wx-cme-card"><h3>HUXt</h3><p class="wx-status">University of Reading / SWx Forecast Lab · WSA ambient wind + DONKI CMEs</p><img data-huxt-image alt="Published HUXt WSA and DONKI solar-wind forecast"><p class="wx-status" data-huxt-status role="status">Loading published HUXt forecast…</p><p class="wx-status">Read issue and forecast-valid times on the provider’s chart. The retrieval time is not a new model run. This panel displays published output; it does not execute a local ensemble.</p><a href="${HUXT}" target="_blank" rel="noopener">Expand chart</a> · <a href="https://swxforecastlab.org/forecasts.html" target="_blank" rel="noopener">HUXt forecast products</a></section><section class="wx-cme-card"><span class="wx-planned">PLANNED · NOT CONNECTED</span><h3>PyCAT</h3><p>Reserved for the Python CME Analysis Tool being developed by NOAA SWPC and the UK Met Office. Its role is coronagraph-based CME geometry analysis, providing inputs for propagation models such as WSA–ENLIL.</p><p class="wx-status">No PyCAT measurements, model runs or arrival predictions are available in this dashboard yet.</p><a href="https://cpaess.ucar.edu/abstract-sww-2025/next-generation-noaaswpc-cme-analysis-tool-pycat" target="_blank" rel="noopener">PyCAT development overview</a></section></div>`;
+    root.innerHTML=`<h2>CME | Solar Wind</h2><p>Compare the providers’ latest published heliospheric forecasts. Each panel keeps its own model timing and provenance.</p><div class="wx-cme-grid"><section class="wx-cme-card"><h3>SWPC WSA–ENLIL</h3><p class="wx-status">Official solar-wind and CME propagation visualization</p><img data-enlil-image alt="NOAA SWPC WSA–ENLIL model forecast"><div class="wx-actions"><button data-enlil-play disabled>Play</button><button data-cme-refresh>Refresh products</button></div><input data-enlil-slider type="range" min="0" max="0" value="0" disabled aria-label="ENLIL forecast frame"><p class="wx-status" data-enlil-status role="status">Loading SWPC forecast frames…</p><a data-enlil-expand href="https://services.swpc.noaa.gov/images/animations/enlil/latest.jpg" target="_blank" rel="noopener">Expand chart</a> · <a href="https://www.spaceweather.gov/products/wsa-enlil-solar-wind-prediction" target="_blank" rel="noopener">SWPC product and interpretation</a></section><section class="wx-cme-card"><h3>HUXt</h3><p class="wx-status">University of Reading / SWx Forecast Lab · WSA ambient wind + DONKI CMEs</p><img data-huxt-image alt="Published HUXt WSA and DONKI solar-wind forecast"><p class="wx-status" data-huxt-status role="status">Loading published HUXt forecast…</p><p class="wx-status">Read issue and forecast-valid times on the provider’s chart. The retrieval time is not a new model run. This panel displays published output; it does not execute a local ensemble.</p><a href="${HUXT}" target="_blank" rel="noopener">Expand chart</a> · <a href="https://swxforecastlab.org/forecasts.html" target="_blank" rel="noopener">HUXt forecast products</a></section><section data-cme-scoreboard></section><section class="wx-cme-card"><span class="wx-planned">PLANNED · NOT CONNECTED</span><h3>PyCAT</h3><p>Reserved for the Python CME Analysis Tool being developed by NOAA SWPC and the UK Met Office. Its role is coronagraph-based CME geometry analysis, providing inputs for propagation models such as WSA–ENLIL.</p><p class="wx-status">No PyCAT measurements, model runs or arrival predictions are available in this dashboard yet.</p><a href="https://cpaess.ucar.edu/abstract-sww-2025/next-generation-noaaswpc-cme-analysis-tool-pycat" target="_blank" rel="noopener">PyCAT development overview</a></section></div>`;
+    const stopScoreboard=window.SpaceWxCMEScoreboard.mount(root.querySelector('[data-cme-scoreboard]'));
     let frames=[],index=0,timer=null,disposed=false,request=null,retrieved=null,displayToken=0,framePending=false,refreshError="";
     const img=root.querySelector('[data-enlil-image]'),slider=root.querySelector('[data-enlil-slider]'),play=root.querySelector('[data-enlil-play]'),status=root.querySelector('[data-enlil-status]'),huxt=root.querySelector('[data-huxt-image]'),hs=root.querySelector('[data-huxt-status]');
     function stop(){clearInterval(timer);timer=null;play.textContent='Play';}
@@ -36042,7 +36087,7 @@ window.SpaceWxRecurrenceCompare = (function () {
     root.querySelector('[data-cme-refresh]').onclick=update;
     slider.oninput=()=>{stop();index=+slider.value;show();};
     play.onclick=()=>{if(timer){stop();return;}play.textContent='Pause';timer=setInterval(()=>{if(!root.isConnected){stop();return;}if(!framePending){index=(index+1)%frames.length;show();}},600);};
-    dispose=()=>{disposed=true;stop();request?.abort();};update();
+    dispose=()=>{disposed=true;stop();stopScoreboard();request?.abort();};update();
   }
   window.SpaceWxCME={mount,unmount,framesFrom};
 })();
@@ -36084,9 +36129,9 @@ window.SpaceWxRecurrenceCompare = (function () {
   ];
   const PIPELINES = {
     huxt: {
-      name: "CME | Solar Wind", family: "ENLIL · HUXt · PyCAT",
+      name: "CME | Solar Wind", family: "ENLIL · HUXt · Scoreboard · PyCAT",
       maturity: "PUBLISHED PRODUCTS", compute: "Provider forecasts", members: 0,
-      description: "SWPC WSA–ENLIL and Reading HUXt forecasts; PyCAT analysis placeholder.",
+      description: "SWPC ENLIL, Reading HUXt and NASA agency predictions; PyCAT planned.",
       inputs: "Provider model boundaries and CME analyses", provenance: "NOAA SWPC · SWx Forecast Lab",
       summary: [], labels: []
     },
@@ -37691,6 +37736,7 @@ window.SpaceWxRecurrenceCompare = (function () {
   }
 
   function renderPreset() {
+    window.SpaceWxCME?.unmount();
     if (flareWorkspaceObserver) {
       flareWorkspaceObserver.disconnect();
       flareWorkspaceObserver = null;
@@ -37733,7 +37779,7 @@ window.SpaceWxRecurrenceCompare = (function () {
 
   function monitorTileControls(tile, index) {
     const locked = tile.pinned ? " disabled" : "";
-    return `<div class="fd-wall-tile-controls"><button type="button" data-fd-tile-open="${esc(tile.id)}" aria-label="Open ${esc(monitorTileDefinition(tile).label)} in focus view" title="Open in focus view">↗</button>${state.monitorCustomizing ? `<button type="button" data-fd-tile-pin="${esc(tile.id)}" aria-label="${tile.pinned ? "Unpin" : "Pin"} tile" title="${tile.pinned ? "Unpin" : "Pin"}">${tile.pinned ? "●" : "○"}</button><button type="button" data-fd-tile-move="${esc(tile.id)}" data-direction="-1"${index === 0 || tile.pinned ? " disabled" : ""} aria-label="Move tile earlier">←</button><button type="button" data-fd-tile-move="${esc(tile.id)}" data-direction="1"${index === state.monitorTiles.length - 1 || tile.pinned ? " disabled" : ""} aria-label="Move tile later">→</button><button type="button" data-fd-tile-size="${esc(tile.id)}" data-direction="-1" aria-label="Make tile smaller">−</button><button type="button" data-fd-tile-size="${esc(tile.id)}" data-direction="1" aria-label="Make tile larger">+</button><button type="button" data-fd-tile-remove="${esc(tile.id)}"${locked} aria-label="Remove tile">×</button>` : ""}</div>`;
+    return `<div class="fd-wall-tile-controls"><button type="button" data-fd-tile-open="${esc(tile.id)}" aria-label="Open ${esc(monitorTileDefinition(tile).label)} in focus view" title="Open in focus view">↗</button>${state.monitorCustomizing ? `<button type="button" data-fd-tile-pin="${esc(tile.id)}" aria-label="${tile.pinned ? "Unpin" : "Pin"} tile" title="${tile.pinned ? "Unpin" : "Pin"}">${tile.pinned ? "●" : "○"}</button><button type="button" data-fd-tile-move="${esc(tile.id)}" data-direction="-1"${index === 0 || tile.pinned ? " disabled" : ""} aria-label="Move tile earlier">←</button><button type="button" data-fd-tile-move="${esc(tile.id)}" data-direction="1"${index === state.monitorTiles.length - 1 || tile.pinned ? " disabled" : ""} aria-label="Move tile later">→</button><button type="button" data-fd-tile-size="${esc(tile.id)}" data-direction="-1" aria-label="Make tile smaller">−</button><button type="button" data-fd-tile-size="${esc(tile.id)}" data-direction="1" aria-label="Make tile larger">+</button>` : ""}</div>`;
   }
 
   function mountMonitorTile(tile, grid, index) {
@@ -37746,7 +37792,7 @@ window.SpaceWxRecurrenceCompare = (function () {
     wrapper.draggable = false;
     wrapper.style.setProperty("--fd-tile-cols", String(tile.cols));
     wrapper.style.setProperty("--fd-tile-rows", String(tile.rows));
-    wrapper.innerHTML = `<header class="fd-wall-tile-head"><button type="button" class="fd-wall-drag" data-fd-tile-drag="${esc(tile.id)}" draggable="${state.monitorCustomizing && !tile.pinned ? "true" : "false"}"${state.monitorCustomizing && !tile.pinned ? "" : " disabled"} aria-label="Drag ${esc(definition.label)}">⠿</button><div><span>${definition.domain === "official" ? "OFFICIAL SWPC" : esc(definition.badge || "DATA")}</span><strong>${esc(definition.label)}</strong></div>${monitorTileControls(tile, index)}</header><div class="fd-wall-tile-body"></div>`;
+    wrapper.innerHTML = `<header class="fd-wall-tile-head"><button type="button" class="fd-wall-close" data-fd-tile-remove="${esc(tile.id)}" aria-label="Remove ${esc(definition.label)} from view" title="Remove from view">×</button><button type="button" class="fd-wall-drag" data-fd-tile-drag="${esc(tile.id)}" draggable="${state.monitorCustomizing && !tile.pinned ? "true" : "false"}"${state.monitorCustomizing && !tile.pinned ? "" : " disabled"} aria-label="Drag ${esc(definition.label)}">⠿</button><div><span>${definition.domain === "official" ? "OFFICIAL SWPC" : esc(definition.badge || "DATA")}</span><strong>${esc(definition.label)}</strong></div>${monitorTileControls(tile, index)}</header><div class="fd-wall-tile-body"></div>`;
     grid.appendChild(wrapper);
     const body = $(".fd-wall-tile-body", wrapper);
     if (tile.kind === "visual") {
@@ -37954,7 +38000,7 @@ window.SpaceWxRecurrenceCompare = (function () {
 
   function removeMonitorTile(id) {
     const index = state.monitorTiles.findIndex((tile) => tile.id === id);
-    if (index < 0 || state.monitorTiles[index].pinned) return;
+    if (index < 0) return;
     const [removed] = state.monitorTiles.splice(index, 1);
     logActivity(`${monitorTileDefinition(removed).label} removed from operations wall`);
     saveState();
@@ -38621,12 +38667,11 @@ window.SpaceWxRecurrenceCompare = (function () {
   }
 
   function renderCoordinate() {
-    const completion = forecastCompletion();
-    setWorkbench("COORDINATE", "Local guidance alongside official SWPC", "Chronology and discussion stay side-by-side; acknowledgement is explicit.", false);
-    stage.innerHTML = `<div class="fd-coordinate-layout"><div class="fd-local-guidance"><section class="fd-guidance-summary"><span class="fd-eyebrow">LOCAL · ${state.cycleStatus.toUpperCase()}</span><h2>${esc(state.caseId)}</h2><p>Internal forecast guidance remains visually distinct from official SWPC products. Use the delta note and acknowledgement before issue.</p><div class="fd-guidance-facts"><div><span>CYCLE</span><strong>${state.cycle}Z</strong></div><div><span>MATRIX</span><strong>${completion.percent}% complete</strong></div><div><span>MODEL</span><strong>${state.preferredRun ? esc(state.preferredRun.id) : "No preferred run"}</strong></div><div><span>SWPC</span><strong>${state.swpcAcknowledged ? "Acknowledged" : "Review pending"}</strong></div></div></section><section class="fd-guidance-summary"><span class="fd-eyebrow">COORDINATION NOTE</span><h2>Local vs official</h2><textarea class="fd-field" id="fdCoordNote" style="width:100%;min-height:110px" placeholder="Document timing, magnitude, confidence, and rationale…">${esc(state.notes)}</textarea><div class="fd-button-row" style="margin-top:7px"><button type="button" class="fd-button${state.swpcAcknowledged ? " primary" : " warning"}" data-fd-ack>${state.swpcAcknowledged ? "SWPC ACKNOWLEDGED" : "ACKNOWLEDGE SWPC"}</button><button type="button" class="fd-button" data-fd-drawer="handoff">SAVE CYCLE STATE</button></div></section></div><div class="fd-coordinate-grid"><section class="fd-coordinate-panel"><div class="fd-panel-heading"><div><span class="fd-eyebrow">OFFICIAL SWPC · CHRONOLOGY</span><h2>Alerts + timeline</h2></div><div class="fd-button-row"><button type="button" class="fd-button${state.coordChron === "events.timeline" ? " primary" : ""}" data-fd-coordinate="chron:events.timeline">TIMELINE</button><button type="button" class="fd-button${state.coordChron === "events.alerts" ? " primary" : ""}" data-fd-coordinate="chron:events.alerts">ALERTS</button></div></div><div id="fdChronSlot"></div></section><section class="fd-coordinate-panel"><div class="fd-panel-heading"><div><span class="fd-eyebrow">OFFICIAL SWPC · GUIDANCE</span><h2>Discussion + forecast</h2></div><div class="fd-button-row"><button type="button" class="fd-button${state.coordGuide === "events.discussion" ? " primary" : ""}" data-fd-coordinate="guide:events.discussion">DISCUSSION</button><button type="button" class="fd-button${state.coordGuide === "events.forecast-table" ? " primary" : ""}" data-fd-coordinate="guide:events.forecast-table">TABLE</button><button type="button" class="fd-button${state.coordGuide === "events.recurrence" ? " primary" : ""}" data-fd-coordinate="guide:events.recurrence">27-DAY</button></div></div><div id="fdGuideSlot"></div></section></div></div>`;
+    setWorkbench("OFFICIAL SWPC", "Alerts & forecast guidance", "The alert timeline leads; official discussion and forecasts provide context.", false);
+    stage.innerHTML = `<div class="fd-swpc-workspace"><section class="fd-coordinate-panel"><div class="fd-panel-heading"><div><span class="fd-eyebrow">OFFICIAL SWPC · CHRONOLOGY</span><h2>Alerts + timeline</h2></div><div class="fd-button-row"><button type="button" class="fd-button${state.coordChron === "events.timeline" ? " primary" : ""}" data-fd-coordinate="chron:events.timeline">TIMELINE</button><button type="button" class="fd-button${state.coordChron === "events.alerts" ? " primary" : ""}" data-fd-coordinate="chron:events.alerts">ALERTS</button></div></div><div id="fdChronSlot"></div></section><section class="fd-coordinate-panel"><div class="fd-panel-heading"><div><span class="fd-eyebrow">OFFICIAL SWPC · GUIDANCE</span><h2>Discussion + forecast</h2></div><div class="fd-button-row"><button type="button" class="fd-button${state.coordGuide === "events.discussion" ? " primary" : ""}" data-fd-coordinate="guide:events.discussion">DISCUSSION</button><button type="button" class="fd-button${state.coordGuide === "events.forecast-table" ? " primary" : ""}" data-fd-coordinate="guide:events.forecast-table">TABLE</button><button type="button" class="fd-button${state.coordGuide === "events.recurrence" ? " primary" : ""}" data-fd-coordinate="guide:events.recurrence">27-DAY</button></div></div><div id="fdGuideSlot"></div></section></div>`;
     mountProduct(state.coordChron, $("#fdChronSlot", stage));
     mountProduct(state.coordGuide, $("#fdGuideSlot", stage));
-    setInspectorTitle("Coordination Control");
+    setInspectorTitle("SWPC Products");
   }
 
   function renderChModel(pipeline) {
@@ -38639,7 +38684,7 @@ window.SpaceWxRecurrenceCompare = (function () {
       <section class="fd-model-canvas fd-ch-model-canvas">
         <div class="fd-panel-heading"><div><span class="fd-eyebrow">SHADOW GUIDANCE · VALIDATION REQUIRED</span><h2>${esc(pipeline.name)}</h2><small>Start with Recurrence Compare (prior rotation LEFT, current RIGHT, same wavelength), then the CH/HSS shadow outlook: audited Outlook, OMNI analog, HMI polarity, retired research branch. Two disks plus inspect — not a four-up mosaic.</small></div><div class="fd-button-row"><button type="button" class="fd-button" data-fd-ch-refresh>REFRESH OUTLOOK</button><button type="button" class="fd-button primary" data-fd-ch-info>METHODS</button></div></div>
         <div class="fd-ch-workspace">
-          <div class="fd-ch-brief"><div><span class="fd-eyebrow">CORONAL-HOLE / HSS RESEARCH GUIDANCE</span><h3>Compare rotations → identify the hole → Outlook speed window / peak → analog, polarity, geomagnetic outlook</h3><p>Recurrence Compare is the identify step (Carrington 27.2753 d). Same AIA/SUVI product on both disks. Click numbered hole markers like flare ARs to inspect polarity and outlook / recurrence wind — never from an AIA pixel. Outlook audit: core-only empirical guidance, not operationally validated. Garton duration and Dst-to-G conversion are withheld. Official SWPC watches remain separate.</p></div><div class="fd-ch-live-state"><span>RESEARCH STATUS</span><strong>SHADOW GUIDANCE</strong></div></div>
+          <div class="fd-ch-brief"><div><span class="fd-eyebrow">CORONAL-HOLE / HSS RESEARCH GUIDANCE</span><h3>Compare rotations → identify the hole → Outlook speed window / peak → analog, polarity, geomagnetic outlook</h3><p>Recurrence Compare is the identify step (Carrington 27.2753 d). Matched AIA products on both disks. Click numbered hole markers like flare ARs to inspect polarity and outlook / recurrence wind — never from an AIA pixel. Outlook audit: core-only empirical guidance, not operationally validated. Garton duration and Dst-to-G conversion are withheld. Official SWPC watches remain separate.</p></div><div class="fd-ch-live-state"><span>RESEARCH STATUS</span><strong>SHADOW GUIDANCE</strong></div></div>
           <section class="fd-rc-workspace" id="fdRecurrenceCompare" aria-label="Recurrence Compare workspace"></section>
           <div class="fd-ch-live-panel">
             <article class="card" id="card-ch-hss">
@@ -38654,8 +38699,7 @@ window.SpaceWxRecurrenceCompare = (function () {
                   <label class="realtime-view-control" for="chHssMapSource">
                     <select id="chHssMapSource" aria-label="Coronal hole map source">
                       <option value="composite" selected>AIA 211/193/171 (measurement)</option>
-                      <option value="ch">AIA 193 + CH contours (visual)</option>
-                      <option value="aia">AIA / SUVI 193–195 (fallback)</option>
+                      <option value="ch">AIA 193 + measured CH outlines</option>
                       <option value="synoptic">SWPC Synoptic (reference)</option>
                     </select>
                   </label>
@@ -38673,9 +38717,9 @@ window.SpaceWxRecurrenceCompare = (function () {
                         </div>
                       </div>
                       <div class="ch-hss-map-host">LOADING DISK</div>
-                      <div class="ch-hss-map-status">Requesting SDO AIA 211/193/171, then SWPC SUVI if NASA is blocked…</div>
+                      <div class="ch-hss-map-status">Loading the registered AIA RGB composite…</div>
                       <div class="ch-hss-map-fail"></div>
-                      <div class="ch-hss-map-caption">Earth-facing disk. SDO composite is preferred; SWPC SUVI is the DoD fallback so this pane is never blank.</div>
+                      <div class="ch-hss-map-caption">Earth-facing disk. RGB uses AIA 211 / 193 / 171; boundaries require the matching measured grid.</div>
                     </div>
                     <div class="ch-hss-main">
                       <div class="ch-hss-banner" role="status">
@@ -38715,12 +38759,12 @@ window.SpaceWxRecurrenceCompare = (function () {
               <tbody>
                 <tr><td>Display sectors</td><td>Three bands on the Earth-facing Sun: East (rotating into view), Meridian (facing us), West (rotating away). Polar holes are included so a high-latitude hole is not ignored.</td></tr>
                 <tr><td>Analysis cores</td><td>Narrower 20° windows from the 2007 papers (dashed brackets). Only this inner fraction goes into the speed math — not the whole band.</td></tr>
-                <tr><td>Source order</td><td>Catalogs (CHIMERA / HEK / Helioviewer) first. Else live SDO AIA 171/193/211 (canvas-readable) or a same-origin <code>aia-cache/</code> if present. Else Helioviewer. Else SWPC SUVI 195 single-channel fallback (Low). AIA becomes the live source only when the ops pass-condition succeeds. A rendered blue composite is display only — CHs are not classified from JPEG-blue. AIA and SUVI fills are compared, never blended.</td></tr>
+                <tr><td>Source order</td><td>Current measurements come from the processing worker: co-timed AIA 171/193/211 FITS, registered to a common WCS grid, with independently registered signed HMI. The browser consumes the dated measurement package. Catalogues and quicklooks provide context only; unavailable measurements remain unavailable.</td></tr>
                 <tr><td>Science-disk mask</td><td>Image-derived area is measured only inside 0.97 of the photospheric limb on the native raster. Off-limb corona and sky cannot be coronal holes. E/M/W 20° cores use solar CMD on that disk, not screen stripes. Fill = CH pixels ÷ valid science-disk pixels in the core. Failed limb fit → no assessment.</td></tr>
-                <tr><td>Limb fit</td><td>Azimuthal-median radial profile; limb is the EUV bright ring (photosphere), not the outer corona fade. SUVI uses a wide-FOV prior (~0.22–0.40 of the frame); AIA a tight-disk prior. Acceptance: score ≥ 0.70 is Pass (coverage, circle residual, outlier fraction). 0.42–0.70 is Marginal. Below 0.42 → no assessment. Grid and cyan are clipped to that limb.</td></tr>
-                <tr><td>Map views</td><td><b>AIA 211/193/171</b> always displays the 211/193/171 composite (baked multi-thermal overlay when that path ran, else SDO latest 211193171, else Helioviewer 211+193+171). SUVI 195 is never shown in this view. <b>AIA 193 + CH contours</b> is visual comparison only unless the source badge says catalog. <b>AIA / SUVI 193–195</b> is the single-channel fallback. <b>SWPC Synoptic</b> is reference only; no disk geometry.</td></tr>
-                <tr><td>Multi-thermal mask</td><td>Normalize 171, 193, and 211 only inside the 0.97 R science disk. A candidate pixel is dark in 193 and 211, not filament-dark in 171, and has 171 relatively stronger than 193 (the thermal signature that looks blue on the composite). Geometry gate, CMD cores, morphology, and off-disk = 0 still apply. Failed channel, FOV, timestamp, or limb agreement → do not use the composite; fall back to catalog/SUVI. The face of the card always shows why the AIA path is active or not (eligibility panel). Until an eligible AIA case is produced, SUVI fallback is the correct lower-confidence mode.</td></tr>
-                <tr><td>Measurement engine</td><td>Versioned independently of Outlook equations (retained Vršnak scalar coefficients; Garton output withheld). Registered FITS/WCS inputs are preferred. Legacy AIA/SUVI quicklook masks are research candidates; raw catalogue unit guesses cannot drive forecasts. Ledger stores the engine, AIA eligibility gates, and AIA/SUVI core fills with each issuance so retired research branch cannot mix unlabeled source types. AIA vs SUVI fills are compared side-by-side and are never blended into the live forecast.</td></tr>
+                <tr><td>Limb fit</td><td>The registered measurement limb uses the FITS RSUN_OBS and WCS geometry. Contextual quicklooks use their own metadata or an explicitly approximate display fit. Measured boundaries never transfer to a different epoch or unregistered image.</td></tr>
+                <tr><td>Map views</td><td><b>AIA 211/193/171</b> is RGB with 211 Å red, 193 Å green and 171 Å blue. Each registered numeric channel has a display-only log stretch. <b>AIA 193 + measured CH outlines</b> uses the same grid. Cyan outlines follow actual segmentation boundaries. The reference RGB is NASA’s dated SDO composite; Helioviewer supplies single-channel comparisons. No opaque layer stack or single channel substitutes for RGB. <b>SWPC Synoptic</b> is reference only.</td></tr>
+                <tr><td>Multi-thermal mask</td><td>The worker tests radial-normalized AIA darkness plus component-level 171/193 and 171/211 contrast. Only accepted components enter CH geometry; rejected dark patches can be reviewed separately. Candidate counts are not manually constrained. See the recipe and gate results in Data & QA. Display colours never drive classification.</td></tr>
+                <tr><td>Measurement engine</td><td>Versioned independently of Outlook equations. The current FITS/WCS recipe, mask identifier, observation times and source checksums travel with every measured package. Legacy quicklook and catalogue adapters cannot replace a failed registered measurement. Forecast validation must name the matching recipe.</td></tr>
                 <tr><td>Hole latitude</td><td>Evidence “lat” is the centroid of CH-candidate pixels in that 20° core, not a hard-coded 0°. If a core has no CH pixels, no centroid is listed.</td></tr>
                 <tr><td>Assessment categories</td><td>Possible / HSS enhancement indicated are Outlook threshold bins from core area and predicted speed (possible ≥ ~500 km/s or A≥5%; indicated ≥ ~600 km/s or A≥12%). They are not calibrated probabilities and are not a watch/warning.</td></tr>
                 <tr><td>Vršnak I</td><td>Bigger hole in the core window generally means faster, denser, hotter wind at Earth. The speed window spans the first CH-driven speed date through the largest modelled speed date; it is not a validated HSS onset. Face-of-card peak is that table’s nominal speed plus an experimental ±10% range. Not a clock time.</td></tr>
@@ -38755,7 +38799,7 @@ window.SpaceWxRecurrenceCompare = (function () {
   }
 
   function renderCmeModel(pipeline) {
-    setWorkbench("MODEL PRODUCTS", pipeline.name, "Published ENLIL and HUXt forecasts · PyCAT planned", false);
+    setWorkbench("MODEL PRODUCTS", pipeline.name, "ENLIL · HUXt · NASA CME Scoreboard · PyCAT planned", false);
     stage.innerHTML = `<div class="fd-model-layout"><section class="fd-model-list"><div class="fd-panel-heading"><h2>Model stack</h2></div><div class="fd-model-list-body">${Object.entries(PIPELINES).map(([key,item])=>`<button type="button" class="fd-model-lane${key===state.selectedModel?' active':''}" data-fd-model="${key}"><strong>${esc(item.name)}</strong><span>${esc(item.maturity)}</span><small>${esc(item.description)}</small></button>`).join('')}</div></section><section class="fd-model-canvas" id="fdCmeProducts"></section></div>`;
     window.SpaceWxCME.mount($("#fdCmeProducts", stage));
     setInspectorTitle("CME | Solar Wind");
@@ -38808,9 +38852,8 @@ window.SpaceWxRecurrenceCompare = (function () {
   }
 
   function coordinateInspector() {
-    return `<section class="fd-inspector-section"><h3>Coordination checklist</h3><div class="fd-meta-list"><div><span>LOCAL</span><strong>${esc(state.cycleStatus.toUpperCase())}</strong></div><div><span>SWPC</span><strong>${state.swpcAcknowledged ? "Acknowledged" : "Pending review"}</strong></div><div><span>DELTA NOTE</span><strong>${state.notes.trim() ? "Documented" : "Required"}</strong></div><div><span>SAVED STATE</span><strong>${state.snapshots.length ? "Snapshot available" : "Not captured"}</strong></div></div><div class="fd-button-row"><button type="button" class="fd-button" data-fd-product="events.alerts">OPEN ALERTS</button><button type="button" class="fd-button" data-fd-product="events.discussion">FOCUS DISCUSSION</button><button type="button" class="fd-button primary" data-fd-drawer="handoff">SAVE CYCLE STATE</button></div></section><section class="fd-inspector-section"><h3>Local vs official</h3><p class="fd-note">Official SWPC products carry a blue provenance label. Local guidance stays labeled LOCAL until the two-forecaster workflow is issued.</p></section>`;
+    return `<section class="fd-inspector-section"><h3>Official SWPC</h3><p class="fd-note">The timeline shows issued alerts, watches and warnings. Select an event to read its bulletin. Discussion and forecast products remain below the timeline.</p><div class="fd-button-row"><button type="button" class="fd-button" data-fd-coordinate="chron:events.timeline">ALERT TIMELINE</button><button type="button" class="fd-button" data-fd-coordinate="chron:events.alerts">ALERT BULLETINS</button></div></section>`;
   }
-
   function productInspector() {
     const key = state.paneProducts[state.activePane] || state.paneProducts[0];
     const product = PRODUCT_LOOKUP.get(key);

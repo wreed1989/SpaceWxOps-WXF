@@ -119,9 +119,35 @@ class ScienceTests(unittest.TestCase):
         self.assertEqual(pack['polarity']['sector']['M']['polarity'], 1)
         self.assertGreater(pack['measured']['window']['M']['A'], 0)
         self.assertTrue(hmi.unit.is_equivalent(u.G))
+        self.assertNotEqual(pack['preview']['url'],pack['preview']['compositeUrl'])
+        self.assertEqual(pack['preview']['compositeChannels'],{'red':211,'green':193,'blue':171})
+
+    def test_composite_uses_three_independent_registered_channels(self):
+        y,x=np.indices((64,64));valid=np.ones(x.shape,dtype=bool);rho=np.zeros(x.shape)
+        channels={211:x+1,193:y+1,171:x+y+1}
+        rgb=pipeline.composite_rgb(channels,valid,rho)
+        changed=pipeline.composite_rgb({**channels,171:65-x},valid,rho)
+        np.testing.assert_array_equal(rgb[:,:,:2],changed[:,:,:2])
+        self.assertTrue(np.any(rgb[:,:,2]!=changed[:,:,2]))
+        missing={w:a.astype(float) for w,a in channels.items()}
+        missing[171][0,0]=np.nan
+        np.testing.assert_array_equal(pipeline.composite_rgb(missing,valid,rho)[-1,0],0)
 
 
 class PublicationTests(unittest.TestCase):
+    def test_reference_index_uses_listed_rgb_files_and_actual_times(self):
+        with tempfile.TemporaryDirectory() as directory:
+            listing=Path(directory)/'listing.html'
+            listing.write_text('20260822_204709_1024_211193171.jpg 20260822_204709_1024_0193.jpg 20240822_204709_1024_211193171.jpg')
+            class Fake:
+                def download(self,url,*args,**kwargs):
+                    if '/2026/08/22/' not in url:raise ValueError('Unavailable')
+                    return listing,{}
+            result=pipeline.composite_reference_index(Fake(),'2026-09-19T03:24:04Z')
+            self.assertEqual(len(result['images']),1)
+            self.assertEqual(result['images'][0]['observationTime'],'2026-08-22T20:47:09Z')
+            self.assertEqual(len(result['errors']),2)
+
     def test_download_embeds_original_timestamps_and_escapes_script_content(self):
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory)
@@ -137,6 +163,12 @@ class PublicationTests(unittest.TestCase):
             html=build_dashboard(root/'dashboard.html',root/'feed.json',root/'solar.json').read_text()
             embedded=html.split('<script type="application/json" id="solarCycleBootstrap">',1)[1].split('</script>',1)[0]
             self.assertEqual(json.loads(embedded),solar)
+            scoreboard={'rows':[{'note':'</script><script>bad()</script>\u2028'}],'retrievedAt':'2026-09-19T01:00:00Z'}
+            publish.write(root/'scoreboard.json',scoreboard)
+            html=build_dashboard(root/'dashboard.html',root/'feed.json',root/'solar.json',root/'scoreboard.json').read_text()
+            embedded=html.split('<script type="application/json" id="cmeScoreboardBootstrap">',1)[1].split('</script>',1)[0]
+            self.assertEqual(json.loads(embedded),scoreboard)
+            self.assertNotIn('<script>bad()',html)
 
     def test_prior_detector_scores_do_not_validate_current_recipe(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -8,28 +8,31 @@ permissions:
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 6
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-      - run: python -m pip install 'sunpy[map]>=6,<8' 'requests>=2.32,<3'
-      - run: |
+      - run: python -m pip install 'sunpy[map,net]>=6,<8' 'requests>=2.32,<3' 'reproject>=0.14,<1' 'scikit-image>=0.25,<1'
+      - name: Bounded full FITS processing profile
+        run: |
           mkdir probe
-          python - <<'PY'
-          import requests,time,json,traceback,io
-          from pathlib import Path
-          import sunpy.map
-          from astropy.io import fits
-          out={}
-          for w in [171,193,211]:
-            t=time.monotonic();u=f'https://jsoc1.stanford.edu/data/aia/synoptic/2024/01/01/H1200/AIA20240101_1200_{w:04d}.fits'
-            try:
-              r=requests.get(u,timeout=(10,20));r.raise_for_status();p=Path('probe')/f'aia{w}.fits';p.write_bytes(r.content);m=sunpy.map.Map(p)
-              out[str(w)]={'seconds':time.monotonic()-t,'bytes':len(r.content),'instrument':str(m.instrument),'time':str(m.date),'wavelength':str(m.wavelength),'unit':str(m.unit),'quality':str(m.meta.get('quality')),'keys':list(m.meta),'observer':str(m.observer_coordinate),'header':dict(m.meta)}
-            except Exception as e:out[str(w)]={'error':str(e),'trace':traceback.format_exc(),'seconds':time.monotonic()-t}
-          Path('probe/diagnostic.json').write_text(json.dumps(out,indent=2,default=str));print(json.dumps(out,default=str))
+          timeout 180 python -u - <<'PY' > probe/profile.log 2>&1 || true
+          import sys,faulthandler,time,traceback
+          sys.path.insert(0,'chhss')
+          faulthandler.dump_traceback_later(25,repeat=True)
+          import pipeline
+          old=pipeline.Acquire.download
+          def dl(self,*args,**kwargs):
+              print('FETCH START',args[:2],flush=True);t=time.monotonic()
+              v=old(self,*args,**kwargs)
+              print('FETCH DONE',time.monotonic()-t,args[:2],flush=True);return v
+          pipeline.Acquire.download=dl
+          print('BEGIN',flush=True)
+          try:
+              p=pipeline.make_pack(pipeline.Acquire('.chhss-cache'),'2024-01-01T12:00:00Z');pipeline.dump('probe/measurement.json',p);print('COMPLETE',flush=True)
+          except Exception:traceback.print_exc()
           PY
       - uses: actions/upload-artifact@v4
         if: always()

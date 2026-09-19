@@ -389,3 +389,56 @@ for(const mode of ['Quiet','Storm','Recovery']){
 }
 assert.doesNotMatch(html,/Preview: (quiet|storm|recovery)/);
 console.log('Belt geometry, energy proxy, proton contamination gate and isolated scenarios passed');
+
+// Particle populations respond to the matching fresh measurement, not an
+// unrelated activity score. Solar protons never masquerade as trapped protons.
+const densityFor=input=>risk.beltState(input,risk.derive(input,now,policy),'live',now);
+const lowParticles=risk.particleCounts(liveBelt),highParticles=risk.particleCounts(densityFor(loadedInput));
+assert.ok(highParticles.electrons>lowParticles.electrons);
+assert.ok(highParticles.electronTracers>lowParticles.electronTracers);
+const protonSurge={...beltInput,samples:{...samples,proton:{value:1000,time}}};
+const surgeParticles=risk.particleCounts(densityFor(protonSurge));
+assert.ok(surgeParticles.solarProtons>lowParticles.solarProtons);
+assert.equal(surgeParticles.inner,lowParticles.inner);
+assert.equal(surgeParticles.electronTracers,0); // Potential contamination.
+assert.ok(surgeParticles.electrons>0); // Unknown is a reference, not no belt.
+const geomagneticOnly={...beltInput,samples:{...samples,ap:{value:150,time}}};
+assert.deepEqual(risk.particleCounts(densityFor(geomagneticOnly)),lowParticles);
+const oldProton={...beltInput,samples:{...samples,proton:{value:1000,time:new Date(now-21*60000).toISOString()}}};
+assert.equal(risk.particleCounts(densityFor(oldProton)).solarProtons,0);
+assert.equal(risk.particleCounts(densityFor({...protonSurge,archive:true})).solarProtons,0);
+const noFlux=densityFor({...beltInput,electronFlux:{value:0,time},samples:{...samples,proton:{value:0,time}}});
+assert.equal(noFlux.loadingKnown,true);
+assert.equal(risk.particleCounts(noFlux).solarProtons,0);
+assert.ok(risk.particleCounts(noFlux).electrons<lowParticles.electrons);
+for(const flux of [0,.2,8,80,1000,10000,1e20]){
+ const particles=risk.particleCounts(densityFor({...beltInput,electronFlux:{value:flux,time}}));
+ assert.ok(particles.electrons>=0&&particles.electrons<=5200);
+ assert.ok(particles.electronTracers>=0&&particles.electronTracers<=80);
+}
+assert.ok(risk.particleCounts(scenarios.storm).electrons<risk.particleCounts(scenarios.quiet).electrons);
+assert.ok(risk.particleCounts(scenarios.recovery).electrons>risk.particleCounts(scenarios.quiet).electrons);
+const sceneScript=scripts.find(([,a])=>a.includes('id="satelliteRiskScene"'))[2];
+assert.doesNotMatch(sceneScript,/cutaway|for\(const lon of \[\.18,1\.22\]\)/i);
+assert.match(risk.markup(),/aria-label="About radiation belts and satellite effects"[^>]*>i<\/button>/);
+for(const topic of ['Surface charging:','Internal charging:','Single-event effects:','Why the risks differ by orbit','Satellite Drag']){
+ assert.ok(topic==='Satellite Drag'?html.includes(topic):risk.markup().includes(topic));
+}
+console.log('Complete belts, measurement-driven particle counts and orbit-aware charging explainer passed');
+
+// The surface/internal distinction must hold in the real policy, not just in
+// explanatory text. Storm activity screens drag only for LEO.
+const policyContext=vm.createContext({Number,state:{rules:{}},scientific:String,fmt:String});
+vm.runInContext(html.match(/      const RISK_RULES = \[[^]*?\n      \];/)[0]+'\n'+[
+ 'calculateSatelliteRisk','riskContributorThreshold','riskPhenomenonLabel','formatRiskThreshold'
+].map(name=>html.match(new RegExp('      function '+name+'\\([^]*?\\n      \\}'))[0]).join('\n'),policyContext);
+const loadedRisk=policyContext.calculateSatelliteRisk(5,.2,6e8);
+assert.ok(loadedRisk.GEO.some(r=>r.risk==='Internal Charging'));
+assert.ok(!Object.values(loadedRisk).flat().some(r=>r.risk==='Surface Charging'));
+const stormRisk=policyContext.calculateSatelliteRisk(150,.2,1e7);
+assert.ok(stormRisk.LEO.some(r=>r.risk==='Satellite Drag'));
+assert.ok(stormRisk.GEO.some(r=>r.risk==='Surface Charging'));
+assert.ok(!stormRisk.GEO.some(r=>r.risk==='Satellite Drag'||r.risk==='Internal Charging'));
+policyContext.state.rules={electron:{yellow:7e8,red:8e8}};
+assert.ok(!policyContext.calculateSatelliteRisk(5,.2,6e8).GEO.some(r=>r.risk==='Internal Charging'));
+console.log('Surface/internal charging separation, LEO drag and saved-threshold policy passed');

@@ -64,7 +64,7 @@ analysis** expands below it, growing the card and page without hiding the
 illustration. This remains environmental screening, not a spacecraft failure
 probability or an orbit-resolved radiation forecast.
 
-The satellite scene also includes radiation-belt cutaways and **Live data** /
+The satellite scene also includes complete radiation belts with flux-responsive particles and an **i** explainer and **Live data** /
 **Preview: Quiet / Storm / Recovery** controls. The preview is isolated from live
 alerts and the live impact analysis. See [radiation-belt geometry and data
 limits](radiation-belt-visualization.md). The same capitalization is used in the

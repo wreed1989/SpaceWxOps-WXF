@@ -459,6 +459,7 @@
     const contaminated=model.samples.proton.fresh&&model.values.proton>=10;
     const loadingKnown=fluxValid&&model.samples.proton.fresh&&!contaminated;
     const loading=loadingKnown?clamp(Math.log10(1+sample.value)/4):null;
+    const protonKnown=model.samples.proton.fresh,solarFlux=protonKnown?model.values.proton:null;
     const activity=model.samples.ap.fresh?clamp((model.values.ap-15)/125):null;
     let inner=3.35,outer=6.4,spread=1;
     if(activity!==null){inner-=.5*activity;outer-=.65*activity;spread+=.15*activity;}
@@ -468,11 +469,21 @@
       :mode==='storm'?'Storm example · inward broadening, outer-edge compression and electron dropout'
       :mode==='recovery'?'Recovery example · replenished, brighter outer electron belt'
       :contaminated?'GOES electrons may be proton-contaminated · loading unavailable'
-      :loadingKnown?(activity===null?'GOES electron shading · reference geometry; Ap unavailable':'Ap-driven illustrative geometry · GOES electron shading')
+      :loadingKnown?(activity===null?'GOES electron particles · reference geometry; Ap unavailable':'Ap-driven illustrative geometry · GOES electron particles')
       :model.archive?'Archive · reference geometry only':fluxValid?'Proton check unavailable · loading unavailable':'GOES electron loading unavailable · reference shading';
     return {inner,outer,spread,loading,loadingKnown,activity,contaminated,flux:fluxValid?sample.value:null,time:sample.time,explanation,
       // Unknown data renders a muted reference belt, not an empty belt.
-      intensity:loadingKnown?.04+.96*loading**2:.18,geometryKnown:activity!==null};
+      intensity:loadingKnown?.04+.96*loading**2:.18,geometryKnown:activity!==null,
+      electronDensity:loadingKnown?loading**2:.12,protonKnown,solarFlux,solarTime:model.samples.proton.time,
+      solarDensity:protonKnown?clamp(Math.log10(1+solarFlux)/4):0};
+  }
+  function particleCounts(state){
+    // Bounded visual populations, not measured particles per unit volume.
+    // Preserve a muted reference cloud when electron loading is unknown.
+    const density=clamp(state.electronDensity),solar=clamp(state.solarDensity);
+    return {inner:1200,electrons:Math.round(180+5020*density),
+      electronTracers:state.loadingKnown?Math.round(4+76*density):0,
+      solarProtons:state.protonKnown?Math.round(220*solar):0};
   }
   // Earth-centred radii in Earth radii, not altitude. Representative orbits,
   // rather than a claim that all MEO/HEO spacecraft share one path.
@@ -488,23 +499,53 @@
     const r=l*Math.cos(lat)**2,x=r*Math.cos(lat)*Math.cos(lon),y=r*Math.cos(lat)*Math.sin(lon),z=r*Math.sin(lat),tilt=11*Math.PI/180;
     return [x*Math.cos(tilt)+z*Math.sin(tilt),y,-x*Math.sin(tilt)+z*Math.cos(tilt)];
   }
-  const cutaway=lon=>{const a=(lon%TAU+TAU)%TAU;return a>.18&&a<1.22;};
   function project([x,y,z]){return {x:CX+RE*x,y:CY+RE*(.46*y-.888*z),depth:.888*y+.46*z};}
   function markup(compact=false){return `<div class="sr-scene" data-compact="${compact}">
-    <div class="sr-toolbar"><strong data-sr-status>AWAITING DATA</strong><div class="sr-controls"><select data-sr-mode aria-label="Satellite environment mode"><option value="live">Live data</option><option value="quiet">Preview: Quiet</option><option value="storm">Preview: Storm</option><option value="recovery">Preview: Recovery</option></select><button data-sr-pause aria-label="Pause satellite illustration" aria-pressed="false">Pause</button><button data-sr-info aria-expanded="false">Info</button></div></div>
+    <div class="sr-toolbar"><strong data-sr-status>AWAITING DATA</strong><div class="sr-controls"><select data-sr-mode aria-label="Satellite environment mode"><option value="live">Live data</option><option value="quiet">Preview: Quiet</option><option value="storm">Preview: Storm</option><option value="recovery">Preview: Recovery</option></select><button data-sr-pause aria-label="Pause satellite illustration" aria-pressed="false">Pause</button><button data-sr-info class="sr-info-button" aria-label="About radiation belts and satellite effects" title="About radiation belts and satellite effects" aria-expanded="false">i</button></div></div>
     <div class="sr-preview-note" data-sr-preview hidden>SYNTHETIC PREVIEW · does not change live alerts or impact analysis</div>
     <div class="sr-viewport"><canvas role="img" aria-label="Earth, radiation belts and representative satellite orbits"></canvas></div>
-    <div class="sr-belt-key"><span><i class="sr-inner-key"></i>Inner belt · mainly trapped protons</span><span><i class="sr-outer-key"></i>Outer belt · electrons</span><span>Slot between belts</span></div>
-    <div class="sr-belt-state"><span data-sr-belt-state></span><b data-sr-flux></b></div>
+    <div class="sr-belt-key"><span><i class="sr-inner-key"></i>Inner belt · mainly trapped protons</span><span><i class="sr-outer-key"></i>Outer belt · electrons</span><span><i class="sr-solar-key"></i>Solar protons · passing</span></div>
+    <div class="sr-belt-state"><span data-sr-belt-state></span><b data-sr-flux></b><b data-sr-protons></b></div>
     <div class="sr-orbits">${ORBITS.map(o=>`<button data-risk-orbit="${o}" aria-pressed="false">${o}<small data-sr-level="${o}">Unavailable</small></button>`).join('')}</div>
     <div class="sr-drivers">${[['ap','PLANETARY Ap'],['proton','≥10 MeV SOLAR PROTONS · PFU'],['electron','>2 MeV · 24 H FLUENCE']].map(([k,t])=>`<div class="sr-driver" data-sr-driver="${k}"><span>${t}</span><b>—</b><small>Awaiting data</small></div>`).join('')}</div>
-    <div class="sr-caption">${compact?"Earth-scaled cutaway · illustrative boundaries and motion. GOES is a local GEO proxy.":"Cutaway view · Earth-scaled reference geometry; belt boundaries and motion are illustrative. GOES samples GEO, not the entire belt. Orbit colors indicate environmental screening; spacecraft are representative."}</div>
-    <div class="sr-info" hidden><p>A front sector is cut away to expose the two dipole-shaped reference volumes and the intervening slot: inner belt roughly 1.2–2.4 Earth radii; outer belt roughly 3–7 Earth radii from Earth's centre. The gap and boundaries depend on energy and conditions. The inner belt is mainly trapped protons; the solar-proton feed does not measure its population.</p><p>Live outer-belt brightness uses fresh GOES >2 MeV flux at GEO as a qualitative proxy. Ap adjusts a schematic outer boundary. These inputs cannot recover global belt extent, pitch-angle distributions or density. During ≥10 MeV solar-proton flux ≥10 PFU, electron shading is withheld because contamination is possible; this conservative display gate is independent of alert settings.</p><p>Storm is one possible dropout/compression example. Recovery illustrates subsequent electron buildup; neither response is guaranteed. Preview values never enter live feeds, alerts, or the impact analysis. Inner-belt intensity remains a reference in every mode.</p><p>Representative radii: LEO 1.13 Rᴇ, GPS-like MEO 4.17 Rᴇ, GEO 6.61 Rᴇ, elliptical HEO 1.15–7.2 Rᴇ. Belts use an idealized 11° dipole tilt. Spacecraft and trapped-particle motion are illustrative, not orbit propagation.</p><p>Orbit screening uses your alert rules. Particle inputs expire after 20 minutes, Ap 4 hours after its interval end; electron fluence needs 23 hours of valid coverage in the preceding day. This is not a spacecraft failure probability.</p><p><a href="https://www.nasa.gov/missions/van-allen-probes/nasas-van-allen-probes-revolutionize-view-of-radiation-belts/" target="_blank" rel="noopener">NASA belt dynamics</a> · <a href="https://www.swpc.noaa.gov/products/goes-electron-flux" target="_blank" rel="noopener">SWPC GOES electron limits</a></p></div>
+    <div class="sr-caption">${compact?"More dots = stronger particle flux · qualitative GOES proxy. Amber inner belt is a reference.":"More dots = stronger particle flux, not a failure probability. GOES is a local GEO proxy; amber inner-belt protons are a reference. Geometry and motion are illustrative."}</div>
+    <div class="sr-info" hidden role="region" aria-label="Radiation belts explained">
+      <div class="sr-info-heading"><strong>Van Allen belts &amp; satellite effects</strong><button data-sr-close aria-label="Close radiation belt explanation">×</button></div>
+      <p>Earth’s magnetic field holds energetic particles in two broad zones: an inner belt rich in trapped protons and an outer belt dominated by electrons. The lower-density slot separates them. Satellites crossing these regions receive radiation that can disrupt electronics or accumulate damage.</p>
+      <p><strong>Read the particles:</strong> more blue dots mean stronger measured &gt;2 MeV electron flux at GOES; more orange streaks mean stronger ≥10 MeV solar-proton flux. Amber inner-belt dots are a fixed reference: our solar-proton feed does not measure trapped protons. Counts are qualitative, not global density or your satellite’s failure probability.</p>
+      <details data-overlay-details><summary>How particles get trapped, build up, and escape</summary>
+        <p><strong>Trapping:</strong> charged particles spiral around magnetic field lines, bounce between stronger fields near the poles, and drift around Earth. Particles with suitable directions stay trapped; those directed into the atmospheric “loss cone” are lost.</p>
+        <p><strong>Loading:</strong> CMEs and high-speed streams from coronal holes can drive geomagnetic storms and substorms. Injections from the magnetotail supply electrons; plasma waves and inward transport can accelerate them. Recovery can bring a delayed buildup of energetic electrons even after geomagnetic activity eases.</p>
+        <p><strong>Flushing:</strong> storm compression can open escape routes at the magnetopause; waves can scatter electrons into the atmosphere. A storm can reduce or increase a population depending on energy, location, and competing processes. Quiet-time wave scattering also removes particles; quiet does not mean empty.</p>
+        <p><strong>Protons differ:</strong> many energetic inner-belt protons originate when cosmic rays strike the atmosphere and escaping neutrons decay. They can persist much longer than outer-belt electrons. Atmospheric collisions and scattering remove them; exceptional storms can inject or redistribute protons. Flare/CME-shock solar protons are a separate, transient exposure and do not automatically fill the inner belt.</p>
+      </details>
+      <details data-overlay-details><summary>Charging, single-event upsets, and cumulative damage</summary>
+        <p><strong>Surface charging:</strong> lower-energy plasma electrons and ions, sunlight, and emitted electrons set the electrical balance at a spacecraft’s surface. Uneven charging between materials can cause a discharge, particularly during hot-plasma injections or auroral crossings.</p>
+        <p><strong>Internal charging:</strong> energetic electrons can penetrate shielding and accumulate in insulating materials or isolated conductors. A discharge can disrupt or damage electronics. The &gt;2 MeV display is an internal-charging exposure proxy, not a surface-charging measurement; flux history, shielding, materials, and discharge times matter.</p>
+        <p><strong>Single-event effects:</strong> one energetic proton or heavy ion can deposit enough charge, directly or through secondary particles, to flip a bit (an SEU), trigger a latchup, or damage a device. A buildup of spacecraft charge is not required.</p>
+        <p><strong>Cumulative damage:</strong> repeated exposure adds ionizing dose and displacement damage, degrading electronics, detectors, and solar cells. Actual susceptibility depends on orbit, shielding, component design, and exposure duration. Losing belt particles does not instantly clear stored charge or undo dose.</p>
+      </details>
+      <details data-overlay-details><summary>Why the risks differ by orbit</summary>
+        <p><strong>LEO:</strong> storm-heated upper air increases drag, orbital decay, and tracking uncertainty. Radiation exposure also occurs in the South Atlantic Anomaly and polar regions; auroral plasma can cause surface charging, and energetic electrons can cause internal charging in susceptible hardware.</p>
+        <p><strong>MEO:</strong> navigation-like orbits spend time in the radiation belts, making internal charging, cumulative dose, and single-event effects important. Surface charging remains possible and depends on the local plasma and spacecraft.</p>
+        <p><strong>GEO:</strong> hot plasma injections can drive surface charging; penetrating energetic electrons can drive internal charging. Solar protons and heavy ions can cause single-event effects. The two charging mechanisms involve different energies and timescales.</p>
+        <p><strong>HEO:</strong> exposure changes along the orbit: belt crossings add radiation, high-altitude dwell can expose spacecraft to hot plasma, and a sufficiently low perigee can introduce drag. Inclination and orbit phase matter.</p>
+        <p>These are overlapping concerns, not exclusive categories. Orbit colors summarize the existing Ap/proton/electron-fluence screening rules and your alert thresholds. Ap is a broad activity proxy, not a local surface-potential or drag prediction. Fewer electron dots do not mean that drag or surface-charging risk is low.</p>
+      </details>
+      <details data-overlay-details><summary>Live inputs, previews, and limits</summary>
+        <p>GOES samples a local part of the outer belt at GEO. Particle counts use a bounded logarithmic scale. Ap changes schematic geometry, not particle loading. Orbit colors retain your alert rules and 24-hour electron-fluence screening; changing an alert threshold does not create more particles.</p>
+        <p>Particle samples expire after 20 minutes. Missing electron data, a missing proton check, or solar-proton flux ≥10 PFU gives a muted reference cloud with no animated electron tracers. This conservative contamination gate is separate from your alert thresholds. Missing solar-proton data hides its streaks and is labeled unavailable, not quiet.</p>
+        <p>Quiet, Storm (one possible dropout), and Recovery (possible replenishment) are synthetic examples; neither storm outcome is guaranteed. They never enter live alerts or impact analysis. The diagram has no global trapped-proton measurement, spacecraft charging solver, or particle trajectory calculation.</p>
+        <p>Reference belts span roughly 1.2–2.4 and 3–7 Earth radii from the centre, with energy-dependent boundaries. Representative orbits: LEO 1.13 Rᴇ; MEO 4.17 Rᴇ; GEO 6.61 Rᴇ; HEO 1.15–7.2 Rᴇ.</p>
+      </details>
+      <p class="sr-info-sources"><a href="https://www.spenvis.oma.be/help/background/traprad/traprad.html" target="_blank" rel="noopener">ESA trapping &amp; effects</a> · <a href="https://www.nasa.gov/missions/van-allen-probes/nasas-van-allen-probes-revolutionize-view-of-radiation-belts/" target="_blank" rel="noopener">NASA storm response</a> · <a href="https://www.nasa.gov/missions/van-allen-probes/nasas-van-allen-probes-spot-electron-rainfall-in-atmosphere/" target="_blank" rel="noopener">NASA particle loss</a> · <a href="https://www.swpc.noaa.gov/products/goes-electron-flux" target="_blank" rel="noopener">NOAA GOES limits</a> · <a href="https://science.nasa.gov/science-research/heliophysics/how-nasa-prepares-spacecraft-for-the-harsh-radiation-of-space/" target="_blank" rel="noopener">NASA satellite damage</a> · <a href="https://www.spenvis.oma.be/help/background/charging/charging.html" target="_blank" rel="noopener">ESA charging</a> · <a href="https://www.swpc.noaa.gov/impacts/satellite-drag" target="_blank" rel="noopener">NOAA drag</a></p>
+    </div>
   </div>`;}
   let seed=39121;
   const random=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646;};
-  const clouds=[1200,2600].map(n=>Array.from({length:n},()=>({l:(random()+random())/2,lat:(random()+random()+random()-1.5)/1.5,lon:random()*TAU,size:.6+random()*1.2,a:.35+random()*.65})));
+  const clouds=[1200,5200].map(n=>Array.from({length:n},()=>({l:(random()+random())/2,lat:(random()+random()+random()-1.5)/1.5,lon:random()*TAU,size:.6+random()*1.2,a:.35+random()*.65})));
   const stars=Array.from({length:150},()=>({x:random()*W,y:random()*H,r:.5+random()*.65,a:.12+random()*.25}));
+  const solarParticles=Array.from({length:220},()=>({u:random(),y:(random()-.5)*12,z:(random()-.5)*6,size:.9+random()*1.1}));
   const scenes=new Map();let earth=null;
   class Scene{
     constructor(root){
@@ -518,13 +559,16 @@
       this.visibility=new IntersectionObserver(entries=>{this.visible=entries.some(e=>e.isIntersecting);this.wake();});this.visibility.observe(root);
       this.click=e=>{
         if(e.target.closest('[data-sr-pause]')){this.paused=!this.paused;this.pauseLabel();this.poll();}
-        if(e.target.closest('[data-sr-info]')){const info=root.querySelector('.sr-info');info.hidden=!info.hidden;root.querySelector('[data-sr-info]').setAttribute('aria-expanded',String(!info.hidden));}
+        if(e.target.closest('[data-sr-info]'))this.toggleInfo();
+        if(e.target.closest('[data-sr-close]'))this.toggleInfo(false);
         const orbit=e.target.closest('[data-risk-orbit]')?.dataset.riskOrbit;
         if(orbit){e.stopPropagation();window.dispatchEvent(new CustomEvent('risk-orbit-select',{detail:orbit}));scan();}
       };
       this.change=e=>{if(e.target.matches('[data-sr-mode]')){this.mode=TITLES[e.target.value]?e.target.value:'live';this.poll();}};
-      root.addEventListener('click',this.click);root.addEventListener('change',this.change);this.pauseLabel();this.poll();
+      this.keydown=e=>{if(e.key==='Escape'&&!root.querySelector('.sr-info').hidden){e.stopPropagation();this.toggleInfo(false);}};
+      root.addEventListener('click',this.click);root.addEventListener('change',this.change);root.addEventListener('keydown',this.keydown);this.pauseLabel();this.poll();
     }
+    toggleInfo(open){const info=this.root.querySelector('.sr-info'),button=this.root.querySelector('[data-sr-info]');info.hidden=open===undefined?!info.hidden:!open;button.setAttribute('aria-expanded',String(!info.hidden));if(info.hidden)button.focus();}
     pauseLabel(){const b=this.root.querySelector('[data-sr-pause]');b.textContent=this.paused?'Play':'Pause';b.setAttribute('aria-pressed',String(this.paused));b.setAttribute('aria-label',(this.paused?'Play':'Pause')+' satellite illustration');}
     poll(){
       const live=window.SpaceWxRiskTelemetry?.()||{},preview=this.mode!=='live';
@@ -535,26 +579,28 @@
       this.root.querySelector('[data-sr-preview]').hidden=!preview;
       this.root.querySelector('[data-sr-belt-state]').textContent=this.belts.explanation;
       this.root.querySelector('[data-sr-flux]').textContent=this.belts.loadingKnown?(preview?'Illustrative':'GOES GEO')+' >2 MeV: '+this.belts.flux.toLocaleString(undefined,{maximumFractionDigits:1})+' e⁻ cm⁻² s⁻¹ sr⁻¹'+(!preview?' · '+new Date(this.belts.time).toISOString().slice(11,16)+'Z':''):'Reference outer-belt shading';
+      this.root.querySelector('[data-sr-protons]').textContent=this.belts.protonKnown?(preview?'Illustrative':'GOES')+' solar protons ≥10 MeV: '+this.belts.solarFlux.toLocaleString(undefined,{maximumFractionDigits:2})+' PFU'+(!preview?' · '+new Date(this.belts.solarTime).toISOString().slice(11,16)+'Z':''):'Solar-proton exposure unavailable · streaks hidden';
       for(const orbit of ORBITS){const el=this.root.querySelector(`[data-sr-level="${orbit}"]`);el.textContent=label(m,orbit);el.style.setProperty('--risk-color',!m.anyFresh||(!m.complete&&!m.levels[orbit])?'#839baa':COLORS[m.levels[orbit]]);el.parentElement.setAttribute('aria-pressed',String(orbit===m.selected));}
       for(const key of Object.keys(limits)){
         const s=m.samples[key],el=this.root.querySelector(`[data-sr-driver="${key}"]`);el.dataset.stale=String(!s.fresh);
         el.querySelector('b').textContent=s.fresh?(key==='electron'?s.value.toExponential(2):key==='proton'?s.value.toFixed(2):s.value.toFixed(0)):'—';
         el.querySelector('small').textContent=preview?'Illustrative input':s.status+(Number.isFinite(Date.parse(s.time))?' · '+new Date(s.time).toISOString().slice(11,16)+(Number.isFinite(Date.parse(s.validThrough))?'–'+new Date(s.validThrough).toISOString().slice(11,16):'')+'Z':'');
       }
-      this.canvas.setAttribute('aria-label',(preview?'Synthetic '+TITLES[this.mode]+' preview. ':m.status+'. ')+this.belts.explanation+'. Inner proton belt, slot region, outer electron belt; illustrative boundaries. '+ORBITS.map(o=>o+' '+label(m,o)).join('; '));
+      this.canvas.setAttribute('aria-label',(preview?'Synthetic '+TITLES[this.mode]+' preview. ':m.status+'. ')+this.belts.explanation+'. Complete inner and outer belts with a slot; blue electron dots and orange passing solar protons scale with flux. Illustrative boundaries. '+ORBITS.map(o=>o+' '+label(m,o)).join('; '));
       if(!this.current||this.paused)this.current={...this.belts};
+      this.current.loadingKnown=this.belts.loadingKnown;this.current.protonKnown=this.belts.protonKnown;
       this.draw();this.wake();
     }
     wake(){if(this.frame||this.paused||!this.visible||document.hidden)return;this.last=0;this.frame=requestAnimationFrame(t=>this.tick(t));}
     tick(t){
       this.frame=0;if(this.paused||!this.visible||document.hidden||!this.root.isConnected)return;
       if(t-this.last>=40){const dt=this.last?Math.min(.08,(t-this.last)/1000):0;this.phase+=dt;this.last=t;
-        for(const key of ['inner','outer','spread','intensity'])this.current[key]=mix(this.current[key],this.belts[key],1-Math.exp(-dt/1.1));
+        for(const key of ['inner','outer','spread','intensity','electronDensity','solarDensity'])this.current[key]=mix(this.current[key],this.belts[key],1-Math.exp(-dt/1.1));
         this.draw();
       }this.frame=requestAnimationFrame(t=>this.tick(t));
     }
     beltLayers(){
-      const b=this.current,key=[b.inner,b.outer,b.spread,b.intensity].map(v=>Math.round(v*35)).join(':')+':'+this.belts.loadingKnown;
+      const b=this.current,counts=particleCounts(b),key=[b.inner,b.outer,b.spread,b.intensity,b.electronDensity].map(v=>Math.round(v*35)).join(':')+':'+this.belts.loadingKnown;
       if(this.cacheKey===key)return;this.cacheKey=key;
       const cs=this.layers.map(layer=>{const c=layer.getContext('2d');c.clearRect(0,0,W,H);return c;});
       for(let band=1;band>=0;band--){
@@ -566,26 +612,20 @@
           for(let side=0;side<2;side++){
             const c=cs[side];c.fillStyle=`rgba(${rgb},${strength*.052*weight})`;
             for(let k=0;k<84;k++){
-              const t0=k/84*TAU,t1=(k+1)/84*TAU;if(cutaway((t0+t1)/2))continue;
+              const t0=k/84*TAU,t1=(k+1)/84*TAU;
               const points=[project(beltPoint(low,lat,t0)),project(beltPoint(hi,lat,t0)),project(beltPoint(hi,lat,t1)),project(beltPoint(low,lat,t1))];
               if((points.reduce((v,p)=>v+p.depth,0)>0)!==Boolean(side))continue;
               c.beginPath();points.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));c.closePath();c.fill();
             }
           }
         }
-        for(const p of clouds[band]){
-          if(cutaway(p.lon))continue;
+        for(let i=0;i<(band?counts.electrons:counts.inner);i++){
+          const p=clouds[band][i];
           const lat=p.lat*maxLat,point=beltPoint(mix(lo,hi,p.l),lat,p.lon);if(Math.hypot(...point)<1.08)continue;
           const pos=project(point),c=cs[pos.depth>0?1:0];
           c.fillStyle=`rgba(${rgb},${strength*p.a*(1-.5*Math.abs(p.lat))})`;c.beginPath();c.arc(pos.x,pos.y,p.size*(band?1.25:1.15),0,TAU);c.fill();
         }
-        for(const lon of [.18,1.22]){
-          const c=cs[1],points=[];
-          for(let j=-20;j<=20;j++)points.push(project(beltPoint(hi,maxLat*j/20,lon)));
-          for(let j=20;j>=-20;j--){const lat=maxLat*j/20;points.push(project(beltPoint(Math.max(lo,1.08/Math.cos(lat)**2),lat,lon)));}
-          c.beginPath();points.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));c.closePath();
-          c.fillStyle=`rgba(${rgb},${band?.03+.18*b.intensity:.22})`;c.fill();c.strokeStyle=`rgba(${rgb},.28)`;c.lineWidth=.8;c.stroke();
-        }
+
       }
     }
     drawOrbit(c,orbit,front){
@@ -597,11 +637,25 @@
       if((p.depth>=0)===front){c.save();c.translate(p.x,p.y);c.rotate(-.25);c.fillStyle='#2f5c7a';c.strokeStyle='#bed4e0';c.lineWidth=.8;for(const x of [-12,5]){c.fillRect(x,-3.5,7,7);c.strokeRect(x,-3.5,7,7);}c.fillStyle=known?COLORS[level]:'#a1b2c0';c.fillRect(-3.5,-4.5,7,9);c.restore();}
     }
     drawTracers(c,front){
-      for(let band=0;band<2;band++)for(let i=0;i<(band?20:9);i++){
+      const counts=particleCounts(this.current);
+      for(let band=0;band<2;band++)for(let i=0;i<(band?counts.electronTracers:9);i++){
         const b=this.current,l=band?mix(b.inner+.2,b.outer-.2,(i%7)/7):1.5+(i%4)*.19;
         const lat=Math.sin(this.phase*(band?1.2:.6)+i*2.3)*(band?.37:.27),lon=i*2.4+this.phase*(band?.1:-.055),p=project(beltPoint(l,lat,lon));
-        if(cutaway(lon)||(p.depth>0)!==front)continue;
+        if((p.depth>0)!==front)continue;
         c.globalAlpha=band?(this.belts.loadingKnown?.18+.5*b.intensity:.12):.38;c.fillStyle=band?'#c4e7ff':'#ffe2a3';c.beginPath();c.arc(p.x,p.y,band?1.65:1.3,0,TAU);c.fill();
+      }c.globalAlpha=1;
+    }
+    drawSolarProtons(c,front){
+      const count=particleCounts(this.current).solarProtons;
+      // Passing exposure glyphs, deliberately separate from trapped-belt motion.
+      // No claim of a measured arrival direction or magnetospheric trajectory.
+      for(let i=0;i<count;i++){
+        const seed=solarParticles[i],x=-8.2+((seed.u+this.phase*.11)%1)*16.4;
+        if(Math.hypot(x,seed.y,seed.z)<1.2)continue;
+        const p=project([x,seed.y,seed.z]);if((p.depth>0)!==front)continue;
+        c.strokeStyle='#ff945d';c.globalAlpha=.4;c.lineWidth=seed.size;
+        c.beginPath();c.moveTo(p.x-9,p.y+1.2);c.lineTo(p.x,p.y);c.stroke();
+        c.fillStyle='#ffd4ad';c.globalAlpha=.8;c.beginPath();c.arc(p.x,p.y,seed.size,0,TAU);c.fill();
       }c.globalAlpha=1;
     }
     draw(){
@@ -612,9 +666,9 @@
       const scale=Math.min(w/W,h/H);c.setTransform(scale,0,0,scale,(w-W*scale)/2,(h-H*scale)/2);
       const bg=c.createRadialGradient(CX,CY,30,CX,CY,440);bg.addColorStop(0,'#152e42');bg.addColorStop(1,'#030a13');c.fillStyle=bg;c.fillRect(0,0,W,H);
       for(const s of stars){c.globalAlpha=s.a;c.fillStyle='#b8d4e5';c.beginPath();c.arc(s.x,s.y,s.r,0,TAU);c.fill();}c.globalAlpha=1;
-      this.beltLayers();c.drawImage(this.layers[0],0,0);for(const orbit of ORBITS)this.drawOrbit(c,orbit,false);this.drawTracers(c,false);
+      this.beltLayers();c.drawImage(this.layers[0],0,0);for(const orbit of ORBITS)this.drawOrbit(c,orbit,false);this.drawTracers(c,false);this.drawSolarProtons(c,false);
       const glow=c.createRadialGradient(CX,CY,RE*.92,CX,CY,RE*1.35);glow.addColorStop(0,'rgba(95,184,230,.23)');glow.addColorStop(1,'rgba(35,98,154,0)');c.fillStyle=glow;c.fillRect(CX-RE*1.4,CY-RE*1.4,RE*2.8,RE*2.8);c.drawImage(earth,CX-RE,CY-RE,RE*2,RE*2);
-      c.drawImage(this.layers[1],0,0);this.drawTracers(c,true);for(const orbit of ORBITS)this.drawOrbit(c,orbit,true);
+      c.drawImage(this.layers[1],0,0);this.drawTracers(c,true);this.drawSolarProtons(c,true);for(const orbit of ORBITS)this.drawOrbit(c,orbit,true);
       // Fixed callouts keep labels separate from the moving spacecraft.
       const callout=(text,x,y,to,color)=>{c.strokeStyle=color+'77';c.lineWidth=.8;c.beginPath();c.moveTo(x,y+6);c.lineTo(to.x,to.y);c.stroke();c.font='600 17px Inter,system-ui,sans-serif';c.textAlign='left';c.fillStyle=color;c.fillText(text,x,y);};
       callout('INNER BELT',570,110,project(beltPoint(1.9,.15,.18)),'#eec283');
@@ -622,17 +676,17 @@
       callout('SLOT',660,466,project(beltPoint(2.7,0,1.22)),'#a7baca');
       c.textAlign='center';c.font='11px ui-monospace,monospace';c.fillStyle='#d0e1ea';c.fillText('EARTH',CX,CY+RE+18);
       for(const [orbit,angle] of [['LEO',.6],['MEO',3.7],['GEO',.15],['HEO',3.1]]){const p=project(orbitPoint(orbit,angle));c.fillStyle='#d0e1ea';c.font='600 15px ui-monospace,monospace';c.fillText(orbit,p.x,p.y-13);}
-      c.fillStyle='#7e9caf';c.font='12px ui-monospace,monospace';c.textAlign='left';c.fillText('CUTAWAY · EARTH-CENTRED RADIAL REFERENCE',57,526);
+      c.fillStyle='#7e9caf';c.font='12px ui-monospace,monospace';c.textAlign='left';c.fillText('EARTH-CENTRED RADIAL REFERENCE',57,526);
       c.strokeStyle='#5d7e9477';c.beginPath();c.moveTo(58,551);c.lineTo(58+7*RE,551);c.stroke();
       for(const n of [0,1,2,4,6,7]){const x=58+n*RE;c.beginPath();c.moveTo(x,547);c.lineTo(x,555);c.stroke();c.fillText(n+' Rᴇ',x-7,571);}
       c.textAlign='right';c.fillStyle=this.mode==='live'?'#8bafc4':'#e6c980';c.font='11px ui-monospace,monospace';c.fillText(this.mode==='live'?'ILLUSTRATIVE BOUNDARIES':'SYNTHETIC '+TITLES[this.mode].toUpperCase()+' SCENARIO',945,551);
       c.setTransform(1,0,0,1,0,0);
     }
-    stop(){cancelAnimationFrame(this.frame);this.resize.disconnect();this.visibility.disconnect();this.reduced.removeEventListener('change',this.motionChange);this.root.removeEventListener('click',this.click);this.root.removeEventListener('change',this.change);}
+    stop(){cancelAnimationFrame(this.frame);this.resize.disconnect();this.visibility.disconnect();this.reduced.removeEventListener('change',this.motionChange);this.root.removeEventListener('click',this.click);this.root.removeEventListener('change',this.change);this.root.removeEventListener('keydown',this.keydown);}
   }
   function mount(panel){let root=panel.querySelector('.sr-scene');if(!root){panel.innerHTML=markup();root=panel.querySelector('.sr-scene');}if(!scenes.has(root))scenes.set(root,new Scene(root));else scenes.get(root).poll();return root;}
   function scan(){const panel=document.getElementById('militaryRiskPanel');if(panel&&!panel.querySelector('.sr-scene'))mount(panel);for(const [root,scene]of scenes)if(!root.isConnected){scene.stop();scenes.delete(root);}for(const root of document.querySelectorAll('.sr-scene')){if(!scenes.has(root))scenes.set(root,new Scene(root));else scenes.get(root).poll();}}
-  window.SpaceWxSatelliteRisk={derive,label,markup,mount,previewSnapshot,beltState,orbitPoint,beltPoint,refresh:scan};
+  window.SpaceWxSatelliteRisk={derive,label,markup,mount,previewSnapshot,beltState,particleCounts,orbitPoint,beltPoint,refresh:scan};
   document.addEventListener('DOMContentLoaded',()=>{scan();const timer=setInterval(scan,10000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)scan();});window.addEventListener('spacewx:alert-rules-changed',scan);window.addEventListener('beforeunload',()=>{clearInterval(timer);for(const scene of scenes.values())scene.stop();},{once:true});});
 })();
 </script>
@@ -10524,16 +10578,14 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
         {
           risk: "Surface Charging",
           guide: "Low-energy electrons can build charge on spacecraft surfaces.",
-          description: "Low-energy electrons build up on spacecraft surfaces, creating electrostatic discharge risk that can damage electronics. Risk is usually greatest on the night side of Earth and in polar regions.",
-          drivers: "Planetary Ap and 24-hour ≥2 MeV electron fluence.",
+          description: "Low-energy electrons build up on spacecraft surfaces, creating electrostatic discharge risk that can damage electronics. Hot-plasma injections, eclipse and auroral crossings can matter. This dashboard uses Ap as a broad activity proxy; it does not measure local plasma, spacecraft surface potential or discharge probability.",
+          drivers: "Planetary Ap activity proxy; local plasma and surface potential are not measured.",
           orbits: ["LEO", "MEO", "GEO", "HEO"],
           levels: [[1, 1], [3, 2], [5, 3]],
           contributors: [
             ["geomagnetic_storm", 1, 32, "Ap at or above 32"],
             ["geomagnetic_storm", 2, 56, "Ap at or above 56"],
-            ["geomagnetic_storm", 3, 111, "Ap at or above 111"],
-            ["electron_fluence", 2, 1.1e8, "24h electron fluence at or above 1.1e8"],
-            ["electron_fluence", 3, 4.8e8, "24h electron fluence at or above 4.8e8"]
+            ["geomagnetic_storm", 3, 111, "Ap at or above 111"]
           ]
         },
         {
@@ -36600,7 +36652,7 @@ window.SpaceWxMonitorLayout=(()=>{
     if(flows.has(root))return;
     const state={root,open:false,closedHeight:0,plotHeight:0,plot:null,frame:0,lastWidth:0,lastHeight:0};
     function remember(){
-      if(root.querySelector('details[open]'))return;
+      if(root.querySelector('details[open]:not([data-overlay-details])'))return;
       const plot=root.querySelector('.wx-particle-plot');
       if(root.clientHeight>0)state.closedHeight=root.offsetHeight;
       if(plot?.clientHeight>0)state.plotHeight=plot.clientHeight;
@@ -36617,7 +36669,7 @@ window.SpaceWxMonitorLayout=(()=>{
       if(!root.isConnected)return;
       const plot=root.querySelector('.wx-particle-plot');
       if(plot!==state.plot){if(state.plot)observer?.unobserve(state.plot);state.plot=plot;if(plot)observer?.observe(plot);}
-      const open=!!root.querySelector('details[open]');
+      const open=!!root.querySelector('details[open]:not([data-overlay-details])');
       if(open){
         if(!state.open){state.closedHeight ||= root.offsetHeight;state.plotHeight ||= plot?.clientHeight||300;}
         root.style.setProperty('--wx-closed-height',state.closedHeight+'px');
@@ -36676,6 +36728,20 @@ window.SpaceWxMonitorLayout=(()=>{
 #militaryRiskPanel .sr-viewport{min-height:270px}
 .sr-scene[data-compact=true] .sr-viewport{min-height:190px}.sr-scene[data-compact=true] .sr-belt-key{font-size:9px;gap:5px 10px}
 .hsv-view-label{font-size:11px;color:#aec9d8}
+
+.sr-info-button{min-width:28px!important;width:28px;height:28px;border-radius:50%!important;padding:0!important;font:italic 700 16px Georgia,serif!important}
+.sr-solar-key{background:#ff945d;box-shadow:0 0 7px #ff945d66}.sr-info-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;color:#e0f0f8}
+.sr-info-heading button{border:1px solid #527287;background:#132f42;color:#e3f1f8;border-radius:4px;cursor:pointer;font-size:19px;line-height:24px;min-width:28px}
+.sr-info details{border-top:1px solid #365064;padding:9px 0}.sr-info summary{cursor:pointer;color:#b8e1f4;font-weight:600;line-height:1.5}.sr-info details p{margin:9px 0 0}.sr-info-sources{font-size:10px;margin-top:8px!important}
+.sr-info[hidden]{display:none}.sr-belt-state [data-sr-protons]{color:#e5bda3}
+
+.sr-scene .sr-info p{font-size:12px;line-height:1.55;color:#bed2df}.sr-info summary{font-size:12px}.sr-scene .sr-info .sr-info-sources{font-size:10px}
+.fd-wall-tile-body>.fos-orbit-exposure{grid-template-rows:minmax(410px,1fr) auto;overflow:auto}
+.fd-wall-tile-body>.fos-orbit-exposure>header{display:none}
+.fos-orbit-summary-map:has(.sr-scene){display:flex;align-items:stretch;min-height:0}
+.fos-orbit-summary-map>.sr-scene{height:100%;min-height:0}
+.sr-scene[data-compact=true] .sr-viewport{height:auto;flex:1 1 0;min-height:150px}
+.sr-scene[data-compact=true] :is(.sr-toolbar,.sr-orbits,.sr-caption){flex-shrink:0}
 </style>
 <script id="fdDeskScript">
 (function () {

@@ -7,3 +7,6 @@ sunpy[map,net]==7.1.2
 reproject==0.21.0
 Pillow==12.3.0
 scikit-image==0.26.0
+
+# Shared hourly WXF electron forecast data preparation.
+pandas==3.0.6

@@ -496,3 +496,6 @@ assert.equal(risk.derive(postEvent,now,policyFn).samples.electron.fresh,false);
 assert.equal(risk.beltState(postEvent,risk.derive(postEvent,now,policyFn),'live',now).loadingKnown,true); // Current flux can recover before the contaminated fluence window clears.
 assert.doesNotMatch(html,/probability of Surface Charging|probability of Single Event Upsets|High SEU and Total Dose risk/);
 console.log('Scientific screening, exact configured triggers, preview parity, contamination history and fluence integration passed');
+
+// The WXF model shares the same canonical downloadable page.
+require("../research/electron_fluence/test_dashboard.cjs");

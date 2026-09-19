@@ -99,3 +99,7 @@ explains this distinction. UMASEP's provider-defined event threshold remains a
 separate dotted line over its published validity window; user settings do not
 change or reinterpret the provider's all-clear statement. Hover boxes use opaque
 backgrounds for legibility. Color names are not printed on threshold labels.
+
+## WXF experimental rolling fluence
+
+The Electron Forecast card now defaults to the [WXF-EF experiment](../research/electron_fluence/README.md), with SWPC REFM retained in the model selector. WXF forecasts 24 hourly >2 MeV GEO electron fluxes, then integrates coherent paths into rolling 24-hour fluence. Seven days estimate diurnal shape; a frozen historical model learns amplitude changes from recent electron and solar-wind conditions. The display includes a median, empirical range, data gaps, and user-configured thresholds. Severe-event skill and prospective verification remain unestablished. Future CME/HSS arrivals and predicted Kp are not yet numerical model inputs; the current SWPC bulletin is separate context recorded for future development.

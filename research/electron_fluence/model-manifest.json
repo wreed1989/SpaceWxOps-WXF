@@ -1,0 +1,20 @@
+{
+  "version": "WXF-EF-0.1",
+  "modelSHA256": "aab8912d60f913bb75224db917b82ecb4c8728da552e93b109686e55c01767ee",
+  "trainingCodeSHA256": "6137736ec96ac5cd5efeeaed6a8994e1c4b9e9e126e3c59c709c109111772d1f",
+  "runtime": {
+    "python": "3.12.11",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3",
+    "joblib": "1.6.0"
+  },
+  "purpose": "Frozen experimental forecast; no automatic refitting",
+  "splitDesign": "Training Apr 2025-Feb 2026; calibration Mar-May 2026; evaluation Jun-Aug 2026, with 24-hour target embargo",
+  "developmentNote": "Initial test results were inspected before correcting missing-lag handling and minute-level pressure/coupling aggregation. Dates and estimator hyperparameters were unchanged. Thus this is a development holdout, not a pristine prospective test.",
+  "format": "Non-executable NPZ numeric arrays; allow_pickle=False",
+  "exportVerification": {
+    "randomFeatureVectors": 200,
+    "maximumAbsoluteLogPredictionDifference": 4.440892098500626e-16
+  },
+  "sourceTrainingArtifactSHA256": "20480b70b51d7857910ad4881ba371d73698605574fd0e7ce3d07905c12502b1"
+}

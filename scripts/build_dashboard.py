@@ -59,12 +59,20 @@ def build(output, feed=None, solar_cycle=None, cme_scoreboard=None, particle_for
     electron=Path(electron_forecast or ROOT/'chhss-data/electron-fluence.json')
     if electron.exists():
         snapshot=json.loads(electron.read_text())
-        if snapshot.get('schemaVersion')!='WXF-EF-0.1':
+        if snapshot.get('schemaVersion')!='WXF-EF-0.2':
             raise ValueError('Invalid WXF experimental electron snapshot')
         slot='<!-- WXF_ELECTRON_BOOTSTRAP_SLOT -->'
         if html.count(slot)!=1:raise ValueError('Canonical HTML must contain one WXF electron slot')
         encoded=json.dumps(snapshot,separators=(',',':'),allow_nan=False).replace('<','\\u003c')
         html=html.replace(slot,slot+'\n<script type="application/json" id="wxfElectronBootstrap">'+encoded+'</script>')
+    huxt=ROOT/'chhss-data/huxt-forecast.json'
+    if huxt.exists():
+        snapshot=json.loads(huxt.read_text())
+        if snapshot.get('schemaVersion')!='wxf-huxt-1':raise ValueError('Invalid local HUXt snapshot')
+        slot='<!-- HUXT_BOOTSTRAP_SLOT -->'
+        if html.count(slot)!=1:raise ValueError('Expected one local HUXt bootstrap slot')
+        encoded=json.dumps(snapshot,separators=(',',':'),allow_nan=False).replace('<','\\u003c')
+        html=html.replace(slot,slot+'\n<script type="application/json" id="huxtBootstrap">'+encoded+'</script>')
     output=Path(output)
     output.parent.mkdir(parents=True,exist_ok=True)
     output.write_text(html)

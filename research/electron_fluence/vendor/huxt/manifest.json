@@ -1,0 +1,11 @@
+{
+  "upstream": "https://github.com/University-of-Reading-Space-Science/HUXt",
+  "commit": "4d5b60bedb4b30ad140a8ea4972c4f5396c687ff",
+  "version": "5.0.3",
+  "scope": "Unmodified numerical core, Earth-only ephemeris subset",
+  "files": {
+    "huxt.py": "b326d72b26b08166c367c85ff9a3e966f7c82a1c23664b35a8d06757fb47fa43",
+    "data/ephemeris/ephemeris.hdf5": "3c463008a19f002b49d722c661cf696343e2698dc4a28ff003ae25956f4bd1d9",
+    "LICENSE.md": "05186ab036ba21dcd171bfd66fa686ee9d051c33b4f4e6f9f3dfcbdbf8e837a9"
+  }
+}

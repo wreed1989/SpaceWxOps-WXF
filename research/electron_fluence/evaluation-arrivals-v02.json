@@ -1,0 +1,2240 @@
+{
+  "originCount": 456,
+  "distinctDates": 67,
+  "metrics": {
+    "WXF": {
+      "6": {
+        "mae": 2937346.698215718,
+        "rmsle": 0.07893764417642715
+      },
+      "12": {
+        "mae": 6779873.92118602,
+        "rmsle": 0.16749455855468456
+      },
+      "24": {
+        "mae": 15720533.206889769,
+        "rmsle": 0.3961880054323409
+      }
+    },
+    "diurnalPersistence": {
+      "6": {
+        "mae": 3271292.517251753,
+        "rmsle": 0.08777262647405218
+      },
+      "12": {
+        "mae": 7430724.957917041,
+        "rmsle": 0.19720099506232655
+      },
+      "24": {
+        "mae": 18102280.705093756,
+        "rmsle": 0.45039902804052
+      }
+    },
+    "persistence": {
+      "6": {
+        "mae": 3789661.07395354,
+        "rmsle": 0.10005460859011343
+      },
+      "12": {
+        "mae": 10322668.249212127,
+        "rmsle": 0.25060267234644606
+      },
+      "24": {
+        "mae": 20890058.62470081,
+        "rmsle": 0.5040846501753419
+      }
+    }
+  },
+  "nominalBand": 0.9,
+  "coverage": {
+    "6": 0.9013157894736842,
+    "12": 0.8530701754385965,
+    "24": 0.8442982456140351
+  },
+  "thresholds": {
+    "moderate": {
+      "value": 110000000.0,
+      "dailyOrigins": 67,
+      "exceedanceCount": 7,
+      "nonExceedanceCount": 60,
+      "brier": 0.04081100665555414,
+      "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+    }
+  },
+  "regimes": {
+    "CMEWindowNext24h": {
+      "originCount": 307,
+      "distinctDates": 53,
+      "metrics": {
+        "WXF": {
+          "6": {
+            "mae": 3201435.5397413513,
+            "rmsle": 0.08456487498244686
+          },
+          "12": {
+            "mae": 7376262.008991865,
+            "rmsle": 0.17698331717898713
+          },
+          "24": {
+            "mae": 17189245.292972427,
+            "rmsle": 0.43065536888565054
+          }
+        },
+        "diurnalPersistence": {
+          "6": {
+            "mae": 3663492.9127818015,
+            "rmsle": 0.0977913282073362
+          },
+          "12": {
+            "mae": 8262239.398922909,
+            "rmsle": 0.2160934969128258
+          },
+          "24": {
+            "mae": 21338895.40782055,
+            "rmsle": 0.511220726002076
+          }
+        },
+        "persistence": {
+          "6": {
+            "mae": 3979040.7696936727,
+            "rmsle": 0.10805576980808668
+          },
+          "12": {
+            "mae": 10806756.054631429,
+            "rmsle": 0.263954310737235
+          },
+          "24": {
+            "mae": 22959405.140900068,
+            "rmsle": 0.5549470176043957
+          }
+        }
+      },
+      "nominalBand": 0.9,
+      "coverage": {
+        "6": 0.8827361563517915,
+        "12": 0.8306188925081434,
+        "24": 0.8013029315960912
+      },
+      "thresholds": {
+        "moderate": {
+          "value": 110000000.0,
+          "dailyOrigins": 53,
+          "exceedanceCount": 5,
+          "nonExceedanceCount": 48,
+          "brier": 0.03588261436090611,
+          "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+        }
+      }
+    },
+    "observedFastWind": {
+      "originCount": 109,
+      "distinctDates": 19,
+      "metrics": {
+        "WXF": {
+          "6": {
+            "mae": 5229637.258526393,
+            "rmsle": 0.10877484096403035
+          },
+          "12": {
+            "mae": 11302100.51544755,
+            "rmsle": 0.20075562315230475
+          },
+          "24": {
+            "mae": 24835289.743817378,
+            "rmsle": 0.39059529030629736
+          }
+        },
+        "diurnalPersistence": {
+          "6": {
+            "mae": 5650267.634188834,
+            "rmsle": 0.13073609685606513
+          },
+          "12": {
+            "mae": 12485960.919692978,
+            "rmsle": 0.273260020311125
+          },
+          "24": {
+            "mae": 30426748.880429007,
+            "rmsle": 0.5890948968106272
+          }
+        },
+        "persistence": {
+          "6": {
+            "mae": 6714463.460417407,
+            "rmsle": 0.14250168945443697
+          },
+          "12": {
+            "mae": 17920867.52765113,
+            "rmsle": 0.33886210769252567
+          },
+          "24": {
+            "mae": 34550743.662107974,
+            "rmsle": 0.6457916215811226
+          }
+        }
+      },
+      "nominalBand": 0.9,
+      "coverage": {
+        "6": 0.8532110091743119,
+        "12": 0.8348623853211009,
+        "24": 0.8532110091743119
+      },
+      "thresholds": {
+        "moderate": {
+          "value": 110000000.0,
+          "dailyOrigins": 19,
+          "exceedanceCount": 4,
+          "nonExceedanceCount": 15,
+          "brier": 0.04611271810354279,
+          "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+        }
+      }
+    },
+    "recurrenceFastWind": {
+      "originCount": 105,
+      "distinctDates": 19,
+      "metrics": {
+        "WXF": {
+          "6": {
+            "mae": 1567357.183322247,
+            "rmsle": 0.09229601207176548
+          },
+          "12": {
+            "mae": 3541924.686666054,
+            "rmsle": 0.17869225744005277
+          },
+          "24": {
+            "mae": 8737562.204020035,
+            "rmsle": 0.41212024685573934
+          }
+        },
+        "diurnalPersistence": {
+          "6": {
+            "mae": 1761599.0514365514,
+            "rmsle": 0.09976899293926356
+          },
+          "12": {
+            "mae": 4081582.5482567167,
+            "rmsle": 0.21202230950914858
+          },
+          "24": {
+            "mae": 11415161.066562053,
+            "rmsle": 0.4669713430986598
+          }
+        },
+        "persistence": {
+          "6": {
+            "mae": 1856255.209505899,
+            "rmsle": 0.11528697161820975
+          },
+          "12": {
+            "mae": 5206999.422757285,
+            "rmsle": 0.2708271598367207
+          },
+          "24": {
+            "mae": 10717599.54632078,
+            "rmsle": 0.508015581346263
+          }
+        }
+      },
+      "nominalBand": 0.9,
+      "coverage": {
+        "6": 0.9142857142857143,
+        "12": 0.8666666666666667,
+        "24": 0.8095238095238095
+      },
+      "thresholds": {
+        "moderate": {
+          "value": 110000000.0,
+          "dailyOrigins": 19,
+          "exceedanceCount": 0,
+          "nonExceedanceCount": 19,
+          "brier": 0.0,
+          "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+        }
+      }
+    }
+  },
+  "schemaVersion": "WXF-EF-0.2",
+  "splits": {
+    "trainStart": "2020-02-01",
+    "trainStop": "2026-03-01",
+    "calibrationStart": "2026-03-01",
+    "calibrationStop": "2026-06-01",
+    "testStart": "2026-06-01",
+    "testStop": "2026-09-01"
+  },
+  "quality": {
+    "rawSamples": 704899,
+    "acceptedSamples": 686574,
+    "otherElectronSpacecraft": 800,
+    "highProtonSamples": 15094,
+    "missingProtonSamples": 2152,
+    "completeElectronHours": 56858,
+    "spacecraftHours": {
+      "GOES-16": 44533,
+      "GOES-19": 12325
+    },
+    "hourCount": 58893,
+    "firstHourEnd": "2020-01-01T01:00:00+00:00",
+    "lastHourEnd": "2026-09-19T21:00:00+00:00"
+  },
+  "partitionCounts": {
+    "train": 12156,
+    "calibration": 590,
+    "test": 456
+  },
+  "calibrationPaths": 79,
+  "rejections": {
+    "Incomplete preceding 24 hours": 2822,
+    "Solar-wind-history gap": 1010,
+    "Incomplete target or proton-contaminated target": 1583,
+    "Electron-history gap": 210,
+    "Insufficient diurnal-profile coverage": 559,
+    "Spacecraft handoff in seven-day profile": 47
+  },
+  "featureNames": [
+    "level",
+    "level_1h",
+    "std_1h",
+    "level_3h",
+    "std_3h",
+    "level_6h",
+    "std_6h",
+    "level_12h",
+    "std_12h",
+    "level_24h",
+    "std_24h",
+    "level_48h",
+    "std_48h",
+    "level_72h",
+    "std_72h",
+    "change_3h",
+    "change_6h",
+    "change_12h",
+    "change_24h",
+    "change_48h",
+    "diurnal_0",
+    "diurnal_1",
+    "diurnal_2",
+    "diurnal_3",
+    "speed_3h",
+    "speed_12h",
+    "speed_24h",
+    "speed_48h",
+    "speed_72h",
+    "speed_change",
+    "density_3h",
+    "density_12h",
+    "density_24h",
+    "density_48h",
+    "density_72h",
+    "density_change",
+    "bt_3h",
+    "bt_12h",
+    "bt_24h",
+    "bt_48h",
+    "bt_72h",
+    "bt_change",
+    "bz_3h",
+    "bz_12h",
+    "bz_24h",
+    "bz_48h",
+    "bz_72h",
+    "bz_change",
+    "southward_3h",
+    "southward_12h",
+    "southward_24h",
+    "southward_48h",
+    "southward_72h",
+    "southward_change",
+    "pressure_3h",
+    "pressure_12h",
+    "pressure_24h",
+    "pressure_48h",
+    "pressure_72h",
+    "pressure_change",
+    "coupling_3h",
+    "coupling_12h",
+    "coupling_24h",
+    "coupling_48h",
+    "coupling_72h",
+    "coupling_change",
+    "spacecraft_goes19",
+    "speed_lag72_168h_coverage",
+    "speed_lag72_168h",
+    "speed_lag168_336h_coverage",
+    "speed_lag168_336h",
+    "speed_max24h",
+    "speed_std24h",
+    "pressure_lag72_168h_coverage",
+    "pressure_lag72_168h",
+    "pressure_lag168_336h_coverage",
+    "pressure_lag168_336h",
+    "pressure_max24h",
+    "pressure_std24h",
+    "coupling_lag72_168h_coverage",
+    "coupling_lag72_168h",
+    "coupling_lag168_336h_coverage",
+    "coupling_lag168_336h",
+    "coupling_max24h",
+    "coupling_std24h",
+    "southward_lag72_168h_coverage",
+    "southward_lag72_168h",
+    "southward_lag168_336h_coverage",
+    "southward_lag168_336h",
+    "southward_max24h",
+    "southward_std24h",
+    "fast_wind_fraction72h",
+    "recurrence_0h_coverage",
+    "recurrence_0h_speed",
+    "recurrence_24h_coverage",
+    "recurrence_24h_speed",
+    "recurrence_48h_coverage",
+    "recurrence_48h_speed",
+    "recurrence_72h_coverage",
+    "recurrence_72h_speed",
+    "recurrence_rise24h",
+    "cme_feed_available",
+    "cme_event_count",
+    "cme_provider_count",
+    "cme_nearest_arrival_hours",
+    "cme_arrival_spread_hours",
+    "cme_reported_uncertainty_hours",
+    "cme_uncertainty_coverage",
+    "cme_forecast_kp",
+    "cme_kp_coverage",
+    "cme_window_-72_-24h",
+    "cme_window_-24_0h",
+    "cme_window_0_12h",
+    "cme_window_12_24h",
+    "cme_window_24_48h",
+    "cme_window_48_72h"
+  ],
+  "forecastHorizonHours": 24,
+  "thresholdsMeaning": "Office rolling 24-hour internal-charging exposure criterion; not a satellite failure probability",
+  "verification": "Retrospective development evaluation. Submission-gated Scoreboard, no actual CME outcomes used. Complete revision/receipt history unavailable; forward shadow verification required.",
+  "ablation": {
+    "longHistoryObserved": {
+      "development": {
+        "originCount": 456,
+        "distinctDates": 67,
+        "metrics": {
+          "WXF": {
+            "6": {
+              "mae": 2888341.1484738537,
+              "rmsle": 0.07784025793741059
+            },
+            "12": {
+              "mae": 6615134.664211049,
+              "rmsle": 0.16382608545239916
+            },
+            "24": {
+              "mae": 15215982.830485772,
+              "rmsle": 0.38844069564400235
+            }
+          },
+          "diurnalPersistence": {
+            "6": {
+              "mae": 3271292.517251753,
+              "rmsle": 0.08777262647405218
+            },
+            "12": {
+              "mae": 7430724.957917041,
+              "rmsle": 0.19720099506232655
+            },
+            "24": {
+              "mae": 18102280.705093756,
+              "rmsle": 0.45039902804052
+            }
+          },
+          "persistence": {
+            "6": {
+              "mae": 3789661.07395354,
+              "rmsle": 0.10005460859011343
+            },
+            "12": {
+              "mae": 10322668.249212127,
+              "rmsle": 0.25060267234644606
+            },
+            "24": {
+              "mae": 20890058.62470081,
+              "rmsle": 0.5040846501753419
+            }
+          }
+        },
+        "nominalBand": 0.9,
+        "coverage": {
+          "6": 0.8991228070175439,
+          "12": 0.8640350877192983,
+          "24": 0.868421052631579
+        },
+        "thresholds": {
+          "moderate": {
+            "value": 110000000.0,
+            "dailyOrigins": 67,
+            "exceedanceCount": 7,
+            "nonExceedanceCount": 60,
+            "brier": 0.037412680229679994,
+            "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+          }
+        },
+        "regimes": {
+          "CMEWindowNext24h": {
+            "originCount": 307,
+            "distinctDates": 53,
+            "metrics": {
+              "WXF": {
+                "6": {
+                  "mae": 3121928.4150697207,
+                  "rmsle": 0.08294935857209748
+                },
+                "12": {
+                  "mae": 7132799.488362203,
+                  "rmsle": 0.17216748760222442
+                },
+                "24": {
+                  "mae": 16736291.970171807,
+                  "rmsle": 0.42250067011457476
+                }
+              },
+              "diurnalPersistence": {
+                "6": {
+                  "mae": 3663492.9127818015,
+                  "rmsle": 0.0977913282073362
+                },
+                "12": {
+                  "mae": 8262239.398922909,
+                  "rmsle": 0.2160934969128258
+                },
+                "24": {
+                  "mae": 21338895.40782055,
+                  "rmsle": 0.511220726002076
+                }
+              },
+              "persistence": {
+                "6": {
+                  "mae": 3979040.7696936727,
+                  "rmsle": 0.10805576980808668
+                },
+                "12": {
+                  "mae": 10806756.054631429,
+                  "rmsle": 0.263954310737235
+                },
+                "24": {
+                  "mae": 22959405.140900068,
+                  "rmsle": 0.5549470176043957
+                }
+              }
+            },
+            "nominalBand": 0.9,
+            "coverage": {
+              "6": 0.8859934853420195,
+              "12": 0.8534201954397395,
+              "24": 0.8273615635179153
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 53,
+                "exceedanceCount": 5,
+                "nonExceedanceCount": 48,
+                "brier": 0.03497564795191869,
+                "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+              }
+            }
+          },
+          "observedFastWind": {
+            "originCount": 109,
+            "distinctDates": 19,
+            "metrics": {
+              "WXF": {
+                "6": {
+                  "mae": 5159409.223407576,
+                  "rmsle": 0.10592016780836144
+                },
+                "12": {
+                  "mae": 11204777.09190029,
+                  "rmsle": 0.19612503382504612
+                },
+                "24": {
+                  "mae": 24799904.29528657,
+                  "rmsle": 0.38995549309451405
+                }
+              },
+              "diurnalPersistence": {
+                "6": {
+                  "mae": 5650267.634188834,
+                  "rmsle": 0.13073609685606513
+                },
+                "12": {
+                  "mae": 12485960.919692978,
+                  "rmsle": 0.273260020311125
+                },
+                "24": {
+                  "mae": 30426748.880429007,
+                  "rmsle": 0.5890948968106272
+                }
+              },
+              "persistence": {
+                "6": {
+                  "mae": 6714463.460417407,
+                  "rmsle": 0.14250168945443697
+                },
+                "12": {
+                  "mae": 17920867.52765113,
+                  "rmsle": 0.33886210769252567
+                },
+                "24": {
+                  "mae": 34550743.662107974,
+                  "rmsle": 0.6457916215811226
+                }
+              }
+            },
+            "nominalBand": 0.9,
+            "coverage": {
+              "6": 0.8532110091743119,
+              "12": 0.8348623853211009,
+              "24": 0.8807339449541285
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 19,
+                "exceedanceCount": 4,
+                "nonExceedanceCount": 15,
+                "brier": 0.05392185800183844,
+                "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+              }
+            }
+          },
+          "recurrenceFastWind": {
+            "originCount": 105,
+            "distinctDates": 19,
+            "metrics": {
+              "WXF": {
+                "6": {
+                  "mae": 1548073.2522208146,
+                  "rmsle": 0.09137902320726295
+                },
+                "12": {
+                  "mae": 3478942.3487413963,
+                  "rmsle": 0.17616728597549558
+                },
+                "24": {
+                  "mae": 8550477.607150117,
+                  "rmsle": 0.39361664426887205
+                }
+              },
+              "diurnalPersistence": {
+                "6": {
+                  "mae": 1761599.0514365514,
+                  "rmsle": 0.09976899293926356
+                },
+                "12": {
+                  "mae": 4081582.5482567167,
+                  "rmsle": 0.21202230950914858
+                },
+                "24": {
+                  "mae": 11415161.066562053,
+                  "rmsle": 0.4669713430986598
+                }
+              },
+              "persistence": {
+                "6": {
+                  "mae": 1856255.209505899,
+                  "rmsle": 0.11528697161820975
+                },
+                "12": {
+                  "mae": 5206999.422757285,
+                  "rmsle": 0.2708271598367207
+                },
+                "24": {
+                  "mae": 10717599.54632078,
+                  "rmsle": 0.508015581346263
+                }
+              }
+            },
+            "nominalBand": 0.9,
+            "coverage": {
+              "6": 0.9142857142857143,
+              "12": 0.8952380952380953,
+              "24": 0.8476190476190476
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 19,
+                "exceedanceCount": 0,
+                "nonExceedanceCount": 19,
+                "brier": 0.0,
+                "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+              }
+            }
+          }
+        }
+      },
+      "september": {
+        "originCount": 34,
+        "distinctDates": 7,
+        "metrics": {
+          "WXF": {
+            "6": {
+              "mae": 5112255.458234873,
+              "rmsle": 0.06656365552612845
+            },
+            "12": {
+              "mae": 11539002.111825606,
+              "rmsle": 0.17648671059084917
+            },
+            "24": {
+              "mae": 18767882.640158005,
+              "rmsle": 0.3420926192654471
+            }
+          },
+          "diurnalPersistence": {
+            "6": {
+              "mae": 4851791.038630729,
+              "rmsle": 0.06916617291080254
+            },
+            "12": {
+              "mae": 12317407.151669595,
+              "rmsle": 0.2047800875600919
+            },
+            "24": {
+              "mae": 18563816.35793642,
+              "rmsle": 0.3561539636783068
+            }
+          },
+          "persistence": {
+            "6": {
+              "mae": 7510841.250902067,
+              "rmsle": 0.09338845745050531
+            },
+            "12": {
+              "mae": 21665467.393919997,
+              "rmsle": 0.30359295178170265
+            },
+            "24": {
+              "mae": 33143574.421018712,
+              "rmsle": 0.5870007211880123
+            }
+          }
+        },
+        "nominalBand": 0.9,
+        "coverage": {
+          "6": 0.7941176470588235,
+          "12": 0.8235294117647058,
+          "24": 0.9117647058823529
+        },
+        "thresholds": {
+          "moderate": {
+            "value": 110000000.0,
+            "dailyOrigins": 7,
+            "exceedanceCount": 0,
+            "nonExceedanceCount": 7,
+            "brier": 0.07885641037379541,
+            "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+          }
+        },
+        "regimes": {
+          "CMEWindowNext24h": {
+            "originCount": 7,
+            "distinctDates": 3,
+            "metrics": {
+              "WXF": {
+                "6": {
+                  "mae": 1309073.569706678,
+                  "rmsle": 0.03045358872993352
+                },
+                "12": {
+                  "mae": 3238804.3933070237,
+                  "rmsle": 0.11343382860640783
+                },
+                "24": {
+                  "mae": 9401998.411940956,
+                  "rmsle": 0.2664637632469739
+                }
+              },
+              "diurnalPersistence": {
+                "6": {
+                  "mae": 1866920.4730538577,
+                  "rmsle": 0.0623086116401107
+                },
+                "12": {
+                  "mae": 5191766.347898228,
+                  "rmsle": 0.2524894487562622
+                },
+                "24": {
+                  "mae": 8905583.475896997,
+                  "rmsle": 0.4478400515963849
+                }
+              },
+              "persistence": {
+                "6": {
+                  "mae": 2975457.442474361,
+                  "rmsle": 0.06382599666821732
+                },
+                "12": {
+                  "mae": 7385265.50331116,
+                  "rmsle": 0.1435373065555795
+                },
+                "24": {
+                  "mae": 9373751.144354686,
+                  "rmsle": 0.20142072963977245
+                }
+              }
+            },
+            "nominalBand": 0.9,
+            "coverage": {
+              "6": 1.0,
+              "12": 1.0,
+              "24": 1.0
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 3,
+                "exceedanceCount": 0,
+                "nonExceedanceCount": 3,
+                "brier": 0.009026331250333813,
+                "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+              }
+            }
+          }
+        }
+      }
+    },
+    "longHistoryRecurrence": {
+      "development": {
+        "originCount": 456,
+        "distinctDates": 67,
+        "metrics": {
+          "WXF": {
+            "6": {
+              "mae": 2886220.6174721713,
+              "rmsle": 0.07825596791282277
+            },
+            "12": {
+              "mae": 6685464.180244854,
+              "rmsle": 0.16567580046184166
+            },
+            "24": {
+              "mae": 15400937.23100695,
+              "rmsle": 0.38799908413416156
+            }
+          },
+          "diurnalPersistence": {
+            "6": {
+              "mae": 3271292.517251753,
+              "rmsle": 0.08777262647405218
+            },
+            "12": {
+              "mae": 7430724.957917041,
+              "rmsle": 0.19720099506232655
+            },
+            "24": {
+              "mae": 18102280.705093756,
+              "rmsle": 0.45039902804052
+            }
+          },
+          "persistence": {
+            "6": {
+              "mae": 3789661.07395354,
+              "rmsle": 0.10005460859011343
+            },
+            "12": {
+              "mae": 10322668.249212127,
+              "rmsle": 0.25060267234644606
+            },
+            "24": {
+              "mae": 20890058.62470081,
+              "rmsle": 0.5040846501753419
+            }
+          }
+        },
+        "nominalBand": 0.9,
+        "coverage": {
+          "6": 0.9057017543859649,
+          "12": 0.8706140350877193,
+          "24": 0.8793859649122807
+        },
+        "thresholds": {
+          "moderate": {
+            "value": 110000000.0,
+            "dailyOrigins": 67,
+            "exceedanceCount": 7,
+            "nonExceedanceCount": 60,
+            "brier": 0.03593951409432568,
+            "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+          }
+        },
+        "regimes": {
+          "CMEWindowNext24h": {
+            "originCount": 307,
+            "distinctDates": 53,
+            "metrics": {
+              "WXF": {
+                "6": {
+                  "mae": 3131749.1554196826,
+                  "rmsle": 0.08370007693693975
+                },
+                "12": {
+                  "mae": 7249590.186085768,
+                  "rmsle": 0.17481969129947234
+                },
+                "24": {
+                  "mae": 17057275.411208797,
+                  "rmsle": 0.4229961995235915
+                }
+              },
+              "diurnalPersistence": {
+                "6": {
+                  "mae": 3663492.9127818015,
+                  "rmsle": 0.0977913282073362
+                },
+                "12": {
+                  "mae": 8262239.398922909,
+                  "rmsle": 0.2160934969128258
+                },
+                "24": {
+                  "mae": 21338895.40782055,
+                  "rmsle": 0.511220726002076
+                }
+              },
+              "persistence": {
+                "6": {
+                  "mae": 3979040.7696936727,
+                  "rmsle": 0.10805576980808668
+                },
+                "12": {
+                  "mae": 10806756.054631429,
+                  "rmsle": 0.263954310737235
+                },
+                "24": {
+                  "mae": 22959405.140900068,
+                  "rmsle": 0.5549470176043957
+                }
+              }
+            },
+            "nominalBand": 0.9,
+            "coverage": {
+              "6": 0.8892508143322475,
+              "12": 0.8534201954397395,
+              "24": 0.8403908794788274
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 53,
+                "exceedanceCount": 5,
+                "nonExceedanceCount": 48,
+                "brier": 0.03329776009529194,
+                "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+              }
+            }
+          },
+          "observedFastWind": {
+            "originCount": 109,
+            "distinctDates": 19,
+            "metrics": {
+              "WXF": {
+                "6": {
+                  "mae": 5129454.396108834,
+                  "rmsle": 0.10592426507142921
+                },
+                "12": {
+                  "mae": 11232482.674192458,
+                  "rmsle": 0.19758886455769775
+                },
+                "24": {
+                  "mae": 25021275.01966525,
+                  "rmsle": 0.39639594961790364
+                }
+              },
+              "diurnalPersistence": {
+                "6": {
+                  "mae": 5650267.634188834,
+                  "rmsle": 0.13073609685606513
+                },
+                "12": {
+                  "mae": 12485960.919692978,
+                  "rmsle": 0.273260020311125
+                },
+                "24": {
+                  "mae": 30426748.880429007,
+                  "rmsle": 0.5890948968106272
+                }
+              },
+              "persistence": {
+                "6": {
+                  "mae": 6714463.460417407,
+                  "rmsle": 0.14250168945443697
+                },
+                "12": {
+                  "mae": 17920867.52765113,
+                  "rmsle": 0.33886210769252567
+                },
+                "24": {
+                  "mae": 34550743.662107974,
+                  "rmsle": 0.6457916215811226
+                }
+              }
+            },
+            "nominalBand": 0.9,
+            "coverage": {
+              "6": 0.8715596330275229,
+              "12": 0.8532110091743119,
+              "24": 0.8623853211009175
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 19,
+                "exceedanceCount": 4,
+                "nonExceedanceCount": 15,
+                "brier": 0.050261850749289495,
+                "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+              }
+            }
+          },
+          "recurrenceFastWind": {
+            "originCount": 105,
+            "distinctDates": 19,
+            "metrics": {
+              "WXF": {
+                "6": {
+                  "mae": 1529908.6620247278,
+                  "rmsle": 0.0912361911695212
+                },
+                "12": {
+                  "mae": 3416458.085084112,
+                  "rmsle": 0.17782128665801952
+                },
+                "24": {
+                  "mae": 8817835.145951584,
+                  "rmsle": 0.4055011420501301
+                }
+              },
+              "diurnalPersistence": {
+                "6": {
+                  "mae": 1761599.0514365514,
+                  "rmsle": 0.09976899293926356
+                },
+                "12": {
+                  "mae": 4081582.5482567167,
+                  "rmsle": 0.21202230950914858
+                },
+                "24": {
+                  "mae": 11415161.066562053,
+                  "rmsle": 0.4669713430986598
+                }
+              },
+              "persistence": {
+                "6": {
+                  "mae": 1856255.209505899,
+                  "rmsle": 0.11528697161820975
+                },
+                "12": {
+                  "mae": 5206999.422757285,
+                  "rmsle": 0.2708271598367207
+                },
+                "24": {
+                  "mae": 10717599.54632078,
+                  "rmsle": 0.508015581346263
+                }
+              }
+            },
+            "nominalBand": 0.9,
+            "coverage": {
+              "6": 0.9142857142857143,
+              "12": 0.9047619047619048,
+              "24": 0.8666666666666667
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 19,
+                "exceedanceCount": 0,
+                "nonExceedanceCount": 19,
+                "brier": 0.0,
+                "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+              }
+            }
+          }
+        }
+      },
+      "september": {
+        "originCount": 34,
+        "distinctDates": 7,
+        "metrics": {
+          "WXF": {
+            "6": {
+              "mae": 5078185.173971008,
+              "rmsle": 0.0672691257161218
+            },
+            "12": {
+              "mae": 11558219.375231551,
+              "rmsle": 0.1777379267549101
+            },
+            "24": {
+              "mae": 18260439.939905792,
+              "rmsle": 0.3385171206779026
+            }
+          },
+          "diurnalPersistence": {
+            "6": {
+              "mae": 4851791.038630729,
+              "rmsle": 0.06916617291080254
+            },
+            "12": {
+              "mae": 12317407.151669595,
+              "rmsle": 0.2047800875600919
+            },
+            "24": {
+              "mae": 18563816.35793642,
+              "rmsle": 0.3561539636783068
+            }
+          },
+          "persistence": {
+            "6": {
+              "mae": 7510841.250902067,
+              "rmsle": 0.09338845745050531
+            },
+            "12": {
+              "mae": 21665467.393919997,
+              "rmsle": 0.30359295178170265
+            },
+            "24": {
+              "mae": 33143574.421018712,
+              "rmsle": 0.5870007211880123
+            }
+          }
+        },
+        "nominalBand": 0.9,
+        "coverage": {
+          "6": 0.7941176470588235,
+          "12": 0.7941176470588235,
+          "24": 0.9411764705882353
+        },
+        "thresholds": {
+          "moderate": {
+            "value": 110000000.0,
+            "dailyOrigins": 7,
+            "exceedanceCount": 0,
+            "nonExceedanceCount": 7,
+            "brier": 0.10513425046352462,
+            "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+          }
+        },
+        "regimes": {
+          "CMEWindowNext24h": {
+            "originCount": 7,
+            "distinctDates": 3,
+            "metrics": {
+              "WXF": {
+                "6": {
+                  "mae": 1502342.7012399638,
+                  "rmsle": 0.03589669910617999
+                },
+                "12": {
+                  "mae": 3705806.3990564495,
+                  "rmsle": 0.12843005795017834
+                },
+                "24": {
+                  "mae": 10368971.757932859,
+                  "rmsle": 0.295316052739405
+                }
+              },
+              "diurnalPersistence": {
+                "6": {
+                  "mae": 1866920.4730538577,
+                  "rmsle": 0.0623086116401107
+                },
+                "12": {
+                  "mae": 5191766.347898228,
+                  "rmsle": 0.2524894487562622
+                },
+                "24": {
+                  "mae": 8905583.475896997,
+                  "rmsle": 0.4478400515963849
+                }
+              },
+              "persistence": {
+                "6": {
+                  "mae": 2975457.442474361,
+                  "rmsle": 0.06382599666821732
+                },
+                "12": {
+                  "mae": 7385265.50331116,
+                  "rmsle": 0.1435373065555795
+                },
+                "24": {
+                  "mae": 9373751.144354686,
+                  "rmsle": 0.20142072963977245
+                }
+              }
+            },
+            "nominalBand": 0.9,
+            "coverage": {
+              "6": 1.0,
+              "12": 0.8571428571428571,
+              "24": 1.0
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 3,
+                "exceedanceCount": 0,
+                "nonExceedanceCount": 3,
+                "brier": 0.012017304919083482,
+                "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+              }
+            }
+          }
+        }
+      }
+    },
+    "longHistoryArrivals": {
+      "development": {
+        "originCount": 456,
+        "distinctDates": 67,
+        "metrics": {
+          "WXF": {
+            "6": {
+              "mae": 2918776.875359586,
+              "rmsle": 0.07886369135881297
+            },
+            "12": {
+              "mae": 6678275.42796026,
+              "rmsle": 0.16481354019014527
+            },
+            "24": {
+              "mae": 15282262.207031593,
+              "rmsle": 0.3815901324927702
+            }
+          },
+          "diurnalPersistence": {
+            "6": {
+              "mae": 3271292.517251753,
+              "rmsle": 0.08777262647405218
+            },
+            "12": {
+              "mae": 7430724.957917041,
+              "rmsle": 0.19720099506232655
+            },
+            "24": {
+              "mae": 18102280.705093756,
+              "rmsle": 0.45039902804052
+            }
+          },
+          "persistence": {
+            "6": {
+              "mae": 3789661.07395354,
+              "rmsle": 0.10005460859011343
+            },
+            "12": {
+              "mae": 10322668.249212127,
+              "rmsle": 0.25060267234644606
+            },
+            "24": {
+              "mae": 20890058.62470081,
+              "rmsle": 0.5040846501753419
+            }
+          }
+        },
+        "nominalBand": 0.9,
+        "coverage": {
+          "6": 0.9057017543859649,
+          "12": 0.8530701754385965,
+          "24": 0.8706140350877193
+        },
+        "thresholds": {
+          "moderate": {
+            "value": 110000000.0,
+            "dailyOrigins": 67,
+            "exceedanceCount": 7,
+            "nonExceedanceCount": 60,
+            "brier": 0.04021791379586604,
+            "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+          }
+        },
+        "regimes": {
+          "CMEWindowNext24h": {
+            "originCount": 307,
+            "distinctDates": 53,
+            "metrics": {
+              "WXF": {
+                "6": {
+                  "mae": 3162954.24655792,
+                  "rmsle": 0.08448029617621232
+                },
+                "12": {
+                  "mae": 7197831.604752118,
+                  "rmsle": 0.17400412491549674
+                },
+                "24": {
+                  "mae": 16816548.24440018,
+                  "rmsle": 0.415489399176144
+                }
+              },
+              "diurnalPersistence": {
+                "6": {
+                  "mae": 3663492.9127818015,
+                  "rmsle": 0.0977913282073362
+                },
+                "12": {
+                  "mae": 8262239.398922909,
+                  "rmsle": 0.2160934969128258
+                },
+                "24": {
+                  "mae": 21338895.40782055,
+                  "rmsle": 0.511220726002076
+                }
+              },
+              "persistence": {
+                "6": {
+                  "mae": 3979040.7696936727,
+                  "rmsle": 0.10805576980808668
+                },
+                "12": {
+                  "mae": 10806756.054631429,
+                  "rmsle": 0.263954310737235
+                },
+                "24": {
+                  "mae": 22959405.140900068,
+                  "rmsle": 0.5549470176043957
+                }
+              }
+            },
+            "nominalBand": 0.9,
+            "coverage": {
+              "6": 0.8925081433224755,
+              "12": 0.8273615635179153,
+              "24": 0.8208469055374593
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 53,
+                "exceedanceCount": 5,
+                "nonExceedanceCount": 48,
+                "brier": 0.034358910793807235,
+                "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+              }
+            }
+          },
+          "observedFastWind": {
+            "originCount": 109,
+            "distinctDates": 19,
+            "metrics": {
+              "WXF": {
+                "6": {
+                  "mae": 5149994.796100435,
+                  "rmsle": 0.10815101334248452
+                },
+                "12": {
+                  "mae": 11035394.316802876,
+                  "rmsle": 0.19785261881038838
+                },
+                "24": {
+                  "mae": 23925152.719616633,
+                  "rmsle": 0.37920454346733784
+                }
+              },
+              "diurnalPersistence": {
+                "6": {
+                  "mae": 5650267.634188834,
+                  "rmsle": 0.13073609685606513
+                },
+                "12": {
+                  "mae": 12485960.919692978,
+                  "rmsle": 0.273260020311125
+                },
+                "24": {
+                  "mae": 30426748.880429007,
+                  "rmsle": 0.5890948968106272
+                }
+              },
+              "persistence": {
+                "6": {
+                  "mae": 6714463.460417407,
+                  "rmsle": 0.14250168945443697
+                },
+                "12": {
+                  "mae": 17920867.52765113,
+                  "rmsle": 0.33886210769252567
+                },
+                "24": {
+                  "mae": 34550743.662107974,
+                  "rmsle": 0.6457916215811226
+                }
+              }
+            },
+            "nominalBand": 0.9,
+            "coverage": {
+              "6": 0.8715596330275229,
+              "12": 0.8073394495412844,
+              "24": 0.8899082568807339
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 19,
+                "exceedanceCount": 4,
+                "nonExceedanceCount": 15,
+                "brier": 0.049300466355762816,
+                "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+              }
+            }
+          },
+          "recurrenceFastWind": {
+            "originCount": 105,
+            "distinctDates": 19,
+            "metrics": {
+              "WXF": {
+                "6": {
+                  "mae": 1591807.28884436,
+                  "rmsle": 0.09346611929153163
+                },
+                "12": {
+                  "mae": 3527815.099636755,
+                  "rmsle": 0.17936953323909754
+                },
+                "24": {
+                  "mae": 8598959.340303008,
+                  "rmsle": 0.39122525118942103
+                }
+              },
+              "diurnalPersistence": {
+                "6": {
+                  "mae": 1761599.0514365514,
+                  "rmsle": 0.09976899293926356
+                },
+                "12": {
+                  "mae": 4081582.5482567167,
+                  "rmsle": 0.21202230950914858
+                },
+                "24": {
+                  "mae": 11415161.066562053,
+                  "rmsle": 0.4669713430986598
+                }
+              },
+              "persistence": {
+                "6": {
+                  "mae": 1856255.209505899,
+                  "rmsle": 0.11528697161820975
+                },
+                "12": {
+                  "mae": 5206999.422757285,
+                  "rmsle": 0.2708271598367207
+                },
+                "24": {
+                  "mae": 10717599.54632078,
+                  "rmsle": 0.508015581346263
+                }
+              }
+            },
+            "nominalBand": 0.9,
+            "coverage": {
+              "6": 0.9047619047619048,
+              "12": 0.8666666666666667,
+              "24": 0.819047619047619
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 19,
+                "exceedanceCount": 0,
+                "nonExceedanceCount": 19,
+                "brier": 0.0,
+                "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+              }
+            }
+          }
+        }
+      },
+      "september": {
+        "originCount": 34,
+        "distinctDates": 7,
+        "metrics": {
+          "WXF": {
+            "6": {
+              "mae": 5144814.732988557,
+              "rmsle": 0.06758189914301904
+            },
+            "12": {
+              "mae": 11537687.432180684,
+              "rmsle": 0.1792774029096562
+            },
+            "24": {
+              "mae": 17183266.681560636,
+              "rmsle": 0.3273011992355629
+            }
+          },
+          "diurnalPersistence": {
+            "6": {
+              "mae": 4851791.038630729,
+              "rmsle": 0.06916617291080254
+            },
+            "12": {
+              "mae": 12317407.151669595,
+              "rmsle": 0.2047800875600919
+            },
+            "24": {
+              "mae": 18563816.35793642,
+              "rmsle": 0.3561539636783068
+            }
+          },
+          "persistence": {
+            "6": {
+              "mae": 7510841.250902067,
+              "rmsle": 0.09338845745050531
+            },
+            "12": {
+              "mae": 21665467.393919997,
+              "rmsle": 0.30359295178170265
+            },
+            "24": {
+              "mae": 33143574.421018712,
+              "rmsle": 0.5870007211880123
+            }
+          }
+        },
+        "nominalBand": 0.9,
+        "coverage": {
+          "6": 0.7941176470588235,
+          "12": 0.8235294117647058,
+          "24": 0.8823529411764706
+        },
+        "thresholds": {
+          "moderate": {
+            "value": 110000000.0,
+            "dailyOrigins": 7,
+            "exceedanceCount": 0,
+            "nonExceedanceCount": 7,
+            "brier": 0.08018403644104653,
+            "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+          }
+        },
+        "regimes": {
+          "CMEWindowNext24h": {
+            "originCount": 7,
+            "distinctDates": 3,
+            "metrics": {
+              "WXF": {
+                "6": {
+                  "mae": 1440612.862335833,
+                  "rmsle": 0.03342845948278245
+                },
+                "12": {
+                  "mae": 3466395.74751655,
+                  "rmsle": 0.11327289935992933
+                },
+                "24": {
+                  "mae": 9210513.84750403,
+                  "rmsle": 0.257239579230236
+                }
+              },
+              "diurnalPersistence": {
+                "6": {
+                  "mae": 1866920.4730538577,
+                  "rmsle": 0.0623086116401107
+                },
+                "12": {
+                  "mae": 5191766.347898228,
+                  "rmsle": 0.2524894487562622
+                },
+                "24": {
+                  "mae": 8905583.475896997,
+                  "rmsle": 0.4478400515963849
+                }
+              },
+              "persistence": {
+                "6": {
+                  "mae": 2975457.442474361,
+                  "rmsle": 0.06382599666821732
+                },
+                "12": {
+                  "mae": 7385265.50331116,
+                  "rmsle": 0.1435373065555795
+                },
+                "24": {
+                  "mae": 9373751.144354686,
+                  "rmsle": 0.20142072963977245
+                }
+              }
+            },
+            "nominalBand": 0.9,
+            "coverage": {
+              "6": 1.0,
+              "12": 1.0,
+              "24": 1.0
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 3,
+                "exceedanceCount": 0,
+                "nonExceedanceCount": 3,
+                "brier": 0.010468407840623832,
+                "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+              }
+            }
+          }
+        }
+      }
+    },
+    "previousWXF": {
+      "development": {
+        "originCount": 456,
+        "distinctDates": 67,
+        "metrics": {
+          "WXF": {
+            "6": {
+              "mae": 3091600.8312348397,
+              "rmsle": 0.08025893611339653
+            },
+            "12": {
+              "mae": 7126196.937431972,
+              "rmsle": 0.1702086715528386
+            },
+            "24": {
+              "mae": 16733639.113752043,
+              "rmsle": 0.38161826598617576
+            }
+          },
+          "diurnalPersistence": {
+            "6": {
+              "mae": 3271292.517251753,
+              "rmsle": 0.08777262647405218
+            },
+            "12": {
+              "mae": 7430724.957917041,
+              "rmsle": 0.19720099506232655
+            },
+            "24": {
+              "mae": 18102280.705093756,
+              "rmsle": 0.45039902804052
+            }
+          },
+          "persistence": {
+            "6": {
+              "mae": 3789661.07395354,
+              "rmsle": 0.10005460859011343
+            },
+            "12": {
+              "mae": 10322668.249212127,
+              "rmsle": 0.25060267234644606
+            },
+            "24": {
+              "mae": 20890058.62470081,
+              "rmsle": 0.5040846501753419
+            }
+          }
+        },
+        "nominalBand": 0.9,
+        "coverage": {
+          "6": 0.9122807017543859,
+          "12": 0.9166666666666666,
+          "24": 0.9473684210526315
+        },
+        "thresholds": {
+          "moderate": {
+            "value": 110000000.0,
+            "dailyOrigins": 67,
+            "exceedanceCount": 7,
+            "nonExceedanceCount": 60,
+            "brier": 0.04270507740100969,
+            "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+          }
+        },
+        "regimes": {
+          "CMEWindowNext24h": {
+            "originCount": 307,
+            "distinctDates": 53,
+            "metrics": {
+              "WXF": {
+                "6": {
+                  "mae": 3481067.0613859827,
+                  "rmsle": 0.08882487541654441
+                },
+                "12": {
+                  "mae": 7988788.283072248,
+                  "rmsle": 0.18542304621829261
+                },
+                "24": {
+                  "mae": 18338992.795298867,
+                  "rmsle": 0.41487276780208754
+                }
+              },
+              "diurnalPersistence": {
+                "6": {
+                  "mae": 3663492.9127818015,
+                  "rmsle": 0.0977913282073362
+                },
+                "12": {
+                  "mae": 8262239.398922909,
+                  "rmsle": 0.2160934969128258
+                },
+                "24": {
+                  "mae": 21338895.40782055,
+                  "rmsle": 0.511220726002076
+                }
+              },
+              "persistence": {
+                "6": {
+                  "mae": 3979040.7696936727,
+                  "rmsle": 0.10805576980808668
+                },
+                "12": {
+                  "mae": 10806756.054631429,
+                  "rmsle": 0.263954310737235
+                },
+                "24": {
+                  "mae": 22959405.140900068,
+                  "rmsle": 0.5549470176043957
+                }
+              }
+            },
+            "nominalBand": 0.9,
+            "coverage": {
+              "6": 0.8957654723127035,
+              "12": 0.8859934853420195,
+              "24": 0.9218241042345277
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 53,
+                "exceedanceCount": 5,
+                "nonExceedanceCount": 48,
+                "brier": 0.04589250029476408,
+                "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+              }
+            }
+          },
+          "observedFastWind": {
+            "originCount": 109,
+            "distinctDates": 19,
+            "metrics": {
+              "WXF": {
+                "6": {
+                  "mae": 5125983.787377853,
+                  "rmsle": 0.11299293661642264
+                },
+                "12": {
+                  "mae": 11054043.865403581,
+                  "rmsle": 0.21195543094389963
+                },
+                "24": {
+                  "mae": 25136232.32481932,
+                  "rmsle": 0.4197696892299976
+                }
+              },
+              "diurnalPersistence": {
+                "6": {
+                  "mae": 5650267.634188834,
+                  "rmsle": 0.13073609685606513
+                },
+                "12": {
+                  "mae": 12485960.919692978,
+                  "rmsle": 0.273260020311125
+                },
+                "24": {
+                  "mae": 30426748.880429007,
+                  "rmsle": 0.5890948968106272
+                }
+              },
+              "persistence": {
+                "6": {
+                  "mae": 6714463.460417407,
+                  "rmsle": 0.14250168945443697
+                },
+                "12": {
+                  "mae": 17920867.52765113,
+                  "rmsle": 0.33886210769252567
+                },
+                "24": {
+                  "mae": 34550743.662107974,
+                  "rmsle": 0.6457916215811226
+                }
+              }
+            },
+            "nominalBand": 0.9,
+            "coverage": {
+              "6": 0.8440366972477065,
+              "12": 0.8715596330275229,
+              "24": 0.963302752293578
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 19,
+                "exceedanceCount": 4,
+                "nonExceedanceCount": 15,
+                "brier": 0.05495070796684068,
+                "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+              }
+            }
+          },
+          "recurrenceFastWind": {
+            "originCount": 105,
+            "distinctDates": 19,
+            "metrics": {
+              "WXF": {
+                "6": {
+                  "mae": 1594344.1191149922,
+                  "rmsle": 0.09398750228816943
+                },
+                "12": {
+                  "mae": 3632577.741855669,
+                  "rmsle": 0.18805031476867742
+                },
+                "24": {
+                  "mae": 9070184.99267591,
+                  "rmsle": 0.385393148980544
+                }
+              },
+              "diurnalPersistence": {
+                "6": {
+                  "mae": 1761599.0514365514,
+                  "rmsle": 0.09976899293926356
+                },
+                "12": {
+                  "mae": 4081582.5482567167,
+                  "rmsle": 0.21202230950914858
+                },
+                "24": {
+                  "mae": 11415161.066562053,
+                  "rmsle": 0.4669713430986598
+                }
+              },
+              "persistence": {
+                "6": {
+                  "mae": 1856255.209505899,
+                  "rmsle": 0.11528697161820975
+                },
+                "12": {
+                  "mae": 5206999.422757285,
+                  "rmsle": 0.2708271598367207
+                },
+                "24": {
+                  "mae": 10717599.54632078,
+                  "rmsle": 0.508015581346263
+                }
+              }
+            },
+            "nominalBand": 0.9,
+            "coverage": {
+              "6": 0.9047619047619048,
+              "12": 0.8952380952380953,
+              "24": 0.9619047619047619
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 19,
+                "exceedanceCount": 0,
+                "nonExceedanceCount": 19,
+                "brier": 3.373278573777819e-05,
+                "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+              }
+            }
+          }
+        }
+      },
+      "september": {
+        "originCount": 34,
+        "distinctDates": 7,
+        "metrics": {
+          "WXF": {
+            "6": {
+              "mae": 5865648.852304941,
+              "rmsle": 0.07764682664144323
+            },
+            "12": {
+              "mae": 15123842.287372224,
+              "rmsle": 0.2433063599475171
+            },
+            "24": {
+              "mae": 38011785.39830742,
+              "rmsle": 0.6229158325716507
+            }
+          },
+          "diurnalPersistence": {
+            "6": {
+              "mae": 4851791.038630729,
+              "rmsle": 0.06916617291080254
+            },
+            "12": {
+              "mae": 12317407.151669595,
+              "rmsle": 0.2047800875600919
+            },
+            "24": {
+              "mae": 18563816.35793642,
+              "rmsle": 0.3561539636783068
+            }
+          },
+          "persistence": {
+            "6": {
+              "mae": 7510841.250902067,
+              "rmsle": 0.09338845745050531
+            },
+            "12": {
+              "mae": 21665467.393919997,
+              "rmsle": 0.30359295178170265
+            },
+            "24": {
+              "mae": 33143574.421018712,
+              "rmsle": 0.5870007211880123
+            }
+          }
+        },
+        "nominalBand": 0.9,
+        "coverage": {
+          "6": 0.7941176470588235,
+          "12": 0.7058823529411765,
+          "24": 0.8235294117647058
+        },
+        "thresholds": {
+          "moderate": {
+            "value": 110000000.0,
+            "dailyOrigins": 7,
+            "exceedanceCount": 0,
+            "nonExceedanceCount": 7,
+            "brier": 0.006500789708608968,
+            "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+          }
+        },
+        "regimes": {
+          "CMEWindowNext24h": {
+            "originCount": 7,
+            "distinctDates": 3,
+            "metrics": {
+              "WXF": {
+                "6": {
+                  "mae": 2097180.680663666,
+                  "rmsle": 0.05728256622919173
+                },
+                "12": {
+                  "mae": 6280898.403036721,
+                  "rmsle": 0.22631448183786942
+                },
+                "24": {
+                  "mae": 17443256.709540617,
+                  "rmsle": 0.4984784717160142
+                }
+              },
+              "diurnalPersistence": {
+                "6": {
+                  "mae": 1866920.4730538577,
+                  "rmsle": 0.0623086116401107
+                },
+                "12": {
+                  "mae": 5191766.347898228,
+                  "rmsle": 0.2524894487562622
+                },
+                "24": {
+                  "mae": 8905583.475896997,
+                  "rmsle": 0.4478400515963849
+                }
+              },
+              "persistence": {
+                "6": {
+                  "mae": 2975457.442474361,
+                  "rmsle": 0.06382599666821732
+                },
+                "12": {
+                  "mae": 7385265.50331116,
+                  "rmsle": 0.1435373065555795
+                },
+                "24": {
+                  "mae": 9373751.144354686,
+                  "rmsle": 0.20142072963977245
+                }
+              }
+            },
+            "nominalBand": 0.9,
+            "coverage": {
+              "6": 1.0,
+              "12": 0.7142857142857143,
+              "24": 1.0
+            },
+            "thresholds": {
+              "moderate": {
+                "value": 110000000.0,
+                "dailyOrigins": 3,
+                "exceedanceCount": 0,
+                "nonExceedanceCount": 3,
+                "brier": 0.0013352561021203867,
+                "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "septemberEvaluation": {
+    "originCount": 34,
+    "distinctDates": 7,
+    "metrics": {
+      "WXF": {
+        "6": {
+          "mae": 5073069.85923448,
+          "rmsle": 0.06600743640869378
+        },
+        "12": {
+          "mae": 11341407.754536355,
+          "rmsle": 0.1709464635723226
+        },
+        "24": {
+          "mae": 16352902.448889593,
+          "rmsle": 0.3180202060686383
+        }
+      },
+      "diurnalPersistence": {
+        "6": {
+          "mae": 4851791.038630729,
+          "rmsle": 0.06916617291080254
+        },
+        "12": {
+          "mae": 12317407.151669595,
+          "rmsle": 0.2047800875600919
+        },
+        "24": {
+          "mae": 18563816.35793642,
+          "rmsle": 0.3561539636783068
+        }
+      },
+      "persistence": {
+        "6": {
+          "mae": 7510841.250902067,
+          "rmsle": 0.09338845745050531
+        },
+        "12": {
+          "mae": 21665467.393919997,
+          "rmsle": 0.30359295178170265
+        },
+        "24": {
+          "mae": 33143574.421018712,
+          "rmsle": 0.5870007211880123
+        }
+      }
+    },
+    "nominalBand": 0.9,
+    "coverage": {
+      "6": 0.7941176470588235,
+      "12": 0.8235294117647058,
+      "24": 0.9411764705882353
+    },
+    "thresholds": {
+      "moderate": {
+        "value": 110000000.0,
+        "dailyOrigins": 7,
+        "exceedanceCount": 0,
+        "nonExceedanceCount": 7,
+        "brier": 0.09938883420697232,
+        "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+      }
+    },
+    "regimes": {
+      "CMEWindowNext24h": {
+        "originCount": 7,
+        "distinctDates": 3,
+        "metrics": {
+          "WXF": {
+            "6": {
+              "mae": 1391584.0216837786,
+              "rmsle": 0.03182449016262939
+            },
+            "12": {
+              "mae": 3417385.7575876834,
+              "rmsle": 0.11126475032691956
+            },
+            "24": {
+              "mae": 9571280.964985713,
+              "rmsle": 0.25994680455057073
+            }
+          },
+          "diurnalPersistence": {
+            "6": {
+              "mae": 1866920.4730538577,
+              "rmsle": 0.0623086116401107
+            },
+            "12": {
+              "mae": 5191766.347898228,
+              "rmsle": 0.2524894487562622
+            },
+            "24": {
+              "mae": 8905583.475896997,
+              "rmsle": 0.4478400515963849
+            }
+          },
+          "persistence": {
+            "6": {
+              "mae": 2975457.442474361,
+              "rmsle": 0.06382599666821732
+            },
+            "12": {
+              "mae": 7385265.50331116,
+              "rmsle": 0.1435373065555795
+            },
+            "24": {
+              "mae": 9373751.144354686,
+              "rmsle": 0.20142072963977245
+            }
+          }
+        },
+        "nominalBand": 0.9,
+        "coverage": {
+          "6": 1.0,
+          "12": 1.0,
+          "24": 1.0
+        },
+        "thresholds": {
+          "moderate": {
+            "value": 110000000.0,
+            "dailyOrigins": 3,
+            "exceedanceCount": 0,
+            "nonExceedanceCount": 3,
+            "brier": 0.002617101960155958,
+            "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+          }
+        }
+      }
+    }
+  },
+  "pairedComparisons": {
+    "previousWXF": {
+      "development": {
+        "dailyMAEImprovement": 1025971.5186617821,
+        "bootstrap95": [
+          -548731.7760331902,
+          2764680.9707087474
+        ],
+        "weeklyBlocks": 13,
+        "dates": 67
+      },
+      "september": {
+        "dailyMAEImprovement": 15628737.082173761,
+        "bootstrap95": [
+          2367572.551909011,
+          22416600.80223672
+        ],
+        "weeklyBlocks": 3,
+        "dates": 7
+      }
+    },
+    "longHistoryObserved": {
+      "development": {
+        "dailyMAEImprovement": -480698.46364743484,
+        "bootstrap95": [
+          -1121868.4086977341,
+          41988.18379892536
+        ],
+        "weeklyBlocks": 13,
+        "dates": 67
+      },
+      "september": {
+        "dailyMAEImprovement": 1506811.8935455058,
+        "bootstrap95": [
+          -1352880.169514129,
+          3046094.004614599
+        ],
+        "weeklyBlocks": 3,
+        "dates": 7
+      }
+    },
+    "longHistoryRecurrence": {
+      "development": {
+        "dailyMAEImprovement": -289225.26518010005,
+        "bootstrap95": [
+          -649900.4158633306,
+          -7292.115508975629
+        ],
+        "weeklyBlocks": 13,
+        "dates": 67
+      },
+      "september": {
+        "dailyMAEImprovement": 1374720.4123648405,
+        "bootstrap95": [
+          -86368.88646040857,
+          2113654.4929525256
+        ],
+        "weeklyBlocks": 3,
+        "dates": 7
+      }
+    },
+    "longHistoryArrivals": {
+      "development": {
+        "dailyMAEImprovement": -357402.5342661732,
+        "bootstrap95": [
+          -602509.3832288152,
+          -120081.16340670553
+        ],
+        "weeklyBlocks": 13,
+        "dates": 67
+      },
+      "september": {
+        "dailyMAEImprovement": 755863.2844616239,
+        "bootstrap95": [
+          -995798.910793215,
+          1643524.1980955787
+        ],
+        "weeklyBlocks": 3,
+        "dates": 7
+      }
+    }
+  },
+  "experimentPlan": {
+    "createdBeforeEvaluation": true,
+    "version": "WXF-EF-0.2",
+    "training": [
+      "2020-02-01",
+      "2026-03-01"
+    ],
+    "calibration": [
+      "2026-03-01",
+      "2026-06-01"
+    ],
+    "developmentEvaluation": [
+      "2026-06-01",
+      "2026-09-01"
+    ],
+    "additionalEvaluation": [
+      "2026-09-01",
+      "2026-09-19"
+    ],
+    "embargo": "Every origin target must finish strictly before partition end",
+    "fixedEstimator": {
+      "trees": 192,
+      "minLeaf": 12,
+      "maxDepth": 14,
+      "maxFeatures": 0.8,
+      "seed": 1989
+    },
+    "variants": [
+      "longHistoryObserved",
+      "longHistoryRecurrence",
+      "longHistoryArrivals",
+      "fullGuidance"
+    ],
+    "comparison": "Same eligible origins, compare frozen v0.1, diurnal and constant flux",
+    "promotion": "Full guidance remains experimental. June-August +24h MAE and RMSLE must beat diurnal persistence; 90% range coverage within 5 points; MAE must beat v0.1 on same cohort. Otherwise keep v0.1 operational and publish candidate research evidence. September is reporting only, no model selection or tuning. Report ablations even if inputs do not help.",
+    "uncertainty": "Paired 7-calendar-day block bootstrap of daily mean absolute errors; storms remain correlated; not independent origins",
+    "threshold": 110000000,
+    "caveat": "Development interval already inspected for v0.1. Historical source receipt times and complete provider revision history unavailable. Prospective verification pending."
+  },
+  "releaseGate": {
+    "beatsDiurnalAt24hMAE": true,
+    "beatsDiurnalAt24hRMSLE": true,
+    "coverageWithinFivePoints": false,
+    "beatsPreviousWXFat24hMAE": true,
+    "forwardVerified": false,
+    "experimentalPromotion": false
+  },
+  "developmentNote": "The June-August cohort was already used in v0.1 development. The first v0.2 evaluation exposed an overly strict missing-spacecraft guard; it was corrected to ignore already-masked missing flux. Dates, forest hyperparameters and promotion gate were unchanged. September is therefore an additional retrospective check, not a pristine prospective test.",
+  "publicationDecision": "Keep current v0.1 as default. Publish v0.2 combined guidance as a shadow comparison after range-coverage gate failure. No automatic refitting or promotion."
+}

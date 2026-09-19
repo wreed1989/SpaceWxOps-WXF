@@ -10525,7 +10525,7 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
         radio: { yellow: 5000, red: 10000, purple: 50000, audible: true },
         proton: { yellow: 10, red: 40, purple: 1000, audible: true },
         proton50: { red: 10, audible: true },
-        electron: { yellow: 1.1e8, red: 4.8e8, audible: true }
+        electron: { yellow: 1.1e8, audible: true }
       };
       const ALERT_SUMMARY_HOURS = [6, 12, 24, 48];
       const ALERT_DETAIL_RANGE_HOURS = 72;
@@ -10598,7 +10598,7 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
           action: "Review exposure history, local/orbit-resolved radiation and hardware charging limits. A flux dropout does not instantly dissipate stored charge. LEO is not numerically assessed by this GEO proxy.",
           source: "https://www.swpc.noaa.gov/products/goes-electron-flux", sourceLabel: "NOAA GOES electron interpretation",
           orbits: ["LEO", "MEO", "GEO", "HEO"], screenOrbits: ["MEO", "GEO", "HEO"],
-          contributors: [["electron_fluence", 1, 1.1e8], ["electron_fluence", 2, 4.8e8]]
+          contributors: [["electron_fluence", 1, 1.1e8]]
         },
         {
           risk: "Single Event Upsets", metric: "proton",
@@ -21922,7 +21922,7 @@ function dedupeRadioBurstRows(rows) {
       function thresholdColor(value) {
         if (value === 111) return "rgba(168,85,247,0.75)";
         if (value === 32 || value === 10 || value === -50 || value === 1.1e8 || value === 1e-5) return "rgba(250,204,21,0.72)";
-        if (value === 56 || value === 40 || value === 1000 || value === 4.8e8 || value <= -100 || value >= 1e-4) return "rgba(239,68,68,0.72)";
+        if (value === 56 || value === 40 || value === 1000 || value <= -100 || value >= 1e-4) return "rgba(239,68,68,0.72)";
         return "rgba(250,204,21,0.72)";
       }
 
@@ -22375,7 +22375,7 @@ function seonRadCode(text) {
         const key = { geomagnetic_storm: 'ap', proton_flux_10: 'proton', electron_fluence: 'electron' }[phenomenon];
         const level = phenomenon === 'geomagnetic_storm' ? (fallback >= 111 ? 'purple' : fallback >= 56 ? 'red' : 'yellow')
           : phenomenon === 'proton_flux_10' ? (fallback >= 1000 ? 'purple' : fallback >= 100 ? 'red' : 'yellow')
-          : fallback >= 4.8e8 ? 'red' : 'yellow';
+          : 'yellow';
         const configured = state.rules[key]?.[level];
         return Number.isFinite(configured) && configured >= 0 ? configured : fallback;
       }
@@ -23582,8 +23582,9 @@ function seonRadCode(text) {
           if (saved?.radio?.placeholder || !Number.isFinite(saved?.radio?.yellow)) {
             saved.radio = { ...DEFAULT_RULES.radio, audible: Boolean(saved?.radio?.audible) };
           }
-          if (saved?.electron && toNumber(saved.electron.red) === 4.4e8) {
-            saved.electron = { ...saved.electron, red: DEFAULT_RULES.electron.red };
+          if (saved?.electron && [4.4e8, 4.8e8].includes(toNumber(saved.electron.red))) {
+            // Retire the legacy severe criterion; retain other explicit custom settings.
+            delete saved.electron.red;
           }
           const base = structuredClone(DEFAULT_RULES);
           if (!saved) return base;
@@ -36195,6 +36196,35 @@ window.SpaceWxRecurrenceCompare = (function () {
 })();
 </script>
 
+<!-- HUXT_BOOTSTRAP_SLOT -->
+<script id="localHuxtProduct">
+(()=>{
+ 'use strict';
+ const URL='https://raw.githubusercontent.com/wreed1989/SpaceWxOps-WXF/main/chhss-data/huxt-forecast.json';
+ const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const utc=x=>Number.isFinite(Date.parse(x))?new Date(x).toISOString().replace('T',' ').slice(0,16)+' UTC':'Unavailable';
+ function valid(d){return d?.schemaVersion==='wxf-huxt-1'&&Number.isFinite(Date.parse(d.issuedAt))&&(d.status==='withheld'||d.status==='experimental'&&d.rows?.length>100&&d.rows.every((r,i)=>Number.isFinite(Date.parse(r.time))&&(!i||Date.parse(r.time)>Date.parse(d.rows[i-1].time))&&['ambientSpeed','cmeSpeed'].every(k=>Number.isFinite(r[k])&&r[k]>0&&r[k]<3500)));}
+ let saved=null;try{const d=JSON.parse(document.getElementById('huxtBootstrap')?.textContent||'null');if(valid(d))saved=d;}catch(_){}
+ function chart(d){const x=d.rows.map(r=>r.time),max=Math.max(700,...d.rows.map(r=>r.cmeSpeed))*1.12;
+  return{traces:[['ambientSpeed','WSA ambient','#62d5cf'],['cmeSpeed','WSA + DONKI CMEs','#ffbd7c']].map(([key,name,color])=>({name,x,y:d.rows.map(r=>r[key]),type:'scatter',mode:'lines',line:{color,width:2,dash:key==='ambientSpeed'?'dot':'solid'},connectgaps:false,hovertemplate:'%{x|%d %b %H:%M UTC}<br>%{y:.0f} km/s<extra>'+name+'</extra>'})),layout:{autosize:true,paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'#0c1c29',font:{color:'#b7cfdf'},margin:{l:60,r:20,t:35,b:45},hovermode:'x unified',hoverlabel:{bgcolor:'#111e2b',font:{color:'#fff'},bordercolor:'#617f98'},legend:{orientation:'h',y:1.13},xaxis:{type:'date',title:'UTC',gridcolor:'#233b4d'},yaxis:{title:'Earth wind speed · km/s',range:[0,max],minallowed:0,gridcolor:'#233b4d'},shapes:[{type:'rect',xref:'x',yref:'paper',x0:x[0],x1:d.issuedAt,y0:0,y1:1,fillcolor:'rgba(150,160,170,.10)',line:{width:0},layer:'below'},{type:'line',xref:'x',yref:'paper',x0:d.issuedAt,x1:d.issuedAt,y0:0,y1:1,line:{color:'#acc0d0',dash:'dot',width:1}}],annotations:[{xref:'x',yref:'paper',x:d.issuedAt,y:1,text:'Run issued',showarrow:false,xanchor:'left',font:{size:10,color:'#acc0d0'}}]}};}
+ function mount(root){let stopped=false,ctrl=null,render=Promise.resolve();
+  async function draw(error=''){
+   if(stopped)return;root.querySelectorAll('.js-plotly-plot').forEach(p=>window.Plotly?.purge(p));
+   const d=saved;if(!d){root.innerHTML='<h3>WXF local HUXt · Earth time series</h3><p class="wx-status">Numerical run unavailable. '+esc(error)+'</p>';return;}
+   if(d.status==='withheld'){root.innerHTML='<h3>WXF local HUXt</h3><p class="wx-status">Run withheld: '+esc(d.reason)+'</p>';return;}
+   const stale=Date.now()-Date.parse(d.issuedAt)>3*3600000;
+   root.innerHTML=`<h3>WXF local HUXt · Earth time series</h3><p class="wx-status">${stale?'STALE SNAPSHOT':'EXPERIMENTAL'} · Run issued ${utc(d.issuedAt)} · SWPC boundary ${utc(d.boundary?.boundaryEpoch)} · ${d.cmeInputs?.length||0} DONKI cones</p><div data-huxt-plot style="height:340px;min-width:0"></div><p class="wx-status">Numerical HUXt output using SWPC’s processed ambient inner boundary and DONKI CME analyses. Before the dotted line: reconstruction with current inputs. After it: forecast. ${error?esc(error):''}</p><details><summary>Inputs and interpretation</summary><p>Solid: wind including modeled CMEs. Dotted: ambient wind. Identical traces mean no modeled CME contribution along the Earth line. HUXt predicts speed; it does not supply Bz or an electron-flux forecast. This series is recorded for paired historical and future verification before it changes the electron forecast.</p><p>${esc(d.qualification)}</p><p>Assumptions: ${(d.assumptions||[]).map(esc).join(' ')}</p><p><a href="${esc(d.source?.url)}" target="_blank" rel="noopener">SWPC boundary input</a> · <a href="${URL}" target="_blank" rel="noopener">Numerical output</a> · <a href="https://github.com/University-of-Reading-Space-Science/HUXt" target="_blank" rel="noopener">HUXt model</a></p></details>`;
+   const p=chart(d);await window.Plotly?.react(root.querySelector('[data-huxt-plot]'),p.traces,p.layout,{responsive:true,scrollZoom:false,displaylogo:false,displayModeBar:false});
+  }
+  // Let Plotly finish before replacing or purging its target during a fast refresh.
+  function paint(error=''){render=render.then(()=>draw(error)).catch(()=>{if(!stopped)root.innerHTML='<h3>WXF local HUXt</h3><p class="wx-status">Plot unavailable. Refresh products to retry.</p>';});return render;}
+  async function refresh(){ctrl?.abort();const request=ctrl=new AbortController();const timer=setTimeout(()=>request.abort(),15000);try{const r=await fetch(URL,{signal:request.signal,cache:'no-store',credentials:'omit'});if(!r.ok)throw Error('HTTP '+r.status);const d=await r.json();if(!valid(d))throw Error('Invalid numerical run');if(stopped||ctrl!==request)return;if(!saved||Date.parse(d.issuedAt)>=Date.parse(saved.issuedAt))saved=d;await paint();}catch(_){if(!stopped&&ctrl===request)await paint('Refresh unavailable; retaining dated run.');}finally{clearTimeout(timer);}}
+  paint();return{refresh,stop(){stopped=true;ctrl?.abort();const plots=[...root.querySelectorAll('.js-plotly-plot')];render.then(()=>plots.forEach(p=>window.Plotly?.purge(p)));}};
+ }
+ window.SpaceWxLocalHUXt={mount,chart,valid};
+})();
+
+</script>
 <script id="cmeSolarWindProduct">
 (() => {
   'use strict';
@@ -36209,14 +36239,15 @@ window.SpaceWxRecurrenceCompare = (function () {
   function unmount(){if(dispose)dispose();dispose=null;}
   function mount(root){
     unmount();root.classList.add('wx-context');
-    root.innerHTML=`<h2>CME | Solar Wind</h2><p>Compare the providers’ latest published heliospheric forecasts. Each panel keeps its own model timing and provenance.</p><div class="wx-cme-grid"><section class="wx-cme-card"><h3>SWPC WSA–ENLIL</h3><p class="wx-status">Official solar-wind and CME propagation visualization</p><img data-enlil-image alt="NOAA SWPC WSA–ENLIL model forecast"><div class="wx-actions"><button data-enlil-play disabled>Play</button><button data-cme-refresh>Refresh products</button></div><input data-enlil-slider type="range" min="0" max="0" value="0" disabled aria-label="ENLIL forecast frame"><p class="wx-status" data-enlil-status role="status">Loading SWPC forecast frames…</p><a data-enlil-expand href="https://services.swpc.noaa.gov/images/animations/enlil/latest.jpg" target="_blank" rel="noopener">Expand chart</a> · <a href="https://www.spaceweather.gov/products/wsa-enlil-solar-wind-prediction" target="_blank" rel="noopener">SWPC product and interpretation</a></section><section class="wx-cme-card"><h3>HUXt</h3><p class="wx-status">University of Reading / SWx Forecast Lab · WSA ambient wind + DONKI CMEs</p><img data-huxt-image alt="Published HUXt WSA and DONKI solar-wind forecast"><p class="wx-status" data-huxt-status role="status">Loading published HUXt forecast…</p><p class="wx-status">Read issue and forecast-valid times on the provider’s chart. The retrieval time is not a new model run. This panel displays published output; it does not execute a local ensemble.</p><a href="${HUXT}" target="_blank" rel="noopener">Expand chart</a> · <a href="https://swxforecastlab.org/forecasts.html" target="_blank" rel="noopener">HUXt forecast products</a></section><section data-cme-scoreboard></section><section class="wx-cme-card"><span class="wx-planned">PLANNED · NOT CONNECTED</span><h3>PyCAT</h3><p>Reserved for the Python CME Analysis Tool being developed by NOAA SWPC and the UK Met Office. Its role is coronagraph-based CME geometry analysis, providing inputs for propagation models such as WSA–ENLIL.</p><p class="wx-status">No PyCAT measurements, model runs or arrival predictions are available in this dashboard yet.</p><a href="https://cpaess.ucar.edu/abstract-sww-2025/next-generation-noaaswpc-cme-analysis-tool-pycat" target="_blank" rel="noopener">PyCAT development overview</a></section></div>`;
+    root.innerHTML=`<h2>CME | Solar Wind</h2><p>Compare the providers’ latest published heliospheric forecasts. Each panel keeps its own model timing and provenance.</p><div class="wx-cme-grid"><section class="wx-cme-card"><h3>SWPC WSA–ENLIL</h3><p class="wx-status">Official solar-wind and CME propagation visualization</p><img data-enlil-image alt="NOAA SWPC WSA–ENLIL model forecast"><div class="wx-actions"><button data-enlil-play disabled>Play</button><button data-cme-refresh>Refresh products</button></div><input data-enlil-slider type="range" min="0" max="0" value="0" disabled aria-label="ENLIL forecast frame"><p class="wx-status" data-enlil-status role="status">Loading SWPC forecast frames…</p><a data-enlil-expand href="https://services.swpc.noaa.gov/images/animations/enlil/latest.jpg" target="_blank" rel="noopener">Expand chart</a> · <a href="https://www.spaceweather.gov/products/wsa-enlil-solar-wind-prediction" target="_blank" rel="noopener">SWPC product and interpretation</a></section><section class="wx-cme-card"><h3>HUXt</h3><p class="wx-status">University of Reading / SWx Forecast Lab · WSA ambient wind + DONKI CMEs</p><img data-huxt-image alt="Published HUXt WSA and DONKI solar-wind forecast"><p class="wx-status" data-huxt-status role="status">Loading published HUXt forecast…</p><p class="wx-status">Read issue and forecast-valid times on the provider’s chart. The retrieval time is not a new model run. This provider panel displays published output. The separate WXF local HUXt chart below runs the numerical model with SWPC boundary data and DONKI CME inputs.</p><a href="${HUXT}" target="_blank" rel="noopener">Expand chart</a> · <a href="https://swxforecastlab.org/forecasts.html" target="_blank" rel="noopener">HUXt forecast products</a></section><section class="wx-cme-card" style="grid-column:1/-1;min-width:0" data-local-huxt></section><section data-cme-scoreboard></section><section class="wx-cme-card"><span class="wx-planned">PLANNED · NOT CONNECTED</span><h3>PyCAT</h3><p>Reserved for the Python CME Analysis Tool being developed by NOAA SWPC and the UK Met Office. Its role is coronagraph-based CME geometry analysis, providing inputs for propagation models such as WSA–ENLIL.</p><p class="wx-status">No PyCAT measurements, model runs or arrival predictions are available in this dashboard yet.</p><a href="https://cpaess.ucar.edu/abstract-sww-2025/next-generation-noaaswpc-cme-analysis-tool-pycat" target="_blank" rel="noopener">PyCAT development overview</a></section></div>`;
+    const localHuxt=window.SpaceWxLocalHUXt?.mount(root.querySelector('[data-local-huxt]'));
     const stopScoreboard=window.SpaceWxCMEScoreboard.mount(root.querySelector('[data-cme-scoreboard]'));
     let frames=[],index=0,timer=null,disposed=false,request=null,retrieved=null,displayToken=0,framePending=false,refreshError="";
     const img=root.querySelector('[data-enlil-image]'),slider=root.querySelector('[data-enlil-slider]'),play=root.querySelector('[data-enlil-play]'),status=root.querySelector('[data-enlil-status]'),huxt=root.querySelector('[data-huxt-image]'),hs=root.querySelector('[data-huxt-status]');
     function stop(){clearInterval(timer);timer=null;play.textContent='Play';}
     function show(){const f=frames[index];if(!f)return;const token=++displayToken;framePending=true;slider.value=index;root.querySelector("[data-enlil-expand]").href=f.url;img.onload=()=>{if(token!==displayToken)return;framePending=false;status.textContent=`Run ${f.run} · forecast frame valid ${f.valid.replace('T',' ')} · ${index+1}/${frames.length}. Retrieved ${retrieved}. Frame validity is not CME arrival time. ${refreshError}`;};img.onerror=()=>{framePending=false;stop();img.hidden=true;status.textContent='ENLIL image unavailable. Use the SWPC product link or refresh.';};img.hidden=false;img.src=f.url;}
     async function update(){
-      stop();request?.abort();const ctrl=new AbortController();request=ctrl;const timeout=setTimeout(()=>ctrl.abort(),15000);const stamp=new Date().toISOString();
+      localHuxt?.refresh();stop();request?.abort();const ctrl=new AbortController();request=ctrl;const timeout=setTimeout(()=>ctrl.abort(),15000);const stamp=new Date().toISOString();
       huxt.onload=()=>{hs.textContent=`Published forecast loaded. Retrieved ${stamp.replace('T',' ')}. Model issue time is printed on the chart.`;};huxt.onerror=()=>{huxt.hidden=true;hs.textContent='HUXt image unavailable. Use the provider link or refresh.';};huxt.hidden=false;huxt.src=HUXT+'?refresh='+Date.now();
       refreshError='';status.textContent='Refreshing SWPC frames…';
       try{const r=await fetch(DIRECTORY,{signal:ctrl.signal,cache:'no-store',credentials:'omit'});if(!r.ok)throw Error('HTTP '+r.status);const found=framesFrom(await r.text());if(!found.length)throw Error('No forecast frames listed');if(disposed||request!==ctrl)return;frames=found;retrieved=stamp.replace('T',' ');index=Math.max(0,frames.findIndex(f=>Date.parse(f.valid)>=Date.now()));slider.max=frames.length-1;slider.disabled=false;play.disabled=frames.length<2;show();}
@@ -36226,7 +36257,7 @@ window.SpaceWxRecurrenceCompare = (function () {
     root.querySelector('[data-cme-refresh]').onclick=update;
     slider.oninput=()=>{stop();index=+slider.value;show();};
     play.onclick=()=>{if(timer){stop();return;}play.textContent='Pause';timer=setInterval(()=>{if(!root.isConnected){stop();return;}if(!framePending){index=(index+1)%frames.length;show();}},600);};
-    dispose=()=>{disposed=true;stop();stopScoreboard();request?.abort();};update();
+    dispose=()=>{disposed=true;stop();stopScoreboard();localHuxt?.stop();request?.abort();};update();
   }
   window.SpaceWxCME={mount,unmount,framesFrom};
 })();
@@ -36272,9 +36303,9 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
   const fmt=v=>num(v)?v.toExponential(2):'Unavailable';
   const utc=t=>Number.isFinite(Date.parse(t))?new Date(t).toISOString().replace('T',' ').slice(0,16)+' UTC':'Unavailable';
   function valid(d){
-    if(d?.schemaVersion!=='WXF-EF-0.1'||!Number.isFinite(Date.parse(d.issuedAt)))return false;
+    if(d?.schemaVersion!=='WXF-EF-0.2'||!Number.isFinite(Date.parse(d.issuedAt)))return false;
     if(d.status==='withheld')return Array.isArray(d.forecast)&&d.forecast.length===0;
-    if(d.status!=='experimental'||!Array.isArray(d.history)||d.history.length!==24||!d.history.every(r=>r.flux===null||num(r.flux))||!num(d.evaluation?.metrics?.WXF?.['24']?.mae)||!num(d.evaluation?.metrics?.diurnalPersistence?.['24']?.mae)||!d.evaluation?.thresholds?.severe||!Number.isFinite(Date.parse(d.dataAsOf))||Date.parse(d.issuedAt)<Date.parse(d.dataAsOf)||d.forecast?.length!==24)return false;
+    if(d.status!=='experimental'||!Array.isArray(d.history)||d.history.length!==24||!d.history.every(r=>r.flux===null||num(r.flux))||!num(d.evaluation?.metrics?.WXF?.['24']?.mae)||!num(d.evaluation?.metrics?.diurnalPersistence?.['24']?.mae)||!d.evaluation?.thresholds?.moderate||!Number.isFinite(Date.parse(d.dataAsOf))||Date.parse(d.issuedAt)<Date.parse(d.dataAsOf)||d.forecast?.length!==24)return false;
     return d.forecast.every((r,i)=>Date.parse(r.time)===Date.parse(d.dataAsOf)+(i+1)*3600000&&
       ['low','median','high','fluxLow','fluxMedian','fluxHigh'].every(k=>r[k]===null||num(r[k]))&&
       (r.low===null?r.median===null&&r.high===null:num(r.median)&&num(r.high)&&r.low<=r.median&&r.median<=r.high)&&
@@ -36287,7 +36318,7 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
   function accept(d){if(valid(d)&&(!data||Date.parse(d.issuedAt)>=Date.parse(data.issuedAt)))data=d;}
   try{accept(JSON.parse(document.getElementById('wxfElectronBootstrap')?.textContent||'null'));}catch(_){}
   async function refresh(){const c=new AbortController(),timer=setTimeout(()=>c.abort(),15000);try{const r=await fetch(URL,{signal:c.signal,cache:'no-store',credentials:'omit'});if(!r.ok)throw Error('HTTP '+r.status);const d=await r.json();if(!valid(d))throw Error('Invalid WXF publication');accept(d);return '';}catch(_){return 'Live refresh unavailable; showing the dated snapshot.';}finally{clearTimeout(timer);}}
-  function chart(d,view='fluence',thresholdScale=false){
+  function chart(d,view='fluence',thresholdScale=true){
     const flux=view==='flux',rows=d.forecast,x=rows.map(r=>r.time),prefix=flux?'flux':'';
     const values=key=>rows.map(r=>r[prefix?prefix+key[0].toUpperCase()+key.slice(1):key]);
     const traces=[{name:'Empirical 90% range',x,y:values('high'),mode:'lines',type:'scatter',line:{width:0},hoverinfo:'skip',showlegend:false,connectgaps:false},
@@ -36298,38 +36329,51 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
     else if(num(d.observedFluence))traces.unshift({name:'Observed rolling 24 h',x:[d.dataAsOf],y:[d.observedFluence],mode:'markers',type:'scatter',marker:{size:8,color:'#62d5cf'},hovertemplate:'%{x|%d %b %H:%M UTC}<br>%{y:.2e} e⁻ cm⁻² sr⁻¹<extra>Observed</extra>'});
     const style=window.SpaceWxAlertStyle,all=traces.flatMap(t=>t.y).filter(num);
     let max=Math.max(flux?15:1.2e8,...all)*1.12;
-    if(thresholdScale&&!flux)max=Math.max(max,...(style?.thresholds('electron')||[{value:1.1e8},{value:4.8e8}]).map(r=>r.value*1.12));
+    if(thresholdScale&&!flux)max=Math.max(max,...(style?.thresholds('electron')||[{value:1.1e8}]).map(r=>r.value*1.12));
     const layout={autosize:true,paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'#0c1c29',font:{color:'#b7cfdf',size:11},margin:{l:68,r:20,t:35,b:44},
       legend:{orientation:'h',x:0,y:1.14},hovermode:'x unified',hoverlabel:{bgcolor:'#111e2b',bordercolor:'#617f98',font:{color:'#fff',size:12}},
       xaxis:{type:'date',title:'UTC',tickformat:'%H:%M\n%d %b',gridcolor:'#233b4d'},
       yaxis:{title:{text:flux?'Flux · e⁻ cm⁻² s⁻¹ sr⁻¹':'Rolling 24 h · e⁻ cm⁻² sr⁻¹'},type:'linear',range:[0,max],minallowed:0,tickformat:'~s',gridcolor:'#233b4d',automargin:true},
       shapes:[],annotations:[]};
-    if(!flux&&style){const o=style.overlay('electron',max);layout.shapes.push(...o.shapes);layout.annotations.push(...o.annotations);traces.find(t=>t.name==='WXF median').marker.color=values('median').map(v=>style.color('electron',v));}
-    if(!flux&&!style)for(const [value,color]of [[1.1e8,'#f4cd62'],[4.8e8,'#fb8585']])if(value<=max){layout.shapes.push({type:'line',xref:'paper',x0:0,x1:1,y0:value,y1:value,line:{color,width:1,dash:'dash'}});layout.annotations.push({xref:'paper',x:.98,y:value,xanchor:'right',yanchor:'bottom',text:value.toExponential(1),showarrow:false,font:{color,size:10},bgcolor:'#102333'});}
+    if(!flux&&thresholdScale&&style){const o=style.overlay('electron',max);layout.shapes.push(...o.shapes);layout.annotations.push(...o.annotations);traces.find(t=>t.name==='WXF median').marker.color=values('median').map(v=>style.color('electron',v));}
+    if(!flux&&thresholdScale&&!style)for(const [value,color]of [[1.1e8,'#f4cd62']])if(value<=max){layout.shapes.push({type:'line',xref:'paper',x0:0,x1:1,y0:value,y1:value,line:{color,width:1,dash:'dash'}});layout.annotations.push({xref:'paper',x:.98,y:value,xanchor:'right',yanchor:'bottom',text:value.toExponential(1),showarrow:false,font:{color,size:10},bgcolor:'#102333'});}
     return {traces,layout};
   }
   function mount(root,flowRoot=root,initial=null){
-    if(initial)accept(initial);let stopped=false,view='fluence',full=false,error='';
+    if(initial)accept(initial);let stopped=false,view='fluence',full=true,error='',which='current';
+    function modelControl(){return '<div class="wx-particle-toolbar"><label>WXF model <select data-wxf-model><option value="current">Current · default</option><option value="candidate" '+(!valid(data?.candidate)?'disabled':'')+'>Candidate · IPS/HSS + CME · research</option></select></label></div>';}
+    function wireModel(){const el=root.querySelector('[data-wxf-model]');if(el){el.value=which;el.onchange=e=>{which=e.target.value;paint();};}}
     function paint(){
       if(stopped)return;const open=!!root.querySelector('details[open]');root.querySelectorAll('.js-plotly-plot').forEach(p=>window.Plotly?.purge(p));
       if(!data){root.innerHTML='<p class="wx-particle-status">WXF forecast has not been received yet. Refresh to retrieve the experimental publication.</p>';return;}
-      const d=data,e=d.evaluation,active=fresh(d),latest=d.forecast?.at(-1),cov=e?.coverage?.['24'],missing=d.completeObservedHours<24;
-      if(d.status==='withheld'){root.innerHTML=`<p class="wx-particle-warning">Forecast withheld · ${esc(d.reason)}</p><p class="wx-particle-status">Issued ${utc(d.issuedAt)}. No missing data are substituted with zero.</p>`;return;}
+      if(which==='candidate'&&!valid(data.candidate))which='current';
+      const candidate=which==='candidate',d=candidate?data.candidate:data,e=d.evaluation,active=fresh(d),latest=d.forecast?.at(-1),cov=e?.coverage?.['24'],missing=d.completeObservedHours<24;
+      if(d.status==='withheld'){root.innerHTML=modelControl()+`<p class="wx-particle-warning">Forecast withheld · ${esc(d.reason)}</p><p class="wx-particle-status">Issued ${utc(d.issuedAt)}. No missing data are substituted with zero.</p>`;wireModel();return;}
       const base=e.metrics.diurnalPersistence['24'].mae,wxf=e.metrics.WXF['24'].mae;
-      root.innerHTML=`<div class="wx-particle-toolbar"><span class="wx-particle-status ${!active?'wx-particle-warning':''}">${active?'EXPERIMENTAL':'STALE SNAPSHOT'} · Data through ${utc(d.dataAsOf)} · Issued ${utc(d.issuedAt)}</span></div>
+      const guidance=d.arrivalGuidance,p=d.predictorValues||{},runs=guidance?.predictions||[];
+      const upcoming=[...new Set(runs.filter(r=>{const h=(Date.parse(r.arrival)-Date.parse(d.dataAsOf))/3600000;return h>=0&&h<=24;}).map(r=>r.event))];
+      const rec=p.recurrence_24h_coverage>=.75?Math.round(p.recurrence_24h_speed)+' km/s':'Unavailable';
+      const sources=[...new Set(runs.map(r=>r.provider))].join(', ')||'No active arrival submissions';
+      const previous=e.ablation?.previousWXF?.development?.metrics?.WXF?.['24']?.mae;
+      root.innerHTML=modelControl()+`<div class="wx-particle-toolbar"><span class="wx-particle-status ${!active?'wx-particle-warning':''}">${active?(candidate?'SHADOW CANDIDATE':'EXPERIMENTAL'):'STALE SNAPSHOT'} · Data through ${utc(d.dataAsOf)} · Issued ${utc(d.issuedAt)}</span></div>
         <div class="wx-particle-stat"><div><span>+24 h median</span><strong>${fmt(latest.median)}</strong></div><div><span>Empirical range</span><strong>${fmt(latest.low)}–${fmt(latest.high)}</strong></div></div>
-        <div class="wx-particle-toolbar"><label>Display <select data-wxf-view><option value="fluence">Rolling 24-hour fluence</option><option value="flux">Hourly electron flux</option></select></label><label><input data-wxf-scale type="checkbox" ${full?'checked':''}> Show all thresholds</label><span class="wx-particle-status">GOES-19 · >2 MeV · GEO</span></div>
+        <div class="wx-particle-toolbar"><label>Display <select data-wxf-view><option value="fluence">Rolling 24-hour fluence</option><option value="flux">Hourly electron flux</option></select></label><label><input data-wxf-scale type="checkbox" ${full?'checked':''}> Show threshold</label><span class="wx-particle-status">${esc(d.spacecraft||'GOES-19')} · >2 MeV · GEO</span></div>
+        ${candidate?'<p class="wx-particle-warning">Research candidate: IPS/HSS phase and CME/HSS guidance are still undergoing verification. Current WXF remains the default.</p>':''}
+        <p class="wx-particle-status">${esc(d.guidanceMode||'Current WXF')} · ${upcoming.length} CME event${upcoming.length===1?'':'s'} with point-arrival forecasts in the next 24 h ${candidate?'· 27-day wind recurrence: '+rec:'· Arrival guidance is context for the current model.'}</p>
         <div class="wx-particle-plot" data-wxf-plot></div>
-        <p class="wx-particle-status">${missing?'Recent observations contain a gap. Rolling totals remain unavailable until that gap leaves the 24-hour window. ':''}${error?esc(error)+' ':''}New CME/HSS arrivals are not explicitly predicted. The shaded range describes forecast uncertainty. Thresholds follow Alert Settings → Electron Fluence; they do not predict spacecraft failure.</p>
+        <p class="wx-particle-status">${missing?'Recent observations contain a gap. Rolling totals remain unavailable until that gap leaves the 24-hour window. ':''}${error?esc(error)+' ':''}${candidate?'CME timing and recurrent-wind guidance inform this candidate; they do not guarantee a dropout.':'Current WXF uses observed drivers. Select the candidate above to compare the new arrival-conditioned model.'} The shaded range describes forecast uncertainty. Thresholds follow Alert Settings → Electron Fluence; they do not predict spacecraft failure.</p>
         <details ${open?'open':''}><summary>Method, verification &amp; forecast limits</summary>
-        <p>WXF learns changes in hourly electron flux from recent electron levels and trends, and lagged solar-wind speed, magnetic field, southward-field coupling and proton dynamic pressure. Seven days estimate the local diurnal shape only. Whole 24-hour error sequences create the range; each flux path is integrated separately into the preceding rolling 24 hours.</p>
-        <p>Storms can deplete the outer belt, while sustained high-speed wind can support later recovery and enhancement. This model learns those associations from measured drivers. It does not explicitly predict a new CME/HSS arrival or future Bz. The separate SWPC bulletin below is context, not an input to these numbers.</p>
-        <p>Fixed model: trained Apr 2025–Feb 2026; error ranges calibrated Mar–May 2026; tested Jun–Aug 2026. Next-day mean absolute error: ${fmt(wxf)} versus ${fmt(base)} for diurnal persistence (${((1-wxf/base)*100).toFixed(1)}% lower in this test). The nominal 90% range covered ${(cov*100).toFixed(1)}% of eligible test outcomes. ${e.originCount} overlapping origins on ${e.distinctDates} dates; these are not independent events.</p>
-        <p>At the original office thresholds (1.1 × 10⁸ / 4.8 × 10⁸): ${e.thresholds.moderate.exceedanceCount} moderate and ${e.thresholds.severe.exceedanceCount} severe exceedances in ${e.thresholds.severe.dailyOrigins} daily evaluation samples. Severe-event skill is unestablished; no threshold-exceedance probabilities are published. Future verification is pending. The model is frozen and never retuned automatically on test outcomes.</p>
+        <p>${candidate?'This candidate learns hourly electron changes from observed flux and solar-wind history, predicted CME arrival timing and uncertainty, 27-day wind recurrence, time since reported IPS/HSS onsets and the electron response already observed after each event.':'Current WXF learns hourly electron changes from recent flux and lagged observed solar-wind drivers.'} Seven days estimate the local diurnal shape only. Whole 24-hour error sequences create the range; each flux path is integrated separately into the preceding rolling 24 hours.</p>
+        <p>DONKI IPS and HSS reports are gated by each version’s submission time. The candidate learns event age, report delay, pre/post-event diurnal-adjusted electron response, and measured wind-rise/compression timing. A shock is called CME-associated only when its available catalog version links a CME. Later revisions cannot enter an earlier forecast.</p>
+        <p>Scoreboard guidance is limited to submissions available at the forecast origin, with one current prediction per provider and CME. Actual arrival times and later storm outcomes are excluded. Active providers: ${esc(sources)}. Provider agreement is not an impact probability. Future Bz, precise dropout timing and subsequent recovery remain uncertain.</p>
+        <p>${candidate?'Historical observations span Jan 2020 onward; training begins Feb 2020.':'Current-model training begins Apr 2025 with GOES-19 only.'} Training ends Feb 2026; error ranges use Mar–May; development evaluation uses Jun–Aug. ${candidate?'GOES-16 and GOES-19 retain spacecraft identity, and no profile or fluence window crosses their handoff.':''} Next-day mean absolute error: ${fmt(wxf)} versus ${fmt(base)} for diurnal persistence (${((1-wxf/base)*100).toFixed(1)}% lower in this cohort). ${num(previous)?'Previous WXF on the same cohort: '+fmt(previous)+'. ':''}The nominal 90% range covered ${(cov*100).toFixed(1)}% of eligible outcomes: ${e.originCount} overlapping origins on ${e.distinctDates} dates.</p>
+        <p>In the candidate experiment, the larger dataset and measured drivers account for most of the improvement. Tests do not yet establish a reliable additional benefit from CME timing or recurrence alone. The September check and paired weekly-block comparisons are in the model card. Prospective verification remains pending.</p>
+        <p>Office criterion: 1.1 × 10⁸ e⁻ cm⁻² sr⁻¹ in the preceding rolling 24 hours. ${e.thresholds.moderate.exceedanceCount} exceedances among ${e.thresholds.moderate.dailyOrigins} daily evaluation samples; adjacent days can belong to one event. No satellite-failure or threshold-exceedance probabilities are published. Editing Alert Settings changes plot styling, not historical validation counts.</p>
+        <p>Current CH/HSS geometry and SWPC bulletin are recorded for future calibration. The newly developed CH model lacks a consistent historical issue series. WXF now also runs numerical HUXt with SWPC’s processed inner boundary and DONKI cones. Its Earth wind-speed plot is under CME | Solar Wind. Those issued time series are being archived; historical paired HUXt runs are still needed before they change the electron forecast. An external-guidance outage leaves current WXF running and switches the candidate to the separately evaluated model with observed drivers and recurrence.</p>
         <p>Incomplete or proton-contaminated samples are excluded. Five-minute averages are integrated as boxcars; no gap filling. ${d.outOfTrainingRange?.length?'Some current predictors are outside their training ranges; extrapolation is especially uncertain. ':''}GEO measurements do not resolve LEO drag, surface charging, all satellite orbits, or material shielding.</p>
         <p><a href="https://github.com/wreed1989/SpaceWxOps-WXF/blob/main/research/electron_fluence/README.md" target="_blank" rel="noopener">WXF model card</a> · <a href="https://iswa.ccmc.gsfc.nasa.gov/hapi/info?id=goesp_part_flux_P5M" target="_blank" rel="noopener">Particle source</a> · <a href="${URL}" target="_blank" rel="noopener">Numerical forecast</a></p>
-        ${d.externalGuidance?.bulletin?'<p>SWPC external guidance · preserved as issued · not used as model input:</p><pre style="white-space:pre-wrap;font-size:11px">'+esc(d.externalGuidance.bulletin)+'</pre>':''}</details>`;
-      root.querySelector('[data-wxf-view]').value=view;
+        ${data.externalGuidance?.bulletin?'<p>SWPC external guidance · preserved as issued · not used as model input:</p><pre style="white-space:pre-wrap;font-size:11px">'+esc(data.externalGuidance.bulletin)+'</pre>':''}</details>`;
+      wireModel();root.querySelector('[data-wxf-view]').value=view;
       const c=chart(d,view,full);window.Plotly?.react(root.querySelector('[data-wxf-plot]'),c.traces,c.layout,{responsive:true,displaylogo:false,scrollZoom:false,displayModeBar:false});
       root.querySelector('[data-wxf-view]').onchange=e=>{view=e.target.value;paint();};root.querySelector('[data-wxf-scale]').onchange=e=>{full=e.target.checked;paint();};
       window.SpaceWxProductFlow?.sync(flowRoot);

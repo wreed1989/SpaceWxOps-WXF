@@ -1,20 +1,36 @@
 {
-  "version": "WXF-EF-0.1",
-  "modelSHA256": "aab8912d60f913bb75224db917b82ecb4c8728da552e93b109686e55c01767ee",
-  "trainingCodeSHA256": "6137736ec96ac5cd5efeeaed6a8994e1c4b9e9e126e3c59c709c109111772d1f",
+  "schemaVersion": "wxf-electron-model-manifest-2",
+  "version": "WXF-EF-0.2",
+  "currentModelVersion": "WXF-EF-0.1",
+  "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732",
+  "candidateModelSHA256": "0a13dd8791f113a72d6772ba16080f7f8628318bff55941e62564a94789fc38a",
+  "fallbackModelSHA256": "3fa1360a114e3ab42fbb110456adb529cd5108a18caadc2c1c489c26faea24d8",
+  "trainingCodeSHA256": "a5a2ae010e3d3d54dc50191d6e00e1a8d41b505d086794183123ec15a90410d9",
+  "experimentCodeSHA256": "6e7f66cd8c251adf3490fda94e85d2c45136d2d9e1bcab8b12fb745742d3ea0b",
+  "arrivalsCodeSHA256": "86333142a609f6130200b47f443166fa013c712d26d97d1b15bf200a53389724",
+  "currentTrainingModelSHA256": "aab8912d60f913bb75224db917b82ecb4c8728da552e93b109686e55c01767ee",
+  "currentModelNote": "Original trees/residuals unchanged. Removed severe evaluation criterion; updated metadata.",
+  "candidatePromotion": false,
+  "promotionReason": "Keep current v0.1 default. Explicit IPS/HSS-phase model is a shadow candidate, evaluated on previously inspected development dates.",
   "runtime": {
     "python": "3.12.11",
     "scikit-learn": "1.9.1",
     "numpy": "2.5.3",
-    "joblib": "1.6.0"
+    "pandas": "3.0.6"
   },
-  "purpose": "Frozen experimental forecast; no automatic refitting",
-  "splitDesign": "Training Apr 2025-Feb 2026; calibration Mar-May 2026; evaluation Jun-Aug 2026, with 24-hour target embargo",
-  "developmentNote": "Initial test results were inspected before correcting missing-lag handling and minute-level pressure/coupling aggregation. Dates and estimator hyperparameters were unchanged. Thus this is a development holdout, not a pristine prospective test.",
-  "format": "Non-executable NPZ numeric arrays; allow_pickle=False",
+  "format": "Non-executable numeric NPZ arrays; allow_pickle=False",
   "exportVerification": {
     "randomFeatureVectors": 200,
-    "maximumAbsoluteLogPredictionDifference": 4.440892098500626e-16
+    "maximumAbsoluteLogPredictionDifference": 1.3322676295501878e-15
   },
-  "sourceTrainingArtifactSHA256": "20480b70b51d7857910ad4881ba371d73698605574fd0e7ce3d07905c12502b1"
+  "developmentNote": "The June-August cohort was already used in v0.1 development. The first v0.2 evaluation exposed an overly strict missing-spacecraft guard; it was corrected to ignore already-masked missing flux. Dates, forest hyperparameters and promotion gate were unchanged. September is therefore an additional retrospective check, not a pristine prospective test.",
+  "candidateVersion": "WXF-EF-0.3",
+  "candidateDevelopmentNote": "Requested after inspecting the v0.2 comparison; all reused test dates are development data. Not a new independent validation.",
+  "impactsCodeSHA256": "9bf069f167db9b73005d05417660ef9df032090173207f673e90dcf997921bc5",
+  "impactExportVerification": {
+    "randomFeatureVectors": 200,
+    "maximumAbsoluteLogPredictionDifference": 1.3322676295501878e-15
+  },
+  "impactExperimentCodeSHA256": "f491c3af31085113b13dadc671c926e3f3b2371b4b4486272b590f393584b200",
+  "huxtAdapterCodeSHA256": "3c63a19cbe6ce7dcbea9d5c6148420117f06e639cce3bf81fab981b0a448fe5a"
 }

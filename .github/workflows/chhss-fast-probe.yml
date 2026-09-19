@@ -8,31 +8,38 @@ permissions:
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 6
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-      - run: python -m pip install 'sunpy[map,net]>=6,<8' 'requests>=2.32,<3' 'reproject>=0.14,<1' 'scikit-image>=0.25,<1'
-      - name: Bounded full FITS processing profile
+      - run: python -m pip install requests astropy
+      - name: Inspect NRT FITS headers and official flag documentation
         run: |
           mkdir probe
-          timeout 180 python -u - <<'PY' > probe/profile.log 2>&1 || true
-          import sys,faulthandler,time,traceback
-          sys.path.insert(0,'chhss')
-          faulthandler.dump_traceback_later(25,repeat=True)
-          import pipeline
-          old=pipeline.Acquire.download
-          def dl(self,*args,**kwargs):
-              print('FETCH START',args[:2],flush=True);t=time.monotonic()
-              v=old(self,*args,**kwargs)
-              print('FETCH DONE',time.monotonic()-t,args[:2],flush=True);return v
-          pipeline.Acquire.download=dl
-          print('BEGIN',flush=True)
-          try:
-              p=pipeline.make_pack(pipeline.Acquire('.chhss-cache'),'2024-01-01T12:00:00Z');pipeline.dump('probe/measurement.json',p);print('COMPLETE',flush=True)
-          except Exception:traceback.print_exc()
+          python - <<'PY'
+          import requests,json,re,io
+          from datetime import datetime,timezone,timedelta
+          from astropy.io import fits
+          from pathlib import Path
+          now=datetime.now(timezone.utc);out={}
+          for delta in [0,-1]:
+            t=now+timedelta(hours=delta);base=f'https://jsoc1.stanford.edu/data/aia/synoptic/nrt/{t:%Y/%m/%d}/H{t:%H}00/'
+            try:
+              r=requests.get(base,timeout=25);r.raise_for_status();names=sorted(set(re.findall(r'AIA\d{8}_\d{4,6}_0193\.fits',r.text)),reverse=True)
+              for name in names[:3]:
+                r=requests.get(base+name,timeout=25);r.raise_for_status()
+                with fits.open(io.BytesIO(r.content)) as h:
+                  x=next(z for z in h if z.data is not None)
+                  out[name]={'header':dict(x.header),'comments':dict(zip(x.header.keys(),x.header.comments))}
+                Path('probe/'+name).write_bytes(r.content)
+            except Exception as e:out[base]={'error':str(e)}
+          for name,url in [('level1','http://jsoc.stanford.edu/jsocwiki/Lev1Doc'),('aialevel1','http://jsoc.stanford.edu/jsocwiki/AiaLev1'),('header','http://jsoc.stanford.edu/cvs/JSOC/proj/lev0/apps/imgdecode.h?view=co')]:
+            try:
+              r=requests.get(url,timeout=20);r.raise_for_status();Path('probe/'+name+'.html').write_text(r.text)
+            except Exception as e:out[name]={'error':str(e)}
+          Path('probe/quality.json').write_text(json.dumps(out,indent=2,default=str));print(json.dumps(out,default=str))
           PY
       - uses: actions/upload-artifact@v4
         if: always()

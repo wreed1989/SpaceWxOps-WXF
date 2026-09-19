@@ -19,12 +19,12 @@ IGRF/Tsyganenko field solution or a global radiation-belt reconstruction.
 
 ## Live data and limits
 
-The existing timestamped Ap and GOES feeds supply the view without new services:
+The existing timestamped three-hour ap and GOES feeds supply the view without new services:
 
 - **Outer electron brightness and particle count:** fresh >2 MeV GOES integral flux, on a compressed
   logarithmic visual scale. This is a local GEO proxy, not whole-belt density.
-  Both are independent of Ap and user risk thresholds. More blue dots and moving tracers mean stronger current electron flux; low flux gives fewer. A bounded visual scale prevents excessive drawing cost.
-- **Outer geometry:** a bounded, explicitly illustrative Ap response, showing
+  Both are independent of ap and user risk thresholds. More blue dots and moving tracers mean stronger current electron flux; low flux gives fewer. A bounded visual scale prevents excessive drawing cost.
+- **Outer geometry:** a bounded, explicitly illustrative ap response, showing
   inward broadening and outer-edge compression as activity rises. Its numerical
   mapping is a design choice, not a validated boundary model. Live mode does not
   infer a measured storm phase or forecast recovery.
@@ -32,13 +32,13 @@ The existing timestamped Ap and GOES feeds supply the view without new services:
   measure trapped inner-belt protons and do not brighten that belt.
 - **Solar-proton exposure:** separate orange passing streaks scale with fresh ≥10 MeV proton flux. These are exposure glyphs, not trapped protons, a measured arrival direction, or traced trajectories. A zero reading gives no streaks; unavailable readings hide them with an explicit unavailable label.
 - **Orbit colors:** the existing environmental screening rules and the user's
-  saved alert thresholds. These classifications are separate from belt colors.
+  saved alert thresholds, labelled Below triggers / Trigger 1 / Trigger 2 / Trigger 3. These classifications are separate from belt colors and do not express failure probability. Cumulative dose is not calculated.
 
 GOES samples expire after 20 minutes. Loading is withheld when the current
 proton sample is missing/stale or ≥10 MeV proton flux is at least 10 PFU, because
 proton contamination of GOES electrons is possible. This is a conservative
 visualization gate, not a provider quality flag or a universal contamination
-boundary. It does not modify the existing raw plots or alert policy. Missing
+boundary. Electron and proton samples must also be within 10 minutes. The 24-hour screening requires a full, covered electron/proton window without a ≥10 PFU proton observation; an affected window stays unassessed after instantaneous loading can recover. It does not modify raw plots or notification thresholds. Missing
 loading renders a muted reference cloud without moving electron tracers, never an empty radiation environment. Solar-proton streaks can remain visible when valid proton readings make the electron channel unreliable.
 
 ## Preview modes
@@ -98,10 +98,10 @@ damage build over exposure, and depletion does not undo stored charge or damage.
 | HEO | Changing exposure during belt crossings and high-altitude dwell; possible drag at a sufficiently low perigee. |
 
 Orbit screening and user thresholds remain separate from particle counts.
-Surface-charging screening uses Ap alone as a broad geomagnetic proxy; the former
+Surface-charging screening uses three-hour ap alone as a broad geomagnetic proxy; the former
 MeV electron-fluence contribution has been removed from that category. Internal
 charging retains its electron-fluence screening for MEO/GEO/HEO. This is not a
-claim that LEO is immune: its local charging exposure is not resolved by GOES. An Ap-driven drag concern must not manufacture electron dots. These are
+claim that LEO is immune: its local charging exposure is not resolved by GOES. An ap-driven drag concern must not manufacture electron dots. These are
 broad environmental screening cues, not local potential, dose or orbit-decay
 calculations. The risks overlap and depend on orbit phase, shielding and design.
 
@@ -116,3 +116,5 @@ calculations. The risks overlap and depend on orbit phase, shielding and design.
 - [ESA SPENVIS: surface and internal charging](https://www.spenvis.oma.be/help/background/charging/charging.html).
 - [NASA: spacecraft radiation damage](https://science.nasa.gov/science-research/heliophysics/how-nasa-prepares-spacecraft-for-the-harsh-radiation-of-space/).
 - [NOAA SWPC: satellite drag](https://www.swpc.noaa.gov/impacts/satellite-drag).
+
+See [the scientific audit](satellite-risk-science-audit.md) for threshold provenance, corrected decision guidance, quality gates and integration details.

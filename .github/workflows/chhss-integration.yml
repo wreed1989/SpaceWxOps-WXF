@@ -1,0 +1,69 @@
+name: CH HSS acquisition integration
+on:
+  push:
+    branches: [chhss-ingestion-20260918]
+    paths: ['.github/workflows/chhss-integration.yml', 'chhss/**']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: chhss-integration
+  cancel-in-progress: true
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install science runtime
+        run: python -m pip install 'requests>=2.32,<3' 'numpy>=2,<3' 'scipy>=1.14,<2' 'astropy>=6,<8' 'sunpy[map,net]>=6,<8' 'reproject>=0.14,<1' 'Pillow>=11,<13'
+      - name: Probe public science archives
+        run: |
+          mkdir -p chhss-results
+          python - <<'PY'
+          import requests, json, concurrent.futures
+          from pathlib import Path
+          from datetime import datetime, timezone, timedelta
+          now=datetime.now(timezone.utc)
+          endpoints={
+            'omni':('https://spdf.gsfc.nasa.gov/pub/data/omni/low_res_omni/omni2_2024.dat',None),
+            'aia_sample':('https://jsoc1.stanford.edu/data/aia/synoptic/2024/01/01/H1200/AIA20240101_1200_0193.fits',None),
+            'aia_alternate':('https://jsoc.stanford.edu/data/aia/synoptic/2024/01/01/H1200/AIA20240101_1200_0193.fits',None),
+            'hek_sample':('https://www.lmsal.com/hek/her',dict(cosec='2',cmd='search',type='column',event_type='ch',event_starttime='2024-01-01T00:00:00',event_endtime='2024-01-02T00:00:00',event_coordsys='helioprojective',x1=-1200,x2=1200,y1=-1200,y2=1200,result_limit=200,return_type='json',temporalmode='overlap')),
+            'hek_live':('https://www.lmsal.com/hek/her',dict(cosec='2',cmd='search',type='column',event_type='ch',event_starttime=(now-timedelta(days=1)).strftime('%Y-%m-%dT%H:%M:%S'),event_endtime=now.strftime('%Y-%m-%dT%H:%M:%S'),event_coordsys='helioprojective',x1=-1200,x2=1200,y1=-1200,y2=1200,result_limit=200,return_type='json',temporalmode='overlap')),
+            'hmi_live_https':('https://jsoc.stanford.edu/cgi-bin/ajax/jsoc_info',dict(op='rs_list',ds='hmi.M_720s_nrt[$]',key='**ALL**',seg='magnetogram',n=1)),
+            'hmi_live_http':('http://jsoc.stanford.edu/cgi-bin/ajax/jsoc_info',dict(op='rs_list',ds='hmi.M_720s_nrt[$]',key='**ALL**',seg='magnetogram',n=1)),
+            'hmi_archive':('https://jsoc.stanford.edu/cgi-bin/ajax/jsoc_info',dict(op='rs_list',ds='hmi.M_720s[2024.01.01_12:00_TAI/24m]',key='**ALL**',seg='magnetogram',n=1)),
+            'aia_latest':('https://jsoc.stanford.edu/cgi-bin/ajax/jsoc_info',dict(op='rs_list',ds='aia.lev1_euv_12s[][193][$]',key='T_REC,T_OBS,QUALITY,WAVELNTH',seg='image',n=1))}
+          def get(item):
+            name,(url,params)=item
+            try:
+              r=requests.get(url,params=params,timeout=(15,100));out={'url':r.url,'status':r.status_code,'bytes':len(r.content),'type':r.headers.get('content-type')}
+              if r.ok:
+                dest=Path('chhss-results')/(name+('.fits' if name.startswith('aia_s') or name=='aia_alternate' else '.dat' if name=='omni' else '.json'))
+                dest.write_bytes(r.content)
+                if 'json' in r.headers.get('content-type','') or name.startswith(('hek','hmi','aia_l')):
+                  try:
+                    j=r.json();out['keys']=list(j) if isinstance(j,dict) else ['array'];out['summary']=str(j)[:1600]
+                  except Exception:out['summary']=r.text[:250]
+              else:out['summary']=r.text[:250]
+              print(name,out,flush=True);return name,out
+            except Exception as e:
+              print(name,str(e),flush=True);return name,{'error':str(e)}
+          result=dict(concurrent.futures.ThreadPoolExecutor(5).map(get,endpoints.items()))
+          Path('chhss-results/probe.json').write_text(json.dumps(result,indent=2))
+          import importlib.metadata
+          Path('chhss-results/environment.json').write_text(json.dumps({k:importlib.metadata.version(k) for k in ['requests','numpy','scipy','astropy','sunpy','reproject','Pillow']},indent=2))
+          PY
+      - name: Run connected pipeline when installed
+        if: hashFiles('chhss/pipeline.py') != ''
+        run: python chhss/pipeline.py integration --output chhss-results
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chhss-integration-results
+          path: chhss-results/
+          retention-days: 14

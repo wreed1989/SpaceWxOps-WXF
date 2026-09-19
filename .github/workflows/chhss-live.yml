@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: f99e2b556a49be2dcbb94e20ed20c32e302dabbc
+          ref: 4c0e78c224dfec00f0eeef81cda4201df353acb7
           path: worker
       - uses: actions/checkout@v6
         with:
@@ -60,9 +60,10 @@ jobs:
         if: always()
         run: |
           mkdir -p product/source
-          cp worker/chhss/core.py worker/chhss/pipeline.py worker/chhss/live.py product/source/
+          cp worker/chhss/core.py worker/chhss/pipeline.py worker/chhss/live.py worker/chhss/aia_quality.py product/source/
           git -C worker rev-parse HEAD > product/source-commit.txt
           python -m pip freeze > product/environment.txt
+          if [ -d .chhss-cache/quality ]; then cp -r .chhss-cache/quality product/; fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:

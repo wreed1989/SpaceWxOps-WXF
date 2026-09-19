@@ -111,9 +111,11 @@ const region={polarity:1,polarityEvidence:{fluxImbalance:.6,meanBr:2,nValid:100,
 assert.equal(holeContext.measuredHoleSign(region,magnetic),1);
 assert.equal(holeContext.measuredHoleSign({...region,polarityEvidence:{...region.polarityEvidence,temporalAgreement:false}},magnetic),null);
 const fixture = JSON.parse(fs.readFileSync('chhss-data/feed.json'));
-// Repeatable ingestion tests at the actual fixture acquisition time. Separate
-// stale checks below advance the clock without relabeling the observation.
-class Clock extends Date {static now() {return Date.parse(fixture.current.availableAt)+60000;}}
+// Independent imagery and OMNI publishers need not update together. Use the
+// latest actual publication for ingestion checks; keep observation times intact.
+// Separate stale checks advance this clock without relabelling observations.
+const fixturePublished = Math.max(...[fixture.current.availableAt, fixture.generatedAt, fixture.recurrence.generatedAt].map(Date.parse));
+class Clock extends Date {static now() {return fixturePublished+60000;}}
 const context = vm.createContext({window: {crypto: webcrypto}, crypto: webcrypto,
   document: {readyState: 'loading', addEventListener() {}, dispatchEvent() {}, querySelector() {return null;}, getElementById() {return null;}},
   CustomEvent: class {}, AbortController, URL, location: {href: 'file:///Downloads/dashboard.html'}, Date:Clock, setTimeout, clearTimeout});
@@ -193,6 +195,8 @@ for (const id of ['chHssScienceCore', 'chhssDataClient', 'fdChHssEngine']) {
   await data.refresh(true);
   assert.equal(data.current().observationTime,retained);
   assert.ok(data.persistenceRows().length>0);
+  const futureRecurrence=structuredClone(before.recurrence);futureRecurrence.generatedAt=new Clock(Clock.now()+6*60000).toISOString();
+  assert.throws(()=>data.validateRecurrence(futureRecurrence),/publication time/);
   const duplicate=structuredClone(before.recurrence);duplicate.rows.push(duplicate.rows[0]);
   assert.throws(()=>data.validateRecurrence(duplicate),/duplicate/);
   console.log(`All ${scripts.length} scripts parse; registered AIA/HMI, independent OMNI, daily coverage, checksum, quality, stale and last-good gates pass.`);

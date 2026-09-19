@@ -203,6 +203,14 @@ assert.equal(monitor.normalize([{kind:'visual',key:'helio',cols:8,rows:12,layout
 assert.equal(monitor.resize({cols:12,rows:30},504,72,1000,'height').cols,12);
 assert.equal(monitor.resize({cols:12,rows:30},504,72,1000,'width').rows,30);
 assert.equal(monitor.resize({cols:24,rows:30},0,-12,1000,'height').rows,29);
+// Alert edits use the same live rule object for Monitor and model plots.
+const configured={proton:{yellow:10,red:40,purple:1000},proton50:{red:10},electron:{yellow:1.1e8,red:4.8e8}};
+const styleContext=vm.createContext({window:{},state:{rules:configured},isLightTheme:()=>false,readableThresholdColor:c=>c});
+for(const name of ['transparentize','alertLevelFromRule','particleThresholds','particleAlertColor','particleThresholdOverlay','particleRange','particleLinearAxis','hoverLabelStyle']){
+  vm.runInContext(html.match(new RegExp('      function '+name+'\\([^]*?\\n      \\}'))[0],styleContext);
+}
+products.window.SpaceWxAlertStyle={thresholds:styleContext.particleThresholds,color:styleContext.particleAlertColor,overlay:styleContext.particleThresholdOverlay,axis:styleContext.particleLinearAxis,range:styleContext.particleRange,hover:styleContext.hoverLabelStyle};
+
 const protonInput=[{time_tag:'2026-09-19T05:00:00Z',energy:'>=10 MeV',flux:2},{time_tag:'2026-09-19T05:20:00Z',energy:'>=10 MeV',flux:-999},{time_tag:'2026-09-19T05:00:00Z',energy:'>=50 MeV',flux:.1},{time_tag:'invalid',energy:'>=50 MeV',flux:100}];
 const proton10=particles.parseProtons(protonInput,10);
 assert.equal(proton10.length,3); // Insert a real gap across an observation outage.
@@ -226,33 +234,27 @@ assert.match(dose.status(fullGrid,'forecast',Date.parse('2026-09-19T06:00Z')).te
 assert.equal(dose.status(fullGrid,'nowcast',Date.parse('2026-09-19T06:00Z')).warning,false);
 assert.equal(dose.status(fullGrid,'nowcast',Date.parse('2026-09-19T08:00Z')).warning,true);
 const north=dose.polarGrid(fullGrid,1,2),south=dose.polarGrid(fullGrid,-1,2);
-assert.equal(north.z[90][90],.06); // 2 h at .03 mSv/h
-assert.equal(south.z[90][90],.04); // 2 h at .02 mSv/h
+assert.equal(north.z[180][180],.06); // 2 h at .03 mSv/h
+assert.equal(south.z[180][180],.04); // 2 h at .02 mSv/h
 assert.equal(north.z[0][0],null); // Outside hemisphere, never fake zero.
-assert.equal(north.customdata[90][90][0],90);
-assert.equal(south.customdata[90][90][0],-90);
+assert.equal(north.customdata[180][180][0],90);
+assert.equal(south.customdata[180][180][0],-90);
 assert.equal(dose.valid({...fullGrid,unit:'µSv/h'}),false);
 console.log('Adaptive-card, raw proton and NAIRAS contracts passed');
 
-// Alert edits use the same live rule object for Monitor and model plots.
-const configured={proton:{yellow:10,red:40,purple:1000},proton50:{red:10},electron:{yellow:1.1e8,red:4.8e8}};
-const styleContext=vm.createContext({window:{},state:{rules:configured},isLightTheme:()=>false,readableThresholdColor:c=>c});
-for(const name of ['transparentize','alertLevelFromRule','particleThresholds','particleAlertColor','particleThresholdOverlay']){
-  vm.runInContext(html.match(new RegExp('      function '+name+'\\([^]*?\\n      \\}'))[0],styleContext);
-}
-products.window.SpaceWxAlertStyle={thresholds:styleContext.particleThresholds,color:styleContext.particleAlertColor,overlay:styleContext.particleThresholdOverlay};
-let styled=particles.protonChart({goesProtons:{payload:protonInput}},24,Date.parse('2026-09-19T06:00Z'));
+const highProtons=protonInput.map(r=>({...r,flux:r.energy==='>=10 MeV'?100:20}));
+let styled=particles.protonChart({goesProtons:{payload:highProtons}},24,Date.parse('2026-09-19T06:00Z'));
 assert.ok(styled.layout.shapes.some(s=>s.yref==='y'&&s.y0===40&&s.type==='line'));
 assert.ok(styled.layout.shapes.some(s=>s.yref==='y2'&&s.y0===10&&s.type==='line'));
 assert.ok(!styled.layout.shapes.some(s=>s.yref==='y2'&&s.y0===40));
 configured.proton.yellow=25;configured.proton50.red=5;configured.electron.yellow=8e7;
-styled=particles.protonChart({goesProtons:{payload:protonInput}},24,Date.parse('2026-09-19T06:00Z'));
+styled=particles.protonChart({goesProtons:{payload:highProtons}},24,Date.parse('2026-09-19T06:00Z'));
 assert.ok(styled.layout.shapes.some(s=>s.yref==='y'&&s.y0===25));
 assert.ok(styled.layout.shapes.some(s=>s.yref==='y2'&&s.y0===5));
 let refmChart=particles.refmChart(refm);
 assert.equal(refmChart.traces[1].marker.color[0],'#facc15');
 assert.equal(refmChart.traces[1].y[1],null);
-assert.ok(refmChart.layout.annotations.some(a=>a.y===Math.log10(8e7)));
+assert.ok(refmChart.layout.annotations.some(a=>a.y===8e7));
 configured.electron.yellow=2e8;
 refmChart=particles.refmChart(refm);
 assert.equal(refmChart.traces[1].marker.color[0],'#38bdf8');
@@ -285,3 +287,69 @@ vm.runInContext(scripts.find(([,a])=>a.includes('id="productFlow"'))[2],products
 assert.equal(products.window.SpaceWxProductFlow.rowsForContent(54,600,30),54);
 assert.equal(products.window.SpaceWxProductFlow.rowsForContent(54,1400,30),120);
 console.log('Live alert rules, independent catalog rendering, wheel routing and disclosure layout passed');
+
+// Hard zero floor, quiet 0–15 flux range, proportional headroom, and opaque hovers.
+assert.deepEqual(Array.from(protonChart.layout.yaxis.range),[0,15]);
+assert.deepEqual(Array.from(protonChart.layout.yaxis2.range),[0,15]);
+assert.equal(protonChart.layout.yaxis.minallowed,0);
+assert.equal(protonChart.layout.yaxis.type,'linear');
+assert.deepEqual(Array.from(styleContext.particleRange([null,NaN,-999,0,12])),[0,15]);
+assert.deepEqual(Array.from(styleContext.particleRange([20])),[0,25]);
+assert.deepEqual(Array.from(styled.layout.yaxis.range),[0,125]);
+assert.ok(!protonChart.layout.shapes.some(s=>s.y0===40)); // Thresholds cannot stretch a quiet plot.
+assert.ok(styled.layout.annotations.every(a=>!/(red|yellow|purple)/i.test(a.text)));
+assert.equal(styleContext.hoverLabelStyle().bgcolor,'#111820');
+assert.equal(protonChart.layout.hoverlabel.bgcolor,'#111820');
+assert.equal(particles.parseProtons([{time_tag:'2026-09-19T05:00Z',energy:'>=10 MeV',flux:0}],10)[0].flux,0);
+assert.equal(refmChart.layout.yaxis.type,'linear');
+assert.equal(refmChart.layout.yaxis.range[0],0);
+assert.equal(refmChart.layout.yaxis.minallowed,0);
+assert.ok(refmChart.layout.yaxis.range[1]>=2.2e8*1.25);
+assert.equal(traces[1].name,'13-Month SSN Avg');
+assert.equal(traces[4].name,'Predicted SSN');
+assert.match(traces[3].hovertemplate,/Predicted SSN Range:/);
+assert.deepEqual(Array.from(traces[3].customdata[0]),[0,13.6]);
+assert.equal(traces[2].hoverinfo,'skip');
+const mapChart=dose.chart(fullGrid,2,false,{lat:60,lon:-100});
+assert.equal(mapChart.traces[0].z.length,361);
+assert.equal(mapChart.traces[0].coloraxis,mapChart.traces[4].coloraxis);
+assert.ok(mapChart.layout.coloraxis.cmax>=.06);
+assert.equal(mapChart.layout.coloraxis.colorbar.orientation,'h');
+assert.ok(mapChart.traces.some(t=>t.marker?.symbol==='circle-open'));
+assert.equal(mapChart.layout.hoverlabel.bgcolor,'#102534');
+
+// Live satellite screening never treats stale/missing/partial coverage as nominal.
+products.document.addEventListener=()=>{};
+vm.runInContext(scripts.find(([,a])=>a.includes('id="satelliteRiskScene"'))[2],products);
+const risk=products.window.SpaceWxSatelliteRisk;
+const now=Date.parse('2026-09-19T06:00Z'),time=new Date(now).toISOString();
+let policyValues;
+const policy=values=>{policyValues=values;return Object.fromEntries(['LEO','MEO','GEO','HEO'].map(o=>[o,values.proton>=10?[{level:2}]:[]]));};
+const samples={ap:{value:5,time},proton:{value:2,time},electron:{value:2e7,time,coverageOK:true}};
+let riskModel=risk.derive({samples},now,policy);
+assert.equal(riskModel.complete,true);assert.equal(risk.label(riskModel,'LEO'),'Nominal');
+riskModel=risk.derive({samples:{...samples,proton:{value:100,time}}},now,policy);
+assert.equal(risk.label(riskModel,'GEO'),'High');
+riskModel=risk.derive({samples:{...samples,electron:{value:2e7,time,coverageOK:false},proton:{value:100,time}}},now,policy);
+assert.equal(riskModel.complete,false);assert.equal(risk.label(riskModel,'GEO'),'At least High');assert.ok(Number.isNaN(policyValues.electron));
+riskModel=risk.derive({samples:{...samples,electron:{value:2e7,time,coverageOK:false}}},now,policy);
+assert.equal(risk.label(riskModel,'GEO'),'Incomplete');
+riskModel=risk.derive({samples},now+5*3600000,policy);
+assert.equal(risk.label(riskModel,'GEO'),'Unavailable');assert.ok(Number.isNaN(policyValues.proton));
+assert.equal(risk.label(risk.derive({samples,archive:true},now,policy),'GEO'),'Unavailable');
+assert.equal(risk.derive({samples:{ap:{value:-1,time},proton:{value:20,time:'invalid'},electron:{value:1e8,time:new Date(now+3600000).toISOString()}}},now,policy).anyFresh,false);
+const coverageContext=vm.createContext({timeOf:r=>r.time_tag,toNumber:v=>v==null?NaN:Number(v)});
+vm.runInContext(html.match(/      function electronCoverageHours\(rows\) \{[^]*?\n      \}/)[0],coverageContext);
+const coverageRows=Array.from({length:289},(_,i)=>({time_tag:new Date(now-i*300000).toISOString(),flux:0}));
+assert.equal(coverageContext.electronCoverageHours(coverageRows),24);
+assert.equal(coverageContext.electronCoverageHours(coverageRows.slice(0,100)),8.25);
+assert.ok(coverageContext.electronCoverageHours(coverageRows.filter((_,i)=>i<100||i>140))<23);
+console.log('Particle bounds, tooltip contrast, solar cycle labels, polar maps and satellite freshness passed');
+
+// Ap represents a three-hour interval; its end is not a future observation.
+const runningAp={value:12,time:'2026-09-19T06:00Z',validThrough:'2026-09-19T09:00Z'};
+assert.equal(risk.derive({samples:{ap:runningAp}},now+3600000,policy).samples.ap.fresh,true);
+assert.equal(risk.derive({samples:{ap:runningAp}},now+8*3600000,policy).samples.ap.fresh,false);
+vm.runInContext(html.match(/      function riskContributorThreshold\([^]*?\n      \}/)[0],styleContext);
+assert.equal(styleContext.riskContributorThreshold('proton_flux_10',10),25);
+assert.equal(styleContext.riskContributorThreshold('electron_fluence',1.1e8),2e8);

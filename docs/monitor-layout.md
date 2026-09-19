@@ -38,3 +38,28 @@ as a resize. The same disclosures flow below the charts in Model.
 
 All catalog observation panels render and refresh independently, including the
 panels formerly labelled Alternate Panel. Those labels and ALT badges are removed.
+
+## Awareness graphics
+
+The heliosphere camera is fixed to the Sun → Earth view. The Sun is slightly
+larger and the decorative limb loops are removed. Existing observed solar-wind
+and geomagnetic drivers continue to control the illustration.
+
+Satellite Risk and the compact Orbit Exposure view share a textured, sunlit Earth,
+atmosphere, orbit rings, and illustrative moving satellites. Orbit selection is
+synchronized with the impact analysis. Pause/Play and reduced-motion preferences
+control animation. These are schematic objects, not tracked spacecraft.
+
+Ap, ≥10 MeV protons and rolling >2 MeV 24-hour electron fluence update orbit colors
+using the existing screening rules and saved alert thresholds. Each feed updates
+the display when it arrives, independently of unrelated slow feeds. Particle
+inputs expire after 20 minutes, Ap after 4 hours from its interval end (or point
+timestamp). The electron integral requires at least 23 hours of valid coverage
+within its preceding day; gaps longer than 10 minutes do not count as coverage.
+Stale, missing, archive and partial inputs cannot produce a nominal assessment.
+A threshold crossed with partial inputs is shown as **At least …**.
+
+Driver values and UTC timestamps accompany the full graphic. **Orbit impact
+analysis** expands below it, growing the card and page without hiding the
+illustration. This remains environmental screening, not a spacecraft failure
+probability or an orbit-resolved radiation forecast.

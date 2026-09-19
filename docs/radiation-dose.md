@@ -4,7 +4,11 @@ The dashboard ingests the full current 181 × 360 global grid at **20 km baromet
 altitude**, using the effective-dose field (not absorbed dose or ambient dose
 equivalent). The two interactive polar maps cover NH and SH, including the equator.
 The projection displays the nearest original 1° grid cell, without smoothing dose
-values. Coastlines are Natural Earth 1:110m public-domain data embedded in the HTML.
+values. Each projected display uses a 361 × 361 raster, while the source remains
+1°. Latitude rings, longitude labels, and a white selected-location ring support
+inspection. Both hemispheres use the same horizontal color scale, fitted to the
+selected product and exposure. Opaque tooltips show original cell coordinates
+and dose values. Coastlines are Natural Earth 1:110m public-domain data embedded in the HTML.
 
 NAIRAS publishes **effective dose rate in µSv/h**. The relay divides by 1,000 and
 stores **mSv/h**. The exposure control also offers a **constant-rate dose estimate

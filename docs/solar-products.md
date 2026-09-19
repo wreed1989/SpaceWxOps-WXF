@@ -161,3 +161,8 @@ alternate endpoint as a fallback. Refresh is manual or every 15 minutes while
 mounted. A failed refresh preserves the last successful dated snapshot with an
 error message. The build flag `--cme-scoreboard` embeds a `{rows,retrievedAt,source}`
 snapshot for downloaded-HTML startup.
+
+The Solar Cycle summary uses **Cycle Phase**. Plot labels distinguish observed
+SSN/F10.7, **13-Month SSN Avg / 13-Month F10.7 Avg**, **Predicted SSN / Predicted
+F10.7**, and their **Predicted … Range**. Hovering a prediction band reports both
+bounds.

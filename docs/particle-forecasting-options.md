@@ -11,12 +11,15 @@ integrations.
   Choose 6, 24 or 72 hours of history. All-clear statements are not future flux
   curves or zero-flux predictions. A published peak, when supplied in pfu, appears
   as a point with a horizontal validity bar; its position does not claim peak timing.
-  Missing observations remain gaps; zero cannot be shown on the logarithmic axis.
+  Missing/negative observations remain gaps; real zeros are shown. Flux axes have a
+  hard zero floor, begin at 0–15 pfu, and grow to 125% of the highest displayed
+  observation or supplied peak. Off-scale thresholds do not stretch the axes.
 - **Electron Forecast:** SWPC REFM daily >2 MeV GEO fluence, 14/30/60-day observed
   history and three subsequent UTC forecast days. There is only one value per day,
   which explains the coarse appearance. The compact display uses daily markers
   with straight dashed joins and does not invent an hourly forecast. Negative fill
-  values remain gaps.
+  values remain gaps. The linear fluence axis starts at zero, with proportional
+  headroom in electrons cm⁻² sr⁻¹ per day; it is not a PFU axis.
 - **Radiation Dose · 20 km:** native interactive north/south polar maps from the
   complete 1° global NAIRAS effective-dose-rate grid. Select current hourly nowcast
   or latest UMASEP-coupled SEP event forecast. Hover/click a map cell or enter
@@ -83,8 +86,7 @@ number of agreeing models or blending them without validation.
 ## Shared alert styling
 
 Monitor and Model use the current **Alert Settings** for ≥10 MeV protons, ≥50 MeV
-protons and >2 MeV 24-hour electron fluence. Yellow, red and purple bands and
-labelled dashed threshold lines update immediately after editing or resetting the
+protons and >2 MeV 24-hour electron fluence. Colored bands and numeric dashed threshold labels update immediately after editing or resetting the
 rules. Electron forecast markers and summary values also use the configured level;
 proton peak markers use their own energy-channel rule. Missing predictions remain
 missing. These visual classifications do not issue observed-event alarms.
@@ -95,4 +97,5 @@ a rolling 24-hour integration; REFM values cover UTC days. The
 [SWPC model description](https://www.spaceweather.gov/products/relativistic-electron-forecast-model)
 explains this distinction. UMASEP's provider-defined event threshold remains a
 separate dotted line over its published validity window; user settings do not
-change or reinterpret the provider's all-clear statement.
+change or reinterpret the provider's all-clear statement. Hover boxes use opaque
+backgrounds for legibility. Color names are not printed on threshold labels.

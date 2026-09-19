@@ -132,7 +132,7 @@
     return `<div class="hsv-scene" data-helio-version="${VERSION}">
       <div class="hsv-toolbar"><span class="hsv-status" data-hsv-status>AWAITING DATA</span><div class="hsv-controls">
         <label>Forcing <select data-hsv-mode aria-label="Heliospheric animation data mode"><option value="live">Live data</option><option value="quiet">Preview: quiet</option><option value="storm">Preview: storm</option><option value="recovery">Preview: recovery</option></select></label>
-        <label>View <select data-hsv-view aria-label="Heliospheric animation view"><option value="system">Sun → Earth</option><option value="geospace">Geospace detail</option><option value="aurora">Polar detail</option></select></label>
+        <span class="hsv-view-label">Sun → Earth</span>
         <button type="button" data-hsv-pause aria-pressed="false">Pause</button><button type="button" data-hsv-info aria-expanded="false" aria-label="Explain animation and data drivers">Info</button>
       </div></div>
       <div class="hsv-viewport"><canvas class="hsv-canvas" role="img" aria-label="Illustrative solar wind, magnetosphere, magnetic reconnection and polar aurora driven by available observations"></canvas>
@@ -215,9 +215,9 @@
       this.reduced=window.matchMedia('(prefers-reduced-motion: reduce)');this.paused=this.reduced.matches;
       this.sun=sunTexture();this.earth=earthTexture();const ran=rng(291);
       this.stars=Array.from({length:112},()=>({x:ran()*1800,y:ran()*520,r:.35+ran()*.7,a:.12+ran()*.36}));
-      this.particles=Array.from({length:580},()=>({x:258+ran()*1560,lane:(ran()-.5)*440,z:ran(),size:.6+ran()*1.0,phase:ran()*TAU,weight:ran()}));
+      this.particles=Array.from({length:580},()=>({x:274+ran()*1540,lane:(ran()-.5)*440,z:ran(),size:.6+ran()*1.0,phase:ran()*TAU,weight:ran()}));
       this.onClick=e=>{if(e.target.closest('[data-hsv-pause]')){this.paused=!this.paused;this.updatePause();this.wake();}if(e.target.closest('[data-hsv-info]')){const p=root.querySelector('.hsv-info');p.hidden=!p.hidden;root.querySelector('[data-hsv-info]').setAttribute('aria-expanded',String(!p.hidden));}};
-      this.onChange=e=>{if(e.target.matches('[data-hsv-mode]'))this.setMode(e.target.value);if(e.target.matches('[data-hsv-view]')){this.view=e.target.value;this.draw();}};
+      this.onChange=e=>{if(e.target.matches('[data-hsv-mode]'))this.setMode(e.target.value);};
       root.addEventListener('click',this.onClick);root.addEventListener('change',this.onChange);
       this.ro=new ResizeObserver(()=>{this.resize();this.wake();});this.ro.observe(this.viewport);
       this.io=new IntersectionObserver(entries=>{this.inView=entries.some(e=>e.isIntersecting);if(this.inView){this.poll(true);this.wake();}else this.sleep();},{threshold:0});this.io.observe(root);
@@ -254,7 +254,7 @@
       if(now-this.lastPaint>=1000/30-1){const dt=this.lastFrame?Math.min(.08,(now-this.lastFrame)/1000):0;this.lastFrame=now;this.lastPaint=now;
         const f=1-Math.exp(-dt/2.3);for(const k in this.current)this.current[k]=mix(this.current[k],this.data.targets[k],f);
         this.clock+=dt;this.phase=(this.phase+dt*(.045+.09*this.current.tail))%1;
-        const speed=46*Math.pow(this.current.speed/400,.8);for(const p of this.particles){p.x+=dt*speed*(.88+.20*p.z);if(p.x>1840)p.x=258+(p.x-1840);}
+        const speed=46*Math.pow(this.current.speed/400,.8);for(const p of this.particles){p.x+=dt*speed*(.88+.20*p.z);if(p.x>1840)p.x=274+(p.x-1840);}
         this.draw();this.frames++;
       }this.raf=requestAnimationFrame(t=>this.tick(t));
     }
@@ -263,7 +263,7 @@
     boundary(x,g,offset=0){return (g.half+offset)*Math.sqrt(Math.max(0,1-Math.exp(-(x-g.nose+offset)/68)))*(1-.13*clamp((x-g.ex)/700));}
     draw(){if(!this.ctx || !this.canvas.width || !this.cssWidth)return;const c=this.ctx,W=this.canvas.width,H=this.canvas.height;
       c.setTransform(1,0,0,1,0,0);c.globalAlpha=1;c.globalCompositeOperation='source-over';c.fillStyle='#02070e';c.fillRect(0,0,W,H);
-      const view=this.view==='aurora'?{x:987,y:166,w:266,h:187}:this.view==='geospace'?{x:879,y:90,w:920,h:360}:{x:0,y:0,w:1800,h:520};const scale=Math.min(W/view.w,H/view.h);
+      const view={x:0,y:0,w:1800,h:520};const scale=Math.min(W/view.w,H/view.h);
       c.setTransform(scale,0,0,scale,(W-view.w*scale)/2-view.x*scale,(H-view.h*scale)/2-view.y*scale);c.save();c.beginPath();c.rect(view.x,view.y,view.w,view.h);c.clip();
       const bg=c.createRadialGradient(1120,260,30,1040,260,870);bg.addColorStop(0,'#0a1a29');bg.addColorStop(.62,'#040c15');bg.addColorStop(1,'#02070e');c.fillStyle=bg;c.fillRect(0,0,1800,520);
       for(const star of this.stars)dot(c,star.x,star.y,star.r,'#cedee8',star.a);
@@ -272,19 +272,16 @@
       this.drawEarth(g);this.drawAurora(g,true);if(this.view==='system'){this.drawSun();this.drawL1();}
       this.drawLabels(g);c.restore();c.setTransform(1,0,0,1,0,0);c.globalAlpha=1;
     }
-    drawSun(){const c=this.ctx,x=148,y=260,r=104;
-      glow(c,x,y,r*1.82,'rgba(239,133,42,.32)',1);glow(c,x,y,r*1.24,'rgba(255,164,44,.44)',1);
-      // Low-contrast coronal structure, not animated explosion rings.
-      c.save();c.translate(x,y);for(let i=0;i<24;i++){const a=i*TAU/24+Math.sin(i*2.4)*.1;const rr=r*(1.24+.12*Math.sin(i*2.17));strokeBezier(c,[Math.cos(a)*r,Math.sin(a)*r,Math.cos(a+.025)*r*1.1,Math.sin(a+.025)*r*1.1,Math.cos(a+.02)*rr,Math.sin(a+.02)*rr,Math.cos(a+.035)*rr*1.06,Math.sin(a+.035)*rr*1.06],'#eba749',.7,.055);}
-      for(const a of [-.55,.72,-2.0]){const r2=r*1.27;strokeBezier(c,[Math.cos(a-.08)*r,Math.sin(a-.08)*r,Math.cos(a-.21)*r2,Math.sin(a-.21)*r2,Math.cos(a+.18)*r2,Math.sin(a+.18)*r2,Math.cos(a+.08)*r,Math.sin(a+.08)*r],'#f8b156',1.6,.65);}
-      c.restore();c.drawImage(this.sun,x-r*360/350,y-r*360/350,r*720/350,r*720/350);
+    drawSun(){const c=this.ctx,x=148,y=260,r=121;
+      glow(c,x,y,r*1.72,'rgba(239,133,42,.25)',1);glow(c,x,y,r*1.16,'rgba(255,164,44,.36)',1);
+      c.drawImage(this.sun,x-r*360/350,y-r*360/350,r*720/350,r*720/350);
     }
     drawWind(g){const c=this.ctx,s=this.current;
       // Count responds ONLY to plasma density, not Earth's geomagnetic index.
       const count=70+Math.min(440,Math.sqrt(Math.max(0,s.density))*77);
       for(let i=0;i<this.particles.length;i++){const p=this.particles[i],alpha=clamp(count-i,0,20)/20;if(alpha<=0)continue;
         const x=p.x,sign=p.lane<0?-1:1;
-        const radial=.22+.78*(1-Math.exp(-Math.max(0,x-252)/215));
+        const radial=.22+.78*(1-Math.exp(-Math.max(0,x-270)/215));
         const lane=Math.abs(p.lane)*radial;
         const bend=x>g.nose-40?this.boundary(x,g,40)*Math.exp(-lane/330):0;
         const y=g.ey+sign*(lane+bend)+1.0*Math.sin(p.phase+this.clock*.48+x*.008);
@@ -407,7 +404,7 @@
     document.querySelectorAll('.hsv-scene').forEach(root=>{if(!scenes.has(root) && !root.dataset.hsvFailed){try{scenes.set(root,new Scene(root));}catch(e){root.dataset.hsvFailed='true';root.innerHTML='<div class="hsv-failure">Heliospheric animation unavailable in this browser. Observation products remain independent.</div>';console.error('[Heliosphere]',e);}}});
     for(const scene of scenes.values())scene.poll();
   }
-  window.SpaceWxHeliosphere=Object.freeze({version:VERSION,markup,derive,previewSnapshot:demo,
+  window.SpaceWxHeliosphere=Object.freeze({version:VERSION,markup,derive,previewSnapshot:demo,createEarthTexture:earthTexture,
     refresh(){for(const scene of scenes.values())scene.poll();},
     getState(){return [...scenes.values()].map(s=>({mode:s.mode,view:s.view,paused:s.paused,visible:s.inView,frames:s.frames,status:s.mode==='live'?s.data.status:'PREVIEW · '+s.mode.toUpperCase(),response:s.data.response,drivers:{speed:s.data.speed,density:s.data.density,bz:s.data.bz,kp:s.data.kp,pressure:s.data.pressure,dayside:s.data.dayside,tail:s.data.tail,aurora:s.data.aurora},render:{...s.current},samples:s.data.samples}));}
   });
@@ -416,6 +413,75 @@
 })();
 
   </script>
+<style id="satelliteRiskSceneStyle">
+.sr-scene{display:flex;flex-direction:column;min-height:0;background:#06101b;border:1px solid #244053;border-radius:10px;overflow:hidden;color:#d3e6ed;font:12px Inter,system-ui,sans-serif}
+.sr-toolbar{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 14px;border-bottom:1px solid #1e3444}.sr-toolbar strong{font-size:10px;letter-spacing:.12em;color:#82b6c8}.sr-toolbar button{background:#102b3b;border:1px solid #33556a;border-radius:4px;color:#dcecf2;padding:4px 9px;font:inherit;cursor:pointer}
+.sr-viewport{position:relative;min-height:190px;height:clamp(230px,28vw,390px);flex:1;background:#030b13}.sr-viewport canvas{display:block;width:100%;height:100%}.sr-caption{padding:7px 12px;color:#8caabc;font-size:10px;line-height:1.5;border-top:1px solid #193344}
+.sr-drivers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:#1b3343;border-top:1px solid #244053}.sr-driver{padding:9px 12px;background:#0b1c2a;min-width:0}.sr-driver span,.sr-driver small{display:block;color:#86a6ba;font-size:9px}.sr-driver b{display:block;color:#d5e9f0;font:600 15px ui-monospace,monospace;margin:4px 0}.sr-driver[data-stale=true] b{color:#99a8b5}.sr-driver small{font-size:9px;line-height:1.4}
+.sr-orbits{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:8px}.sr-orbits button{border:1px solid #294353;border-radius:6px;background:#0c1e2b;text-align:left;color:#d5e8f0;padding:7px;cursor:pointer;font:inherit}.sr-orbits button[aria-pressed=true]{border-color:#95d8ee;background:#142f41}.sr-orbits small{display:block;font-size:10px;color:var(--risk-color,#8ca2b3);margin-top:3px}.sr-info{padding:12px;color:#a7c2d0;font-size:11px;line-height:1.5;border-top:1px solid #244053}.sr-info[hidden]{display:none}
+.sr-scene[data-compact=true] .sr-drivers{display:none}.fos-orbit-summary-map{display:flex;flex-direction:column}.fos-orbit-summary-map>.sr-scene{width:100%;flex:1}.sr-scene[data-compact=true] .sr-viewport{height:240px}.sr-scene[data-compact=true] .sr-caption{font-size:9px}
+.fd-monitor-layout .fos-orbit-summary-map{min-height:0}.fd-monitor-layout .sr-viewport{height:auto;min-height:190px}.fd-monitor-layout .sr-scene{flex:1}.fd-monitor-layout .satellite-risk-map{min-height:0}
+</style>
+<script id="satelliteRiskScene">
+(()=>{
+  'use strict';
+  const ORBITS=['LEO','MEO','GEO','HEO'],COLORS=['#34d399','#facc15','#ef4444','#a855f7'],NAMES=['Nominal','Elevated','High','Severe'];
+  const limits={ap:4*3600000,proton:20*60000,electron:20*60000};
+  function derive(snapshot={},now=Date.now(),policy=window.SpaceWxRiskPolicy){
+    const samples={},values={};
+    for(const key of Object.keys(limits)){
+      const sample=snapshot.samples?.[key]||{},time=Date.parse(sample.time),valid=Number.isFinite(sample.value)&&sample.value>=0&&Number.isFinite(time)&&time<=now+300000;
+      const end=Date.parse(sample.validThrough),anchor=key==='ap'&&Number.isFinite(end)&&end>=time&&end<=time+3*3600000?end:time;
+      const fresh=!snapshot.archive&&valid&&now-anchor<=limits[key]&&sample.coverageOK!==false;
+      samples[key]={...sample,fresh,status:snapshot.archive?'Archive':!valid?'Unavailable':sample.coverageOK===false?'Incomplete 24 h coverage':fresh?'Current':'Stale'};values[key]=fresh?sample.value:NaN;
+    }
+    const count=Object.values(samples).filter(s=>s.fresh).length,complete=count===3;
+    const matrix=policy?policy(values):Object.fromEntries(ORBITS.map(o=>[o,[]]));
+    const levels=Object.fromEntries(ORBITS.map(o=>[o,(matrix[o]||[]).reduce((m,item)=>Math.max(m,item.level||0),0)]));
+    const status=snapshot.archive?'ARCHIVE · LIVE ASSESSMENT OFF':complete?'LIVE OBSERVATIONS':count?'PARTIAL INPUTS':Object.values(samples).some(s=>s.time)?'STALE / UNAVAILABLE':'AWAITING DATA';
+    return {samples,values,complete,anyFresh:count>0,status,matrix,levels,selected:snapshot.selected||'LEO',archive:!!snapshot.archive};
+  }
+  function label(model,orbit){const level=model.levels[orbit]||0;return !model.anyFresh?'Unavailable':!model.complete?(level?'At least '+NAMES[level]:'Incomplete'):NAMES[level];}
+  function markup(compact=false){return `<div class="sr-scene" data-compact="${compact}"><div class="sr-toolbar"><strong data-sr-status>AWAITING DATA</strong><div><button data-sr-pause aria-label="Pause satellite illustration" aria-pressed="false">Pause</button> <button data-sr-info aria-expanded="false">Info</button></div></div><div class="sr-viewport"><canvas role="img" aria-label="Satellite orbit environment illustration"></canvas></div><div class="sr-orbits">${ORBITS.map(o=>`<button data-risk-orbit="${o}" aria-pressed="false">${o}<small data-sr-level="${o}">Unavailable</small></button>`).join('')}</div><div class="sr-drivers">${[['ap','PLANETARY Ap'],['proton','≥10 MeV PROTONS · PFU'],['electron','>2 MeV · 24 H FLUENCE']].map(([k,t])=>`<div class="sr-driver" data-sr-driver="${k}"><span>${t}</span><b>—</b><small>Awaiting data</small></div>`).join('')}</div><div class="sr-caption">Orbit colors follow observed environmental thresholds. Illustration is not to scale; satellites are illustrative, not tracked objects.</div><div class="sr-info" hidden>Uses the existing orbit-impact screening rules and your alert thresholds. Ap drives the geomagnetic/drag context; ≥10 MeV protons and >2 MeV 24-hour electron fluence (electrons cm⁻² sr⁻¹) drive the radiation context. This is environmental screening, not a spacecraft failure probability or an orbit-resolved radiation forecast. Ap expires 4 hours after its interval end (or timestamp for point samples); particle samples after 20 minutes. The electron integral also requires at least 23 hours of valid coverage in the preceding day. Partial inputs remain incomplete; archive and missing data cannot appear nominal.</div></div>`;}
+  const scenes=new Map();let earth=null;
+  class Scene{
+    constructor(root){this.root=root;this.canvas=root.querySelector('canvas');this.ctx=this.canvas.getContext('2d');this.viewport=root.querySelector('.sr-viewport');this.model=derive();this.phase=0;this.frame=0;this.last=0;this.visible=false;this.paused=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      earth ||= window.SpaceWxHeliosphere.createEarthTexture();
+      this.resize=new ResizeObserver(()=>this.draw());this.resize.observe(this.viewport);
+      this.visibility=new IntersectionObserver(entries=>{this.visible=entries.some(e=>e.isIntersecting);this.wake();});this.visibility.observe(root);
+      this.click=e=>{if(e.target.closest('[data-sr-pause]')){this.paused=!this.paused;this.pauseLabel();this.wake();}if(e.target.closest('[data-sr-info]')){const info=root.querySelector('.sr-info');info.hidden=!info.hidden;root.querySelector('[data-sr-info]').setAttribute('aria-expanded',String(!info.hidden));}const orbit=e.target.closest('[data-risk-orbit]')?.dataset.riskOrbit;if(orbit){e.stopPropagation();window.dispatchEvent(new CustomEvent('risk-orbit-select',{detail:orbit}));scan();}};root.addEventListener('click',this.click);this.pauseLabel();this.poll();}
+    pauseLabel(){const b=this.root.querySelector('[data-sr-pause]');b.textContent=this.paused?'Play':'Pause';b.setAttribute('aria-pressed',String(this.paused));b.setAttribute('aria-label',(this.paused?'Play':'Pause')+' satellite illustration');}
+    poll(){this.model=derive(window.SpaceWxRiskTelemetry?.()||{});const m=this.model;this.root.dataset.quality=m.complete?'live':m.anyFresh?'partial':'unknown';this.root.querySelector('[data-sr-status]').textContent=m.status;
+      for(const orbit of ORBITS){const el=this.root.querySelector(`[data-sr-level="${orbit}"]`);el.textContent=label(m,orbit);el.style.setProperty('--risk-color',!m.anyFresh||(!m.complete&&!m.levels[orbit])?'#839baa':COLORS[m.levels[orbit]]);el.parentElement.setAttribute('aria-pressed',String(orbit===m.selected));}
+      for(const key of Object.keys(limits)){const s=m.samples[key],el=this.root.querySelector(`[data-sr-driver="${key}"]`);el.dataset.stale=String(!s.fresh);el.querySelector('b').textContent=s.fresh?(key==='electron'?s.value.toExponential(2):key==='proton'?s.value.toFixed(2):s.value.toFixed(0)):'—';el.querySelector('small').textContent=s.status+(Number.isFinite(Date.parse(s.time))?' · '+new Date(s.time).toISOString().slice(11,16)+(Number.isFinite(Date.parse(s.validThrough))?'–'+new Date(s.validThrough).toISOString().slice(11,16):'')+'Z':'');}
+      this.canvas.setAttribute('aria-label',m.status+'. '+ORBITS.map(o=>o+' '+label(m,o)).join('; ')+'. Schematic orbit environment.');this.draw();this.wake();}
+    wake(){if(this.frame||this.paused||!this.visible||document.hidden)return;this.last=0;this.frame=requestAnimationFrame(t=>this.tick(t));}
+    tick(t){this.frame=0;if(this.paused||!this.visible||document.hidden||!this.root.isConnected)return;if(t-this.last>=40){this.phase+=this.last?Math.min(.08,(t-this.last)/1000):0;this.last=t;this.draw();}this.frame=requestAnimationFrame(t=>this.tick(t));}
+    draw(){const box=this.viewport.getBoundingClientRect();if(!box.width||!box.height)return;const dpr=Math.min(2,window.devicePixelRatio||1),w=Math.round(box.width*dpr),h=Math.round(box.height*dpr);if(this.canvas.width!==w||this.canvas.height!==h){this.canvas.width=w;this.canvas.height=h;}const c=this.ctx;c.setTransform(1,0,0,1,0,0);c.fillStyle='#030b13';c.fillRect(0,0,w,h);const scale=Math.min(w/760,h/360);c.setTransform(scale,0,0,scale,(w-760*scale)/2,(h-360*scale)/2);
+      const bg=c.createRadialGradient(380,180,20,380,180,360);bg.addColorStop(0,'#142d40');bg.addColorStop(1,'#030b13');c.fillStyle=bg;c.fillRect(0,0,760,360);
+      for(let i=0;i<95;i++){c.globalAlpha=.12+(i%5)*.065;c.fillStyle='#b4d0de';c.beginPath();c.arc((i*193+37)%760,(i*97+41)%360,i%4?.65:1,0,Math.PI*2);c.fill();}c.globalAlpha=1;
+      const geometry=[{rx:94,ry:47,a:.22},{rx:168,ry:77,a:-.14},{rx:244,ry:103,a:.08},{rx:302,ry:89,a:-.34}],m=this.model;
+      const path=(g,start,end)=>{c.beginPath();c.ellipse(380,180,g.rx,g.ry,g.a,start,end);};
+      // Back halves sit behind the sunlit Earth, front halves in front.
+      for(let layer=0;layer<2;layer++){
+        for(let i=3;i>=0;i--){const orbit=ORBITS[i],level=m.levels[orbit],known=m.anyFresh&&(m.complete||level>0),color=known?COLORS[level]:'#567082',g=geometry[i],selected=orbit===m.selected;c.strokeStyle=color;c.globalAlpha=layer?(selected?.9:.54):.25;c.lineWidth=selected?2:1;path(g,layer?0:Math.PI,layer?Math.PI:Math.PI*2);c.stroke();
+          if(known&&level>0){c.globalAlpha=.06*level;c.lineWidth=7+level*3;path(g,0,Math.PI*2);c.stroke();}c.globalAlpha=1;
+          const t=(this.phase*(.24-i*.043)+i*1.9)%(Math.PI*2),front=Math.sin(t)>=0;if(front===Boolean(layer)){const px=g.rx*Math.cos(t),py=g.ry*Math.sin(t),x=380+px*Math.cos(g.a)-py*Math.sin(g.a),y=180+px*Math.sin(g.a)+py*Math.cos(g.a);c.save();c.translate(x,y);c.rotate(g.a-.3);c.fillStyle='#274e67';c.strokeStyle='#8aaebc';c.lineWidth=.8;c.fillRect(-13,-4,8,8);c.strokeRect(-13,-4,8,8);c.fillRect(5,-4,8,8);c.strokeRect(5,-4,8,8);c.fillStyle=known?color:'#8b9dac';c.fillRect(-4,-5,8,10);c.restore();}
+        }
+        if(layer===0){const halo=c.createRadialGradient(380,180,47,380,180,68);halo.addColorStop(0,'rgba(91,184,220,.22)');halo.addColorStop(1,'rgba(37,123,177,0)');c.fillStyle=halo;c.fillRect(310,110,140,140);c.drawImage(earth,327,127,106,106);c.strokeStyle='#8bcbd766';c.lineWidth=1;c.beginPath();c.arc(380,180,51,0,Math.PI*2);c.stroke();}
+      }
+      c.textAlign='center';c.font='10px ui-monospace,monospace';c.fillStyle='#92afc1';c.fillText('EARTH',380,250);c.fillStyle='#617f92';c.fillText('SUNLIT SIDE',205,322);c.fillText('NIGHTSIDE',548,322);
+      for(const [i,x,y]of [[0,485,205],[1,198,151],[2,625,173],[3,121,284]]){c.fillStyle='#bdd1df';c.font='600 11px ui-monospace,monospace';c.fillText(ORBITS[i],x,y);}c.setTransform(1,0,0,1,0,0);
+    }
+    stop(){cancelAnimationFrame(this.frame);this.resize.disconnect();this.visibility.disconnect();this.root.removeEventListener('click',this.click);}
+  }
+  function mount(panel){let root=panel.querySelector('.sr-scene');if(!root){panel.innerHTML=markup();root=panel.querySelector('.sr-scene');}if(!scenes.has(root))scenes.set(root,new Scene(root));else scenes.get(root).poll();return root;}
+  function scan(){const panel=document.getElementById('militaryRiskPanel');if(panel&&!panel.querySelector('.sr-scene'))mount(panel);for(const [root,scene]of scenes)if(!root.isConnected){scene.stop();scenes.delete(root);}for(const root of document.querySelectorAll('.sr-scene')){if(!scenes.has(root))scenes.set(root,new Scene(root));else scenes.get(root).poll();}}
+  window.SpaceWxSatelliteRisk={derive,label,markup,mount,refresh:scan};
+  document.addEventListener('DOMContentLoaded',()=>{scan();const timer=setInterval(scan,10000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)scan();});window.addEventListener('spacewx:alert-rules-changed',scan);window.addEventListener('beforeunload',()=>{clearInterval(timer);for(const scene of scenes.values())scene.stop();},{once:true});});
+})();
+</script>
+
   <script>
 /**
 * plotly.js v2.35.2
@@ -7888,9 +7954,9 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
             <article class="card" id="card-satellite-risk">
               <div class="card-header"><span class="header-title">Satellite Orbit Risk</span><span class="header-value"></span></div>
               <div class="card-body">
-                <div class="satellite-risk-stack">
-                  <div class="satellite-risk-map"><div id="militaryRiskPanel"></div></div>
-                  <div class="risk-matrix" id="riskGrid"></div>
+                <div class="satellite-risk-stack wx-particle">
+                  <div class="satellite-risk-map wx-particle-plot"><div id="militaryRiskPanel"></div></div>
+                  <details class="sr-analysis"><summary>Orbit impact analysis</summary><div class="risk-matrix" id="riskGrid"></div></details>
                 </div>
               </div>
             </article>
@@ -10299,12 +10365,6 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
         { text: "Severe", color: "#a855f7" }
       ];
 
-      const SATELLITE_RISK_THRESHOLDS = {
-        geomagnetic_storm: { elevated: 32, high: 56, severe: 111 },
-        proton_flux_10: { elevated: 10, high: 100, severe: 1000 },
-        electron_fluence: { elevated: 1.1e8, high: 4.8e8 }
-      };
-
       const RISK_RULES = [
         {
           risk: "Surface Charging",
@@ -10484,6 +10544,22 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
         };
       };
 
+      let riskTelemetry = { samples: {} };
+      window.SpaceWxRiskTelemetry = () => ({ ...riskTelemetry, selected: state.riskOrbit, archive: !!state.archive.active });
+      window.SpaceWxRiskPolicy = values => calculateSatelliteRisk(values.ap, values.proton, values.electron);
+
+      function electronCoverageHours(rows) {
+        const times = [...new Set(rows.filter(row => Number.isFinite(toNumber(row.flux)) && toNumber(row.flux) >= 0)
+          .map(row => Date.parse(timeOf(row))).filter(Number.isFinite))].sort((a, b) => a - b);
+        const end = times.at(-1), start = end - 24 * 3600000;
+        let covered = 0;
+        for (let i = 1; i < times.length; i++) {
+          const dt = times[i] - times[i - 1];
+          if (dt <= 10 * 60000) covered += Math.max(0, times[i] - Math.max(start, times[i - 1]));
+        }
+        return covered / 3600000;
+      }
+
       // Catalog panels reuse the same observations as the original Shift charts.
       // Render on mount and on feed refresh, independently of the hidden tab state.
       function renderCatalogObservations(keys) {
@@ -10512,6 +10588,13 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
 
       // Shared alert policy for observed and forecast particle products.
       // REFM is 24-hour fluence; never apply an instantaneous flux threshold to it.
+      function particleRange(values, baseline = 15) {
+        const peak = values.reduce((highest, value) => Number.isFinite(value) && value >= 0 ? Math.max(highest, value) : highest, 0);
+        return [0, Math.max(baseline, peak * 1.25)];
+      }
+      function particleLinearAxis(values, baseline = 15) {
+        return { type: 'linear', range: particleRange(values, baseline), autorange: false, rangemode: 'nonnegative', minallowed: 0, autorangeoptions: { minallowed: 0 }, zeroline: true, nticks: 5 };
+      }
       function particleThresholds(key) {
         const colors = { yellow: '#facc15', red: '#ef4444', purple: '#a855f7' };
         return ['yellow', 'red', 'purple'].filter(level => Number.isFinite(state.rules[key]?.[level]) && state.rules[key][level] > 0)
@@ -10530,11 +10613,11 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
           if (bands && end > item.value) shapes.push({ type: 'rect', xref, yref, x0: 0, x1: 1, y0: item.value, y1: end, fillcolor: transparentize(particleAlertColor(key, item.value), .065), line: { width: 0 }, layer: 'below' });
           shapes.push({ type: 'line', xref, yref, x0: 0, x1: 1, y0: item.value, y1: item.value, line: { color: transparentize(item.color, .72), width: 1.3, dash: 'dash' }, layer: 'below' });
           const value = item.value >= 100000 ? item.value.toExponential(1) : String(item.value);
-          annotations.push({ xref, x: .98, xanchor: 'right', yref, y: logarithmic ? Math.log10(item.value) : item.value, yanchor: 'bottom', text: `${prefix}${item.label} · ${value}`, showarrow: false, font: { color: readableThresholdColor(item.color), size: 9 }, bgcolor: isLightTheme() ? 'rgba(248,250,252,.86)' : 'rgba(8,13,18,.76)' });
+          annotations.push({ xref, x: .98, xanchor: 'right', yref, y: logarithmic ? Math.log10(item.value) : item.value, yanchor: 'bottom', text: `${prefix}${value}`, showarrow: false, font: { color: readableThresholdColor(item.color), size: 9 }, bgcolor: isLightTheme() ? 'rgba(248,250,252,.86)' : 'rgba(8,13,18,.76)' });
         }
         return { shapes, annotations };
       }
-      window.SpaceWxAlertStyle = { thresholds: particleThresholds, color: particleAlertColor, level: alertLevelFromRule, overlay: particleThresholdOverlay };
+      window.SpaceWxAlertStyle = { thresholds: particleThresholds, color: particleAlertColor, level: alertLevelFromRule, overlay: particleThresholdOverlay, range: particleRange, axis: particleLinearAxis, hover: hoverLabelStyle };
 
       const els = {};
       const plotConfig = { displayModeBar: false, responsive: true, displaylogo: false };
@@ -11427,7 +11510,16 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
         els.refreshButton.disabled = true;
 
         const entries = Object.entries(FEEDS);
-        const settled = await Promise.all(entries.map(([key, url]) => fetchFeed(key, url)));
+        const settled = await Promise.all(entries.map(async ([key, url]) => {
+          const item = await fetchFeed(key, url);
+          // Satellite inputs become usable as soon as their own feeds arrive;
+          // unrelated slow services must not hold the live illustration blank.
+          if (!state.archive.active && ['kp', 'proton', 'electron'].includes(key)) {
+            state.data[key] = stickyDataValue(key, item.data, state.data[key]);
+            try { renderRiskSuite(currentValues()); } catch (error) { console.warn('[Satellite risk] Partial refresh:', error); }
+          }
+          return item;
+        }));
         const previousData = state.data || {};
         state.data = Object.fromEntries(settled.map((item) => [
           item.key,
@@ -12655,7 +12747,7 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
       }
 
       function protonRowsAtThreshold(rows, thresholdMeV) {
-        return rows.filter((row) => protonEnergyThresholdMeV(row) === thresholdMeV);
+        return rows.filter((row) => protonEnergyThresholdMeV(row) === thresholdMeV).map(nonnegativeParticleRow);
       }
 
       function xrayLongChannelRows(rows) {
@@ -14021,13 +14113,13 @@ function dedupeRadioBurstRows(rows) {
         const rows10 = filterRange(protonRowsAtThreshold(allRows, 10));
         const rows50 = filterRange(protonRowsAtThreshold(allRows, 50));
         const groupMs = protonDisplayGroupMs();
-        const display10 = highGroupedRows(rows10, "flux", groupMs, { positiveOnly: true });
-        const display50 = highGroupedRows(rows50, "flux", groupMs, { positiveOnly: true });
+        const display10 = highGroupedRows(rows10, "flux", groupMs, { nonnegativeOnly: true });
+        const display50 = highGroupedRows(rows50, "flux", groupMs, { nonnegativeOnly: true });
         const gapThresholdMs = groupMs * 1.5;
         const pAxis = protonAxis(rows10, rows50);
         plot("protonPlot", [
-          lineTrace(display10, "flux", "10 MeV Protons", "#fb923c", { unit: "pfu", valueFormat: 2, gapThresholdMs, segmentField: "__dataSegment", coverageGaps: coverageGapIntervals(rows10, ["flux"], { positiveOnly: true }), hoverText: protonGroupedHoverText("10 MeV Protons", "#fb923c") }),
-          lineTrace(display50, "flux", "50 MeV Protons", "#38bdf8", { unit: "pfu", valueFormat: 2, gapThresholdMs, segmentField: "__dataSegment", coverageGaps: coverageGapIntervals(rows50, ["flux"], { positiveOnly: true }), hoverText: protonGroupedHoverText("50 MeV Protons", "#38bdf8") })
+          lineTrace(display10, "flux", "10 MeV Protons", "#fb923c", { unit: "pfu", valueFormat: 2, gapThresholdMs, segmentField: "__dataSegment", coverageGaps: coverageGapIntervals(rows10, ["flux"], { nonnegativeOnly: true }), hoverText: protonGroupedHoverText("10 MeV Protons", "#fb923c") }),
+          lineTrace(display50, "flux", "50 MeV Protons", "#38bdf8", { unit: "pfu", valueFormat: 2, gapThresholdMs, segmentField: "__dataSegment", coverageGaps: coverageGapIntervals(rows50, ["flux"], { nonnegativeOnly: true }), hoverText: protonGroupedHoverText("50 MeV Protons", "#38bdf8") })
         ].filter(Boolean), {
           yaxis: pAxis.axis,
           shapes: protonZoneShapes(pAxis.max),
@@ -14157,8 +14249,8 @@ function dedupeRadioBurstRows(rows) {
           }), {
             xaxis: { ...axis(""), tickformat: "%b %d" },
             yaxis: electronFluenceAxis(values.map((value) => ({ fluence: value }))),
-            shapes: electronFluenceContextShapes(),
-            annotations: electronFluenceThresholdLabels(),
+            shapes: electronFluenceContextShapes(electronFluenceAxis(values.map(value => ({fluence:value}))).range[1]),
+            annotations: electronFluenceThresholdLabels(electronFluenceAxis(values.map(value => ({fluence:value}))).range[1]),
             barmode: "overlay",
             bargap: 0.34,
             margin: { l: 48, r: 14, t: 24, b: 22 }
@@ -14170,8 +14262,8 @@ function dedupeRadioBurstRows(rows) {
         if (state.subtabs.electron === "fluence") {
           plot("electronPlot", [lineTrace(fluenceRows, "fluence", "24h Fluence", "#a855f7", { fill: true, formatter: scientific, showlegend: false })].filter(Boolean), {
             yaxis: electronFluenceAxis(fluenceRows),
-            shapes: electronFluenceContextShapes(),
-            annotations: electronFluenceThresholdLabels(),
+            shapes: electronFluenceContextShapes(electronFluenceAxis(fluenceRows).range[1]),
+            annotations: electronFluenceThresholdLabels(electronFluenceAxis(fluenceRows).range[1]),
             showlegend: false,
             initialHours: state.electronPlotHours,
             minimumInitialHours: 24
@@ -14180,7 +14272,7 @@ function dedupeRadioBurstRows(rows) {
         }
         plot("electronPlot", [lineTrace(rows, "flux", "Electron Flux", "#a855f7", { fill: true, unit: "pfu", valueFormat: 2, showlegend: false })].filter(Boolean), {
           yaxis: electronFluxAxis(rows),
-          shapes: thresholdShapes([1000]),
+          shapes: electronFluxAxis(rows).range[1] >= 1000 ? thresholdShapes([1000]) : [],
           showlegend: false,
           initialHours: state.electronPlotHours,
           minimumInitialHours: 24
@@ -14210,8 +14302,17 @@ function dedupeRadioBurstRows(rows) {
       }
 
       function renderRiskSuite(v) {
+        const latest = (rows, field) => rows.filter(row => Number.isFinite(toNumber(row[field])) && toNumber(row[field]) >= 0 && timeOf(row)).sort(byTime).at(-1);
+        const electrons = electronRows2Mev();
+        const apRow = latest(apHistoryRows(), "ap_value");
+        riskTelemetry = { samples: {
+          ap: { value: v.ap, time: timeOf(apRow), validThrough: apRow?.interval_end },
+          proton: { value: v.proton, time: timeOf(latest(protonRowsAtThreshold(normalizeRows(state.data.proton), 10), 'flux')) },
+          electron: { value: v.electron, time: timeOf(latest(electrons, 'flux')), coverageOK: electronCoverageHours(electrons) >= 23 }
+        } };
         renderMilitaryRiskOverview(v);
         renderRisk(v);
+        window.SpaceWxSatelliteRisk.refresh();
       }
 
       /*
@@ -16088,134 +16189,16 @@ function dedupeRadioBurstRows(rows) {
         return instruments.map((item) => String(item?.displayName || item?.name || item || "").replace(/:\s*/g, " ").trim()).filter(Boolean).join(", ");
       }
 
-      function renderMilitaryRiskOverview(v) {
-        const matrix = calculateSatelliteRisk(v.ap, v.proton, v.electron);
-        const maxRiskLevel = Math.max(0, ...Object.values(matrix).flat().map((item) => item.level || 0));
+      function renderMilitaryRiskOverview() {
+        const model = window.SpaceWxSatelliteRisk.derive(window.SpaceWxRiskTelemetry());
+        const maxRiskLevel = Math.max(0, ...Object.values(model.levels));
         document.getElementById("card-satellite-risk")?.classList.toggle("elevated-risk", maxRiskLevel > 0);
-        const orbits = riskOrbits();
-        if (!orbits.includes(state.riskOrbit)) state.riskOrbit = "LEO";
-        const selected = state.riskOrbit;
-        const orbitColor = (orbit) => {
-          const info = RISK_LEVELS[orbitRiskLevel(matrix, orbit)] || RISK_LEVELS[0];
-          return info.color;
-        };
-        const selectedClass = (orbit) => orbit === selected ? " selected" : "";
-        const riskPanel = document.getElementById("militaryRiskPanel");
-        riskPanel.dataset.orbitLevels = JSON.stringify(Object.fromEntries(orbits.map((orbit) => [orbit, orbitRiskLevel(matrix, orbit)])));
-        riskPanel.dataset.maxRiskLevel = String(maxRiskLevel);
-        riskPanel.innerHTML = `
-          <div class="mil-risk-panel">
-            <svg class="orbit-risk-map" viewBox="0 0 520 260" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Military satellite orbit risk schematic">
-              <defs>
-                <radialGradient id="earthRiskGradient" cx="42%" cy="36%" r="64%">
-                  <stop offset="0%" stop-color="#eff8ff"></stop>
-                  <stop offset="36%" stop-color="#2f9fe8"></stop>
-                  <stop offset="70%" stop-color="#0b5b82"></stop>
-                  <stop offset="100%" stop-color="#04111e"></stop>
-                </radialGradient>
-                <linearGradient id="earthRiskTerminator" x1="36%" y1="0%" x2="92%" y2="100%">
-                  <stop offset="0%" stop-color="rgba(255,255,255,0)"></stop>
-                  <stop offset="52%" stop-color="rgba(255,255,255,0)"></stop>
-                  <stop offset="76%" stop-color="rgba(2,6,23,0.38)"></stop>
-                  <stop offset="100%" stop-color="rgba(2,6,23,0.78)"></stop>
-                </linearGradient>
-                <clipPath id="earthRiskClip"><circle cx="260" cy="132" r="23"></circle></clipPath>
-                <radialGradient id="spaceRiskBackdrop" cx="48%" cy="45%" r="74%">
-                  <stop offset="0%" stop-color="rgba(20,49,80,0.82)"></stop>
-                  <stop offset="45%" stop-color="rgba(6,16,30,0.94)"></stop>
-                  <stop offset="100%" stop-color="rgba(1,4,12,1)"></stop>
-                </radialGradient>
-                <filter id="orbitGlow" x="-35%" y="-35%" width="170%" height="170%">
-                  <feGaussianBlur stdDeviation="3" result="blur"></feGaussianBlur>
-                  <feMerge>
-                    <feMergeNode in="blur"></feMergeNode>
-                    <feMergeNode in="SourceGraphic"></feMergeNode>
-                  </feMerge>
-                </filter>
-                <filter id="satelliteGlow" x="-120%" y="-120%" width="340%" height="340%">
-                  <feGaussianBlur stdDeviation="2.1" result="satBlur"></feGaussianBlur>
-                  <feMerge>
-                    <feMergeNode in="satBlur"></feMergeNode>
-                    <feMergeNode in="SourceGraphic"></feMergeNode>
-                  </feMerge>
-                </filter>
-                <path id="leoOrbitMotion" class="orbit-motion-path" d="M174 132 A86 43 0 1 1 346 132 A86 43 0 1 1 174 132"></path>
-                <path id="meoOrbitMotion" class="orbit-motion-path" d="M131 132 A129 56 0 1 1 389 132 A129 56 0 1 1 131 132"></path>
-                <path id="geoOrbitMotion" class="orbit-motion-path" d="M84 132 A176 76 0 1 1 436 132 A176 76 0 1 1 84 132"></path>
-                <path id="heoOrbitMotion" class="orbit-motion-path" d="M76.9 217.4 A202 70 -25 1 1 443.1 46.6 A202 70 -25 1 1 76.9 217.4"></path>
-              </defs>
-              <rect x="0" y="0" width="520" height="260" rx="10" fill="url(#spaceRiskBackdrop)"></rect>
-              <g opacity="0.78">
-                <circle cx="68" cy="43" r="0.9" fill="rgba(255,255,255,0.72)"></circle>
-                <circle cx="118" cy="198" r="0.75" fill="rgba(191,219,254,0.62)"></circle>
-                <circle cx="166" cy="61" r="0.7" fill="rgba(255,255,255,0.58)"></circle>
-                <circle cx="214" cy="215" r="0.8" fill="rgba(255,255,255,0.52)"></circle>
-                <circle cx="315" cy="51" r="0.75" fill="rgba(219,234,254,0.58)"></circle>
-                <circle cx="372" cy="202" r="0.8" fill="rgba(255,255,255,0.56)"></circle>
-                <circle cx="451" cy="80" r="0.7" fill="rgba(191,219,254,0.55)"></circle>
-                <circle cx="486" cy="182" r="0.65" fill="rgba(255,255,255,0.46)"></circle>
-              </g>
-              <ellipse data-risk-orbit="HEO" onclick="window.dispatchEvent(new CustomEvent('risk-orbit-select',{detail:'HEO'}))" class="orbit-path${selectedClass("HEO")}" cx="260" cy="132" rx="202" ry="70" transform="rotate(-25 260 132)" stroke="${escapeHtml(orbitColor("HEO"))}" stroke-dasharray="11 8"></ellipse>
-              <ellipse data-risk-orbit="GEO" onclick="window.dispatchEvent(new CustomEvent('risk-orbit-select',{detail:'GEO'}))" class="orbit-path${selectedClass("GEO")}" cx="260" cy="132" rx="176" ry="76" stroke="${escapeHtml(orbitColor("GEO"))}" stroke-dasharray="3 5"></ellipse>
-              <ellipse data-risk-orbit="MEO" onclick="window.dispatchEvent(new CustomEvent('risk-orbit-select',{detail:'MEO'}))" class="orbit-path${selectedClass("MEO")}" cx="260" cy="132" rx="129" ry="56" stroke="${escapeHtml(orbitColor("MEO"))}"></ellipse>
-              <ellipse data-risk-orbit="LEO" onclick="window.dispatchEvent(new CustomEvent('risk-orbit-select',{detail:'LEO'}))" class="orbit-path${selectedClass("LEO")}" cx="260" cy="132" rx="86" ry="43" stroke="${escapeHtml(orbitColor("LEO"))}"></ellipse>
-              <g class="earth-risk-disc" clip-path="url(#earthRiskClip)">
-                <circle cx="260" cy="132" r="23" fill="url(#earthRiskGradient)"></circle>
-                <g>
-                  <animateTransform attributeName="transform" type="rotate" from="0 260 132" to="360 260 132" dur="36s" repeatCount="indefinite"></animateTransform>
-                  <path d="M246 124 C253 118 262 118 269 124 C264 126 256 127 251 132 C247 136 249 142 242 144 C238 137 239 129 246 124Z" fill="rgba(34,197,94,0.56)"></path>
-                  <path d="M269 135 C275 132 282 135 285 141 C280 147 271 146 266 141 C263 138 265 136 269 135Z" fill="rgba(74,222,128,0.46)"></path>
-                  <path d="M249 145 C254 148 262 148 267 153 C258 156 248 153 244 149Z" fill="rgba(134,239,172,0.38)"></path>
-                  <path d="M276 116 C282 120 284 127 280 133 C276 130 272 128 268 128 C270 123 271 119 276 116Z" fill="rgba(22,163,74,0.40)"></path>
-                  <ellipse cx="253" cy="123" rx="11" ry="3.8" fill="rgba(255,255,255,0.34)" transform="rotate(-12 253 123)"></ellipse>
-                  <ellipse cx="271" cy="143" rx="10" ry="3.4" fill="rgba(255,255,255,0.22)" transform="rotate(18 271 143)"></ellipse>
-                </g>
-                <rect x="236" y="109" width="48" height="48" fill="url(#earthRiskTerminator)"></rect>
-              </g>
-              <circle cx="260" cy="132" r="23" fill="none" stroke="rgba(230,238,245,0.88)" stroke-width="1.4"></circle>
-              <circle cx="252" cy="124" r="2.4" fill="rgba(255,255,255,0.52)"></circle>
-              <circle data-risk-orbit="GEO" onclick="window.dispatchEvent(new CustomEvent('risk-orbit-select',{detail:'GEO'}))" class="geo-stationary-node" r="4.2" fill="${escapeHtml(orbitColor("GEO"))}">
-                <animateMotion dur="36s" repeatCount="indefinite" rotate="auto">
-                  <mpath href="#geoOrbitMotion"></mpath>
-                </animateMotion>
-              </circle>
-              <g class="orbit-satellite" aria-hidden="true">
-                <circle class="orbit-satellite-core" r="4.8" fill="${escapeHtml(orbitColor("LEO"))}">
-                  <animateMotion dur="10s" repeatCount="indefinite" rotate="auto">
-                    <mpath href="#leoOrbitMotion"></mpath>
-                  </animateMotion>
-                </circle>
-                <circle class="orbit-satellite-core" r="4.3" fill="${escapeHtml(orbitColor("MEO"))}">
-                  <animateMotion dur="22s" begin="-7s" repeatCount="indefinite" rotate="auto">
-                    <mpath href="#meoOrbitMotion"></mpath>
-                  </animateMotion>
-                </circle>
-                <circle class="orbit-satellite-core" r="4.4" fill="${escapeHtml(orbitColor("HEO"))}">
-                  <animateMotion dur="32s" begin="-11s" repeatCount="indefinite" rotate="auto">
-                    <mpath href="#heoOrbitMotion"></mpath>
-                  </animateMotion>
-                </circle>
-              </g>
-              <text class="orbit-label" x="260" y="166" text-anchor="middle">Earth</text>
-              <g aria-label="LEO label">
-                <circle class="orbit-anchor-dot" cx="326" cy="160" r="3.2" fill="${escapeHtml(orbitColor("LEO"))}"></circle>
-                <text class="orbit-label" x="338" y="164">LEO</text>
-              </g>
-              <g aria-label="MEO label">
-                <circle class="orbit-anchor-dot" cx="170" cy="92" r="3.2" fill="${escapeHtml(orbitColor("MEO"))}"></circle>
-                <text class="orbit-label" x="158" y="96" text-anchor="end">MEO</text>
-              </g>
-              <g aria-label="GEO label">
-                <circle class="orbit-anchor-dot" cx="436" cy="132" r="3.2" fill="${escapeHtml(orbitColor("GEO"))}"></circle>
-                <text class="orbit-label" x="428" y="128" text-anchor="end">GEO</text>
-              </g>
-              <g aria-label="HEO label">
-                <circle class="orbit-anchor-dot" cx="88" cy="172" r="3.2" fill="${escapeHtml(orbitColor("HEO"))}"></circle>
-                <text class="orbit-label" x="100" y="176">HEO</text>
-              </g>
-            </svg>
-          </div>
-        `;
+        const panel = document.getElementById("militaryRiskPanel");
+        panel.dataset.orbitLevels = JSON.stringify(model.levels);
+        panel.dataset.maxRiskLevel = String(maxRiskLevel);
+        panel.dataset.quality = model.complete ? 'live' : model.anyFresh ? 'partial' : 'unknown';
+        window.SpaceWxSatelliteRisk.mount(panel);
+        window.SpaceWxProductFlow?.attach(panel.closest(".satellite-risk-stack"));
       }
 
       function renderRecurrence() {
@@ -16665,21 +16648,8 @@ function dedupeRadioBurstRows(rows) {
 
       function riskDriverLevel(kind, value) {
         if (!Number.isFinite(value)) return 0;
-        if (kind === "ap") {
-          if (value >= 111) return 3;
-          if (value >= 56) return 2;
-          if (value >= 32) return 1;
-        }
-        if (kind === "proton") {
-          if (value >= 1000) return 3;
-          if (value >= 100) return 2;
-          if (value >= 10) return 1;
-        }
-        if (kind === "electron") {
-          if (value >= 4.8e8) return 2;
-          if (value >= 1.1e8) return 1;
-        }
-        return 0;
+        const levels = { yellow: 1, red: 2, magenta: 3 };
+        return levels[alertLevelFromRule(kind, value)] || 0;
       }
 
       function riskDriverNote(kind, level) {
@@ -16711,13 +16681,15 @@ function dedupeRadioBurstRows(rows) {
         return `
           <div class="risk-driver-popover" style="--metric-accent:${escapeHtml(info.color)}">
             <strong>${escapeHtml(label)}: ${escapeHtml(display)}</strong>
-            <span>${escapeHtml(riskDriverNote(kind, level))}</span>
+            <span>${escapeHtml(Number.isFinite(numeric) ? riskDriverNote(kind, level) : "No current valid input")}</span>
           </div>
         `;
       }
 
       function renderRisk(v) {
-        const matrix = calculateSatelliteRisk(v.ap, v.proton, v.electron);
+        const model = window.SpaceWxSatelliteRisk.derive(window.SpaceWxRiskTelemetry());
+        v = { ...v, ...model.values };
+        const matrix = model.matrix;
         const orbits = riskOrbits();
         if (!orbits.includes(state.riskOrbit)) state.riskOrbit = "LEO";
         const orbit = state.riskOrbit;
@@ -16725,7 +16697,7 @@ function dedupeRadioBurstRows(rows) {
         const active = matrix[orbit] || [];
         const activeByRisk = new Map(active.map((item) => [item.risk, item]));
         const maxLevel = orbitRiskLevel(matrix, orbit);
-        const info = RISK_LEVELS[maxLevel] || RISK_LEVELS[0];
+        const info = { text: window.SpaceWxSatelliteRisk.label(model, orbit), color: !model.anyFresh || (!model.complete && !maxLevel) ? "#94a3b8" : RISK_LEVELS[maxLevel].color };
         const applicable = RISK_RULES.filter((rule) => rule.orbits.includes(orbit));
         if (!["ap", "proton", "electron"].includes(state.riskDriver)) state.riskDriver = "ap";
         const driverDetail = state.riskDriver === "proton"
@@ -16743,7 +16715,7 @@ function dedupeRadioBurstRows(rows) {
           const hit = activeByRisk.get(rule.risk);
           const level = hit?.level || 0;
           const levelInfo = RISK_LEVELS[level] || RISK_LEVELS[0];
-          const triggers = hit?.reasons?.length ? hit.reasons.join("; ") : "No active threshold triggers.";
+          const triggers = hit?.reasons?.length ? hit.reasons.join("; ") : (model.complete ? "No active threshold triggers." : "Incomplete current inputs; no complete assessment available.");
           const riskNameColor = level > 0 ? levelInfo.color : "var(--text)";
           return `
             <details class="risk-detail" ${level > 0 ? "open" : ""}>
@@ -17217,16 +17189,16 @@ function dedupeRadioBurstRows(rows) {
         const rows10 = filterRange(protonRowsAtThreshold(allRows, 10));
         const rows50 = filterRange(protonRowsAtThreshold(allRows, 50));
         const groupMs = protonDisplayGroupMs();
-        const display10 = highGroupedRows(rows10, "flux", groupMs, { positiveOnly: true });
-        const display50 = highGroupedRows(rows50, "flux", groupMs, { positiveOnly: true });
+        const display10 = highGroupedRows(rows10, "flux", groupMs, { nonnegativeOnly: true });
+        const display50 = highGroupedRows(rows50, "flux", groupMs, { nonnegativeOnly: true });
         const gapThresholdMs = groupMs * 1.5;
         const latest10 = latestNumber(rows10, ["flux"]);
         const latest50 = latestNumber(rows50, ["flux"]);
         setText("shiftProtonHeader", `10 MeV ${fmt(latest10, 2)} | 50 MeV ${fmt(latest50, 2)} PFU`);
         const pAxis = protonAxis(rows10, rows50);
         plot("shiftProtonPlot", [
-          lineTrace(display10, "flux", "10 MeV", "#fb923c", { unit: "pfu", valueFormat: 2, gapThresholdMs, segmentField: "__dataSegment", coverageGaps: coverageGapIntervals(rows10, ["flux"], { positiveOnly: true }), hoverText: protonGroupedHoverText("10 MeV", "#fb923c") }),
-          lineTrace(display50, "flux", "50 MeV", "#38bdf8", { unit: "pfu", valueFormat: 2, gapThresholdMs, segmentField: "__dataSegment", coverageGaps: coverageGapIntervals(rows50, ["flux"], { positiveOnly: true }), hoverText: protonGroupedHoverText("50 MeV", "#38bdf8") })
+          lineTrace(display10, "flux", "10 MeV", "#fb923c", { unit: "pfu", valueFormat: 2, gapThresholdMs, segmentField: "__dataSegment", coverageGaps: coverageGapIntervals(rows10, ["flux"], { nonnegativeOnly: true }), hoverText: protonGroupedHoverText("10 MeV", "#fb923c") }),
+          lineTrace(display50, "flux", "50 MeV", "#38bdf8", { unit: "pfu", valueFormat: 2, gapThresholdMs, segmentField: "__dataSegment", coverageGaps: coverageGapIntervals(rows50, ["flux"], { nonnegativeOnly: true }), hoverText: protonGroupedHoverText("50 MeV", "#38bdf8") })
         ].filter(Boolean), {
           yaxis: pAxis.axis,
           shapes: protonZoneShapes(pAxis.max),
@@ -17258,7 +17230,7 @@ function dedupeRadioBurstRows(rows) {
         setText("shiftElectronFluxHeader", `${compactParticleFlux(latest)} e⁻/(cm²·s·sr)`);
         plot("shiftElectronFluxPlot", [lineTrace(rows, "flux", "Electron Flux", "#a855f7", { fill: true, unit: "e⁻/(cm²·s·sr)", valueFormat: 2, showlegend: false })].filter(Boolean), {
           yaxis: electronFluxAxis(rows, "e⁻/(cm²·s·sr)"),
-          shapes: thresholdShapes([1000]),
+          shapes: electronFluxAxis(rows).range[1] >= 1000 ? thresholdShapes([1000]) : [],
           showlegend: false
         });
       }
@@ -17269,8 +17241,8 @@ function dedupeRadioBurstRows(rows) {
         setText("shiftElectronFluenceHeader", scientific(latest));
         plot("shiftElectronFluencePlot", [lineTrace(fluenceRows, "fluence", "24h Fluence", "#a855f7", { fill: true, formatter: scientific, showlegend: false })].filter(Boolean), {
           yaxis: electronFluenceAxis(fluenceRows),
-          shapes: electronFluenceContextShapes(),
-          annotations: electronFluenceThresholdLabels(),
+          shapes: electronFluenceContextShapes(electronFluenceAxis(fluenceRows).range[1]),
+          annotations: electronFluenceThresholdLabels(electronFluenceAxis(fluenceRows).range[1]),
           showlegend: false,
           minimumInitialHours: 24
         });
@@ -20520,7 +20492,7 @@ function dedupeRadioBurstRows(rows) {
 
       function hoverLabelStyle() {
         return {
-          bgcolor: isLightTheme() ? "rgba(255,255,255,0.96)" : "rgba(17,24,32,0.96)",
+          bgcolor: isLightTheme() ? "#ffffff" : "#111820",
           bordercolor: isLightTheme() ? "rgba(100,116,139,0.58)" : "rgba(148,163,184,0.42)",
           font: {
             color: isLightTheme() ? "#0f1720" : "#f7f7f7",
@@ -20929,7 +20901,7 @@ function dedupeRadioBurstRows(rows) {
           if (!Number.isFinite(time)) return;
           const hasValue = (fields || []).some((field) => {
             const value = toNumber(row[field]);
-            return Number.isFinite(value) && (!options.positiveOnly || value > 0);
+            return Number.isFinite(value) && (!options.positiveOnly || value > 0) && (!options.nonnegativeOnly || value >= 0);
           });
           byTime.set(time, Boolean(byTime.get(time)) || hasValue);
         });
@@ -21223,27 +21195,9 @@ function dedupeRadioBurstRows(rows) {
       }
 
       function protonAxis(rows10, rows50) {
-        const values = rows10.concat(rows50)
-          .map((row) => toNumber(row.flux))
-          .filter((value) => Number.isFinite(value) && value > 0);
-        const observedMax = values.length ? Math.max(...values) : 1;
-        const observedMin = values.length ? Math.min(...values) : 0.1;
-        const observedCeiling = observedMax < 2 ? 60 : observedMax < 10 ? 70 : observedMax < 40 ? 80 : Math.min(100000, Math.max(100, observedMax * 1.35));
-        const limits = [...particleThresholds('proton'), ...particleThresholds('proton50')].map(rule => rule.value);
-        const max = Math.max(observedCeiling, ...limits.map(value => value * 1.3));
-        const min = Math.max(.000001, Math.min(.1, observedMin * .5, ...limits.map(value => value * .5)));
-        const tickvals = [0.01, 0.1, 1, 10, 40, 100, 1000, 10000].filter((value) => value >= min && value <= max);
-        return {
-          min,
-          max,
-          axis: {
-            ...axis("pfu"),
-            type: "log",
-            range: [Math.log10(min), Math.log10(max)],
-            tickvals,
-            ticktext: tickvals.map((value) => value >= 1000 ? scientific(value).replace("+", "") : String(value))
-          }
-        };
+        const values = rows10.concat(rows50).map(row => toNumber(row.flux));
+        const spec = particleLinearAxis(values);
+        return { min: 0, max: spec.range[1], axis: { ...axis('pfu'), ...spec } };
       }
 
       function protonDisplayGroupMs() {
@@ -21260,7 +21214,7 @@ function dedupeRadioBurstRows(rows) {
         const source = (rows || []).map((row) => {
           const time = dateMs(timeOf(row));
           const value = toNumber(row[field]);
-          const valid = Number.isFinite(value) && (!options.positiveOnly || value > 0);
+          const valid = Number.isFinite(value) && (!options.positiveOnly || value > 0) && (!options.nonnegativeOnly || value >= 0);
           return { row, time, value, valid };
         }).filter((sample) => Number.isFinite(sample.time)).sort((a, b) => a.time - b.time);
         const buckets = new Map();
@@ -21352,8 +21306,8 @@ function dedupeRadioBurstRows(rows) {
       }
 
       function protonThresholdAnnotations(yMax = 100) {
-        const ten = particleThresholdOverlay('proton', yMax, {prefix:'≥10 MeV · ', logarithmic:true}).annotations;
-        const fifty = particleThresholdOverlay('proton50', yMax, {prefix:'≥50 MeV · ', logarithmic:true}).annotations.map(label => ({...label, x:.02, xanchor:'left'}));
+        const ten = particleThresholdOverlay('proton', yMax, {prefix:'≥10 MeV · '}).annotations;
+        const fifty = particleThresholdOverlay('proton50', yMax, {prefix:'≥50 MeV · '}).annotations.map(label => ({...label, x:.02, xanchor:'left'}));
         return ten.concat(fifty);
       }
 
@@ -21628,12 +21582,12 @@ function dedupeRadioBurstRows(rows) {
         return particleAlertColor('electron', value);
       }
 
-      function electronFluenceContextShapes() {
-        return particleThresholdOverlay('electron', Math.max(1e10, ...particleThresholds('electron').map(rule => rule.value * 10))).shapes;
+      function electronFluenceContextShapes(yMax = 1e8) {
+        return particleThresholdOverlay('electron', yMax).shapes;
       }
 
-      function electronFluenceThresholdLabels() {
-        return particleThresholdOverlay('electron', Infinity, {logarithmic:true}).annotations;
+      function electronFluenceThresholdLabels(yMax = 1e8) {
+        return particleThresholdOverlay('electron', yMax).annotations;
       }
 
       function thresholdLabel(text, y, color) {
@@ -21707,49 +21661,11 @@ function dedupeRadioBurstRows(rows) {
       }
 
       function electronFluenceAxis(rows = []) {
-        const dataValues = (rows || []).map((row) => toNumber(row.fluence)).filter((value) => Number.isFinite(value) && value > 0);
-        const scale = electronFluenceLogScale(dataValues, [state.rules.electron.yellow, state.rules.electron.red]);
-        return {
-          ...axis("e/cm2"),
-          type: "log",
-          range: scale.range,
-          tickvals: scale.tickvals,
-          ticktext: scale.ticktext
-        };
+        return { ...axis('e⁻ cm⁻² sr⁻¹ / 24 h'), ...particleLinearAxis(rows.map(row => toNumber(row.fluence)), 1e8), tickformat: '~s' };
       }
 
-      function electronFluenceLogScale(dataValues, thresholdValues = []) {
-        const data = (dataValues || []).filter((value) => Number.isFinite(value) && value > 0);
-        const thresholds = (thresholdValues || []).filter((value) => Number.isFinite(value) && value > 0);
-        const latestValue = data.length ? data[data.length - 1] : 1e7;
-        const latestDecade = 10 ** Math.floor(Math.log10(latestValue));
-        // Keep the floor on the current-value decade until 1e8, then retain 1e7
-        // so the charging thresholds remain visible while the ceiling can grow freely.
-        const floorValue = Math.min(1e7, latestDecade);
-        const maxValue = Math.max(floorValue * 10, ...data, ...thresholds);
-        const upper = Math.max(maxValue * 1.35, floorValue * 10);
-        const lowExp = Math.log10(floorValue);
-        let highExp = Math.ceil(Math.log10(upper));
-        if (highExp - lowExp < 1) highExp = lowExp + 1;
-        const tickvals = [];
-        for (let exp = lowExp; exp <= highExp; exp += 1) tickvals.push(10 ** exp);
-        return {
-          range: [lowExp, Math.log10(upper)],
-          tickvals,
-          ticktext: tickvals.map(formatLogTick)
-        };
-      }
-
-      function electronFluxAxis(rows = [], label = "flux") {
-        const dataValues = (rows || []).map((row) => toNumber(row.flux)).filter((value) => Number.isFinite(value) && value > 0);
-        const scale = dynamicLogScale(dataValues, [1000], [1, 10000]);
-        return {
-          ...axis(label),
-          type: "log",
-          range: scale.range,
-          tickvals: scale.tickvals,
-          ticktext: scale.ticktext
-        };
+      function electronFluxAxis(rows = [], label = 'pfu') {
+        return { ...axis(label), ...particleLinearAxis(rows.map(row => toNumber(row.flux))) };
       }
 
       function dynamicLogScale(dataValues, thresholdValues = [], fallback = [1, 1000]) {
@@ -22009,8 +21925,13 @@ function dedupeRadioBurstRows(rows) {
         }).filter((row) => Number.isFinite(row.pressure) && row.pressure >= 0);
       }
 
+      function nonnegativeParticleRow(row) {
+        const flux = toNumber(row.flux);
+        return Number.isFinite(flux) && flux >= 0 ? row : { ...row, flux: null };
+      }
+
       function electronRows2Mev() {
-        return normalizeRows(state.data.electron).filter((row) => />=?2\s*MeV/i.test(String(row.energy || "")));
+        return normalizeRows(state.data.electron).filter((row) => />=?2\s*MeV/i.test(String(row.energy || ""))).map(nonnegativeParticleRow);
       }
 
       function radioBurstRows() {
@@ -22232,21 +22153,12 @@ function seonRadCode(text) {
       }
 
       function riskContributorThreshold(phenomenon, fallback) {
-        if (phenomenon === "geomagnetic_storm") {
-          if (fallback >= 111) return SATELLITE_RISK_THRESHOLDS.geomagnetic_storm.severe;
-          if (fallback >= 56) return SATELLITE_RISK_THRESHOLDS.geomagnetic_storm.high;
-          return SATELLITE_RISK_THRESHOLDS.geomagnetic_storm.elevated;
-        }
-        if (phenomenon === "proton_flux_10") {
-          if (fallback >= 1000) return SATELLITE_RISK_THRESHOLDS.proton_flux_10.severe;
-          if (fallback >= 100) return SATELLITE_RISK_THRESHOLDS.proton_flux_10.high;
-          return SATELLITE_RISK_THRESHOLDS.proton_flux_10.elevated;
-        }
-        if (phenomenon === "electron_fluence") {
-          if (fallback >= 4.8e8) return SATELLITE_RISK_THRESHOLDS.electron_fluence.high;
-          return SATELLITE_RISK_THRESHOLDS.electron_fluence.elevated;
-        }
-        return fallback;
+        const key = { geomagnetic_storm: 'ap', proton_flux_10: 'proton', electron_fluence: 'electron' }[phenomenon];
+        const level = phenomenon === 'geomagnetic_storm' ? (fallback >= 111 ? 'purple' : fallback >= 56 ? 'red' : 'yellow')
+          : phenomenon === 'proton_flux_10' ? (fallback >= 1000 ? 'purple' : fallback >= 100 ? 'red' : 'yellow')
+          : fallback >= 4.8e8 ? 'red' : 'yellow';
+        const configured = state.rules[key]?.[level];
+        return Number.isFinite(configured) && configured > 0 ? configured : fallback;
       }
 
       function riskPhenomenonLabel(phenomenon) {
@@ -26835,9 +26747,6 @@ body.fos-v2-ready .mos-clock > * { align-self: center; margin-inline: auto; text
         <aside class="fos-orbit-exposure">
           <header><div><span class="fos-eyebrow">DOWNSTREAM CONSEQUENCE</span><h2>Orbit Exposure</h2><p>Orbit risk is attached to the Earth-side response—not treated as an interplanetary variable.</p></div><span id="fosOrbitOverall" data-level="0">Assessing</span></header>
           <div class="fos-orbit-summary-map" aria-label="Satellite orbit exposure summary">${orbitSummarySvg()}</div>
-          <div class="fos-orbit-status-grid">
-            ${["LEO", "MEO", "GEO", "HEO"].map((orbit) => `<button data-fos-open="forecast.risk" data-orbit-summary="${orbit}" type="button"><span>${orbit}</span><strong id="fosOrbit${orbit}">--</strong><small>Open impact analysis</small></button>`).join("")}
-          </div>
           <button class="fos-btn primary fos-orbit-open" data-fos-open="forecast.risk" type="button">Open satellite-impact analysis ${ICONS.chevron}</button>
         </aside>
       </div>
@@ -26855,17 +26764,7 @@ body.fos-v2-ready .mos-clock > * { align-self: center; margin-inline: auto; text
   }
 
   function orbitSummarySvg() {
-    return `<svg viewBox="0 0 360 250" role="img" aria-label="Earth with LEO, MEO, GEO, and HEO orbit exposure rings">
-      <defs><radialGradient id="fosOrbitEarth" cx="34%" cy="30%" r="72%"><stop offset="0" stop-color="#8ee5ff"/><stop offset=".42" stop-color="#287fb6"/><stop offset="1" stop-color="#031121"/></radialGradient><filter id="fosOrbitGlow"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-      <g opacity=".45" fill="#dff5ff"><circle cx="32" cy="38" r="1"/><circle cx="321" cy="42" r=".8"/><circle cx="61" cy="203" r=".7"/><circle cx="307" cy="211" r="1"/><circle cx="256" cy="76" r=".6"/></g>
-      <ellipse id="fosOrbitRingHEO" cx="180" cy="126" rx="154" ry="60" transform="rotate(-24 180 126)" fill="none" stroke="#6f879b" stroke-width="2" stroke-dasharray="9 7"/>
-      <ellipse id="fosOrbitRingGEO" cx="180" cy="126" rx="139" ry="68" fill="none" stroke="#6f879b" stroke-width="2" stroke-dasharray="3 5"/>
-      <ellipse id="fosOrbitRingMEO" cx="180" cy="126" rx="101" ry="49" fill="none" stroke="#6f879b" stroke-width="2"/>
-      <ellipse id="fosOrbitRingLEO" cx="180" cy="126" rx="68" ry="35" fill="none" stroke="#6f879b" stroke-width="2"/>
-      <circle cx="180" cy="126" r="28" fill="url(#fosOrbitEarth)" stroke="#dff5ff" stroke-opacity=".72"/>
-      <path d="M164 114c11-8 23-8 33 0l-7 8-13-2-6 8-12-6zM184 133l15 2 6 9-9 7-14-7z" fill="#72b76c" opacity=".82"/>
-      <g class="fos-orbit-labels" fill="#b7cad8"><text x="251" y="157">LEO</text><text x="70" y="80">MEO</text><text x="304" y="122">GEO</text><text x="42" y="193">HEO</text></g>
-    </svg>`;
+    return window.SpaceWxSatelliteRisk.markup(true);
   }
 
   function helioSvg() {
@@ -27757,30 +27656,12 @@ ${range(60, 12)}` }
   }
 
   function updateHomeOrbitSummary() {
-    const panel = $("#militaryRiskPanel");
     const overall = $("#fosOrbitOverall");
-    if (!panel || !overall) return;
-    let levels = null;
-    try { levels = JSON.parse(panel.dataset.orbitLevels || "null"); } catch { levels = null; }
-    if (!levels || typeof levels !== "object") {
-      overall.textContent = "Assessing";
-      overall.dataset.level = "unknown";
-      return;
-    }
-    const labels = ["Nominal", "Elevated", "High", "Severe"];
-    const colors = ["#34d399", "#facc15", "#ef4444", "#a855f7"];
-    const orbitLevels = ["LEO", "MEO", "GEO", "HEO"].map((orbit) => {
-      const level = clamp(Number(levels[orbit]) || 0, 0, 3);
-      const ring = $("#fosOrbitRing" + orbit);
-      if (ring) { ring.setAttribute("stroke", colors[level]); ring.style.filter = level > 0 ? `drop-shadow(0 0 4px ${colors[level]})` : "none"; }
-      setText("fosOrbit" + orbit, labels[level]);
-      const button = $(`[data-orbit-summary="${orbit}"]`);
-      if (button) button.dataset.level = String(level);
-      return level;
-    });
-    const maxLevel = Math.max(0, ...orbitLevels);
-    overall.textContent = maxLevel ? `${labels[maxLevel]} exposure` : "Nominal exposure";
-    overall.dataset.level = String(maxLevel);
+    if (!overall) return;
+    const model = window.SpaceWxSatelliteRisk.derive(window.SpaceWxRiskTelemetry?.() || {});
+    const orbit = Object.keys(model.levels).sort((a,b) => model.levels[b] - model.levels[a])[0];
+    overall.textContent = window.SpaceWxSatelliteRisk.label(model, orbit);
+    overall.dataset.level = model.complete || model.levels[orbit] > 0 ? String(model.levels[orbit]) : 'unknown';
   }
 
   function setMetricState(id, value) {
@@ -35963,13 +35844,13 @@ window.SpaceWxRecurrenceCompare = (function () {
   function traces(observed,predicted){
     const result=[];
     for(const [i,key,label,color] of [[0,'ssn','Sunspot number','#69d9f0'],[1,'f10.7','F10.7','#f2bb68']]){
-      const axes={xaxis:i?'x2':'x',yaxis:i?'y2':'y'},x=observed.map(r=>r.date+'-01'),xp=predicted.map(r=>r.date+'-01');
+      const metric=i?'F10.7':'SSN',axes={xaxis:i?'x2':'x',yaxis:i?'y2':'y'},x=observed.map(r=>r.date+'-01'),xp=predicted.map(r=>r.date+'-01');
       const base={type:'scatter',mode:'lines',connectgaps:false,hovertemplate:'%{x|%b %Y}<br>%{y:.1f}<extra>%{fullData.name}</extra>',...axes};
-      result.push({...base,x,y:observed.map(r=>r[key]),name:label+' monthly',line:{color,width:1.2},opacity:.4});
-      result.push({...base,x,y:observed.map(r=>r['smoothed_'+key]),name:label+' 13-month smooth',line:{color,width:3}});
-      result.push({...base,x:xp,y:predicted.map(r=>r['low_'+key]),showlegend:false,hoverinfo:'skip',line:{width:0}});
-      result.push({...base,x:xp,y:predicted.map(r=>r['high_'+key]),name:label+' NOAA range',fill:'tonexty',fillcolor:i?'rgba(242,187,104,.14)':'rgba(105,217,240,.14)',line:{width:0},hovertemplate:'%{x|%Y-%m}: %{y}<extra>NOAA published range</extra>'});
-      result.push({...base,x:xp,y:predicted.map(r=>r['predicted_'+key]),name:label+' predicted smooth',line:{color,width:2,dash:'dash'}});
+      result.push({...base,x,y:observed.map(r=>r[key]),name:'Observed '+metric,hovertemplate:'Observed '+metric+': %{y:.1f}<extra></extra>',line:{color,width:1.2},opacity:.4});
+      result.push({...base,x,y:observed.map(r=>r['smoothed_'+key]),name:'13-Month '+metric+' Avg',hovertemplate:'13-Month '+metric+' Avg: %{y:.1f}<extra></extra>',line:{color,width:3}});
+      result.push({...base,x:xp,y:predicted.map(r=>r['low_'+key]),showlegend:false,hoverinfo:'skip',hovertemplate:null,line:{width:0}});
+      result.push({...base,x:xp,y:predicted.map(r=>r['high_'+key]),name:'Predicted '+metric+' Range',fill:'tonexty',fillcolor:i?'rgba(242,187,104,.14)':'rgba(105,217,240,.14)',line:{width:0},customdata:predicted.map(r=>[r['low_'+key],r['high_'+key]]),hovertemplate:'Predicted '+metric+' Range: %{customdata[0]:.1f}–%{customdata[1]:.1f}<extra></extra>'});
+      result.push({...base,x:xp,y:predicted.map(r=>r['predicted_'+key]),name:'Predicted '+metric,hovertemplate:'Predicted '+metric+': %{y:.1f}<extra></extra>',line:{color,width:2,dash:'dash'}});
     }
     return result;
   }
@@ -35998,12 +35879,12 @@ window.SpaceWxRecurrenceCompare = (function () {
   }
   function mount(frame){
     const root=document.createElement('div');root.className='wx-context wx-cycle';
-    root.innerHTML=`<div class="wx-eyebrow">Solar activity · long-term context</div><h2>Solar Cycle</h2><p class="wx-cycle-intro">A view of the Sun’s activity, from monthly observations to NOAA’s outlook.</p><div class="wx-facts" data-cycle-facts></div><div class="wx-actions"><button data-cycle-range="2019-12" aria-pressed="true">Cycle 25</button><button data-cycle-range="2008-12" aria-pressed="false">Cycles 24–25</button><button data-cycle-range="1749-01" aria-pressed="false">Full record</button><button data-cycle-refresh>Refresh feeds</button></div><div class="wx-chart-panel"><div class="wx-plot-key"><span><i class="monthly"></i>Monthly</span><span><i class="smooth"></i>13-month smooth</span><span><i class="prediction"></i>Predicted smooth</span><span><i class="range"></i>NOAA published range</span></div><div class="wx-cycle-plot" data-cycle-plot></div></div><p class="wx-status" data-cycle-status role="status"></p><details><summary>How to read this chart · sources &amp; timing</summary><p class="wx-status">Solid curves: observations and centered 13-month smoothing, which lags the latest monthly value by six months. Dashed curves: NOAA predicted smoothed indices; shading: NOAA low/high published range. Missing values remain gaps. Historical F10.7 coverage begins later than sunspot counts.</p><p class="wx-status" data-cycle-detail></p><p class="wx-status">Cycle phase is background context for activity rates and recurrent solar wind. It does not change individual flare, CME-arrival or HSS forecasts in this dashboard.</p><p class="wx-status"><a href="${URLS.observed}" target="_blank" rel="noopener">Observed feed</a> · <a href="${URLS.predicted}" target="_blank" rel="noopener">Predicted feed</a> · <a href="https://www.swpc.noaa.gov/products/solar-cycle-progression" target="_blank" rel="noopener">NOAA cycle progression</a></p></details>`;
+    root.innerHTML=`<div class="wx-eyebrow">Solar activity · long-term context</div><h2>Solar Cycle</h2><p class="wx-cycle-intro">A view of the Sun’s activity, from monthly observations to NOAA’s outlook.</p><div class="wx-facts" data-cycle-facts></div><div class="wx-actions"><button data-cycle-range="2019-12" aria-pressed="true">Cycle 25</button><button data-cycle-range="2008-12" aria-pressed="false">Cycles 24–25</button><button data-cycle-range="1749-01" aria-pressed="false">Full record</button><button data-cycle-refresh>Refresh feeds</button></div><div class="wx-chart-panel"><div class="wx-plot-key"><span><i class="monthly"></i>Monthly</span><span><i class="smooth"></i>13-Month Avg</span><span><i class="prediction"></i>Predicted</span><span><i class="range"></i>Predicted Range</span></div><div class="wx-cycle-plot" data-cycle-plot></div></div><p class="wx-status" data-cycle-status role="status"></p><details><summary>How to read this chart · sources &amp; timing</summary><p class="wx-status">Solid curves: observations and centered 13-month smoothing, which lags the latest monthly value by six months. Dashed curves: NOAA predicted smoothed indices; shading: NOAA low/high published range. Missing values remain gaps. Historical F10.7 coverage begins later than sunspot counts.</p><p class="wx-status" data-cycle-detail></p><p class="wx-status">Cycle phase is background context for activity rates and recurrent solar wind. It does not change individual flare, CME-arrival or HSS forecasts in this dashboard.</p><p class="wx-status"><a href="${URLS.observed}" target="_blank" rel="noopener">Observed feed</a> · <a href="${URLS.predicted}" target="_blank" rel="noopener">Predicted feed</a> · <a href="https://www.swpc.noaa.gov/products/solar-cycle-progression" target="_blank" rel="noopener">NOAA cycle progression</a></p></details>`;
     frame.appendChild(root);let start='2019-12',errors=[];
     function paint(){
       const obs=data.observed?parse(data.observed,'observed'):[],pred=data.predicted?parse(data.predicted,'predicted'):[];
       const latest=obs.at(-1),trend=phase(obs),facts=root.querySelector('[data-cycle-facts]');facts.replaceChildren();
-      for(const [label,value] of [['Latest observed month',latest?.date||'Unavailable'],['Sunspot number',latest?.ssn??'—'],['F10.7 · sfu',latest?.['f10.7']??'—'],['Cycle phase estimate',trend.label]]){const el=document.createElement('div'),a=document.createElement('span'),b=document.createElement('strong');a.textContent=label;b.textContent=value;el.append(a,b);facts.append(el);}
+      for(const [label,value] of [['Latest observed month',latest?.date||'Unavailable'],['Sunspot number',latest?.ssn??'—'],['F10.7 · sfu',latest?.['f10.7']??'—'],['Cycle Phase',trend.label]]){const el=document.createElement('div'),a=document.createElement('span'),b=document.createElement('strong');a.textContent=label;b.textContent=value;el.append(a,b);facts.append(el);}
       const stamp=k=>data[k+'At']?data[k+'At'].replace('T',' ').slice(0,19)+' UTC':'unavailable';
       root.querySelector('[data-cycle-status]').textContent=`Observed retrieved: ${stamp('observed')}; predicted retrieved: ${stamp('predicted')}. ${errors.length?'Refresh incomplete; retained dated values where available. '+errors.join(' · '):''}`;
       root.querySelector('[data-cycle-detail]').textContent=trend.detail;
@@ -36203,11 +36084,10 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
   }
   const alertStyle=()=>window.SpaceWxAlertStyle;
   function applyThresholds(chart,key,values,yref='y'){
-    const rules=alertStyle()?.thresholds(key)||[],positive=values.filter(v=>Number.isFinite(v)&&v>0).concat(rules.map(r=>r.value));
-    const min=positive.length?Math.min(...positive)*.6:.1,max=positive.length?Math.max(...positive)*1.6:100;
-    const axis=yref==='y'?'yaxis':'yaxis'+yref.slice(1);
-    chart[axis]={...chart[axis],range:[Math.log10(min),Math.log10(max)]};
-    const overlay=alertStyle()?.overlay(key,max,{yref,logarithmic:true})||{shapes:[],annotations:[]};
+    const axis=yref==='y'?'yaxis':'yaxis'+yref.slice(1),baseline=key==='electron'?1e8:15;
+    const spec=alertStyle().axis(values,baseline);
+    chart[axis]={...chart[axis],...spec,...(key==='electron'?{tickformat:'~s'}:{})};
+    const overlay=alertStyle().overlay(key,spec.range[1],{yref});
     chart.shapes=(chart.shapes||[]).concat(overlay.shapes);chart.annotations=(chart.annotations||[]).concat(overlay.annotations);
   }
   function refmSeries(data,days=30){
@@ -36245,7 +36125,7 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
     for(const row of ordered){const prior=result.at(-1);if(prior&&row.time-prior.time>10*60000)result.push({time:prior.time+5*60000,flux:null});result.push(row);}
     return result;
   }
-  function layout(title){return {autosize:true,paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'#0c1c29',font:{color:'#b1c8d8',size:11},margin:{l:64,r:20,t:28,b:45},legend:{orientation:'h',x:0,y:1.13},xaxis:{type:'date',title:'UTC',gridcolor:'#263e4f',tickformat:'%d %b'},yaxis:{type:'log',title:{text:title,standoff:8},gridcolor:'#263e4f',exponentformat:'power',automargin:true},hovermode:'x unified'};}
+  function layout(title){return {autosize:true,paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'#0c1c29',font:{color:'#b1c8d8',size:11},margin:{l:64,r:20,t:28,b:45},legend:{orientation:'h',x:0,y:1.13},xaxis:{type:'date',title:'UTC',gridcolor:'#263e4f',tickformat:'%d %b'},hoverlabel:{bgcolor:'#111820',bordercolor:'#68879b',font:{color:'#f7f7f7',size:12},namelength:-1},yaxis:{type:'linear',minallowed:0,autorangeoptions:{minallowed:0},title:{text:title,standoff:8},gridcolor:'#263e4f',exponentformat:'power',automargin:true},hovermode:'x unified'};}
   function prediction(row){return row.flux!==null?fmt(row.flux)+' '+esc(row.units):row.allClear===true?'Below '+esc(row.threshold)+' '+esc(row.thresholdUnits)+' event threshold':row.allClear===false?'Threshold exceedance forecast':'No intensity supplied';}
   function protonChart(sources,hours=24,now=Date.now()){
     const traces=[],chart=layout('≥10 MeV · pfu'),colors=['#fb923c','#38bdf8'];chart.showlegend=false;chart.margin.t=24;chart.margin.b=38;chart.shapes=[];chart.annotations=[];
@@ -36256,13 +36136,13 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
     chart.yaxis={...chart.yaxis,domain:[.59,1]};chart.yaxis2={...chart.yaxis,domain:[0,.41],anchor:'x2',title:{text:'≥50 MeV · pfu',standoff:8}};
     [10,50].forEach((energy,i)=>{
       const xref=i?'x2':'x',yref=i?'y2':'y',color=colors[i],data=parseProtons(sources.goesProtons?.payload,energy).filter(r=>r.time>=start),forecast=forecasts[i],lo=i?0:.59,hi=i?.41:1;
-      traces.push({name:`GOES ≥${energy} MeV`,x:data.map(r=>new Date(r.time).toISOString()),y:data.map(r=>r.flux===0?null:r.flux),type:'scatter',mode:'lines',xaxis:xref,yaxis:yref,connectgaps:false,line:{color,width:2},hovertemplate:`≥${energy} MeV · %{y:.3g} pfu<br>%{x|%d %b %H:%M UTC}<extra>Observed</extra>`});
+      traces.push({name:`GOES ≥${energy} MeV`,x:data.map(r=>new Date(r.time).toISOString()),y:data.map(r=>r.flux),type:'scatter',mode:'lines',xaxis:xref,yaxis:yref,connectgaps:false,line:{color,width:2},hovertemplate:`≥${energy} MeV · %{y:.3g} pfu<br>%{x|%d %b %H:%M UTC}<extra>Observed</extra>`});
       if(forecast&&Date.parse(forecast.end)>=start){
         chart.shapes.push({type:'rect',xref,yref:'paper',x0:forecast.start,x1:forecast.end,y0:lo,y1:hi,fillcolor:color+'16',line:{width:0},layer:'below'});
-        if(forecast.threshold!==null&&forecast.thresholdUnits==='pfu')chart.shapes.push({type:'line',xref,yref,x0:forecast.start,x1:forecast.end,y0:forecast.threshold,y1:forecast.threshold,line:{color,width:1,dash:'dot'}});
+        if(forecast.threshold!==null&&forecast.thresholdUnits==='pfu'&&forecast.threshold<=alertStyle().range(data.map(r=>r.flux).concat(forecast.units==='pfu'?forecast.flux:null))[1])chart.shapes.push({type:'line',xref,yref,x0:forecast.start,x1:forecast.end,y0:forecast.threshold,y1:forecast.threshold,line:{color,width:1,dash:'dot'}});
         if(forecast.flux!==null&&forecast.units==='pfu')traces.push({name:'Published peak',type:'scatter',mode:'markers',xaxis:xref,yaxis:yref,x:[new Date((Date.parse(forecast.start)+Date.parse(forecast.end))/2).toISOString()],y:[forecast.flux],error_x:{type:'constant',value:(Date.parse(forecast.end)-Date.parse(forecast.start))/2,color,thickness:1},marker:{color:alertStyle()?.color(i?'proton50':'proton',forecast.flux,color)||color,size:10,symbol:'diamond'},hovertemplate:'Provider peak estimate: %{y:.3g} pfu<br>Horizontal bar: validity window, not peak timing<extra>UMASEP</extra>'});
       }
-      applyThresholds(chart,i?'proton50':'proton',data.map(r=>r.flux).concat(forecast?.flux,forecast?.threshold),yref);
+      applyThresholds(chart,i?'proton50':'proton',data.map(r=>r.flux).concat(forecast?.units==='pfu'?forecast.flux:null),yref);
       chart.annotations.push({text:`<b>≥${energy} MeV</b> · GOES observed / UMASEP forecast window`,xref:'paper',yref:'paper',x:0,y:hi+.035,showarrow:false,xanchor:'left',font:{color,size:10}});
     });return {traces,layout:chart};
   }
@@ -36277,12 +36157,12 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
       if(!sep){
         const source=snapshot.sources.refm;let d;try{d=parseREFM(source?.payload);}catch(_){target.innerHTML='<p>No valid SWPC electron forecast received yet. Refresh to retry.</p>';return;}
         const expired=Date.now()>=Date.parse(d.latest.forecast.at(-1).day+'T00:00:00Z')+86400000;
-        target.innerHTML=`<div class="wx-particle-stat">${d.latest.forecast.map(f=>`<div><span>${f.day} UTC</span><strong style="color:${alertStyle()?.color('electron',f.value)||'#38bdf8'}">${fmt(f.value)}</strong></div>`).join('')}</div><div class="wx-particle-toolbar"><span class="wx-particle-status ${expired?'wx-particle-warning':''}">${expired?'EXPIRED · ':''}Issued ${utc(d.issued)} · electrons cm⁻² sr⁻¹ per 24 h</span><label>History <select data-refm-range aria-label="Electron forecast history">${[14,30,60].map(n=>`<option value="${n}"${n===period?' selected':''}>${n} days</option>`).join('')}</select></label></div><div class="wx-particle-plot" data-refm-plot></div><p class="wx-particle-status">One value per UTC day. Bands and marker colors follow Alert Settings → Electron Fluence. Dashed joins guide the eye; they do not imply hourly predictions.</p><details><summary>Source &amp; interpretation</summary><p>Daily >2 MeV electron fluence at geosynchronous orbit on a logarithmic scale. Cyan line: observed. Orange dashed line: REFM forecast. Marker colors and yellow/red/purple bands use your configured 24-hour fluence rules, not the instantaneous electron-flux warning threshold. Missing values stay gaps. Retrieved ${utc(source.retrievedAt)}${source.error?' · Source refresh failed':''}.</p><p>REFM describes the electron environment, not individual spacecraft failure.</p><a href="${REFM}" target="_blank" rel="noopener">Numerical bulletin</a> · <a href="https://www.spaceweather.gov/products/relativistic-electron-forecast-model" target="_blank" rel="noopener">SWPC model description</a></details>`;
+        target.innerHTML=`<div class="wx-particle-stat">${d.latest.forecast.map(f=>`<div><span>${f.day} UTC</span><strong style="color:${alertStyle()?.color('electron',f.value)||'#38bdf8'}">${fmt(f.value)}</strong></div>`).join('')}</div><div class="wx-particle-toolbar"><span class="wx-particle-status ${expired?'wx-particle-warning':''}">${expired?'EXPIRED · ':''}Issued ${utc(d.issued)} · electrons cm⁻² sr⁻¹ per 24 h</span><label>History <select data-refm-range aria-label="Electron forecast history">${[14,30,60].map(n=>`<option value="${n}"${n===period?' selected':''}>${n} days</option>`).join('')}</select></label></div><div class="wx-particle-plot" data-refm-plot></div><p class="wx-particle-status">One value per UTC day. Bands and marker colors follow Alert Settings → Electron Fluence. Dashed joins guide the eye; they do not imply hourly predictions.</p><details><summary>Source &amp; interpretation</summary><p>Daily >2 MeV electron fluence at geosynchronous orbit on a zero-based linear scale. Cyan line: observed. Orange dashed line: REFM forecast. Marker colors and yellow/red/purple bands use your configured 24-hour fluence rules, not the instantaneous electron-flux warning threshold. Missing values stay gaps. Retrieved ${utc(source.retrievedAt)}${source.error?' · Source refresh failed':''}.</p><p>REFM describes the electron environment, not individual spacecraft failure.</p><a href="${REFM}" target="_blank" rel="noopener">Numerical bulletin</a> · <a href="https://www.spaceweather.gov/products/relativistic-electron-forecast-model" target="_blank" rel="noopener">SWPC model description</a></details>`;
         const chart=refmChart(d,period);window.Plotly?.react(target.querySelector('[data-refm-plot]'),chart.traces,chart.layout,{responsive:true,displaylogo:false});target.querySelector('[data-refm-range]').onchange=e=>{period=+e.target.value;paint();};
       }else{
         let rows=[];for(const key of ['umasep10','umasep50','release30','release60','release90']){const source=snapshot.sources[key];try{rows.push(...parseSEP(source?.payload).map(r=>({...r,key,retrieved:source.retrievedAt,error:source.error})));}catch(_){} }
         const uma=rows.filter(r=>r.key.startsWith('umasep')),observation=parseProtons(snapshot.sources.goesProtons?.payload,10).at(-1),old=!observation||Date.now()-observation.time>30*60000;
-        target.innerHTML=`<div class="wx-proton-summary">${[10,50].map(e=>{const r=uma.find(r=>r.key==='umasep'+e);return `<div><strong>≥${e} MeV</strong><span>${r?prediction(r):'Forecast unavailable'}</span><small class="${!r||freshness(r)==='EXPIRED'?'wx-particle-warning':''}">${r?freshness(r)+' · '+utc(r.start)+' – '+utc(r.end):'No dated submission'}</small></div>`;}).join('')}</div><div class="wx-particle-toolbar"><span class="wx-particle-status ${old?'wx-particle-warning':''}">${old?'OBSERVATIONS STALE / UNAVAILABLE · ':''}GOES latest ${observation?utc(new Date(observation.time).toISOString()):'unavailable'}</span><label>History <select data-proton-range aria-label="Proton history">${[6,24,72].map(n=>`<option value="${n}"${n===period?' selected':''}>${n} hours</option>`).join('')}</select></label></div><div class="wx-particle-plot" data-proton-plot></div><p class="wx-particle-status">Yellow/red/purple bands: your Alert Settings for each energy channel. Vertical tint: UMASEP forecast interval. Dotted line: provider event threshold, independent of your settings. An all-clear forecast supplies no flux curve; it is never drawn as zero. Log scale · pfu = protons cm⁻² s⁻¹ sr⁻¹.</p><details><summary>Numerical predictions, timing &amp; sources</summary><div class="wx-particle-table"><table><thead><tr><th>Model / energy</th><th>Issue / valid · UTC</th><th>Prediction</th><th>Status</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r.model)}<br>${esc(r.energy)}</td><td>Issued ${utc(r.issued)}<br>${utc(r.start)} – ${utc(r.end)}<br>Retrieved ${utc(r.retrieved)}</td><td>${prediction(r)}</td><td>${freshness(r)}${r.error?' · Refresh failed':''}</td></tr>`).join('')}</tbody></table></div><p>HESPERIA REleASE's 15.8–39.8 and 28.2–50.1 MeV differential bands are separate from the ≥10 / ≥50 MeV integral channels. REleASE: University of Kiel and IAASARS / National Observatory of Athens, EU Horizon 2020 grant 637324. UMASEP: University of Málaga. Distributed by NASA CCMC.</p><a href="${GOES}" target="_blank" rel="noopener">GOES raw observations</a> · <a href="${RELAY}" target="_blank" rel="noopener">Numerical forecast snapshot</a> · <a href="https://ccmc.gsfc.nasa.gov/models/UMASEP~v3/" target="_blank" rel="noopener">UMASEP</a> · <a href="https://ccmc.gsfc.nasa.gov/models/HESPERIA_REleASE~v3/" target="_blank" rel="noopener">REleASE attribution</a></details>`;
+        target.innerHTML=`<div class="wx-proton-summary">${[10,50].map(e=>{const r=uma.find(r=>r.key==='umasep'+e);return `<div><strong>≥${e} MeV</strong><span>${r?prediction(r):'Forecast unavailable'}</span><small class="${!r||freshness(r)==='EXPIRED'?'wx-particle-warning':''}">${r?freshness(r)+' · '+utc(r.start)+' – '+utc(r.end):'No dated submission'}</small></div>`;}).join('')}</div><div class="wx-particle-toolbar"><span class="wx-particle-status ${old?'wx-particle-warning':''}">${old?'OBSERVATIONS STALE / UNAVAILABLE · ':''}GOES latest ${observation?utc(new Date(observation.time).toISOString()):'unavailable'}</span><label>History <select data-proton-range aria-label="Proton history">${[6,24,72].map(n=>`<option value="${n}"${n===period?' selected':''}>${n} hours</option>`).join('')}</select></label></div><div class="wx-particle-plot" data-proton-plot></div><p class="wx-particle-status">Threshold bands follow your Alert Settings for each energy channel. Vertical tint: UMASEP forecast interval. Dotted line: provider event threshold, independent of your settings. An all-clear forecast supplies no flux curve; it is never drawn as zero. Zero-based scale · pfu = protons cm⁻² s⁻¹ sr⁻¹.</p><details><summary>Numerical predictions, timing &amp; sources</summary><div class="wx-particle-table"><table><thead><tr><th>Model / energy</th><th>Issue / valid · UTC</th><th>Prediction</th><th>Status</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r.model)}<br>${esc(r.energy)}</td><td>Issued ${utc(r.issued)}<br>${utc(r.start)} – ${utc(r.end)}<br>Retrieved ${utc(r.retrieved)}</td><td>${prediction(r)}</td><td>${freshness(r)}${r.error?' · Refresh failed':''}</td></tr>`).join('')}</tbody></table></div><p>HESPERIA REleASE's 15.8–39.8 and 28.2–50.1 MeV differential bands are separate from the ≥10 / ≥50 MeV integral channels. REleASE: University of Kiel and IAASARS / National Observatory of Athens, EU Horizon 2020 grant 637324. UMASEP: University of Málaga. Distributed by NASA CCMC.</p><a href="${GOES}" target="_blank" rel="noopener">GOES raw observations</a> · <a href="${RELAY}" target="_blank" rel="noopener">Numerical forecast snapshot</a> · <a href="https://ccmc.gsfc.nasa.gov/models/UMASEP~v3/" target="_blank" rel="noopener">UMASEP</a> · <a href="https://ccmc.gsfc.nasa.gov/models/HESPERIA_REleASE~v3/" target="_blank" rel="noopener">REleASE attribution</a></details>`;
         const chart=protonChart(snapshot.sources,period);window.Plotly?.react(target.querySelector('[data-proton-plot]'),chart.traces,chart.layout,{responsive:true,displaylogo:false});target.querySelector('[data-proton-range]').onchange=e=>{period=+e.target.value;paint();};
       }
       if(detailsOpen&&target.querySelector('details'))target.querySelector('details').open=true;
@@ -36327,7 +36207,7 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
   function project(lat,lon,hemisphere){const r=90-Math.abs(lat),angle=lon*Math.PI/180;return [r*Math.sin(angle),-hemisphere*r*Math.cos(angle)];}
   function polarGrid(source,hemisphere,hours=1){
     // Nearest original 1° cell, without smoothing or interpolation of dose.
-    const axis=Array.from({length:181},(_,i)=>i-90),z=[],customdata=[];
+    const axis=Array.from({length:361},(_,i)=>i/2-90),z=[],customdata=[];
     for(const y of axis){const row=[],meta=[];for(const x of axis){const r=Math.hypot(x,y);if(r>90){row.push(null);meta.push(null);continue;}
       const lat=Math.round((90-r)*hemisphere),lon=r===0?0:((Math.round(Math.atan2(x,-hemisphere*y)*180/Math.PI)%360)+360)%360,rate=source.values[(lat+90)*360+lon];
       row.push(rate===null?null:rate*hours);meta.push([lat,lon>180?lon-360:lon,rate]);
@@ -36336,16 +36216,24 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
   function outlines(hemisphere){
     const x=[],y=[];for(const line of COAST){for(const [lon,lat]of line){if(lat*hemisphere<0){x.push(null);y.push(null);continue;}const p=project(lat,lon,hemisphere);x.push(p[0]);y.push(p[1]);}x.push(null);y.push(null);}return {x,y,type:'scatter',mode:'lines',line:{color:'#dfecf0',width:.7},hoverinfo:'skip',showlegend:false};
   }
-  function chart(source,multiplier=1,stacked=false){
-    const traces=[],layout={autosize:true,paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'#0a1926',margin:{l:12,r:65,t:44,b:20},font:{color:'#b4cad7',size:11},showlegend:false,hovermode:'closest',annotations:[],shapes:[],coloraxis:{cmin:0,cmax:Math.max(.02,...Object.values(snapshot.sources).filter(valid).map(s=>s.values.reduce((m,v)=>Math.max(m,v||0),0)))*multiplier,colorscale:[[0,'#12253c'],[.2,'#31517c'],[.4,'#388f9b'],[.6,'#85cba2'],[.8,'#ecc676'],[1,'#ec7d69']],colorbar:{title:{text:multiplier===1?'mSv/h':'mSv'},thickness:10,len:.8,tickformat:'.3f'}}};
+  function chart(source,multiplier=1,stacked=false,location=null){
+    const maximum=source.values.reduce((m,v)=>Math.max(m,v??0),0)*multiplier;
+    const cmax=Math.max(.005*multiplier,Math.ceil(maximum/(.005*multiplier))*.005*multiplier);
+    const traces=[],layout={autosize:true,paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'#081521',margin:{l:16,r:16,t:38,b:72},font:{family:'Inter, system-ui, sans-serif',color:'#b4cad7',size:11},showlegend:false,hovermode:'closest',hoverlabel:{bgcolor:'#102534',bordercolor:'#7ba4b7',font:{color:'#f0f8fb',size:12},namelength:-1},annotations:[],shapes:[],coloraxis:{cmin:0,cmax,colorscale:[[0,'#101b39'],[.16,'#313c78'],[.34,'#206e98'],[.52,'#25a5ad'],[.70,'#86d3ba'],[.85,'#e9df96'],[1,'#ffb365']],colorbar:{orientation:'h',x:.5,xanchor:'center',y:-.08,yanchor:'top',title:{text:multiplier===1?'Effective dose rate · mSv/h':'Effective dose · mSv',side:'bottom'},thickness:10,len:.78,tickformat:'.3f',nticks:5,outlinewidth:0,tickcolor:'#7596a9'}}};
     for(const [i,hemisphere]of [1,-1].entries()){
-      const axis=i?'x2':'x',yaxis=i?'y2':'y',domain=stacked?[0,1]:i?[.53,1]:[0,.47],vertical=stacked?(i?[0,.44]:[.56,1]):[0,1];
-      layout['xaxis'+(i?'2':'')]={domain,range:[-96,96],visible:false,fixedrange:true,constrain:'domain'};
-      layout['yaxis'+(i?'2':'')]={domain:vertical,range:[-96,96],visible:false,scaleanchor:axis,scaleratio:1,fixedrange:true,constrain:'domain'};
-      traces.push({...polarGrid(source,hemisphere,multiplier),type:'heatmap',xaxis:axis,yaxis,coloraxis:'coloraxis',zsmooth:false,hoverongaps:false,hovertemplate:`%{customdata[0]}° latitude · %{customdata[1]}° longitude<br>Effective dose rate %{customdata[2]:.5f} mSv/h${multiplier!==1?'<br>Constant-rate estimate %{z:.5f} mSv':''}<extra>${hemisphere===1?'NH':'SH'} · 20 km</extra>`}, {...outlines(hemisphere),xaxis:axis,yaxis});
-      for(const radius of [30,60,90])layout.shapes.push({type:'circle',xref:axis,yref:yaxis,x0:-radius,y0:-radius,x1:radius,y1:radius,line:{color:'#ecf6ff55',width:.6,dash:radius===90?'solid':'dot'}});
-      for(const lon of [0,90,180,-90]){const [x,y]=project(0,lon,hemisphere);layout.shapes.push({type:'line',xref:axis,yref:yaxis,x0:0,y0:0,x1:x,y1:y,line:{color:'#ecf6ff33',width:.5,dash:'dot'}});const [tx,ty]=project(-3,lon,hemisphere);layout.annotations.push({xref:axis,yref:yaxis,x:tx*1.07,y:ty*1.07,text:lon+'°',showarrow:false,font:{size:9,color:'#8dacbf'}});}
-      layout.annotations.push({xref:'paper',yref:'paper',x:(domain[0]+domain[1])/2,y:vertical[1]+(stacked?.025:.06),text:hemisphere===1?'<b>NORTHERN HEMISPHERE</b>':'<b>SOUTHERN HEMISPHERE</b>',showarrow:false,xanchor:'center',font:{size:11,color:'#cce6ef'}});
+      const axis=i?'x2':'x',yaxis=i?'y2':'y',domain=stacked?[0,1]:i?[.52,1]:[0,.48],vertical=stacked?(i?[0,.44]:[.56,1]):[0,1];
+      layout['xaxis'+(i?'2':'')]={domain,anchor:yaxis,range:[-108,108],visible:false,fixedrange:true,constrain:'domain'};
+      layout['yaxis'+(i?'2':'')]={domain:vertical,anchor:axis,range:[-108,108],visible:false,scaleanchor:axis,scaleratio:1,fixedrange:true,constrain:'domain'};
+      const coast=outlines(hemisphere);
+      traces.push({...polarGrid(source,hemisphere,multiplier),type:'heatmap',xaxis:axis,yaxis,coloraxis:'coloraxis',zsmooth:false,hoverongaps:false,hovertemplate:`<b>%{customdata[0]}° latitude · %{customdata[1]}° longitude</b><br>Effective dose rate %{customdata[2]:.5f} mSv/h${multiplier!==1?'<br>Constant-rate estimate %{z:.5f} mSv':''}<extra>${hemisphere===1?'NH':'SH'} · 20 km</extra>`},
+        {...coast,xaxis:axis,yaxis,line:{color:'#07121d',width:2.3}}, {...coast,xaxis:axis,yaxis,line:{color:'#e6f2ed',width:.8}});
+      for(const radius of [30,60,90]){
+        layout.shapes.push({type:'circle',xref:axis,yref:yaxis,x0:-radius,y0:-radius,x1:radius,y1:radius,line:{color:radius===90?'#a3bfcb':'#e2f5f74a',width:radius===90?1:.6,dash:radius===90?'solid':'dot'}});
+        if(radius<90)layout.annotations.push({xref:axis,yref:yaxis,x:radius*.707,y:radius*.707,text:(90-radius)+'°'+(hemisphere>0?'N':'S'),showarrow:false,font:{size:9,color:'#d8e9eb'},bgcolor:'#142c39',borderpad:1});
+      }
+      for(const lon of [0,90,180,-90]){const [x,y]=project(0,lon,hemisphere);layout.shapes.push({type:'line',xref:axis,yref:yaxis,x0:0,y0:0,x1:x,y1:y,line:{color:'#ecf6ff25',width:.6,dash:'dot'}});layout.annotations.push({xref:axis,yref:yaxis,x:x*1.10,y:y*1.10,text:lon===0?'0°':Math.abs(lon)===180?'180°':Math.abs(lon)+'°'+(lon>0?'E':'W'),showarrow:false,font:{size:9,color:'#9bb8c8'}});}
+      layout.annotations.push({xref:'paper',yref:'paper',x:(domain[0]+domain[1])/2,y:vertical[1]+(stacked?.03:.065),text:`<b>${hemisphere===1?'NORTHERN':'SOUTHERN'} HEMISPHERE</b>`,showarrow:false,xanchor:'center',font:{size:10,color:'#d6ecf5'}});
+      if(location&&location.lat*hemisphere>=0){const [x,y]=project(location.lat,location.lon,hemisphere);traces.push({type:'scatter',mode:'markers',x:[x],y:[y],xaxis:axis,yaxis,marker:{symbol:'circle-open',size:13,color:'#ffffff',line:{width:2}},hoverinfo:'skip',showlegend:false});}
     }return {traces,layout};
   }
   async function refresh(){
@@ -36353,20 +36241,30 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
   }
   function mount(root){
     root.classList.add('wx-particle','wx-nairas');let mode='nowcast',metric='rate',hours=1,error='',disposed=false,location={lat:60,lon:-100};
-    root.innerHTML=`<div class="wx-particle-header"><div><span class="wx-particle-eyebrow">NASA LANGLEY / CCMC · NAIRAS</span><h2>Effective Dose · 20 km</h2></div><button data-nairas-refresh>Refresh</button></div><div class="wx-particle-toolbar"><label>Product <select data-nairas-mode aria-label="NAIRAS product"><option value="nowcast">Current hourly nowcast</option><option value="forecast">Latest SEP event forecast</option></select></label><label>Display <select data-nairas-metric aria-label="Dose quantity"><option value="rate">Effective dose rate · mSv/h</option><option value="dose">Constant-rate dose estimate · mSv</option></select></label><label>Exposure <input data-nairas-hours aria-label="Exposure hours" type="number" min="0.25" max="24" step="0.25" value="1"> h</label></div><p class="wx-particle-status" data-nairas-status role="status"></p><p class="wx-particle-status wx-particle-warning" data-nairas-forecast-status></p><div class="wx-particle-plot wx-nairas-plot" data-nairas-plot></div><div class="wx-nairas-point"><label>Latitude <input data-nairas-lat aria-label="Dose latitude" type="number" min="-90" max="90" step="1" value="60"></label><label>Longitude <input data-nairas-lon aria-label="Dose longitude" type="number" min="-180" max="180" step="1" value="-100"></label><span data-nairas-point></span></div><p class="wx-particle-status" data-nairas-assumption></p><details><summary>Data, map &amp; model details</summary><p>Effective dose at 20 km barometric altitude. Full global 1° latitude/longitude numerical grid, projected onto north and south polar maps. Pole at centre; circles at 60°, 30° and the equator. Hover or click to inspect the nearest source grid cell. The same colour scale is used for both hemispheres and products. Source µSv/h is divided by 1,000 to obtain mSv/h.</p><p data-nairas-source></p><p>Hourly nowcasts describe the current environment. UMASEP-coupled forecasts are event-triggered SEP peak guidance, not a continuous hourly forecast. The feed supplies a product epoch but no explicit validity interval; older products remain dated event references.</p><a href="https://ccmc.gsfc.nasa.gov/models/NAIRAS~4/" target="_blank" rel="noopener">NAIRAS documentation</a> · <a href="${RELAY}" target="_blank" rel="noopener">Published numeric grids</a> · <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth coastline</a></details>`;
+    root.innerHTML=`<div class="wx-particle-header"><div><span class="wx-particle-eyebrow">NASA LANGLEY / CCMC · NAIRAS</span><h2>Effective Dose · 20 km</h2></div><button data-nairas-refresh>Refresh</button></div><div class="wx-particle-toolbar"><label>Product <select data-nairas-mode aria-label="NAIRAS product"><option value="nowcast">Current hourly nowcast</option><option value="forecast">Latest SEP event forecast</option></select></label><label>Display <select data-nairas-metric aria-label="Dose quantity"><option value="rate">Effective dose rate · mSv/h</option><option value="dose">Constant-rate dose estimate · mSv</option></select></label><label>Exposure <input data-nairas-hours aria-label="Exposure hours" type="number" min="0.25" max="24" step="0.25" value="1"> h</label></div><p class="wx-particle-status" data-nairas-status role="status"></p><p class="wx-particle-status wx-particle-warning" data-nairas-forecast-status></p><div class="wx-particle-plot wx-nairas-plot" data-nairas-plot></div><div class="wx-nairas-point"><label>Latitude <input data-nairas-lat aria-label="Dose latitude" type="number" min="-90" max="90" step="1" value="60"></label><label>Longitude <input data-nairas-lon aria-label="Dose longitude" type="number" min="-180" max="180" step="1" value="-100"></label><span data-nairas-point></span></div><p class="wx-particle-status" data-nairas-assumption></p><details><summary>Data, map &amp; model details</summary><p>Effective dose at 20 km barometric altitude. Full global 1° latitude/longitude numerical grid, projected onto north and south polar maps. Pole at centre; circles at 60°, 30° and the equator. Hover or click to inspect the nearest source grid cell. Both hemispheres share one scale for the selected product. The colour bar updates when the product or exposure changes. The white ring marks the selected location. Source µSv/h is divided by 1,000 to obtain mSv/h.</p><p data-nairas-source></p><p>Hourly nowcasts describe the current environment. UMASEP-coupled forecasts are event-triggered SEP peak guidance, not a continuous hourly forecast. The feed supplies a product epoch but no explicit validity interval; older products remain dated event references.</p><a href="https://ccmc.gsfc.nasa.gov/models/NAIRAS~4/" target="_blank" rel="noopener">NAIRAS documentation</a> · <a href="${RELAY}" target="_blank" rel="noopener">Published numeric grids</a> · <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth coastline</a></details>`;
     const plot=root.querySelector('[data-nairas-plot]');let stacked=root.clientWidth<560;
     const sizeObserver=typeof ResizeObserver==='function'?new ResizeObserver(()=>{const next=root.clientWidth<560;if(next!==stacked){stacked=next;paint();}}):null;sizeObserver?.observe(root);
+    let markerUpdate=Promise.resolve();
+    function markLocation(){markerUpdate=markerUpdate.then(async()=>{
+      if(disposed)return;
+      if(!plot.classList.contains('js-plotly-plot'))return;
+      const indices=[];for(let i=0;i<(plot.data?.length||0);i++)if(plot.data[i].marker?.symbol==='circle-open')indices.push(i);
+      if(indices.length)await window.Plotly.deleteTraces(plot,indices);
+      if(disposed)return;
+      const hemisphere=location.lat<0?-1:1,[x,y]=project(location.lat,location.lon,hemisphere);
+      await window.Plotly.addTraces(plot,{type:'scatter',mode:'markers',x:[x],y:[y],xaxis:hemisphere>0?'x':'x2',yaxis:hemisphere>0?'y':'y2',marker:{symbol:'circle-open',size:13,color:'#ffffff',line:{width:2}},hoverinfo:'skip',showlegend:false});
+    }).catch(()=>{});}
     function readout(){const source=snapshot.sources[mode],p=point(source,location.lat,location.lon);root.querySelector('[data-nairas-point]').textContent=p&&p.rate!==null?`${p.latitude}°, ${p.longitude}° · ${p.rate.toFixed(5)} mSv/h → ${(p.rate*hours).toFixed(5)} mSv over ${hours} h`:'Selected cell unavailable';root.querySelector('[data-nairas-assumption]').textContent=`${metric==='dose'?'MAP: constant-rate dose estimate in mSv. ':''}Dose estimate assumes the selected ${mode==='forecast'?'event forecast peak':'nowcast'} rate remains constant for ${hours} h at one location. It is not a time-integrated flight or future exposure forecast.`;}
     function paint(){if(disposed)return;const source=snapshot.sources[mode],state=status(source,mode),forecast=status(snapshot.sources.forecast,'forecast'),statusEl=root.querySelector('[data-nairas-status]');statusEl.textContent=state.text+(source?.error?' · Source retrieval failed':'')+(error?' · '+error:'');statusEl.classList.toggle('wx-particle-warning',state.warning);root.querySelector('[data-nairas-forecast-status]').textContent=mode==='nowcast'&&forecast.warning?forecast.text:'';
       if(!valid(source)){window.Plotly?.purge(plot);plot.textContent='No valid 20 km effective-dose grid received. Refresh to retry.';readout();return;}
-      plot.classList.toggle('wx-nairas-stacked',stacked);const result=chart(source,metric==='dose'?hours:1,stacked);result.layout.coloraxis.colorbar.title.text=metric==='dose'?'mSv':'mSv/h';
+      plot.classList.toggle('wx-nairas-stacked',stacked);const result=chart(source,metric==='dose'?hours:1,stacked,location);result.layout.coloraxis.colorbar.title.text=metric==='dose'?'Effective dose estimate · mSv':'Effective dose rate · mSv/h';
       // Unit selection is explicit even when a one-hour estimate equals the rate numerically.
       if(metric==='dose')for(const trace of result.traces)if(trace.type==='heatmap')trace.hovertemplate='%{customdata[0]}° latitude · %{customdata[1]}° longitude<br>Rate %{customdata[2]:.5f} mSv/h<br>Constant-rate estimate %{z:.5f} mSv<extra>20 km · '+hours+' h</extra>';
-      window.Plotly?.react(plot,result.traces,result.layout,{responsive:true,displaylogo:false,modeBarButtonsToRemove:['select2d','lasso2d','zoom2d','pan2d','autoScale2d']}).then(()=>{plot.removeAllListeners?.('plotly_click');plot.on?.('plotly_click',e=>{const p=e.points?.[0]?.customdata;if(!p)return;location={lat:p[0],lon:p[1]};root.querySelector('[data-nairas-lat]').value=location.lat;root.querySelector('[data-nairas-lon]').value=location.lon;readout();});});
+      window.Plotly?.react(plot,result.traces,result.layout,{responsive:true,displaylogo:false,modeBarButtonsToRemove:['select2d','lasso2d','zoom2d','pan2d','autoScale2d']}).then(()=>{plot.removeAllListeners?.('plotly_click');plot.on?.('plotly_click',e=>{const p=e.points?.[0]?.customdata;if(!p)return;location={lat:p[0],lon:p[1]};root.querySelector('[data-nairas-lat]').value=location.lat;root.querySelector('[data-nairas-lon]').value=location.lon;readout();markLocation();});});
       root.querySelector('[data-nairas-source]').innerHTML=`Product epoch ${utc(source.sourceTime)} · retrieved ${utc(source.retrievedAt)} · ${source.sepEvent?'SEP flag set':'SEP flag not set'} · <a href="${esc(source.sourceURL)}" target="_blank" rel="noopener">Original ISWA numeric file</a>`;readout();}
-    function controlChange(e){if(e.target.matches('[data-nairas-mode]')){mode=e.target.value;paint();}if(e.target.matches('[data-nairas-metric]')){metric=e.target.value;paint();}if(e.target.matches('[data-nairas-hours]')){hours=Math.max(.25,Math.min(24,Number(e.target.value)||1));e.target.value=hours;paint();}if(e.target.matches('[data-nairas-lat],[data-nairas-lon]')){location={lat:Math.max(-90,Math.min(90,+root.querySelector('[data-nairas-lat]').value)),lon:Math.max(-180,Math.min(180,+root.querySelector('[data-nairas-lon]').value))};root.querySelector('[data-nairas-lat]').value=location.lat;root.querySelector('[data-nairas-lon]').value=location.lon;readout();}}
+    function controlChange(e){if(e.target.matches('[data-nairas-mode]')){mode=e.target.value;paint();}if(e.target.matches('[data-nairas-metric]')){metric=e.target.value;paint();}if(e.target.matches('[data-nairas-hours]')){hours=Math.max(.25,Math.min(24,Number(e.target.value)||1));e.target.value=hours;paint();}if(e.target.matches('[data-nairas-lat],[data-nairas-lon]')){location={lat:Math.max(-90,Math.min(90,+root.querySelector('[data-nairas-lat]').value)),lon:Math.max(-180,Math.min(180,+root.querySelector('[data-nairas-lon]').value))};root.querySelector('[data-nairas-lat]').value=location.lat;root.querySelector('[data-nairas-lon]').value=location.lon;readout();markLocation();}}
     root.addEventListener('change',controlChange);
-    root.addEventListener('input',e=>{if(e.target.matches('[data-nairas-hours]')&&e.target.value!==''&&Number.isFinite(+e.target.value)&&+e.target.value>=.25&&+e.target.value<=24)controlChange(e);});
+    root.addEventListener('input',e=>{if(e.target.value===''||!Number.isFinite(+e.target.value))return;if(e.target.matches('[data-nairas-hours]')&&+e.target.value>=.25&&+e.target.value<=24)controlChange(e);if(e.target.matches('[data-nairas-lat],[data-nairas-lon]'))controlChange(e);});
     async function update(){const button=root.querySelector('[data-nairas-refresh]');button.disabled=true;error=await refresh();if(!disposed){paint();button.disabled=false;}}
     root.querySelector('[data-nairas-refresh]').onclick=update;paint();update();window.SpaceWxProductFlow.attach(root);const timer=setInterval(()=>{if(root.isConnected)update();else stop();},5*60000);
     function stop(){disposed=true;clearInterval(timer);sizeObserver?.disconnect();window.SpaceWxProductFlow.detach(root);window.Plotly?.purge(plot);mounted.delete(root);}mounted.set(root,stop);return stop;
@@ -36385,6 +36283,7 @@ window.SpaceWxMonitorLayout=(()=>{
     if(key==='model.sep')return {cols:24,rows:54};
     if(key==='model.electron')return {cols:24,rows:44};
     if(key==='model.nairas')return {cols:24,rows:58};
+    if(key==='forecast.risk')return {cols:12,rows:60};
     if(kind==='visual')return {cols:key==='helio'?24:12,rows:45};
     if(/imagery|hmi|spot|suvi|aurora|drap|risk|solar-system/.test(key))return {cols:12,rows:45};
     if(/timeline|discussion|forecast-table|recurrence|donki|enlil|hourly-geomag|flare/.test(key))return {cols:24,rows:51};
@@ -36593,6 +36492,22 @@ window.SpaceWxMonitorLayout=(()=>{
 })();
 </script>
 
+<style id="satelliteRiskLayout">
+.sr-scene{position:relative}.sr-info{position:absolute;top:46px;left:8px;right:8px;z-index:10;background:#0b2030;border:1px solid #426479;border-radius:6px;box-shadow:0 8px 28px #000b}
+#card-satellite-risk .satellite-risk-stack.wx-particle{display:flex!important;flex-direction:column;padding:0;overflow:visible;gap:6px;min-height:430px;height:100%}
+#card-satellite-risk .satellite-risk-map.wx-particle-plot{padding:0;border:0;display:flex;flex-direction:column;min-height:395px;flex:1;overflow:visible}
+#card-satellite-risk #militaryRiskPanel{display:flex;flex-direction:column;flex:1;min-height:0;height:100%}
+#militaryRiskPanel>.sr-scene{flex:1;min-height:0;height:100%}
+#militaryRiskPanel .sr-viewport{flex:1;min-height:175px;height:auto}
+#militaryRiskPanel :is(.sr-toolbar,.sr-drivers,.sr-orbits,.sr-caption){flex-shrink:0}
+#card-satellite-risk .sr-analysis{flex-shrink:0;border-top:1px solid #294656;padding:8px 0;margin:0;max-height:none;overflow:visible}
+.sr-analysis>summary{color:#acd4e2;cursor:pointer;font-size:11px}
+#card-satellite-risk .risk-matrix{height:auto;display:block;padding:8px 0}
+#card-satellite-risk .risk-orbit-panel{max-height:none;height:auto;overflow:visible}
+#card-satellite-risk .satellite-risk-stack.wx-details-open{height:auto!important}
+.fd-monitor-layout .fd-wall-product>#card-satellite-risk:has(.wx-details-open){height:auto;overflow:visible}
+.fd-monitor-layout .fd-wall-product:has(#card-satellite-risk .wx-details-open){height:auto}
+</style>
 <script id="fdDeskScript">
 (function () {
   "use strict";
@@ -38375,48 +38290,12 @@ window.SpaceWxMonitorLayout=(()=>{
     return { value: "Awaiting HPI", detail: "OVATION Prime hemispheric power unavailable" };
   }
 
-  function fallbackOrbitLevelsFromAlerts() {
-    const text = document.getElementById("alertPanel")?.textContent?.replace(/\s+/g, " ") || "";
-    const ap = geomagNumber(text.match(/\bAp\s*([0-9]+(?:\.[0-9]+)?)/i)?.[1]);
-    const proton = geomagNumber(text.match(/10\s*MeV\s*:\s*([0-9.+\-eE]+)/i)?.[1]);
-    const electron = geomagNumber(text.match(/ELECTRON\s+FLUENCE\s*([0-9.+\-eE]+)/i)?.[1]);
-    if (![ap, proton, electron].some(Number.isFinite)) return null;
-    const apScore = !Number.isFinite(ap) ? 0 : ap >= 111 ? 3 : ap >= 56 ? 2 : ap >= 32 ? 1 : 0;
-    const protonLevel = !Number.isFinite(proton) ? 0 : proton >= 1000 ? 3 : proton >= 100 ? 2 : proton >= 10 ? 1 : 0;
-    const electronScore = !Number.isFinite(electron) ? 0 : electron >= 4.8e8 ? 3 : electron >= 1.1e8 ? 2 : 0;
-    const surfaceScore = apScore + electronScore;
-    const surfaceLevel = surfaceScore >= 5 ? 3 : surfaceScore >= 3 ? 2 : surfaceScore >= 1 ? 1 : 0;
-    const internalLevel = electronScore >= 3 ? 2 : electronScore >= 2 ? 1 : 0;
-    return {
-      LEO: Math.max(surfaceLevel, protonLevel),
-      MEO: Math.max(surfaceLevel, protonLevel, internalLevel),
-      GEO: Math.max(surfaceLevel, protonLevel, internalLevel),
-      HEO: Math.max(surfaceLevel, protonLevel, internalLevel)
-    };
-  }
-
   function orbitExposureSummary() {
-    const panel = document.getElementById("militaryRiskPanel");
-    let levels = null;
-    try { levels = JSON.parse(panel?.dataset.orbitLevels || "null"); } catch { levels = null; }
-    const fallbackLevels = fallbackOrbitLevelsFromAlerts();
-    if ((!levels || typeof levels !== "object") && fallbackLevels) levels = fallbackLevels;
-    if (!levels || typeof levels !== "object") {
-      const current = document.getElementById("fosOrbitOverall")?.textContent?.trim();
-      return { value: current && current !== "Assessing" ? current : "Assessing exposure", detail: "Orbit risk inputs loading" };
-    }
-    const orbits = ["LEO", "MEO", "GEO", "HEO"];
-    const names = ["Nominal", "Moderate Risk", "High Risk", "Severe Risk"];
-    const entries = orbits.map((orbit) => ({ orbit, level: clamp(Number(levels[orbit]) || 0, 0, 3) }));
-    const maximum = Math.max(0, ...entries.map((entry) => entry.level));
-    const affected = entries.filter((entry) => entry.level === maximum && maximum > 0).map((entry) => entry.orbit);
-    if (!maximum) {
-      return { value: "Nominal Exposure", detail: "LEO / MEO / GEO / HEO" };
-    }
-    return {
-      value: `${names[maximum]} to ${affected.join("/")}`,
-      detail: entries.map((entry) => `${entry.orbit} ${names[entry.level].replace(" Risk", "")}`).join(" · ")
-    };
+    const model = window.SpaceWxSatelliteRisk.derive(window.SpaceWxRiskTelemetry?.() || {});
+    const orbits = ['LEO', 'MEO', 'GEO', 'HEO'];
+    const worst = orbits.reduce((a,b) => model.levels[a] >= model.levels[b] ? a : b);
+    return { value: window.SpaceWxSatelliteRisk.label(model, worst), detail: model.complete
+      ? orbits.map(o => o + ' ' + window.SpaceWxSatelliteRisk.label(model, o)).join(' · ') : model.status };
   }
 
   function renderLinkedStrip() {

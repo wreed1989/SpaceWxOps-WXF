@@ -28,7 +28,17 @@ python -m chhss.pipeline backfill --start 2026-09-01 --end 2026-09-08 --output r
 
 A backfill can resume registered measurements already in `results/history/`; failed dates are retried on the next invocation. GitHub runs reuse downloaded source caches, but a new runner does not automatically restore a previous `results/history/`. Keep the same output directory when resuming locally. The workflow permits up to 93 days per run; begin with a small recent interval. A complete requested date ledger is not proof of complete scientific coverage.
 
-To refresh the dashboard's **offline flare** snapshot, run `python embed_dashboard_data.py`. The CH/HSS client fetches its public feed separately; downloading the HTML alone does not embed a current CH/HSS measurement.
+To refresh the dashboard's **offline flare** snapshot, run `python embed_dashboard_data.py`. To build one downloadable HTML with the current CH/HSS publication embedded, run:
+
+```sh
+python scripts/build_dashboard.py --output dist/SpaceWxOps_Coronal_Hole_HSS_Outlook.html
+```
+
+Open that file in a modern browser. It validates the embedded snapshot, then refreshes from the public feed. Observation timestamps remain unchanged; expired observations are withheld. The canonical source HTML also works online without the embedded snapshot. Replace previously downloaded copies when updating the client; its version appears under Data connection → Connection & verification details.
+
+AIA 171/193/211 FITS and signed HMI gauss are acquired by the worker, which decodes, quality-checks and WCS-registers them before publication. The browser does not need canvas access to third-party quicklook JPEGs for registered measurements. Its AIA diagnostics show the actual FITS URLs, observation times, quality flags and checksums. HMI ingestion and per-core polarity acceptance are separate: mixed/weak cores remain unknown, and degraded fields require temporal sign agreement.
+
+The rolling 75-day OMNI refresh runs independently of AIA/HMI. Either failure retains that source's last-good product and fails the workflow visibly, while the successful source is still published. `status.json` records separate `measurement` and `recurrence` health. OMNI coverage includes valid-hour counts, the last available hour and all seven forecast days' T−27d daily means (at least 18 valid hours). The browser can read `recurrence.json` independently if the measurement envelope is rejected. This recent recurrence refresh does not launch an observation-history backfill.
 
 ## Published data contract
 

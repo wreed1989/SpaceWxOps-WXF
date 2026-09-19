@@ -29082,11 +29082,11 @@ window.CHHSSScience = (() => {
     const sector={};
     for(const k of ['E','M','W']) {
       const s=rec.sector?.[k]||{},p=num(s.polarity),imb=num(s.fluxImbalance),cov=num(s.validMaskedPixelFraction),n=num(s.nValid);
-      const good=isNum(num(s.meanBr))&&Math.abs(num(s.meanBr))>=1&&Number.isInteger(n)&&Number.isInteger(num(s.nMasked))&&n<=num(s.nMasked)&&(p===1||p===-1)&&isNum(imb)&&Math.sign(imb)===p&&Math.abs(imb)>=POLICY.minImbalance&&Math.abs(imb)<=1&&isNum(cov)&&cov>=POLICY.minCoverage&&cov<=1&&isNum(n)&&n>=POLICY.minPixels&&s.coreDefinition==='20deg-hgs';
+      const good=isNum(num(s.meanBr))&&Math.abs(num(s.meanBr))>=1&&Number.isInteger(n)&&Number.isInteger(num(s.nMasked))&&n<=num(s.nMasked)&&(p===1||p===-1)&&isNum(imb)&&Math.sign(imb)===p&&Math.abs(imb)>=POLICY.minImbalance&&Math.abs(imb)<=1&&isNum(cov)&&cov>=POLICY.minCoverage&&cov<=1&&isNum(n)&&n>=POLICY.minPixels&&s.coreDefinition==='20deg-hgs'&&(!rec.degraded||s.temporalAgreement===true);
       sector[k]={...s,polarity:good?p:null,accepted:good,reason:good?'QA passed; not a Bz forecast':'Missing, mixed, weak, limb-excluded or insufficient valid CH pixels in this core.'};
     }
     const any=Object.values(sector).some(s=>s.accepted),m=sector.M;
-    return {ok:any,numeric:true,visualOnly:false,colorized:false,polarity:m.polarity,quality:any?'signed-field QA passed':'unavailable',source:rec.source||'HMI signed FITS',quantity:rec.quantity,sector,maskId:rec.maskId,observationTime:rec.observationTime,euvObservationTime:rec.euvObservationTime,loadedAt:now,registration:'wcs-reprojected',fluxImbalance:m.fluxImbalance??null,medianBr:m.medianBr??null,validFrac:m.validMaskedPixelFraction??null,reason:any?'':'No core passes signed-field QA.',raw:rec};
+    return {ok:any,numeric:true,visualOnly:false,colorized:false,polarity:m.polarity,quality:rec.degraded?'degraded signed-field':any?'signed-field QA passed':'mixed/weak',degraded:!!rec.degraded,qualityFlags:rec.qualityFlags||[],source:rec.source||'HMI signed FITS',quantity:rec.quantity,sector,maskId:rec.maskId,observationTime:rec.observationTime,euvObservationTime:rec.euvObservationTime,loadedAt:now,registration:'wcs-reprojected',fluxImbalance:m.fluxImbalance??null,medianBr:m.medianBr??null,validFrac:m.validMaskedPixelFraction??null,reason:any?'':'No core passes signed-field QA.',raw:rec};
   }
   function sciencePack(rec, {now=Date.now(),historical=false}={}) {
     const errors=[];
@@ -29159,7 +29159,8 @@ window.CHHSSData = (() => {
   const DEFAULT='https://raw.githubusercontent.com/wreed1989/SpaceWxOps-WXF/main/chhss-data/feed.json';
   const KEY='spaceWx.chhss.feed.v1';
   let url=DEFAULT;try{url=localStorage.getItem(KEY)||DEFAULT;}catch{}
-  let state={feed:null,loading:false,source:'none',error:'',lastAttempt:null,lastSuccess:null},inflight=null,lastTry=0,dbPromise=null;
+  const CLIENT_VERSION='2026-09-18.2';
+  let state={feed:null,recurrence:null,recurrenceError:'',loading:false,source:'none',error:'',lastAttempt:null,lastSuccess:null},inflight=null,recurrenceFlight=null,lastTry=0,dbPromise=null;
   const q=x=>document.querySelector(x),num=x=>typeof x==='number'&&Number.isFinite(x),date=x=>Number.isFinite(Date.parse(x))?Date.parse(x):null;
   const fmt=x=>num(x)?x.toFixed(1):'—';
   function publicURL(input){
@@ -29175,6 +29176,28 @@ window.CHHSSData = (() => {
   async function cached(write){
     const db=await database();if(!db)return null;
     return new Promise(resolve=>{try{const tx=db.transaction('cache',write?'readwrite':'readonly'),s=tx.objectStore('cache');const r=write?s.put(write,url):s.get(url);r.onsuccess=()=>resolve(write||r.result||null);r.onerror=()=>resolve(null);}catch{resolve(null);}});
+  }
+  function validateRecurrence(rec){
+    if(rec?.schemaVersion!=='chhss-recurrence-1'||!Array.isArray(rec.rows))throw new Error('Invalid recurrence data.');
+    if(!date(rec.generatedAt)||date(rec.generatedAt)>Date.now()+300000)throw new Error('Invalid recurrence publication time.');
+    if(rec.rows.length>5000)throw new Error('Recurrence feed exceeds 5000 hourly samples.');
+    const seen=new Set();for(const r of rec.rows){const t=date(r.time_tag);if(!t||t>Date.now()+300000||t%3600000!==0||seen.has(t))throw new Error('Invalid or duplicate recurrence hour.');seen.add(t);if(r.speed!==null&&(!num(r.speed)||r.speed<=0||r.speed>=5000))throw new Error('Invalid recurrence speed.');}
+    return rec;
+  }
+  function useRecurrence(rec){validateRecurrence(rec);if(!state.recurrence||date(rec.generatedAt)>=date(state.recurrence.generatedAt)){state.recurrence=rec;state.recurrenceError='';}}
+  async function refreshRecurrence(){
+    if(recurrenceFlight)return recurrenceFlight;
+    recurrenceFlight=(async()=>{
+      const abort=new AbortController(),timer=setTimeout(()=>abort.abort(),12000);
+      try{
+        const response=await fetch(new URL('recurrence.json',publicURL(url)).href,{cache:'no-store',credentials:'omit',signal:abort.signal,referrerPolicy:'no-referrer'});
+        if(!response.ok)throw new Error('OMNI publication HTTP '+response.status);
+        const body=await response.text();if(body.length>4*1024*1024)throw new Error('Recurrence exceeds 4 MB.');
+        useRecurrence(JSON.parse(body));
+      }catch(e){state.recurrenceError=e.name==='AbortError'?'OMNI publication timed out.':e.message;}
+      finally{clearTimeout(timer);recurrenceFlight=null;paint();}
+      return state.recurrence;
+    })();return recurrenceFlight;
   }
   async function validate(feed){
     if(!feed || feed.schemaVersion!=='chhss-feed-1' || feed.syntheticDemo===true)throw new Error('Expected a measured chhss-feed-1 publication.');
@@ -29206,17 +29229,13 @@ window.CHHSSData = (() => {
       if(hash!==p.maskId)throw new Error('Canonical mask checksum mismatch.');
       for(const [i,k] of ['E','M','W'].entries()){let disk=0,ch=0;for(let j=0;j<n;j++)if(m.coreLabels[j]===i+1){disk++;ch+=m.mask[j];}if(m.window[k].disk!==disk||m.window[k].ch!==ch)throw new Error('Core '+k+' disagrees with the supplied mask.');}
     }
-    if(feed.recurrence){
-      if(feed.recurrence.schemaVersion!=='chhss-recurrence-1'||!Array.isArray(feed.recurrence.rows))throw new Error('Invalid recurrence data.');
-      if(feed.recurrence.rows.length>5000)throw new Error('Recurrence feed exceeds 5000 hourly samples.');
-      const seen=new Set();for(const r of feed.recurrence.rows){const t=date(r.time_tag);if(!t||t>Date.now()+300000||t%3600000!==0||seen.has(t))throw new Error('Invalid or duplicate recurrence hour.');seen.add(t);if(r.speed!==null&&(!num(r.speed)||r.speed<=0||r.speed>=5000))throw new Error('Invalid recurrence speed.');}
-    }
+    if(feed.recurrence)validateRecurrence(feed.recurrence);
     if(feed.verification && (feed.verification.schemaVersion!=='chhss-validation-1'||!feed.verification.provenance||!feed.verification.metrics))throw new Error('Invalid verification report.');
     return feed;
   }
   let applied='';
   function changed(){document.dispatchEvent(new CustomEvent('chhss-feed-updated'));paint();const p=current(),sig=p?p.maskId+'|'+p.observationTime:'withheld';if(sig!==applied&&window.SpaceWxChHss){applied=sig;setTimeout(()=>window.SpaceWxChHss?.refresh(true),600);}}
-  async function use(feed,source){await validate(feed);state.feed=feed;state.source=source;state.lastSuccess=new Date().toISOString();state.error='';changed();return feed;}
+  async function use(feed,source){await validate(feed);state.feed=feed;if(feed.recurrence)useRecurrence(feed.recurrence);state.source=source;state.lastSuccess=new Date().toISOString();state.error='';changed();return feed;}
   async function initialize(){
     const embed=q('#chhssBootstrap');if(embed){try{await use(JSON.parse(embed.textContent),'embedded snapshot');}catch(e){state.error='Snapshot rejected: '+e.message;}}
     if(!state.feed){const c=await cached();if(c)try{await use(c,'browser cache');}catch{}}
@@ -29238,13 +29257,17 @@ window.CHHSSData = (() => {
         const feed=JSON.parse(body);await validate(feed);
         if(state.feed&&date(feed.generatedAt)<date(state.feed.generatedAt))throw new Error('Older publication returned; last-good feed retained.');
         await use(feed,'published feed');await cached(feed);
-      }catch(e){state.error=(e.name==='AbortError'?'Feed request timed out.':e.message)+' Last-good observations retain their original age.';}
+      }catch(e){
+        state.error=(e.name==='AbortError'?'Feed request timed out.':e.message)+' Last-good observations retain their original age.';
+        // OMNI remains usable even when a measurement pack fails validation.
+        await refreshRecurrence();
+      }
       finally{clearTimeout(timer);state.loading=false;inflight=null;changed();}
       return state.feed;
     })();return inflight;
   }
   function current(){const p=state.feed?.current;if(!p)return null;return window.CHHSSScience.sciencePack(p).ok?p:null;}
-  function persistenceRows(){return state.feed?.recurrence?.rows?.filter(r=>num(r.speed))||[];}
+  function persistenceRows(){return state.recurrence?.rows?.filter(r=>num(r.speed))||[];}
   function dailySpeed(validTime){
     const t=new Date(validTime);if(!Number.isFinite(t.getTime()))return null;
     const lo=Date.UTC(t.getUTCFullYear(),t.getUTCMonth(),t.getUTCDate())-27*86400000,hi=lo+86400000;
@@ -29261,27 +29284,27 @@ window.CHHSSData = (() => {
       if(b.hasAttribute('data-chds-refresh')){await refresh(true);window.SpaceWxChHss?.refresh(true);}
       if(b.hasAttribute('data-chds-export')){if(state.feed?.verification)download(state.feed.verification,'CHHSS_verification_summary.json');else{state.error='No producer verification report received yet.';paint();}}
       if(b.hasAttribute('data-chds-archive'))try{const response=await fetch(new URL('history.json',url).href,{credentials:'omit',cache:'no-store'});if(!response.ok)throw new Error('Archive HTTP '+response.status);const archive=await response.json();if(archive.schemaVersion!=='chhss-history-1')throw new Error('Invalid history archive.');download(archive,'CHHSS_historical_measurements.json');}catch(e){state.error=e.message;paint();}
-      if(b.hasAttribute('data-chds-save'))try{if(inflight)await inflight;url=publicURL(panel.querySelector('input').value);try{localStorage.setItem(KEY,url);}catch{}state.feed=null;state.source='none';await refresh(true);window.SpaceWxChHss?.refresh(true);}catch(e){state.error=e.message;paint();}
+      if(b.hasAttribute('data-chds-save'))try{if(inflight)await inflight;url=publicURL(panel.querySelector('input').value);try{localStorage.setItem(KEY,url);}catch{}state.feed=null;state.recurrence=null;state.recurrenceError='';state.source='none';await refresh(true);window.SpaceWxChHss?.refresh(true);}catch(e){state.error=e.message;paint();}
     });paint();
   }
   function paint(){const panel=q('#chhssDataService');if(!panel)return;
     const set=(key,s)=>{const el=panel.querySelector('[data-chds-'+key+']');if(el&&el.textContent!==String(s))el.textContent=s;};
     const f=state.feed,p=current(),stored=f?.current,b=f?.status?.backfill,r=f?.verification;
-    set('state',state.loading?'Fetching feed':p?(state.error||f?.status?.current?.ok===false?'Last-good input · refresh failed':'Current measured input'):stored?'Stale input · withheld':'Producer not connected');
+    set('state',state.loading?'Fetching feed':p?(state.error||(f?.status?.current?.measurement?.ok??f?.status?.current?.ok)===false?'Last-good input · refresh failed':'Current measured input'):stored?'Stale input · withheld':'Producer not connected');
     set('observation',stored?.observationTime&&date(stored.observationTime)?new Date(stored.observationTime).toISOString().slice(0,19).replace('T',' ')+' UTC':'No measured package');
     const tested=p?window.CHHSSScience.polarityRecord(p.polarity,{maskId:p.maskId,observationTime:p.observationTime}):null;
     set('signs',['E','M','W'].map(k=>{const v=tested?.sector?.[k]?.polarity;return v===1?'+ outward':v===-1?'− inward':'unknown';}).join(' / '));
     set('history',b&&num(b.requestedDays)?`${b.completedDays??0} / ${b.requestedDays??0} days · ${b.failedDays??0} failed`:'Awaiting worker');
     set('n',r?String(r.coverage?.scoredPairs??0):'—');
-    set('error',state.error||f?.status?.current?.error||'');
-    set('source',`${state.source} · publication ${f?.generatedAt||'unavailable'} · recipe ${f?.recipe||'not received'}`);
+    set('error',[state.error,f?.status?.current?.error,state.recurrenceError||f?.status?.current?.recurrenceError].filter(Boolean).join(' '));
+    set('source',`Client ${CLIENT_VERSION} · ${state.source} · publication ${f?.generatedAt||'unavailable'} · recipe ${f?.recipe||'not received'} · OMNI ${persistenceRows().length} valid hours; last ${state.recurrence?.coverage?.lastValidHour||persistenceRows().at(-1)?.time_tag||'unavailable'}. OMNI archive lag is separate from T−27d coverage.`);
     const scores=panel.querySelector('[data-chds-scores]');const metric=r?.metrics;
     const msg=metric?`Retrospective period ${f.verificationPeriod||'reported in provenance'}: ${metric.n} paired daily-mean targets; MAE ${fmt(metric.mae)} km/s; recurrence MAE ${fmt(metric.recurrenceMae)} km/s. ${r.provenance?.icmeCoverage||''}. ${r.promotion?.reason||'Research only; no operational promotion.'}`:'No verification results have been published for a current dataset. A connected feed is not a validation claim.';
     if(scores.textContent!==msg)scores.textContent=msg;
   }
   function start(){initPromise=initialize();mount();setInterval(()=>{mount();paint();},2000);setInterval(()=>{if(!document.hidden)refresh();},300000);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
-  return Object.freeze({refresh,current,persistenceRows,dailySpeed,validate,ready,getState:()=>({...state,url}),defaultURL:DEFAULT});
+  return Object.freeze({refresh,refreshRecurrence,current,persistenceRows,dailySpeed,validate,validateRecurrence,ready,getState:()=>({...state,url,clientVersion:CLIENT_VERSION}),defaultURL:DEFAULT});
 })();
 
 </script>
@@ -29715,7 +29738,7 @@ async function fetchHapiArchive(dataset, parameters, start, end, timeoutMs = 600
           renderChHssOutlook();
           const bounded=(p,ms,fallback)=>new Promise(resolve=>{const timer=setTimeout(()=>resolve(fallback),ms);Promise.resolve(p).then(x=>{clearTimeout(timer);resolve(x);},()=>{clearTimeout(timer);resolve(fallback);});});
           try {
-            const registered=await loadRegisteredSciencePack();
+            const registered=await loadRegisteredSciencePack(force);
             const geometryPromise=registered ? Promise.resolve(registered) : fetchChHssGeometry();
             const [geometry,persistence,modelCompare]=await Promise.all([
               bounded(geometryPromise,19000,{holes:[],source:'',error:'Geometry ingest timed out',geometryFailed:true}),
@@ -31830,9 +31853,11 @@ function chHssMedian(values) {
         return merged.sort(byTime);
       }
 async function fetchChHssPersistence() {
+        await window.CHHSSData?.ready();
+        if(!window.CHHSSData?.persistenceRows().length)await window.CHHSSData?.refreshRecurrence();
         const rows=window.CHHSSData?.persistenceRows()||[];
         if(rows.length){const p=persistenceFromOmniRows(rows,"Published NASA OMNI2 hourly");p.calendarDaily=true;return p;}
-        return {rows:[],source:"Published NASA OMNI2 hourly",error:"Recurrence awaits the processing worker's OMNI backfill. Missing history is not quiet wind."};
+        return {rows:[],source:"Published NASA OMNI2 hourly",error:window.CHHSSData?.getState()?.recurrenceError||"Published OMNI recurrence is unavailable. Missing history is not quiet wind."};
       }
       function parseChHssOmniRows(payload) {
         const { index, value } = hapiValueReader(payload);
@@ -31976,7 +32001,7 @@ async function fetchChHssPersistence() {
         const t=new Date(validTime);if(!Number.isFinite(t.getTime()))return null;
         const lo=Date.UTC(t.getUTCFullYear(),t.getUTCMonth(),t.getUTCDate())-27*86400000,hi=lo+86400000;
         const hours=new Map();for(const r of persistence?.rows||[]){const rt=Date.parse(r.time_tag);if(rt>=lo&&rt<hi&&Number.isFinite(r.speed))hours.set(Math.floor(rt/3600000),r.speed);}
-        return hours.size>=20?[...hours.values()].reduce((s,v)=>s+v,0)/hours.size:null;
+        return hours.size>=18?[...hours.values()].reduce((s,v)=>s+v,0)/hours.size:null;
       }
       function persistenceAtOffset(persistence, dayOffset) {
         return persistenceAtValidTime(persistence, new Date(Date.now() + dayOffset * 86400000));
@@ -32426,7 +32451,7 @@ async function fetchChHssPersistence() {
         else if (ch?.source) {
           const ageH = ch.sourceTime ? (Date.now() - new Date(ch.sourceTime).getTime()) / 3600000 : null;
           const ageBit = Number.isFinite(ageH) ? `${Math.max(0, Math.round(ageH))} h old` : "age unknown";
-          const fitBit = Number.isFinite(fit) ? `fit ${fit.toFixed(2)}` : "no limb fit (catalog)";
+          const fitBit = g.registration === "wcs" ? "FITS WCS registered" : Number.isFinite(fit) ? `fit ${fit.toFixed(2)}` : "no limb fit (catalog)";
           const st = !ch.sourceTimeVerified || !Number.isFinite(ageH) ? "warn" : ageH > 6 ? "fail" : "pass";
           add("ch", "CH geometry", st, `${ch.source} · ${ageBit} · ${fitBit}`);
         } else add("ch", "CH geometry", "fail", "No detection source.");
@@ -32435,7 +32460,7 @@ async function fetchChHssPersistence() {
         else if (!elig) add("aia", "AIA multi-thermal", "warn", "No eligibility record (AIA path did not run).");
         else if (elig.active && elig.passCondition) {
           add("aia", "AIA multi-thermal", "pass",
-            `Active · ${elig.origin || "channels ok"} · limb ${Number(elig.limbRadiusPx || 0).toFixed(0)} px · off-disk ${elig.offDiskCh ?? "—"} · engine ${CH_HSS_MEAS_ENGINE.aiaMt}`);
+            `Active · ${elig.origin || "channels ok"} · limb ${Number(elig.limbRadiusPx || 0).toFixed(0)} px · off-disk ${elig.offDiskCh ?? "—"} · engine ${ch.measurementEngine||CH_HSS_MEAS_ENGINE.aiaMt}`);
         } else if (elig.active) {
           add("aia", "AIA multi-thermal", "warn",
             `Active but pass-condition incomplete · ${elig.fallbackReason || "see diagnostic panel"}`);
@@ -32445,7 +32470,9 @@ async function fetchChHssPersistence() {
           add("aia", "AIA multi-thermal", st, `Not active — ${fetchBit}`);
         }
         const hmi = ch?.hmiPolarity;
-        if (!hmi || hmi.quality === "unavailable") add("hmi", "HMI polarity", "fail", hmi?.reason || "HMI LOS not ingested.");
+        if (!hmi || (!hmi.numeric && hmi.quality === "unavailable")) add("hmi", "HMI polarity", "fail", hmi?.reason || "HMI LOS not ingested.");
+        else if(hmi.numeric) add("hmi", "HMI polarity", hmi.degraded||!hmi.ok?"warn":"pass",
+          `Signed gauss ingested · WCS matched · E / M / W: ${['E','M','W'].map(k=>polarityWord(hmi.sector?.[k]?.polarity)).join(' / ')}${hmi.degraded?' · degraded '+hmi.qualityFlags.join(', ')+'; accepted signs require agreement in two observations':''}${!hmi.ok?' · mixed/weak cores withheld':''}`);
         else if (hmi.colorized) add("hmi", "HMI polarity", "warn", "Colorized HMIBC only — sign not used for Vršnak II.");
         else if (polarityKnown(hmi.polarity)) {
           add("hmi", "HMI polarity", hmi.quality === "low" ? "warn" : "pass",
@@ -32559,6 +32586,7 @@ async function fetchChHssPersistence() {
       }
       function detectionTier(source) {
         if (!source) return "unavailable";
+        if (source.startsWith('Registered AIA')) return 'experimental';
         return CH_HSS_TIER[source] || "low";
       }
       function rotationGeometry(slices) {
@@ -32571,6 +32599,7 @@ async function fetchChHssPersistence() {
         return "none";
       }
       function detectionSourceLabel(source) {
+        if (source?.startsWith('Registered AIA')) return 'Registered AIA 171/193/211 FITS';
         if (source === "CHIMERA") return "CHIMERA";
         if (source === "HEK/SPoCA") return "SPoCA";
         if (source === "Helioviewer HEK") return "Helioviewer event";
@@ -32741,7 +32770,8 @@ async function fetchChHssPersistence() {
         if (persistAgree === "agree" && (status === "possible" || status === "likely")) confidence += ", comparable to prior-rotation peak (same-source not confirmed)";
         else if (persistAgree === "geometry-higher") confidence += ", stronger than prior-rotation peak (same-source not confirmed)";
         else if (persistAgree === "persist-higher") confidence += ", weaker than prior-rotation peak (same-source not confirmed)";
-        const limbLine = !Number.isFinite(fit) && !fitGrade ? "not measured"
+        const limbLine = ch.measured?.geometry?.registration==='wcs' ? 'FITS WCS registered; limb from RSUN_OBS'
+          : !Number.isFinite(fit) && !fitGrade ? "not measured"
           : (fitGrade === "marginal"
             ? `fit ${Number.isFinite(fit) ? fit.toFixed(2) : "—"} Marginal (Pass ≥ 0.70) — forecast permitted, confidence capped at Low`
             : (fitGrade === "fail"
@@ -34109,6 +34139,10 @@ async function fetchChHssPersistence() {
         return s.slice(0, 48) + "…" + s.slice(-28);
       }
       function renderAiaFetchDiag(e) {
+        if(e?.registered){
+          const rows=['171','193','211'].map(w=>{const c=e.channels['a'+w];return `<tr><td>${w}</td><td>${escapeHtml(c.observationTime||'unavailable')}</td><td class="ch-hss-url">${escapeHtml(c.url||'unavailable')}</td><td>${escapeHtml((c.qualityEvidence?.flags||[]).join(', ')||'quality checked')}</td><td class="ch-hss-url">${escapeHtml(c.sha256||'unavailable')}</td></tr>`;}).join('');
+          return `<div class="ch-hss-fetch-wrap"><div class="ch-hss-aia-diag-h">AIA FITS acquisition provenance</div><p>Acquired and decoded by the processing worker, then registered to the AIA 193 Å grid. This browser reads the checksummed measurement package and embedded preview; cross-origin image canvas access is unnecessary.</p><div class="ch-hss-table-wrap"><table class="ch-hss-table"><thead><tr><th>Å</th><th>Observation (UTC)</th><th>FITS source URL</th><th>Quality</th><th>SHA-256</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+        }
         const attempts = e?.attempts || [];
         if (!attempts.length) return "";
         const rows = [];
@@ -34171,10 +34205,10 @@ async function fetchChHssPersistence() {
         }
         const e = elig || emptyAiaEligibility();
         const active = Boolean(e.active && e.candidateMask === "active");
-        const usedAia = ch?.source === "AIA 211/193/171 MT";
+        const usedAia = e.registered || ch?.source === "AIA 211/193/171 MT";
         const usedSuvi = ch?.source === "SWPC SUVI 195 FF" || ch?.source === "AIA 193 FF";
         let statusLine;
-        if (active && usedAia) statusLine = "Active — AIA 211/193/171 multi-thermal candidate mask";
+        if (active && usedAia) statusLine = e.registered?"Active — registered AIA 171/193/211 FITS measurement":"Active — AIA 211/193/171 multi-thermal candidate mask";
         else if (active && !usedAia) statusLine = "Eligible but not selected — " + (ch?.source ? `${ch.source} used for Outlook` : "another source used for Outlook");
         else if (usedSuvi) statusLine = "Not active — SUVI fallback used";
         else if (ch?.source && measurementEngineForSource(ch.source) === CH_HSS_MEAS_ENGINE.catalog) statusLine = "Not active — catalog mask used for Outlook (AIA/SUVI comparison only)";
@@ -34193,7 +34227,7 @@ async function fetchChHssPersistence() {
           ["193 Å source", aiaChanLine(e.channels?.a193)],
           ["211 Å source", aiaChanLine(e.channels?.a211)],
           ["Channel time spread", spread],
-          ["Canvas pixel access", aiaPassFail(e.canvasPixelAccess)],
+          [e.registered?"Pixel ingestion":"Canvas pixel access", aiaPassFail(e.canvasPixelAccess)],
           ["Image dimensions", aiaPassFail(e.imageDimensions)],
           ["FOV agreement", aiaPassFail(e.fovAgreement)],
           ["Limb-radius agreement", aiaPassFail(e.limbAgreement) + (e.limb193Px && e.limb211Px ? ` (${Number(e.limb193Px).toFixed(0)} vs ${Number(e.limb211Px).toFixed(0)} px)` : "")],
@@ -34201,7 +34235,7 @@ async function fetchChHssPersistence() {
           ["Candidate-mask result", aiaPassFail(e.candidateMask)],
           ["Classifier", e.classifier || "inactive"],
           ["Off-disk CH", e.offDiskCh == null ? "—" : String(e.offDiskCh)],
-          ["Pass condition (ops)", e.passCondition ? "pass" : "not met"],
+          ["Input QA (research)", e.passCondition ? "pass" : "not met"],
           ["Fallback reason", fallback],
           ["Measurement engine (this issuance)", engine || "none"],
           ["Outlook equations", `${modelEq} (frozen — not blended)`]
@@ -34816,6 +34850,14 @@ async function fetchChHssPersistence() {
       if(disk!==m.window[k].disk||ch!==m.window[k].ch)throw new Error('Core '+k+' statistics do not match the supplied WCS-labelled binary mask.');
     }
   }
+  function registeredAiaEligibility(p){
+    const m=p.measured,g=m.geometry,channels={};
+    for(const w of ['171','193','211']){const c=p.source.euv?.[w];channels['a'+w]={...c,available:!!c?.url&&Number.isFinite(Date.parse(c.observationTime)),width:m.width,height:m.height,origin:'worker FITS → common WCS grid'};}
+    const times=Object.values(channels).filter(c=>c.available).map(c=>Date.parse(c.observationTime));
+    const spread=times.length===3?(Math.max(...times)-Math.min(...times))/60000:null;
+    const active=times.length===3&&spread<=5&&g.registration==='wcs';
+    return {registered:true,active,status:active?'active':'rejected',channels,origin:'JSOC NRT FITS',synced:active,timeSpreadMin:spread===null?null:Number(spread.toFixed(2)),canvasPixelAccess:'worker FITS decoded; browser canvas not required',imageDimensions:`${m.width}×${m.height} registered grid`,fovAgreement:'WCS reprojected',limbAgreement:'FITS WCS / RSUN_OBS',scienceDisk:'pass',candidateMask:active?'active':'rejected',classifier:p.measurementEngine,offDiskCh:m.diagnostics?.offDiskCh??null,limbRadiusPx:g.limbRadiusPx,scienceRadiusPx:g.scienceRadiusPx,passCondition:active,fallbackReason:active?'':'Incomplete registered channel provenance',attempts:[]};
+  }
   function registeredGeometry(rec) {
     const S=window.CHHSSScience;
     const tested=S.sciencePack(rec);
@@ -34826,16 +34868,16 @@ async function fetchChHssPersistence() {
     if(!holes.length)for(const k of ['E','M','W']){
       const w=m.window[k];if(w.ch>0)holes.push({id:'CORE-'+k,lat:w.centroidLat??0,lon:w.centroidCmd??({E:-30,M:0,W:30}[k]),width:20,areaDisk:w.ch/(Math.PI*m.radius*m.radius),source:p.source.instrument,time:p.observationTime,quantitative:true,isAggregate:true});
     }
-    return {holes,source:'Registered '+p.source.instrument,detail:p.measurementEngine+' · signed FITS/WCS measurement package · research calibration pending',time:p.observationTime,sourceTimeVerified:true,previewUrl:p.preview.url,rawPreviewUrl:p.preview.url,compositeUrl:p.preview.url,measured:m,hmiPolarity:p.hmiPolarity,measurementEngine:p.measurementEngine,registeredPack:p,error:''};
+    return {holes,source:'Registered '+p.source.instrument,detail:p.measurementEngine+' · signed FITS/WCS measurement package · research calibration pending',time:p.observationTime,sourceTimeVerified:true,previewUrl:p.preview.url,rawPreviewUrl:p.preview.url,compositeUrl:p.preview.url,measured:m,hmiPolarity:p.hmiPolarity,aiaEligibility:registeredAiaEligibility(p),measurementEngine:p.measurementEngine,registeredPack:p,error:''};
   }
-  async function loadRegisteredSciencePack() {
+  async function loadRegisteredSciencePack(force=false) {
     const ch=ensureChHssState();
     if(ch.registeredPack && ch.registeredOrigin==='import'){
       const g=registeredGeometry(ch.registeredPack);if(g)return g;
       ch.registeredPackError='Imported measurement expired; no stale live forcing.';
     }
     try {
-      await window.CHHSSData?.refresh();
+      await window.CHHSSData?.refresh(force);
       const p=window.CHHSSData?.current();
       if(!p){ch.registeredPackError=window.CHHSSData?.getState()?.error||'No fresh published AIA/HMI measurement. Activate the supplied worker.';return null;}
       await verifyScienceMask(p);
@@ -34847,6 +34889,7 @@ async function fetchChHssPersistence() {
   async function acceptSciencePack(pack) {
     const ch=ensureChHssState(),result=window.CHHSSScience.sciencePack(pack);
     if(!result.ok)throw new Error(result.errors.join(' '));
+    await window.CHHSSData.validate({schemaVersion:'chhss-feed-1',generatedAt:new Date().toISOString(),current:pack});
     await verifyScienceMask(pack);
     if(chAuditInFlight)await chAuditInFlight;
     ch.registeredPack=pack;ch.registeredOrigin='import';ch.registeredReceivedAt=new Date().toISOString();ch.registeredPackError='';
@@ -34920,7 +34963,7 @@ async function fetchChHssPersistence() {
     getContours: function () { return (state.chHss && state.chHss.measured && state.chHss.measured.contours) || []; },
     getMeasured: function () { return (state.chHss && state.chHss.measured) || null; },
     resize: resizeChPlots,
-    audit: {modelId:CH_HSS_MODEL_ID,forecast:buildChHssForecast,summarize:summarizeChSlices,coordinates:solarCmdLat,speedBand:speedRange,dstLabel:dstClass,acceptSciencePack,exportMeasurementMask},
+    audit: {registeredGeometry,validateDataset:validateChHssDataset,renderAiaDiagnostics:renderChHssAiaDiagnostics,persistenceAtValidTime,modelId:CH_HSS_MODEL_ID,forecast:buildChHssForecast,summarize:summarizeChSlices,coordinates:solarCmdLat,speedBand:speedRange,dstLabel:dstClass,acceptSciencePack,exportMeasurementMask},
     acceptSciencePack
   };
 })();

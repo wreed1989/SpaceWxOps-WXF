@@ -1,13 +1,43 @@
 # SEP/proton and electron forecasting options
 
-Reviewed September 19, 2026 UTC (September 18 locally). These are integration
-recommendations; no new particle forecast model is enabled by this update.
+Updated September 19, 2026 UTC. The dashboard now displays published UMASEP,
+HESPERIA REleASE and SWPC REFM products. The remaining options below are future
+integrations.
 
-## Recommended first step
+## Available now
+
+- **SEP / Proton:** UMASEP ≥10 and ≥100 MeV provider charts, plus the HESPERIA
+  REleASE ACE EPAM chart. NASA numerical submissions show the energy channel,
+  source issue time, valid window and published prediction. All-clear statements
+  retain the provider's event threshold; they are not a zero-flux prediction.
+- **Electron Forecast:** SWPC REFM daily >2 MeV GEO fluence, 14/30/60-day observed
+  history and the latest three subsequent UTC forecast days. Negative fill values
+  remain gaps. This is environmental guidance, not spacecraft failure probability.
+- These products appear in Model and can be selected individually from Monitor's
+  Radiation catalog. They refresh automatically; **Refresh forecasts** only
+  retrieves published outputs. The old Configure + run interface was a concept
+  interface without a connected solver and has been removed from these pages.
+
+NASA ISWA's API does not provide browser CORS access. `chhss.particles` retrieves
+five numeric feeds during the existing hourly publication job and publishes
+`chhss-data/particle-forecasts.json`. Each source fails independently and retains
+its original successful retrieval time. The downloadable HTML embeds a dated
+snapshot and refreshes it from the public repository. Provider charts use ISWA's
+latest-file redirect every five minutes, independently of the hourly numeric
+relay. Read the issue and valid times printed on those images; successful loading
+does not prove that the upstream model issued a new forecast. Expired numerical
+windows are labelled explicitly. REFM is fetched directly from SWPC.
+
+Source IDs, verified against the [NASA ISWA catalog](https://iswa.ccmc.gsfc.nasa.gov/catalog/data-feeds):
+UMASEP images 1647/1650, numerical 1653/1656; REleASE ACE image 1221, numerical
+1218/1219/1220 (30/60/90-minute products). No retired UMASEP version is selected.
+Attribution for HESPERIA and EU funding appears with its chart.
+
+## Broader integration options
 
 Keep official SWPC guidance and GOES observations as the operational reference.
-Add published NASA SEP Scoreboard forecasts for proton-event context, then NOAA
-REFM for geosynchronous energetic-electron fluence. Show each provider separately
+The initial integration uses NASA SEP Scoreboard submissions and NOAA
+REFM for geosynchronous energetic-electron fluence. Keep each provider separate
 with its energy channel, issue/valid time, lead time and availability.
 
 | Tool | What it supplies | Integration fit |

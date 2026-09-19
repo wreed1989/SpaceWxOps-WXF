@@ -86,4 +86,7 @@ def build(root, now=None):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root', type=Path, default=Path('chhss-data'))
-    build(parser.parse_args().root)
+    root = parser.parse_args().root
+    from .particles import publish as publish_particles
+    publish_particles(root)
+    build(root)

@@ -43,6 +43,46 @@ assert.match(scoreboard.urls(new Date('2026-09-18'))[0],/kauai.*closeOutCMEsOnly
 assert.match(scoreboard.urls(new Date('2026-10-01'))[0],/ccmc\.gsfc\.nasa\.gov\/CMESB-Earth/);
 assert.equal(scoreboard.parse([]).length,0);
 assert.throws(()=>scoreboard.parse({error:'unavailable'}),/Invalid NASA/);
+// Monitor migration must preserve intentional emptiness, order and chosen sizes.
+for(const id of ['monitorLayoutPolicy','particleForecastProduct'])vm.runInContext(scripts.find(([,a])=>a.includes(`id="${id}"`))[2],products);
+const monitor=products.window.SpaceWxMonitorLayout;
+assert.equal(monitor.normalize([],()=>true).length,0);
+const layoutRows=monitor.normalize([{key:'solar.cycle',cols:6,rows:8},{key:'realtime.imf',cols:8,rows:8},{key:'solar.cycle'},{key:'invalid'}],(_,k)=>k!=='invalid');
+assert.deepEqual(Array.from(layoutRows,r=>r.key),['solar.cycle','realtime.imf']);
+assert.equal(layoutRows[0].cols,24);
+assert.equal(layoutRows[0].rows,29);
+assert.equal(layoutRows[1].cols,24);
+assert.equal(monitor.normalize([{kind:'visual',key:'helio',cols:8,rows:12,layoutVersion:2}],()=>true)[0].cols,8);
+assert.equal(monitor.resize({cols:12,rows:10},504,72,1000).cols,24);
+assert.equal(monitor.resize({cols:12,rows:10},504,72,1000).rows,12);
+assert.equal(monitor.dimensions(0,100).rows,42);
+const particles=products.window.SpaceWxParticles;
+const bulletin=':Created: 2026 Sep 19 0014 UTC\n2026 09 17 -9.9e+04 -999 3.7e7 7.6e8 5.3e8\n2026 09 18 3.8e7 412 1.0e8 -9.9e+04 2.2e8';
+const refm=particles.parseREFM(bulletin);
+assert.equal(refm.issued,'2026-09-19T00:14:00.000Z');
+assert.equal(refm.rows[0].observed,null);
+assert.equal(refm.rows[0].wind,null);
+assert.equal(refm.latest.forecast[0].day,'2026-09-19');
+assert.equal(refm.latest.forecast[2].day,'2026-09-21');
+assert.equal(refm.latest.forecast[1].value,null);
+assert.equal(particles.refmSeries(refm)[1].y[1],null);
+assert.throws(()=>particles.parseREFM('Service unavailable'),/No dated/);
+const sepRows=particles.parseSEP({sep_forecast_submission:{issue_time:'2026-09-19T05:03:58Z',model:{short_name:'UMASEP-10'},forecasts:[{species:'proton',energy_channel:{min:10,max:-1,units:'MeV'},prediction_window:{start_time:'2026-09-19T05:00:13Z',end_time:'2026-09-19T07:00:13Z'},all_clear:{threshold:10,threshold_units:'pfu',all_clear_boolean:true}}]}});
+assert.equal(sepRows[0].flux,null); // all-clear is not zero intensity or zero probability
+assert.equal(sepRows[0].allClear,true);
+assert.equal(sepRows[0].energy,'≥10 MeV');
+assert.equal(particles.freshness(sepRows[0],Date.parse('2026-09-19T08:00Z')),'EXPIRED');
+assert.equal(particles.freshness(sepRows[0],Date.parse('2026-09-19T06:00Z')),'Within valid window');
+assert.equal(particles.freshness(sepRows[0],Date.parse('2026-09-19T04:00Z')),'Upcoming valid time');
+assert.doesNotMatch(html,/CONFIGURE \+ RUN/);
+// Every Monitor catalog click must take the toggle route before pane assignment.
+const desk=scripts.find(([,a])=>a.includes('id="fdDeskScript"'))[2];
+const choose=desk.match(/  function openProduct\(key, pane\) \{[\s\S]*?\n  \}/)[0];
+const calls=[];const deskContext=vm.createContext({state:{preset:'monitor',monitorTiles:[{id:'product:realtime.imf',kind:'product',key:'realtime.imf'}]},removeMonitorTile:id=>calls.push(['remove',id]),addMonitorTile:key=>calls.push(['add',key])});
+vm.runInContext(choose,deskContext);
+deskContext.openProduct('realtime.imf');deskContext.openProduct('solar.cycle');
+assert.deepEqual(calls,[['remove','product:realtime.imf'],['add','solar.cycle']]);
+
 // Exercise the recurrence inspector's per-hole sign QA, including degraded HMI.
 const recurrence=scripts.find(([,a])=>a.includes('id="fdRecurrenceCompareScript"'))[2];
 const selectionCode=recurrence.match(/  function selectHole\(pane, hole\) \{[\s\S]*?\n  \}/)[0];

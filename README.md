@@ -94,3 +94,9 @@ See [docs/CONSOLIDATION.md](docs/CONSOLIDATION.md) for the dependency inventory 
 ## Research status
 
 This remains research/shadow guidance. M1+ has positive grouped holdout skill; X1+ improves Brier score over the former constant-severity method, but its active-region bootstrap interval still crosses zero because the untouched test contains only six X-positive region-days. Do not mark WXF operational until prospective shadow and matched SWPC/MCSTAT/MCEVOL verification gates pass.
+
+### Monitor layout and particle forecasts
+
+The [Monitor layout guide](docs/monitor-layout.md) explains selection, removal,
+resizing and saved views. [Particle products and future options](docs/particle-forecasting-options.md)
+describes the connected UMASEP, HESPERIA REleASE and SWPC REFM feeds.

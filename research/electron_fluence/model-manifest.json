@@ -5,13 +5,13 @@
   "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732",
   "candidateModelSHA256": "0a13dd8791f113a72d6772ba16080f7f8628318bff55941e62564a94789fc38a",
   "fallbackModelSHA256": "3fa1360a114e3ab42fbb110456adb529cd5108a18caadc2c1c489c26faea24d8",
-  "trainingCodeSHA256": "a5a2ae010e3d3d54dc50191d6e00e1a8d41b505d086794183123ec15a90410d9",
+  "trainingCodeSHA256": "e592febbea2237d1bebab4b1956fedab4c510f480045cbe081b2765ff2958354",
   "experimentCodeSHA256": "6e7f66cd8c251adf3490fda94e85d2c45136d2d9e1bcab8b12fb745742d3ea0b",
   "arrivalsCodeSHA256": "86333142a609f6130200b47f443166fa013c712d26d97d1b15bf200a53389724",
   "currentTrainingModelSHA256": "aab8912d60f913bb75224db917b82ecb4c8728da552e93b109686e55c01767ee",
-  "currentModelNote": "Original trees/residuals unchanged. Removed severe evaluation criterion; updated metadata.",
+  "currentModelNote": "Original numeric trees/residuals unchanged. Office criteria are 1.1e8 and 4.8e8; legacy artifact evaluation remains the dated development report.",
   "candidatePromotion": false,
-  "promotionReason": "Keep current v0.1 default. Explicit IPS/HSS-phase model is a shadow candidate, evaluated on previously inspected development dates.",
+  "promotionReason": "Current v0.1 stays default. Five-fold historical tests support full guidance versus persistence; paired confidence intervals do not establish additional skill over observed drivers.",
   "runtime": {
     "python": "3.12.11",
     "scikit-learn": "1.9.1",
@@ -32,5 +32,11 @@
     "maximumAbsoluteLogPredictionDifference": 1.3322676295501878e-15
   },
   "impactExperimentCodeSHA256": "f491c3af31085113b13dadc671c926e3f3b2371b4b4486272b590f393584b200",
-  "huxtAdapterCodeSHA256": "3c63a19cbe6ce7dcbea9d5c6148420117f06e639cce3bf81fab981b0a448fe5a"
+  "huxtAdapterCodeSHA256": "3c63a19cbe6ce7dcbea9d5c6148420117f06e639cce3bf81fab981b0a448fe5a",
+  "historicalValidation": {
+    "schemaVersion": "wxf-electron-hindcast-1",
+    "report": "hindcast-evaluation.json",
+    "codeSHA256": "18fad380efa284b4f1c95d71a20497f60e3d407ec01848d268cb139f58f7b796",
+    "reportSHA256": "2c7d00f91b56632e9e2fc0172a93f10573497e7e26830282a4065937ac4ab377"
+  }
 }

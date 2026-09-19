@@ -1,14 +1,15 @@
 {
   "schemaVersion": "WXF-EF-0.2",
-  "issuedAt": "2026-09-19T21:33:58.328498+00:00",
+  "issuedAt": "2026-09-19T21:47:01.592345+00:00",
   "horizonHours": 24,
   "units": "electrons cm^-2 sr^-1",
   "fluxUnits": "electrons cm^-2 s^-1 sr^-1",
   "window": "preceding rolling 24 hours",
   "thresholds": {
-    "moderate": 110000000.0
+    "moderate": 110000000.0,
+    "high": 480000000.0
   },
-  "status": "experimental",
+  "status": "withheld",
   "modelVersion": "WXF-EF-0.1",
   "evaluation": {
     "originCount": 456,
@@ -209,458 +210,32 @@
     "Current model uses observed drivers; the separate CME/HSS candidate has not passed its promotion gate.",
     "REFM UTC-day totals are a separate product, not rolling fluence."
   ],
-  "dataAsOf": "2026-09-19T21:00:00+00:00",
-  "observedFluence": null,
-  "completeObservedHours": 23,
-  "forecast": [
+  "reason": "Insufficient recent electron coverage",
+  "forecast": [],
+  "guidanceMode": "Current WXF \u00b7 observed drivers",
+  "arrivalSource": {
+    "url": "https://kauai.ccmc.gsfc.nasa.gov/CMEscoreboard/WS/get/predictions?CMEtimeStart=2026-08-29&CMEtimeEnd=2026-09-19&closeOutCMEsOnly=false&skipNoArrivalObservedCMEs=false",
+    "retrievedAt": "2026-09-19T21:47:00.715962+00:00",
+    "sha256": "d028fa4f37b66faeee84e715881731972216db6d050cd405d3b10d67ab7eb83e",
+    "path": "2026-08-29_2026-09-19.json",
+    "eventCount": 10
+  },
+  "impactSource": [
     {
-      "time": "2026-09-19T22:00:00+00:00",
-      "low": null,
-      "median": null,
-      "high": null,
-      "fluxLow": 157.34455573874044,
-      "fluxMedian": 327.0097302172286,
-      "fluxHigh": 416.0990872002235
+      "path": "IPS-2026-09-05-2026-09-19.json",
+      "url": "https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/IPS?startDate=2026-09-05&endDate=2026-09-19&version=ALL&catalog=M2M_CATALOG&location=Earth",
+      "sha256": "5957c4a65c47e63e11472028b5b1c5f3dc8d763df8615da70801ce2a7dbcff43",
+      "retrievedAt": "2026-09-19T21:47:01.340869+00:00",
+      "rows": 13
     },
     {
-      "time": "2026-09-19T23:00:00+00:00",
-      "low": 30548159.607159093,
-      "median": 31735513.075020205,
-      "high": 32599475.896489527,
-      "fluxLow": 127.40989678280822,
-      "fluxMedian": 294.8841582351308,
-      "fluxHigh": 443.0189791730493
-    },
-    {
-      "time": "2026-09-20T00:00:00+00:00",
-      "low": 29367594.595570877,
-      "median": 30997386.66677472,
-      "high": 32330205.14034773,
-      "fluxLow": 96.93671563097138,
-      "fluxMedian": 281.056674978081,
-      "fluxHigh": 469.9620743327046
-    },
-    {
-      "time": "2026-09-20T01:00:00+00:00",
-      "low": 28576345.74018611,
-      "median": 30404076.583396893,
-      "high": 32181237.772980507,
-      "fluxLow": 112.13843549429235,
-      "fluxMedian": 256.83966233639,
-      "fluxHigh": 422.62490665769656
-    },
-    {
-      "time": "2026-09-20T02:00:00+00:00",
-      "low": 28043360.66974766,
-      "median": 30153535.63026927,
-      "high": 32718274.97981942,
-      "fluxLow": 94.7483452984315,
-      "fluxMedian": 260.9685197730511,
-      "fluxHigh": 417.7396127767385
-    },
-    {
-      "time": "2026-09-20T03:00:00+00:00",
-      "low": 27359864.94242785,
-      "median": 30055574.900136665,
-      "high": 33502449.1000283,
-      "fluxLow": 102.8804159295376,
-      "fluxMedian": 254.82832842915707,
-      "fluxHigh": 483.2404817705867
-    },
-    {
-      "time": "2026-09-20T04:00:00+00:00",
-      "low": 26801365.117132522,
-      "median": 29924000.985526115,
-      "high": 33783579.44568123,
-      "fluxLow": 90.92574788445695,
-      "fluxMedian": 258.3471876680286,
-      "fluxHigh": 609.9487541645509
-    },
-    {
-      "time": "2026-09-20T05:00:00+00:00",
-      "low": 26436040.718562815,
-      "median": 29947093.749908935,
-      "high": 34763702.946988024,
-      "fluxLow": 108.22073656427223,
-      "fluxMedian": 255.67951634900282,
-      "fluxHigh": 646.6924398984681
-    },
-    {
-      "time": "2026-09-20T06:00:00+00:00",
-      "low": 26188229.811489943,
-      "median": 30010528.864599917,
-      "high": 36304536.06169752,
-      "fluxLow": 69.84614251370853,
-      "fluxMedian": 250.7607838897302,
-      "fluxHigh": 671.0908085670607
-    },
-    {
-      "time": "2026-09-20T07:00:00+00:00",
-      "low": 25892369.64658219,
-      "median": 30303150.885440588,
-      "high": 37685922.81026522,
-      "fluxLow": 79.43726127497743,
-      "fluxMedian": 243.2401454682126,
-      "fluxHigh": 586.2724772880621
-    },
-    {
-      "time": "2026-09-20T08:00:00+00:00",
-      "low": 25597171.18079928,
-      "median": 30468763.26755996,
-      "high": 37984080.52446881,
-      "fluxLow": 89.54888695198183,
-      "fluxMedian": 244.0869872788893,
-      "fluxHigh": 699.2534574431475
-    },
-    {
-      "time": "2026-09-20T09:00:00+00:00",
-      "low": 25397653.067199416,
-      "median": 30939678.837136604,
-      "high": 39721341.971239746,
-      "fluxLow": 76.53326077678378,
-      "fluxMedian": 260.6204957246621,
-      "fluxHigh": 727.3141795761833
-    },
-    {
-      "time": "2026-09-20T10:00:00+00:00",
-      "low": 25161413.686413217,
-      "median": 31190688.504864987,
-      "high": 41663681.13853585,
-      "fluxLow": 101.33188332769551,
-      "fluxMedian": 273.8843708270501,
-      "fluxHigh": 772.8760026807471
-    },
-    {
-      "time": "2026-09-20T11:00:00+00:00",
-      "low": 24831131.383127905,
-      "median": 31453794.52380234,
-      "high": 42956581.25257953,
-      "fluxLow": 138.85328878194866,
-      "fluxMedian": 294.6512194826468,
-      "fluxHigh": 920.9740458829468
-    },
-    {
-      "time": "2026-09-20T12:00:00+00:00",
-      "low": 24213040.17715423,
-      "median": 31550216.425303187,
-      "high": 45355788.087055795,
-      "fluxLow": 122.95976624831863,
-      "fluxMedian": 324.3276575716974,
-      "fluxHigh": 1058.1943632320824
-    },
-    {
-      "time": "2026-09-20T13:00:00+00:00",
-      "low": 23537724.276691716,
-      "median": 31634641.4102636,
-      "high": 49104233.966220275,
-      "fluxLow": 119.40152115480717,
-      "fluxMedian": 394.29075811392033,
-      "fluxHigh": 1272.145633952312
-    },
-    {
-      "time": "2026-09-20T14:00:00+00:00",
-      "low": 22816862.91441174,
-      "median": 31796552.9995817,
-      "high": 52907713.878883965,
-      "fluxLow": 136.58331605431243,
-      "fluxMedian": 457.5868339070074,
-      "fluxHigh": 1460.0935546579399
-    },
-    {
-      "time": "2026-09-20T15:00:00+00:00",
-      "low": 21617181.040480677,
-      "median": 31477341.428950142,
-      "high": 55483706.948971875,
-      "fluxLow": 163.29059726797573,
-      "fluxMedian": 524.4430669739346,
-      "fluxHigh": 1502.9721645648588
-    },
-    {
-      "time": "2026-09-20T16:00:00+00:00",
-      "low": 20059970.45691845,
-      "median": 30487605.925176557,
-      "high": 60886601.940266445,
-      "fluxLow": 180.61096300019582,
-      "fluxMedian": 526.2900286439138,
-      "fluxHigh": 1723.6918001965926
-    },
-    {
-      "time": "2026-09-20T17:00:00+00:00",
-      "low": 18242054.110381518,
-      "median": 30348474.517688505,
-      "high": 64590666.94780499,
-      "fluxLow": 140.49865136403298,
-      "fluxMedian": 505.29114884363565,
-      "fluxHigh": 2008.3517811580782
-    },
-    {
-      "time": "2026-09-20T18:00:00+00:00",
-      "low": 16714174.95352799,
-      "median": 30372589.340777233,
-      "high": 68894778.89716177,
-      "fluxLow": 119.54178479824843,
-      "fluxMedian": 498.15893402071816,
-      "fluxHigh": 1895.7042365454581
-    },
-    {
-      "time": "2026-09-20T19:00:00+00:00",
-      "low": 15361285.41077131,
-      "median": 29957635.326935466,
-      "high": 72698066.89858423,
-      "fluxLow": 97.73822260711869,
-      "fluxMedian": 428.8667490214153,
-      "fluxHigh": 1655.0865816526377
-    },
-    {
-      "time": "2026-09-20T20:00:00+00:00",
-      "low": 14337713.102461481,
-      "median": 29953915.541590508,
-      "high": 75879434.23769246,
-      "fluxLow": 80.68971423088503,
-      "fluxMedian": 406.594058295331,
-      "fluxHigh": 1340.2041340485005
-    },
-    {
-      "time": "2026-09-20T21:00:00+00:00",
-      "low": 13394965.644053001,
-      "median": 29881609.430081237,
-      "high": 77958877.1490423,
-      "fluxLow": 89.57767514437327,
-      "fluxMedian": 372.14620485247156,
-      "fluxHigh": 1260.3829909854305
+      "path": "HSS-2026-09-05-2026-09-19.json",
+      "url": "https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/HSS?startDate=2026-09-05&endDate=2026-09-19&version=ALL&catalog=M2M_CATALOG",
+      "sha256": "be2897b38c3d2d5b724610787c97be97bebfb0c5b10268b24834d9b1c18f9887",
+      "retrievedAt": "2026-09-19T21:47:01.591795+00:00",
+      "rows": 5
     }
   ],
-  "history": [
-    {
-      "time": "2026-09-18T22:00:00+00:00",
-      "flux": 661.0555063883463
-    },
-    {
-      "time": "2026-09-18T23:00:00+00:00",
-      "flux": null
-    },
-    {
-      "time": "2026-09-19T00:00:00+00:00",
-      "flux": 490.46326446533203
-    },
-    {
-      "time": "2026-09-19T01:00:00+00:00",
-      "flux": 417.5787124633789
-    },
-    {
-      "time": "2026-09-19T02:00:00+00:00",
-      "flux": 327.0757764180501
-    },
-    {
-      "time": "2026-09-19T03:00:00+00:00",
-      "flux": 289.25317255655926
-    },
-    {
-      "time": "2026-09-19T04:00:00+00:00",
-      "flux": 289.087220509847
-    },
-    {
-      "time": "2026-09-19T05:00:00+00:00",
-      "flux": 238.9997100830078
-    },
-    {
-      "time": "2026-09-19T06:00:00+00:00",
-      "flux": 255.13092422485352
-    },
-    {
-      "time": "2026-09-19T07:00:00+00:00",
-      "flux": 246.22155125935873
-    },
-    {
-      "time": "2026-09-19T08:00:00+00:00",
-      "flux": 242.23626263936362
-    },
-    {
-      "time": "2026-09-19T09:00:00+00:00",
-      "flux": 201.0289109547933
-    },
-    {
-      "time": "2026-09-19T10:00:00+00:00",
-      "flux": 219.78979937235513
-    },
-    {
-      "time": "2026-09-19T11:00:00+00:00",
-      "flux": 245.60785929361978
-    },
-    {
-      "time": "2026-09-19T12:00:00+00:00",
-      "flux": 305.9382807413737
-    },
-    {
-      "time": "2026-09-19T13:00:00+00:00",
-      "flux": 349.6146291097005
-    },
-    {
-      "time": "2026-09-19T14:00:00+00:00",
-      "flux": 425.64198811848956
-    },
-    {
-      "time": "2026-09-19T15:00:00+00:00",
-      "flux": 612.5951944986979
-    },
-    {
-      "time": "2026-09-19T16:00:00+00:00",
-      "flux": 673.6719411214193
-    },
-    {
-      "time": "2026-09-19T17:00:00+00:00",
-      "flux": 650.8984425862631
-    },
-    {
-      "time": "2026-09-19T18:00:00+00:00",
-      "flux": 538.8503850301107
-    },
-    {
-      "time": "2026-09-19T19:00:00+00:00",
-      "flux": 464.4674657185872
-    },
-    {
-      "time": "2026-09-19T20:00:00+00:00",
-      "flux": 365.0153554280599
-    },
-    {
-      "time": "2026-09-19T21:00:00+00:00",
-      "flux": 351.4519691467285
-    }
-  ],
-  "predictorValues": {
-    "level": 5.749907257524551,
-    "level_1h": 5.768500639640329,
-    "std_1h": 0.0,
-    "level_3h": 5.749907257524551,
-    "std_3h": 0.051401451049441625,
-    "level_6h": 5.855259355018403,
-    "std_6h": 0.12327903343577704,
-    "level_12h": 5.775044391234054,
-    "std_12h": 0.15492731800883935,
-    "level_24h": 5.880333618678456,
-    "std_24h": 0.24653164287056525,
-    "level_48h": 5.916842104656064,
-    "std_48h": 0.19146449332793827,
-    "level_72h": 5.779042496835178,
-    "std_72h": 0.276400223156909,
-    "change_3h": -0.2107041949877031,
-    "change_6h": -0.03825426073300964,
-    "change_12h": 0.02521397692550753,
-    "change_24h": -0.3534892252606232,
-    "change_48h": -0.028561612887378907,
-    "diurnal_0": -0.35343815826762004,
-    "diurnal_1": -0.17488828361929573,
-    "diurnal_2": 0.0906445813469358,
-    "diurnal_3": -0.03876668243422711,
-    "speed_3h": 411.95888888888885,
-    "speed_12h": 426.81875067439927,
-    "speed_24h": 424.3648176256508,
-    "speed_48h": 428.48127386673366,
-    "speed_72h": 447.61663930262887,
-    "speed_change": -12.40592873676195,
-    "density_3h": 2.5380555555555557,
-    "density_12h": 3.7003627743466563,
-    "density_24h": 3.980422714156191,
-    "density_48h": 3.430528151429839,
-    "density_72h": 3.529233445490493,
-    "density_change": -1.4423671586006352,
-    "bt_3h": 4.036111111111111,
-    "bt_12h": 4.628125,
-    "bt_24h": 5.017055555555555,
-    "bt_48h": 4.754258865248227,
-    "bt_72h": 4.848202650933851,
-    "bt_change": -0.980944444444444,
-    "bz_3h": 0.48022222222222216,
-    "bz_12h": 0.28840277777777773,
-    "bz_24h": 0.5834791666666667,
-    "bz_48h": 0.5257056737588652,
-    "bz_72h": 0.5840139624028998,
-    "bz_change": -0.1032569444444445,
-    "southward_3h": 0.34922222222222227,
-    "southward_12h": 0.7082372450867291,
-    "southward_24h": 0.7465557280979501,
-    "southward_48h": 0.6741432752042222,
-    "southward_72h": 0.6428712700023945,
-    "southward_change": -0.39733350587572785,
-    "pressure_3h": 0.7205495913286325,
-    "pressure_12h": 1.1400352480920553,
-    "pressure_24h": 1.208259735087041,
-    "pressure_48h": 1.059008245550136,
-    "pressure_72h": 1.2108304747270673,
-    "pressure_change": -0.4877101437584085,
-    "coupling_3h": 0.1455463611111111,
-    "coupling_12h": 0.30402833071980506,
-    "coupling_24h": 0.319280558702343,
-    "coupling_48h": 0.29181358166561494,
-    "coupling_72h": 0.2881494920525231,
-    "coupling_change": -0.1737341975912319
-  },
-  "arrivalGuidance": {
-    "source": "https://kauai.ccmc.gsfc.nasa.gov/CMEscoreboard/WS/get/predictions",
-    "available": true,
-    "features": {
-      "cme_feed_available": 1.0,
-      "cme_event_count": 2.0,
-      "cme_provider_count": 3.0,
-      "cme_nearest_arrival_hours": -57.0,
-      "cme_arrival_spread_hours": 0.0,
-      "cme_reported_uncertainty_hours": 14.0,
-      "cme_uncertainty_coverage": 0.75,
-      "cme_forecast_kp": 6.0,
-      "cme_kp_coverage": 0.75,
-      "cme_window_-72_-24h": 1.0,
-      "cme_window_-24_0h": 0.0,
-      "cme_window_0_12h": 0.0,
-      "cme_window_12_24h": 0.0,
-      "cme_window_24_48h": 0.0,
-      "cme_window_48_72h": 0.0
-    },
-    "predictions": [
-      {
-        "event": "2026-09-13T21:12:00-CME-001",
-        "provider": "NASA M2M",
-        "method": "WSA-ENLIL + Cone (NASA M2M)",
-        "submitted": "2026-09-14T00:23:00+00:00",
-        "arrival": "2026-09-17T12:00:00+00:00",
-        "minus": 7.0,
-        "plus": 7.0,
-        "kp": 4.0
-      },
-      {
-        "event": "2026-09-14T11:08:00-CME-001",
-        "provider": "NASA M2M",
-        "method": "WSA-ENLIL + Cone (NASA M2M)",
-        "submitted": "2026-09-14T16:02:00+00:00",
-        "arrival": "2026-09-17T09:30:00+00:00",
-        "minus": 7.0,
-        "plus": 7.0,
-        "kp": 4.0
-      },
-      {
-        "event": "2026-09-14T11:08:00-CME-001",
-        "provider": "Met Office",
-        "method": "WSA-ENLIL + Cone (Met Office)",
-        "submitted": "2026-09-15T02:02:00+00:00",
-        "arrival": "2026-09-16T22:00:00+00:00",
-        "minus": 6.0,
-        "plus": 6.0,
-        "kp": 6.0
-      },
-      {
-        "event": "2026-09-14T11:08:00-CME-001",
-        "provider": "KSWC",
-        "method": "WSA-ENLIL + Cone (KSWC)",
-        "submitted": "2026-09-15T23:18:00+00:00",
-        "arrival": "2026-09-16T22:00:00+00:00",
-        "minus": null,
-        "plus": null,
-        "kp": null
-      }
-    ],
-    "caution": "Provider agreement is not an impact probability. Arrival timing does not forecast Bz or guarantee an electron dropout.",
-    "usedAsModelInput": false
-  },
   "impactGuidance": {
     "available": true,
     "source": "https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/",
@@ -711,49 +286,18 @@
     ],
     "meaning": "Reported Earth/L1 shocks and HSS onsets, gated by each version submission time. A shock is called CME-associated only when the available version links a CME."
   },
-  "spacecraft": "GOES-19",
-  "drivers": {
-    "speed": 411.95888888888885,
-    "bz": 0.48022222222222216,
-    "pressure": 0.7205495913286325,
-    "coupling": 0.1455463611111111
-  },
-  "outOfTrainingRange": [],
-  "guidanceMode": "Current WXF \u00b7 observed drivers",
-  "arrivalSource": {
-    "url": "https://kauai.ccmc.gsfc.nasa.gov/CMEscoreboard/WS/get/predictions?CMEtimeStart=2026-08-29&CMEtimeEnd=2026-09-19&closeOutCMEsOnly=false&skipNoArrivalObservedCMEs=false",
-    "retrievedAt": "2026-09-19T21:33:57.425908+00:00",
-    "sha256": "d028fa4f37b66faeee84e715881731972216db6d050cd405d3b10d67ab7eb83e",
-    "path": "2026-08-29_2026-09-19.json",
-    "eventCount": 10
-  },
-  "impactSource": [
-    {
-      "path": "IPS-2026-09-05-2026-09-19.json",
-      "url": "https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/IPS?startDate=2026-09-05&endDate=2026-09-19&version=ALL&catalog=M2M_CATALOG&location=Earth",
-      "sha256": "5957c4a65c47e63e11472028b5b1c5f3dc8d763df8615da70801ce2a7dbcff43",
-      "retrievedAt": "2026-09-19T21:33:58.037547+00:00",
-      "rows": 13
-    },
-    {
-      "path": "HSS-2026-09-05-2026-09-19.json",
-      "url": "https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/HSS?startDate=2026-09-05&endDate=2026-09-19&version=ALL&catalog=M2M_CATALOG",
-      "sha256": "be2897b38c3d2d5b724610787c97be97bebfb0c5b10268b24834d9b1c18f9887",
-      "retrievedAt": "2026-09-19T21:33:58.327295+00:00",
-      "rows": 5
-    }
-  ],
   "candidate": {
     "schemaVersion": "WXF-EF-0.2",
-    "issuedAt": "2026-09-19T21:33:58.328498+00:00",
+    "issuedAt": "2026-09-19T21:47:01.592345+00:00",
     "horizonHours": 24,
     "units": "electrons cm^-2 sr^-1",
     "fluxUnits": "electrons cm^-2 s^-1 sr^-1",
     "window": "preceding rolling 24 hours",
     "thresholds": {
-      "moderate": 110000000.0
+      "moderate": 110000000.0,
+      "high": 480000000.0
     },
-    "status": "experimental",
+    "status": "withheld",
     "modelVersion": "WXF-EF-0.3",
     "evaluation": {
       "originCount": 456,
@@ -3471,606 +3015,1019 @@
       "CME arrival guidance and 27-day wind recurrence are uncertain predictors; future Bz and new coronal-hole evolution are not known.",
       "REFM UTC-day totals are a separate product, not rolling fluence."
     ],
-    "dataAsOf": "2026-09-19T21:00:00+00:00",
-    "observedFluence": null,
-    "completeObservedHours": 23,
-    "forecast": [
-      {
-        "time": "2026-09-19T22:00:00+00:00",
-        "low": null,
-        "median": null,
-        "high": null,
-        "fluxLow": 153.5427611950858,
-        "fluxMedian": 334.14127628727397,
-        "fluxHigh": 444.46610664197516
-      },
-      {
-        "time": "2026-09-19T23:00:00+00:00",
-        "low": 30682575.185740978,
-        "median": 31791385.681468576,
-        "high": 32791108.575915948,
-        "fluxLow": 137.78237047141812,
-        "fluxMedian": 307.7277287564614,
-        "fluxHigh": 446.78408994099567
-      },
-      {
-        "time": "2026-09-20T00:00:00+00:00",
-        "low": 29570089.578339633,
-        "median": 31113508.61955701,
-        "high": 32455564.587557208,
-        "fluxLow": 99.96835874477836,
-        "fluxMedian": 297.4155674339839,
-        "fluxHigh": 442.6249098958232
-      },
-      {
-        "time": "2026-09-20T01:00:00+00:00",
-        "low": 28783236.765300933,
-        "median": 30609480.62312569,
-        "high": 32403392.675600734,
-        "fluxLow": 108.98381908761833,
-        "fluxMedian": 277.93072824025313,
-        "fluxHigh": 421.81478971925316
-      },
-      {
-        "time": "2026-09-20T02:00:00+00:00",
-        "low": 28098050.959350646,
-        "median": 30229756.388412103,
-        "high": 32963849.771690078,
-        "fluxLow": 106.2097352851814,
-        "fluxMedian": 280.7220039662814,
-        "fluxHigh": 505.3388849658637
-      },
-      {
-        "time": "2026-09-20T03:00:00+00:00",
-        "low": 27536622.934691016,
-        "median": 30223858.30688158,
-        "high": 33970687.13602272,
-        "fluxLow": 115.95758534238456,
-        "fluxMedian": 259.43347155824654,
-        "fluxHigh": 512.0891414986054
-      },
-      {
-        "time": "2026-09-20T04:00:00+00:00",
-        "low": 27151306.795951445,
-        "median": 30218866.14532153,
-        "high": 34124085.95350675,
-        "fluxLow": 96.98081689643188,
-        "fluxMedian": 282.2827462088349,
-        "fluxHigh": 593.3107554652792
-      },
-      {
-        "time": "2026-09-20T05:00:00+00:00",
-        "low": 26885982.638149388,
-        "median": 30353020.297008306,
-        "high": 35201524.30715796,
-        "fluxLow": 123.61565019432054,
-        "fluxMedian": 281.47576038044866,
-        "fluxHigh": 544.0680983099927
-      },
-      {
-        "time": "2026-09-20T06:00:00+00:00",
-        "low": 26517471.660322182,
-        "median": 30463948.56850211,
-        "high": 35660945.087526545,
-        "fluxLow": 92.58528031915128,
-        "fluxMedian": 273.3260486884249,
-        "fluxHigh": 558.4639882100819
-      },
-      {
-        "time": "2026-09-20T07:00:00+00:00",
-        "low": 26121843.021723937,
-        "median": 30668496.3464465,
-        "high": 36342035.25676637,
-        "fluxLow": 97.99838902375858,
-        "fluxMedian": 272.42840587675323,
-        "fluxHigh": 579.9991038378215
-      },
-      {
-        "time": "2026-09-20T08:00:00+00:00",
-        "low": 25815772.74694221,
-        "median": 30800702.753947563,
-        "high": 37070155.479354076,
-        "fluxLow": 114.62969171056959,
-        "fluxMedian": 283.61925529378965,
-        "fluxHigh": 609.3771131360842
-      },
-      {
-        "time": "2026-09-20T09:00:00+00:00",
-        "low": 25680933.480348185,
-        "median": 31040998.561813153,
-        "high": 38184419.74926276,
-        "fluxLow": 101.95513934411588,
-        "fluxMedian": 311.7108800383654,
-        "fluxHigh": 607.4211723050013
-      },
-      {
-        "time": "2026-09-20T10:00:00+00:00",
-        "low": 25624398.596155122,
-        "median": 31472531.023666903,
-        "high": 39564200.15826879,
-        "fluxLow": 125.7597615838584,
-        "fluxMedian": 307.9099476540281,
-        "fluxHigh": 701.6514022246932
-      },
-      {
-        "time": "2026-09-20T11:00:00+00:00",
-        "low": 25600683.96905142,
-        "median": 31850889.62482512,
-        "high": 41087711.56658009,
-        "fluxLow": 153.8800155307761,
-        "fluxMedian": 327.47410526330935,
-        "fluxHigh": 777.4403197564404
-      },
-      {
-        "time": "2026-09-20T12:00:00+00:00",
-        "low": 25163934.165746078,
-        "median": 32369919.808710426,
-        "high": 43184460.989648186,
-        "fluxLow": 157.87556431458,
-        "fluxMedian": 394.92980681724094,
-        "fluxHigh": 916.6485291135543
-      },
-      {
-        "time": "2026-09-20T13:00:00+00:00",
-        "low": 24920059.86949132,
-        "median": 32398424.805509083,
-        "high": 45637532.472087,
-        "fluxLow": 196.03873749718846,
-        "fluxMedian": 456.7656598947432,
-        "fluxHigh": 1160.8598279681812
-      },
-      {
-        "time": "2026-09-20T14:00:00+00:00",
-        "low": 24591584.526830744,
-        "median": 32502827.69900796,
-        "high": 48523893.5166234,
-        "fluxLow": 219.599961374947,
-        "fluxMedian": 542.1534527074,
-        "fluxHigh": 1301.8811823156932
-      },
-      {
-        "time": "2026-09-20T15:00:00+00:00",
-        "low": 23718982.97385543,
-        "median": 32698443.018834595,
-        "high": 51587679.18484851,
-        "fluxLow": 207.90428111352253,
-        "fluxMedian": 611.8451295207353,
-        "fluxHigh": 1352.141973570242
-      },
-      {
-        "time": "2026-09-20T16:00:00+00:00",
-        "low": 23031008.096139066,
-        "median": 32512840.343600255,
-        "high": 53802714.21428547,
-        "fluxLow": 229.21754029341338,
-        "fluxMedian": 604.2878865714581,
-        "fluxHigh": 1522.5241724398595
-      },
-      {
-        "time": "2026-09-20T17:00:00+00:00",
-        "low": 22244041.838626713,
-        "median": 32594334.270751365,
-        "high": 55462020.43672974,
-        "fluxLow": 207.4215543273121,
-        "fluxMedian": 585.9682755044114,
-        "fluxHigh": 1587.4430992256428
-      },
-      {
-        "time": "2026-09-20T18:00:00+00:00",
-        "low": 21086865.397059426,
-        "median": 32449062.531027097,
-        "high": 58423117.336973704,
-        "fluxLow": 168.14301594248937,
-        "fluxMedian": 589.4269746798417,
-        "fluxHigh": 1478.7602122721964
-      },
-      {
-        "time": "2026-09-20T19:00:00+00:00",
-        "low": 19893606.024783112,
-        "median": 33357563.380972765,
-        "high": 60645183.53841572,
-        "fluxLow": 158.36599154665177,
-        "fluxMedian": 527.0222440492665,
-        "fluxHigh": 1281.3084610772305
-      },
-      {
-        "time": "2026-09-20T20:00:00+00:00",
-        "low": 18898994.558965236,
-        "median": 34096429.295431495,
-        "high": 62083379.55942079,
-        "fluxLow": 143.7896782071328,
-        "fluxMedian": 481.9174541238897,
-        "fluxHigh": 1161.4324927539303
-      },
-      {
-        "time": "2026-09-20T21:00:00+00:00",
-        "low": 18015958.07758483,
-        "median": 34248668.938900664,
-        "high": 64871256.415339544,
-        "fluxLow": 117.16386861970341,
-        "fluxMedian": 405.0067262467119,
-        "fluxHigh": 1117.8944530274268
-      }
-    ],
-    "history": [
-      {
-        "time": "2026-09-18T22:00:00+00:00",
-        "flux": 661.0555063883463
-      },
-      {
-        "time": "2026-09-18T23:00:00+00:00",
-        "flux": null
-      },
-      {
-        "time": "2026-09-19T00:00:00+00:00",
-        "flux": 490.46326446533203
-      },
-      {
-        "time": "2026-09-19T01:00:00+00:00",
-        "flux": 417.5787124633789
-      },
-      {
-        "time": "2026-09-19T02:00:00+00:00",
-        "flux": 327.0757764180501
-      },
-      {
-        "time": "2026-09-19T03:00:00+00:00",
-        "flux": 289.25317255655926
-      },
-      {
-        "time": "2026-09-19T04:00:00+00:00",
-        "flux": 289.087220509847
-      },
-      {
-        "time": "2026-09-19T05:00:00+00:00",
-        "flux": 238.9997100830078
-      },
-      {
-        "time": "2026-09-19T06:00:00+00:00",
-        "flux": 255.13092422485352
-      },
-      {
-        "time": "2026-09-19T07:00:00+00:00",
-        "flux": 246.22155125935873
-      },
-      {
-        "time": "2026-09-19T08:00:00+00:00",
-        "flux": 242.23626263936362
-      },
-      {
-        "time": "2026-09-19T09:00:00+00:00",
-        "flux": 201.0289109547933
-      },
-      {
-        "time": "2026-09-19T10:00:00+00:00",
-        "flux": 219.78979937235513
-      },
-      {
-        "time": "2026-09-19T11:00:00+00:00",
-        "flux": 245.60785929361978
-      },
-      {
-        "time": "2026-09-19T12:00:00+00:00",
-        "flux": 305.9382807413737
-      },
-      {
-        "time": "2026-09-19T13:00:00+00:00",
-        "flux": 349.6146291097005
-      },
-      {
-        "time": "2026-09-19T14:00:00+00:00",
-        "flux": 425.64198811848956
-      },
-      {
-        "time": "2026-09-19T15:00:00+00:00",
-        "flux": 612.5951944986979
-      },
-      {
-        "time": "2026-09-19T16:00:00+00:00",
-        "flux": 673.6719411214193
-      },
-      {
-        "time": "2026-09-19T17:00:00+00:00",
-        "flux": 650.8984425862631
-      },
-      {
-        "time": "2026-09-19T18:00:00+00:00",
-        "flux": 538.8503850301107
-      },
-      {
-        "time": "2026-09-19T19:00:00+00:00",
-        "flux": 464.4674657185872
-      },
-      {
-        "time": "2026-09-19T20:00:00+00:00",
-        "flux": 365.0153554280599
-      },
-      {
-        "time": "2026-09-19T21:00:00+00:00",
-        "flux": 351.4519691467285
-      }
-    ],
-    "predictorValues": {
-      "level": 5.749907257524551,
-      "level_1h": 5.768500639640329,
-      "std_1h": 0.0,
-      "level_3h": 5.749907257524551,
-      "std_3h": 0.051401451049441625,
-      "level_6h": 5.855259355018403,
-      "std_6h": 0.12327903343577704,
-      "level_12h": 5.775044391234054,
-      "std_12h": 0.15492731800883935,
-      "level_24h": 5.880333618678456,
-      "std_24h": 0.24653164287056525,
-      "level_48h": 5.916842104656064,
-      "std_48h": 0.19146449332793827,
-      "level_72h": 5.779042496835178,
-      "std_72h": 0.276400223156909,
-      "change_3h": -0.2107041949877031,
-      "change_6h": -0.03825426073300964,
-      "change_12h": 0.02521397692550753,
-      "change_24h": -0.3534892252606232,
-      "change_48h": -0.028561612887378907,
-      "diurnal_0": -0.35343815826762004,
-      "diurnal_1": -0.17488828361929573,
-      "diurnal_2": 0.0906445813469358,
-      "diurnal_3": -0.03876668243422711,
-      "speed_3h": 411.95888888888885,
-      "speed_12h": 426.81875067439927,
-      "speed_24h": 424.3648176256508,
-      "speed_48h": 428.48127386673366,
-      "speed_72h": 447.61663930262887,
-      "speed_change": -12.40592873676195,
-      "density_3h": 2.5380555555555557,
-      "density_12h": 3.7003627743466563,
-      "density_24h": 3.980422714156191,
-      "density_48h": 3.430528151429839,
-      "density_72h": 3.529233445490493,
-      "density_change": -1.4423671586006352,
-      "bt_3h": 4.036111111111111,
-      "bt_12h": 4.628125,
-      "bt_24h": 5.017055555555555,
-      "bt_48h": 4.754258865248227,
-      "bt_72h": 4.848202650933851,
-      "bt_change": -0.980944444444444,
-      "bz_3h": 0.48022222222222216,
-      "bz_12h": 0.28840277777777773,
-      "bz_24h": 0.5834791666666667,
-      "bz_48h": 0.5257056737588652,
-      "bz_72h": 0.5840139624028998,
-      "bz_change": -0.1032569444444445,
-      "southward_3h": 0.34922222222222227,
-      "southward_12h": 0.7082372450867291,
-      "southward_24h": 0.7465557280979501,
-      "southward_48h": 0.6741432752042222,
-      "southward_72h": 0.6428712700023945,
-      "southward_change": -0.39733350587572785,
-      "pressure_3h": 0.7205495913286325,
-      "pressure_12h": 1.1400352480920553,
-      "pressure_24h": 1.208259735087041,
-      "pressure_48h": 1.059008245550136,
-      "pressure_72h": 1.2108304747270673,
-      "pressure_change": -0.4877101437584085,
-      "coupling_3h": 0.1455463611111111,
-      "coupling_12h": 0.30402833071980506,
-      "coupling_24h": 0.319280558702343,
-      "coupling_48h": 0.29181358166561494,
-      "coupling_72h": 0.2881494920525231,
-      "coupling_change": -0.1737341975912319,
-      "spacecraft_goes19": 1.0,
-      "speed_lag72_168h_coverage": 0.96875,
-      "speed_lag72_168h": 419.46088486296725,
-      "speed_lag168_336h_coverage": 0.9761904761904762,
-      "speed_lag168_336h": 424.75492922510745,
-      "speed_max24h": 438.9034482758621,
-      "speed_std24h": 10.15832408008873,
-      "pressure_lag72_168h_coverage": 0.96875,
-      "pressure_lag72_168h": 1.5386742592424767,
-      "pressure_lag168_336h_coverage": 0.9761904761904762,
-      "pressure_lag168_336h": 2.068140910936944,
-      "pressure_max24h": 1.7195058093696618,
-      "pressure_std24h": 0.29149735705839375,
-      "coupling_lag72_168h_coverage": 0.96875,
-      "coupling_lag72_168h": 0.5184855364575102,
-      "coupling_lag168_336h_coverage": 0.9761904761904762,
-      "coupling_lag168_336h": 0.7318333912850641,
-      "coupling_max24h": 1.6503585166666668,
-      "coupling_std24h": 0.42816174002973745,
-      "southward_lag72_168h_coverage": 0.9791666666666666,
-      "southward_lag72_168h": 1.2019984510321093,
-      "southward_lag168_336h_coverage": 0.9821428571428571,
-      "southward_lag168_336h": 1.636360211672674,
-      "southward_max24h": 3.8353333333333333,
-      "southward_std24h": 0.9973641264559174,
-      "fast_wind_fraction72h": 0.09859154929577464,
-      "recurrence_0h_coverage": 1.0,
-      "recurrence_0h_speed": 421.95027029062504,
-      "recurrence_24h_coverage": 0.9583333333333334,
-      "recurrence_24h_speed": 368.8546667900035,
-      "recurrence_48h_coverage": 0.9166666666666666,
-      "recurrence_48h_speed": 340.1286718679028,
-      "recurrence_72h_coverage": 0.9166666666666666,
-      "recurrence_72h_speed": 304.13835529801725,
-      "recurrence_rise24h": -53.095603500621564,
-      "cme_feed_available": 1.0,
-      "cme_event_count": 2.0,
-      "cme_provider_count": 3.0,
-      "cme_nearest_arrival_hours": -57.0,
-      "cme_arrival_spread_hours": 0.0,
-      "cme_reported_uncertainty_hours": 14.0,
-      "cme_uncertainty_coverage": 0.75,
-      "cme_forecast_kp": 6.0,
-      "cme_kp_coverage": 0.75,
-      "cme_window_-72_-24h": 1.0,
-      "cme_window_-24_0h": 0.0,
-      "cme_window_0_12h": 0.0,
-      "cme_window_12_24h": 0.0,
-      "cme_window_24_48h": 0.0,
-      "cme_window_48_72h": 0.0,
-      "impact_feed_available": 1.0,
-      "ips_reported_count7d": 3.0,
-      "ips_age_hours": 67.6,
-      "ips_report_delay_hours": 14.05,
-      "ips_cme_linked": 1.0,
-      "ips_flux_response_available": 1.0,
-      "ips_flux_log_response": 0.3292308644897508,
-      "hss_reported_count7d": 1.0,
-      "hss_age_hours": 93.4,
-      "hss_report_delay_hours": 44.4,
-      "hss_cme_linked": 0.0,
-      "hss_flux_response_available": 1.0,
-      "hss_flux_log_response": 0.5668504498973572,
-      "fast_wind_last_hours": 89.0,
-      "fast_wind_duration72h": 0.0,
-      "compression_last_hours": 85.0,
-      "compression_duration72h": 0.0
-    },
-    "arrivalGuidance": {
-      "source": "https://kauai.ccmc.gsfc.nasa.gov/CMEscoreboard/WS/get/predictions",
-      "available": true,
-      "features": {
-        "cme_feed_available": 1.0,
-        "cme_event_count": 2.0,
-        "cme_provider_count": 3.0,
-        "cme_nearest_arrival_hours": -57.0,
-        "cme_arrival_spread_hours": 0.0,
-        "cme_reported_uncertainty_hours": 14.0,
-        "cme_uncertainty_coverage": 0.75,
-        "cme_forecast_kp": 6.0,
-        "cme_kp_coverage": 0.75,
-        "cme_window_-72_-24h": 1.0,
-        "cme_window_-24_0h": 0.0,
-        "cme_window_0_12h": 0.0,
-        "cme_window_12_24h": 0.0,
-        "cme_window_24_48h": 0.0,
-        "cme_window_48_72h": 0.0
-      },
-      "predictions": [
-        {
-          "event": "2026-09-13T21:12:00-CME-001",
-          "provider": "NASA M2M",
-          "method": "WSA-ENLIL + Cone (NASA M2M)",
-          "submitted": "2026-09-14T00:23:00+00:00",
-          "arrival": "2026-09-17T12:00:00+00:00",
-          "minus": 7.0,
-          "plus": 7.0,
-          "kp": 4.0
-        },
-        {
-          "event": "2026-09-14T11:08:00-CME-001",
-          "provider": "NASA M2M",
-          "method": "WSA-ENLIL + Cone (NASA M2M)",
-          "submitted": "2026-09-14T16:02:00+00:00",
-          "arrival": "2026-09-17T09:30:00+00:00",
-          "minus": 7.0,
-          "plus": 7.0,
-          "kp": 4.0
-        },
-        {
-          "event": "2026-09-14T11:08:00-CME-001",
-          "provider": "Met Office",
-          "method": "WSA-ENLIL + Cone (Met Office)",
-          "submitted": "2026-09-15T02:02:00+00:00",
-          "arrival": "2026-09-16T22:00:00+00:00",
-          "minus": 6.0,
-          "plus": 6.0,
-          "kp": 6.0
-        },
-        {
-          "event": "2026-09-14T11:08:00-CME-001",
-          "provider": "KSWC",
-          "method": "WSA-ENLIL + Cone (KSWC)",
-          "submitted": "2026-09-15T23:18:00+00:00",
-          "arrival": "2026-09-16T22:00:00+00:00",
-          "minus": null,
-          "plus": null,
-          "kp": null
-        }
-      ],
-      "caution": "Provider agreement is not an impact probability. Arrival timing does not forecast Bz or guarantee an electron dropout.",
-      "usedAsModelInput": true
-    },
-    "impactGuidance": {
-      "available": true,
-      "source": "https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/",
-      "events": [
-        {
-          "kind": "IPS",
-          "id": "2026-09-14T09:24:00-IPS-001",
-          "time": "2026-09-14T09:24:00+00:00",
-          "submitted": "2026-09-14T19:33:00+00:00",
-          "version": 2,
-          "cmes": [
-            "2026-09-09T16:00:00-CME-001"
-          ],
-          "link": "https://kauai.ccmc.gsfc.nasa.gov/DONKI/view/IPS/48712/2"
-        },
-        {
-          "kind": "IPS",
-          "id": "2026-09-15T11:28:00-IPS-001",
-          "time": "2026-09-15T11:28:00+00:00",
-          "submitted": "2026-09-15T19:02:00+00:00",
-          "version": 4,
-          "cmes": [
-            "2026-09-13T19:48:00-CME-001"
-          ],
-          "link": "https://kauai.ccmc.gsfc.nasa.gov/DONKI/view/IPS/48716/4"
-        },
-        {
-          "kind": "HSS",
-          "id": "2026-09-15T23:36:00-HSS-001",
-          "time": "2026-09-15T23:36:00+00:00",
-          "submitted": "2026-09-17T20:00:00+00:00",
-          "version": 2,
-          "cmes": [],
-          "link": "https://kauai.ccmc.gsfc.nasa.gov/DONKI/view/HSS/48722/2"
-        },
-        {
-          "kind": "IPS",
-          "id": "2026-09-17T01:24:00-IPS-001",
-          "time": "2026-09-17T01:24:00+00:00",
-          "submitted": "2026-09-17T15:27:00+00:00",
-          "version": 1,
-          "cmes": [
-            "2026-09-13T21:12:00-CME-001",
-            "2026-09-14T11:08:00-CME-001"
-          ],
-          "link": "https://kauai.ccmc.gsfc.nasa.gov/DONKI/view/IPS/48724/1"
-        }
-      ],
-      "meaning": "Reported Earth/L1 shocks and HSS onsets, gated by each version submission time. A shock is called CME-associated only when the available version links a CME."
-    },
-    "spacecraft": "GOES-19",
-    "drivers": {
-      "speed": 411.95888888888885,
-      "bz": 0.48022222222222216,
-      "pressure": 0.7205495913286325,
-      "coupling": 0.1455463611111111
-    },
-    "outOfTrainingRange": [],
+    "reason": "Insufficient recent electron coverage",
+    "forecast": [],
     "guidanceMode": "IPS/HSS phase + CME arrivals + recurrence + observed drivers",
     "modelSHA256": "0a13dd8791f113a72d6772ba16080f7f8628318bff55941e62564a94789fc38a",
-    "promotionStatus": "Not promoted: IPS/HSS-phase candidate evaluated on previously inspected dates; prospective event-level verification pending",
-    "role": "shadow candidate"
+    "promotionStatus": "Historical hindcasts support improvement over persistence, but do not establish added CME/HSS skill over measured drivers. Candidate remains separate.",
+    "role": "shadow candidate",
+    "historicalValidation": {
+      "schemaVersion": "wxf-electron-hindcast-1",
+      "start": "2022-01-01",
+      "endExclusive": "2026-09-01",
+      "foldCount": 5,
+      "originCount": 8999,
+      "dates": 1291,
+      "eligibleOriginFraction": 0.66208063566804,
+      "models": {
+        "currentFeatureRecipe": {
+          "leads": {
+            "6": {
+              "mae": 4263890.817232451,
+              "rmsle": 0.15165451587909212,
+              "coverage": 0.8886542949216579,
+              "meanIntervalWidth": 22916746.48704499
+            },
+            "12": {
+              "mae": 9518158.941703012,
+              "rmsle": 0.30356305569610215,
+              "coverage": 0.8790976775197245,
+              "meanIntervalWidth": 49247977.512434825
+            },
+            "24": {
+              "mae": 20867160.209763367,
+              "rmsle": 0.60168855492239,
+              "coverage": 0.8866540726747416,
+              "meanIntervalWidth": 115347795.90106186
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 1291,
+              "exceedanceDays": 199,
+              "hits": 151,
+              "misses": 48,
+              "falseAlarms": 21,
+              "correctNegatives": 1071,
+              "detectionRate": 0.7587939698492462,
+              "falseAlarmRatio": 0.12209302325581395,
+              "criticalSuccessIndex": 0.6863636363636364,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 1291,
+              "exceedanceDays": 17,
+              "hits": 8,
+              "misses": 9,
+              "falseAlarms": 9,
+              "correctNegatives": 1265,
+              "detectionRate": 0.47058823529411764,
+              "falseAlarmRatio": 0.5294117647058824,
+              "criticalSuccessIndex": 0.3076923076923077,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "observedDrivers": {
+          "leads": {
+            "6": {
+              "mae": 4209222.182026856,
+              "rmsle": 0.15080494842687867,
+              "coverage": 0.8867651961329036,
+              "meanIntervalWidth": 22750436.84360193
+            },
+            "12": {
+              "mae": 9364906.058107534,
+              "rmsle": 0.29940486391475785,
+              "coverage": 0.8839871096788532,
+              "meanIntervalWidth": 48847703.09838409
+            },
+            "24": {
+              "mae": 20348731.250861343,
+              "rmsle": 0.5990879143641353,
+              "coverage": 0.8886542949216579,
+              "meanIntervalWidth": 112527566.11296679
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 1291,
+              "exceedanceDays": 199,
+              "hits": 148,
+              "misses": 51,
+              "falseAlarms": 19,
+              "correctNegatives": 1073,
+              "detectionRate": 0.7437185929648241,
+              "falseAlarmRatio": 0.11377245508982035,
+              "criticalSuccessIndex": 0.6788990825688074,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 1291,
+              "exceedanceDays": 17,
+              "hits": 9,
+              "misses": 8,
+              "falseAlarms": 8,
+              "correctNegatives": 1266,
+              "detectionRate": 0.5294117647058824,
+              "falseAlarmRatio": 0.47058823529411764,
+              "criticalSuccessIndex": 0.36,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "observedAndRecurrence": {
+          "leads": {
+            "6": {
+              "mae": 4229904.374247618,
+              "rmsle": 0.15103742046468085,
+              "coverage": 0.888987665296144,
+              "meanIntervalWidth": 22831345.109617732
+            },
+            "12": {
+              "mae": 9433759.907207541,
+              "rmsle": 0.29953501161190094,
+              "coverage": 0.8819868874319369,
+              "meanIntervalWidth": 48793466.979617424
+            },
+            "24": {
+              "mae": 20476268.154154666,
+              "rmsle": 0.5982079040772309,
+              "coverage": 0.8858762084676075,
+              "meanIntervalWidth": 112710665.73594964
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 1291,
+              "exceedanceDays": 199,
+              "hits": 150,
+              "misses": 49,
+              "falseAlarms": 20,
+              "correctNegatives": 1072,
+              "detectionRate": 0.7537688442211056,
+              "falseAlarmRatio": 0.11764705882352941,
+              "criticalSuccessIndex": 0.684931506849315,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 1291,
+              "exceedanceDays": 17,
+              "hits": 9,
+              "misses": 8,
+              "falseAlarms": 7,
+              "correctNegatives": 1267,
+              "detectionRate": 0.5294117647058824,
+              "falseAlarmRatio": 0.4375,
+              "criticalSuccessIndex": 0.375,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "fullEventGuidance": {
+          "leads": {
+            "6": {
+              "mae": 4231129.044488232,
+              "rmsle": 0.15105955223329018,
+              "coverage": 0.8917657517501945,
+              "meanIntervalWidth": 23096779.46476726
+            },
+            "12": {
+              "mae": 9427396.690772448,
+              "rmsle": 0.2997046380142191,
+              "coverage": 0.8850983442604734,
+              "meanIntervalWidth": 49913877.35935227
+            },
+            "24": {
+              "mae": 20432788.27887158,
+              "rmsle": 0.5977886189113938,
+              "coverage": 0.8800977886431826,
+              "meanIntervalWidth": 112356162.76713796
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 1291,
+              "exceedanceDays": 199,
+              "hits": 149,
+              "misses": 50,
+              "falseAlarms": 20,
+              "correctNegatives": 1072,
+              "detectionRate": 0.7487437185929648,
+              "falseAlarmRatio": 0.11834319526627218,
+              "criticalSuccessIndex": 0.680365296803653,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 1291,
+              "exceedanceDays": 17,
+              "hits": 11,
+              "misses": 6,
+              "falseAlarms": 9,
+              "correctNegatives": 1265,
+              "detectionRate": 0.6470588235294118,
+              "falseAlarmRatio": 0.45,
+              "criticalSuccessIndex": 0.4230769230769231,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "diurnalPersistence": {
+          "leads": {
+            "6": {
+              "mae": 4509863.684272752,
+              "rmsle": 0.16659539902523002
+            },
+            "12": {
+              "mae": 10318108.974652844,
+              "rmsle": 0.3509773958176322
+            },
+            "24": {
+              "mae": 22901041.726977266,
+              "rmsle": 0.7621254227094564
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 1291,
+              "exceedanceDays": 199,
+              "hits": 144,
+              "misses": 55,
+              "falseAlarms": 23,
+              "correctNegatives": 1069,
+              "detectionRate": 0.7236180904522613,
+              "falseAlarmRatio": 0.1377245508982036,
+              "criticalSuccessIndex": 0.6486486486486487,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 1291,
+              "exceedanceDays": 17,
+              "hits": 8,
+              "misses": 9,
+              "falseAlarms": 4,
+              "correctNegatives": 1270,
+              "detectionRate": 0.47058823529411764,
+              "falseAlarmRatio": 0.3333333333333333,
+              "criticalSuccessIndex": 0.38095238095238093,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        },
+        "persistence": {
+          "leads": {
+            "6": {
+              "mae": 5799662.861995366,
+              "rmsle": 0.18901781206127005
+            },
+            "12": {
+              "mae": 15538551.681415213,
+              "rmsle": 0.45260805754663724
+            },
+            "24": {
+              "mae": 29749939.057620708,
+              "rmsle": 0.9424837993292506
+            }
+          },
+          "thresholds": {
+            "moderate": {
+              "value": 110000000.0,
+              "dailyOrigins": 1291,
+              "exceedanceDays": 199,
+              "hits": 131,
+              "misses": 68,
+              "falseAlarms": 15,
+              "correctNegatives": 1077,
+              "detectionRate": 0.6582914572864321,
+              "falseAlarmRatio": 0.10273972602739725,
+              "criticalSuccessIndex": 0.6121495327102804,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            },
+            "high": {
+              "value": 480000000.0,
+              "dailyOrigins": 1291,
+              "exceedanceDays": 17,
+              "hits": 9,
+              "misses": 8,
+              "falseAlarms": 5,
+              "correctNegatives": 1269,
+              "detectionRate": 0.5294117647058824,
+              "falseAlarmRatio": 0.35714285714285715,
+              "criticalSuccessIndex": 0.4090909090909091,
+              "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+            }
+          }
+        }
+      },
+      "pairedComparisons": {
+        "currentFeatureRecipe": {
+          "7": {
+            "reference": "currentFeatureRecipe",
+            "blockDays": 7,
+            "resamples": 2000,
+            "blocksPerFold": [
+              52,
+              48,
+              49,
+              48,
+              32
+            ],
+            "maeImprovement": 434371.93089178443,
+            "bootstrap95": [
+              -84176.01475689288,
+              1021764.111137589
+            ],
+            "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+          },
+          "27": {
+            "reference": "currentFeatureRecipe",
+            "blockDays": 27,
+            "resamples": 2000,
+            "blocksPerFold": [
+              14,
+              14,
+              14,
+              13,
+              9
+            ],
+            "maeImprovement": 434371.93089178443,
+            "bootstrap95": [
+              -112399.32798698978,
+              1020422.8314040515
+            ],
+            "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+          }
+        },
+        "observedDrivers": {
+          "7": {
+            "reference": "observedDrivers",
+            "blockDays": 7,
+            "resamples": 2000,
+            "blocksPerFold": [
+              52,
+              48,
+              49,
+              48,
+              32
+            ],
+            "maeImprovement": -84057.0280102359,
+            "bootstrap95": [
+              -401805.77816997544,
+              234900.3804880124
+            ],
+            "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+          },
+          "27": {
+            "reference": "observedDrivers",
+            "blockDays": 27,
+            "resamples": 2000,
+            "blocksPerFold": [
+              14,
+              14,
+              14,
+              13,
+              9
+            ],
+            "maeImprovement": -84057.0280102359,
+            "bootstrap95": [
+              -450242.4944358635,
+              291003.0221231975
+            ],
+            "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+          }
+        },
+        "observedAndRecurrence": {
+          "7": {
+            "reference": "observedAndRecurrence",
+            "blockDays": 7,
+            "resamples": 2000,
+            "blocksPerFold": [
+              52,
+              48,
+              49,
+              48,
+              32
+            ],
+            "maeImprovement": 43479.87528308554,
+            "bootstrap95": [
+              -227179.82913076936,
+              342303.20368326374
+            ],
+            "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+          },
+          "27": {
+            "reference": "observedAndRecurrence",
+            "blockDays": 27,
+            "resamples": 2000,
+            "blocksPerFold": [
+              14,
+              14,
+              14,
+              13,
+              9
+            ],
+            "maeImprovement": 43479.87528308554,
+            "bootstrap95": [
+              -223270.48262433422,
+              318890.1613007539
+            ],
+            "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+          }
+        },
+        "diurnalPersistence": {
+          "7": {
+            "reference": "diurnalPersistence",
+            "blockDays": 7,
+            "resamples": 2000,
+            "blocksPerFold": [
+              52,
+              48,
+              49,
+              48,
+              32
+            ],
+            "maeImprovement": 2468253.4481056845,
+            "bootstrap95": [
+              974492.470144891,
+              3927407.128630083
+            ],
+            "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+          },
+          "27": {
+            "reference": "diurnalPersistence",
+            "blockDays": 27,
+            "resamples": 2000,
+            "blocksPerFold": [
+              14,
+              14,
+              14,
+              13,
+              9
+            ],
+            "maeImprovement": 2468253.4481056845,
+            "bootstrap95": [
+              1112559.479648654,
+              3708501.953332372
+            ],
+            "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+          }
+        },
+        "persistence": {
+          "7": {
+            "reference": "persistence",
+            "blockDays": 7,
+            "resamples": 2000,
+            "blocksPerFold": [
+              52,
+              48,
+              49,
+              48,
+              32
+            ],
+            "maeImprovement": 9317150.778749123,
+            "bootstrap95": [
+              7206528.535454976,
+              11634642.879797792
+            ],
+            "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+          },
+          "27": {
+            "reference": "persistence",
+            "blockDays": 27,
+            "resamples": 2000,
+            "blocksPerFold": [
+              14,
+              14,
+              14,
+              13,
+              9
+            ],
+            "maeImprovement": 9317150.778749123,
+            "bootstrap95": [
+              7154663.575874434,
+              11585888.253577115
+            ],
+            "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+          }
+        }
+      },
+      "qualification": "CurrentFeatureRecipe is retrained on each fold past, including GOES-16; it is not the deployed GOES-19-only artifact. All methods use the same eligible origins. Availability statistics exclude calibration/training months and reflect strict retrospective truth-quality gates.",
+      "meaning": "Chronological out-of-sample recipe comparison. Each fold refits using only earlier training/calibration targets; these are not predictions from the currently deployed frozen artifacts.",
+      "source": "https://github.com/wreed1989/SpaceWxOps-WXF/blob/main/research/electron_fluence/hindcast-evaluation.json"
+    }
   },
   "inputQuality": {
-    "rawSamples": 10296,
-    "acceptedSamples": 10229,
+    "rawSamples": 10298,
+    "acceptedSamples": 10230,
     "otherElectronSpacecraft": 0,
     "highProtonSamples": 41,
-    "missingProtonSamples": 12,
-    "completeElectronHours": 840,
+    "missingProtonSamples": 13,
+    "completeElectronHours": 839,
     "spacecraftHours": {
-      "GOES-19": 840
+      "GOES-19": 839
     },
     "hourCount": 862,
     "firstHourEnd": "2026-08-15T01:00:00+00:00",
     "lastHourEnd": "2026-09-19T22:00:00+00:00"
   },
   "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732",
+  "historicalValidation": {
+    "schemaVersion": "wxf-electron-hindcast-1",
+    "start": "2022-01-01",
+    "endExclusive": "2026-09-01",
+    "foldCount": 5,
+    "originCount": 8999,
+    "dates": 1291,
+    "eligibleOriginFraction": 0.66208063566804,
+    "models": {
+      "currentFeatureRecipe": {
+        "leads": {
+          "6": {
+            "mae": 4263890.817232451,
+            "rmsle": 0.15165451587909212,
+            "coverage": 0.8886542949216579,
+            "meanIntervalWidth": 22916746.48704499
+          },
+          "12": {
+            "mae": 9518158.941703012,
+            "rmsle": 0.30356305569610215,
+            "coverage": 0.8790976775197245,
+            "meanIntervalWidth": 49247977.512434825
+          },
+          "24": {
+            "mae": 20867160.209763367,
+            "rmsle": 0.60168855492239,
+            "coverage": 0.8866540726747416,
+            "meanIntervalWidth": 115347795.90106186
+          }
+        },
+        "thresholds": {
+          "moderate": {
+            "value": 110000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 199,
+            "hits": 151,
+            "misses": 48,
+            "falseAlarms": 21,
+            "correctNegatives": 1071,
+            "detectionRate": 0.7587939698492462,
+            "falseAlarmRatio": 0.12209302325581395,
+            "criticalSuccessIndex": 0.6863636363636364,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          },
+          "high": {
+            "value": 480000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 17,
+            "hits": 8,
+            "misses": 9,
+            "falseAlarms": 9,
+            "correctNegatives": 1265,
+            "detectionRate": 0.47058823529411764,
+            "falseAlarmRatio": 0.5294117647058824,
+            "criticalSuccessIndex": 0.3076923076923077,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          }
+        }
+      },
+      "observedDrivers": {
+        "leads": {
+          "6": {
+            "mae": 4209222.182026856,
+            "rmsle": 0.15080494842687867,
+            "coverage": 0.8867651961329036,
+            "meanIntervalWidth": 22750436.84360193
+          },
+          "12": {
+            "mae": 9364906.058107534,
+            "rmsle": 0.29940486391475785,
+            "coverage": 0.8839871096788532,
+            "meanIntervalWidth": 48847703.09838409
+          },
+          "24": {
+            "mae": 20348731.250861343,
+            "rmsle": 0.5990879143641353,
+            "coverage": 0.8886542949216579,
+            "meanIntervalWidth": 112527566.11296679
+          }
+        },
+        "thresholds": {
+          "moderate": {
+            "value": 110000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 199,
+            "hits": 148,
+            "misses": 51,
+            "falseAlarms": 19,
+            "correctNegatives": 1073,
+            "detectionRate": 0.7437185929648241,
+            "falseAlarmRatio": 0.11377245508982035,
+            "criticalSuccessIndex": 0.6788990825688074,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          },
+          "high": {
+            "value": 480000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 17,
+            "hits": 9,
+            "misses": 8,
+            "falseAlarms": 8,
+            "correctNegatives": 1266,
+            "detectionRate": 0.5294117647058824,
+            "falseAlarmRatio": 0.47058823529411764,
+            "criticalSuccessIndex": 0.36,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          }
+        }
+      },
+      "observedAndRecurrence": {
+        "leads": {
+          "6": {
+            "mae": 4229904.374247618,
+            "rmsle": 0.15103742046468085,
+            "coverage": 0.888987665296144,
+            "meanIntervalWidth": 22831345.109617732
+          },
+          "12": {
+            "mae": 9433759.907207541,
+            "rmsle": 0.29953501161190094,
+            "coverage": 0.8819868874319369,
+            "meanIntervalWidth": 48793466.979617424
+          },
+          "24": {
+            "mae": 20476268.154154666,
+            "rmsle": 0.5982079040772309,
+            "coverage": 0.8858762084676075,
+            "meanIntervalWidth": 112710665.73594964
+          }
+        },
+        "thresholds": {
+          "moderate": {
+            "value": 110000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 199,
+            "hits": 150,
+            "misses": 49,
+            "falseAlarms": 20,
+            "correctNegatives": 1072,
+            "detectionRate": 0.7537688442211056,
+            "falseAlarmRatio": 0.11764705882352941,
+            "criticalSuccessIndex": 0.684931506849315,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          },
+          "high": {
+            "value": 480000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 17,
+            "hits": 9,
+            "misses": 8,
+            "falseAlarms": 7,
+            "correctNegatives": 1267,
+            "detectionRate": 0.5294117647058824,
+            "falseAlarmRatio": 0.4375,
+            "criticalSuccessIndex": 0.375,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          }
+        }
+      },
+      "fullEventGuidance": {
+        "leads": {
+          "6": {
+            "mae": 4231129.044488232,
+            "rmsle": 0.15105955223329018,
+            "coverage": 0.8917657517501945,
+            "meanIntervalWidth": 23096779.46476726
+          },
+          "12": {
+            "mae": 9427396.690772448,
+            "rmsle": 0.2997046380142191,
+            "coverage": 0.8850983442604734,
+            "meanIntervalWidth": 49913877.35935227
+          },
+          "24": {
+            "mae": 20432788.27887158,
+            "rmsle": 0.5977886189113938,
+            "coverage": 0.8800977886431826,
+            "meanIntervalWidth": 112356162.76713796
+          }
+        },
+        "thresholds": {
+          "moderate": {
+            "value": 110000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 199,
+            "hits": 149,
+            "misses": 50,
+            "falseAlarms": 20,
+            "correctNegatives": 1072,
+            "detectionRate": 0.7487437185929648,
+            "falseAlarmRatio": 0.11834319526627218,
+            "criticalSuccessIndex": 0.680365296803653,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          },
+          "high": {
+            "value": 480000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 17,
+            "hits": 11,
+            "misses": 6,
+            "falseAlarms": 9,
+            "correctNegatives": 1265,
+            "detectionRate": 0.6470588235294118,
+            "falseAlarmRatio": 0.45,
+            "criticalSuccessIndex": 0.4230769230769231,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          }
+        }
+      },
+      "diurnalPersistence": {
+        "leads": {
+          "6": {
+            "mae": 4509863.684272752,
+            "rmsle": 0.16659539902523002
+          },
+          "12": {
+            "mae": 10318108.974652844,
+            "rmsle": 0.3509773958176322
+          },
+          "24": {
+            "mae": 22901041.726977266,
+            "rmsle": 0.7621254227094564
+          }
+        },
+        "thresholds": {
+          "moderate": {
+            "value": 110000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 199,
+            "hits": 144,
+            "misses": 55,
+            "falseAlarms": 23,
+            "correctNegatives": 1069,
+            "detectionRate": 0.7236180904522613,
+            "falseAlarmRatio": 0.1377245508982036,
+            "criticalSuccessIndex": 0.6486486486486487,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          },
+          "high": {
+            "value": 480000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 17,
+            "hits": 8,
+            "misses": 9,
+            "falseAlarms": 4,
+            "correctNegatives": 1270,
+            "detectionRate": 0.47058823529411764,
+            "falseAlarmRatio": 0.3333333333333333,
+            "criticalSuccessIndex": 0.38095238095238093,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          }
+        }
+      },
+      "persistence": {
+        "leads": {
+          "6": {
+            "mae": 5799662.861995366,
+            "rmsle": 0.18901781206127005
+          },
+          "12": {
+            "mae": 15538551.681415213,
+            "rmsle": 0.45260805754663724
+          },
+          "24": {
+            "mae": 29749939.057620708,
+            "rmsle": 0.9424837993292506
+          }
+        },
+        "thresholds": {
+          "moderate": {
+            "value": 110000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 199,
+            "hits": 131,
+            "misses": 68,
+            "falseAlarms": 15,
+            "correctNegatives": 1077,
+            "detectionRate": 0.6582914572864321,
+            "falseAlarmRatio": 0.10273972602739725,
+            "criticalSuccessIndex": 0.6121495327102804,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          },
+          "high": {
+            "value": 480000000.0,
+            "dailyOrigins": 1291,
+            "exceedanceDays": 17,
+            "hits": 9,
+            "misses": 8,
+            "falseAlarms": 5,
+            "correctNegatives": 1269,
+            "detectionRate": 0.5294117647058824,
+            "falseAlarmRatio": 0.35714285714285715,
+            "criticalSuccessIndex": 0.4090909090909091,
+            "meaning": "Median forecast crossing; sampled dates are not independent storm events."
+          }
+        }
+      }
+    },
+    "pairedComparisons": {
+      "currentFeatureRecipe": {
+        "7": {
+          "reference": "currentFeatureRecipe",
+          "blockDays": 7,
+          "resamples": 2000,
+          "blocksPerFold": [
+            52,
+            48,
+            49,
+            48,
+            32
+          ],
+          "maeImprovement": 434371.93089178443,
+          "bootstrap95": [
+            -84176.01475689288,
+            1021764.111137589
+          ],
+          "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+        },
+        "27": {
+          "reference": "currentFeatureRecipe",
+          "blockDays": 27,
+          "resamples": 2000,
+          "blocksPerFold": [
+            14,
+            14,
+            14,
+            13,
+            9
+          ],
+          "maeImprovement": 434371.93089178443,
+          "bootstrap95": [
+            -112399.32798698978,
+            1020422.8314040515
+          ],
+          "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+        }
+      },
+      "observedDrivers": {
+        "7": {
+          "reference": "observedDrivers",
+          "blockDays": 7,
+          "resamples": 2000,
+          "blocksPerFold": [
+            52,
+            48,
+            49,
+            48,
+            32
+          ],
+          "maeImprovement": -84057.0280102359,
+          "bootstrap95": [
+            -401805.77816997544,
+            234900.3804880124
+          ],
+          "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+        },
+        "27": {
+          "reference": "observedDrivers",
+          "blockDays": 27,
+          "resamples": 2000,
+          "blocksPerFold": [
+            14,
+            14,
+            14,
+            13,
+            9
+          ],
+          "maeImprovement": -84057.0280102359,
+          "bootstrap95": [
+            -450242.4944358635,
+            291003.0221231975
+          ],
+          "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+        }
+      },
+      "observedAndRecurrence": {
+        "7": {
+          "reference": "observedAndRecurrence",
+          "blockDays": 7,
+          "resamples": 2000,
+          "blocksPerFold": [
+            52,
+            48,
+            49,
+            48,
+            32
+          ],
+          "maeImprovement": 43479.87528308554,
+          "bootstrap95": [
+            -227179.82913076936,
+            342303.20368326374
+          ],
+          "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+        },
+        "27": {
+          "reference": "observedAndRecurrence",
+          "blockDays": 27,
+          "resamples": 2000,
+          "blocksPerFold": [
+            14,
+            14,
+            14,
+            13,
+            9
+          ],
+          "maeImprovement": 43479.87528308554,
+          "bootstrap95": [
+            -223270.48262433422,
+            318890.1613007539
+          ],
+          "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+        }
+      },
+      "diurnalPersistence": {
+        "7": {
+          "reference": "diurnalPersistence",
+          "blockDays": 7,
+          "resamples": 2000,
+          "blocksPerFold": [
+            52,
+            48,
+            49,
+            48,
+            32
+          ],
+          "maeImprovement": 2468253.4481056845,
+          "bootstrap95": [
+            974492.470144891,
+            3927407.128630083
+          ],
+          "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+        },
+        "27": {
+          "reference": "diurnalPersistence",
+          "blockDays": 27,
+          "resamples": 2000,
+          "blocksPerFold": [
+            14,
+            14,
+            14,
+            13,
+            9
+          ],
+          "maeImprovement": 2468253.4481056845,
+          "bootstrap95": [
+            1112559.479648654,
+            3708501.953332372
+          ],
+          "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+        }
+      },
+      "persistence": {
+        "7": {
+          "reference": "persistence",
+          "blockDays": 7,
+          "resamples": 2000,
+          "blocksPerFold": [
+            52,
+            48,
+            49,
+            48,
+            32
+          ],
+          "maeImprovement": 9317150.778749123,
+          "bootstrap95": [
+            7206528.535454976,
+            11634642.879797792
+          ],
+          "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+        },
+        "27": {
+          "reference": "persistence",
+          "blockDays": 27,
+          "resamples": 2000,
+          "blocksPerFold": [
+            14,
+            14,
+            14,
+            13,
+            9
+          ],
+          "maeImprovement": 9317150.778749123,
+          "bootstrap95": [
+            7154663.575874434,
+            11585888.253577115
+          ],
+          "meaning": "Positive improvement favors full event guidance; paired origin-weighted MAE, stratified by historical test fold."
+        }
+      }
+    },
+    "qualification": "CurrentFeatureRecipe is retrained on each fold past, including GOES-16; it is not the deployed GOES-19-only artifact. All methods use the same eligible origins. Availability statistics exclude calibration/training months and reflect strict retrospective truth-quality gates.",
+    "meaning": "Chronological out-of-sample recipe comparison. Each fold refits using only earlier training/calibration targets; these are not predictions from the currently deployed frozen artifacts.",
+    "source": "https://github.com/wreed1989/SpaceWxOps-WXF/blob/main/research/electron_fluence/hindcast-evaluation.json"
+  },
   "externalGuidance": {
     "source": "https://services.swpc.noaa.gov/text/3-day-forecast.txt",
-    "retrievedAt": "2026-09-19T21:33:58.749482+00:00",
+    "retrievedAt": "2026-09-19T21:47:01.869523+00:00",
     "bulletin": ":Product: 3-Day Forecast\n:Issued: 2026 Sep 19 1230 UTC\n# Prepared by the U.S. Dept. of Commerce, NOAA, Space Weather Prediction Center\n#\nA. NOAA Geomagnetic Activity Observation and Forecast\n\nThe greatest observed 3 hr Kp over the past 24 hours was 3 (below NOAA\nScale levels).\nThe greatest expected 3 hr Kp for Sep 19-Sep 21 2026 is 2.67 (below NOAA\nScale levels).\n\nNOAA Kp index breakdown Sep 19-Sep 21 2026\n\n             Sep 19       Sep 20       Sep 21\n00-03UT       2.33         1.67         1.67     \n03-06UT       2.67         2.00         2.00     \n06-09UT       1.67         1.67         1.67     \n09-12UT       1.67         1.33         1.33     \n12-15UT       1.67         0.67         0.67     \n15-18UT       0.67         1.33         1.33     \n18-21UT       0.67         1.33         1.33     \n21-00UT       1.67         1.67         1.67     \n\nRationale: No G1 (Minor) or greater geomagnetic storms are expected.  No\nsignificant transient or recurrent solar wind features are forecast.\n\nB. NOAA Solar Radiation Activity Observation and Forecast\n\nSolar radiation, as observed by NOAA GOES-18 over the past 24 hours, was\nbelow S-scale storm level thresholds.\n\nSolar Radiation Storm Forecast for Sep 19-Sep 21 2026\n\n              Sep 19  Sep 20  Sep 21\nS1 or greater    1%      1%      1%\n\nRationale: No S1 (Minor) or greater solar radiation storms are expected.\nNo significant active region activity favorable for radiation storm\nproduction is forecast.\n\nC. NOAA Radio Blackout Activity and Forecast\n\nNo radio blackouts were observed over the past 24 hours.\n\nRadio Blackout Forecast for Sep 19-Sep 21 2026\n\n              Sep 19        Sep 20        Sep 21\nR1-R2            1%            1%            1%\nR3 or greater    1%            1%            1%\n\nRationale: No R1 (Minor) or greater radio blackouts are expected.  No\nsignificant active region flare activity is forecast.\n",
     "usedAsModelInput": false
   },

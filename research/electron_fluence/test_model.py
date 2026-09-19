@@ -141,7 +141,7 @@ class ScienceTests(unittest.TestCase):
             self.assertIn('fallback',result['candidate']['guidanceMode'])
             self.assertFalse(result['arrivalGuidance']['available'])
             self.assertFalse(any(n.startswith('cme_') for n in result['candidate']['predictorValues']))
-            self.assertEqual(result['thresholds'],{'moderate':1.1e8})
+            self.assertEqual(result['thresholds'],{'moderate':1.1e8,'high':4.8e8})
 
     def test_impact_versions_are_not_backdated(self):
         event={'activityID':'one','location':'Earth','eventTime':'2026-08-02T00:00Z',

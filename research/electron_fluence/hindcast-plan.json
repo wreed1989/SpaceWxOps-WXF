@@ -1,0 +1,16 @@
+{
+  "version": "wxf-electron-hindcast-1",
+  "specifiedBeforeThisEvaluation": true,
+  "trainingStart": "2020-02-01",
+  "testYears": [2022, 2023, 2024, 2025, 2026],
+  "testEndExclusive": "2026-09-01",
+  "calibration": "Six calendar months immediately before each test year; never train trees on calibration or test targets",
+  "embargoHours": 24,
+  "estimator": {"trees":192,"minLeaf":12,"maxDepth":14,"maxFeatures":0.8,"seed":1989},
+  "variants": ["currentFeatureRecipe", "observedDrivers", "observedAndRecurrence", "fullEventGuidance"],
+  "comparisons": ["currentFeatureRecipe", "observedDrivers", "observedAndRecurrence", "diurnalPersistence", "persistence"],
+  "metrics": "MAE, RMS log error and nominal 90% interval coverage at 6/12/24 h, per fold and pooled; threshold contingency on once-per-day origins at 1.1e8 and 4.8e8",
+  "statisticalSupport": "2000 paired block bootstrap resamples, stratified by test fold, with 7-calendar-day blocks and 27-day sensitivity. Whole blocks retain every eligible origin. Confidence intervals are conditional on this archive and fixed design, not post-selection-adjusted guarantees.",
+  "selection": "No hyperparameter tuning, retrospective artifact replacement or automatic promotion based on these results; publish every variant and fold",
+  "limits": ["Historical receipt times and some provider revisions are unavailable", "GOES-16/19 handoff changes measurement location; report by spacecraft and expose unseen-spacecraft folds", "The recipe was developed after inspecting other historical dates, so this is chronological out-of-sample hindcasting, not a pristine blind operational trial", "Reconstructed HUXt future speed and new CH geometry are not included without paired historical inputs"]
+}

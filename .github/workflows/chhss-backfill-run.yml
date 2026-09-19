@@ -1,0 +1,88 @@
+name: Coronal Hole HSS historical backfill
+on:
+  workflow_dispatch:
+    inputs:
+      start:
+        description: First observation date, YYYY-MM-DD
+        required: true
+        default: '2024-04-01'
+      end:
+        description: End date exclusive, YYYY-MM-DD; at most 93 days
+        required: true
+        default: '2024-05-01'
+permissions:
+  contents: write
+concurrency:
+  group: chhss-historical-backfill
+  cancel-in-progress: false
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      START: ${{ inputs.start }}
+      END: ${{ inputs.end }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: f99e2b556a49be2dcbb94e20ed20c32e302dabbc
+          path: worker
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          path: publication
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Validate date range
+        run: |
+          python - <<'PY'
+          import os,datetime,re
+          a,b=os.environ['START'],os.environ['END']
+          assert re.fullmatch(r'\d{4}-\d{2}-\d{2}',a) and re.fullmatch(r'\d{4}-\d{2}-\d{2}',b), 'Use ISO dates'
+          a,b=map(datetime.date.fromisoformat,[a,b])
+          assert datetime.date(2010,5,1)<=a<b<=datetime.date.today(), 'Invalid archive range'
+          assert 1<=(b-a).days<=93, 'Split requests into no more than 93 days per run'
+          PY
+      - name: Install pinned numerical runtime
+        run: python -m pip install 'requests==2.34.2' 'numpy==2.5.3' 'scipy==1.18.1' 'astropy==7.2.2' 'sunpy[map,net]==7.1.2' 'reproject==0.21.0' 'Pillow==12.3.0' 'scikit-image==0.26.0'
+      - uses: actions/cache@v4
+        with:
+          path: .chhss-cache
+          key: chhss-fits-${{ inputs.start }}-${{ inputs.end }}-v1
+      - name: Backfill numerical observations and score matched truth
+        run: python -u worker/chhss/pipeline.py backfill --start "$START" --end "$END" --output results
+      - name: Preserve provenance
+        if: always()
+        run: |
+          mkdir -p results/source
+          cp worker/chhss/core.py worker/chhss/pipeline.py results/source/
+          git -C worker rev-parse HEAD > results/source-commit.txt
+          python -m pip freeze > results/environment.txt
+          if [ -d .chhss-cache ]; then
+            find .chhss-cache -name '*.source.json' -print0 | tar --null -T - -czf results/acquisition-manifests.tar.gz
+          fi
+      - name: Persist cases and scores without changing live forecast qualification
+        if: success()
+        run: |
+          cd publication
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            dest="chhss-data/backfill/${START}_${END}"
+            mkdir -p "$dest"
+            cp ../results/cases.json ../results/validation.json ../results/backfill-progress.json ../results/omni-manifest.json ../results/source-commit.txt "$dest/"
+            git add "$dest"
+            if git diff --cached --quiet; then break; fi
+            git commit -m "Record CH/HSS backfill $START to $END"
+            if git push origin HEAD:main; then break; fi
+            if [ "$attempt" = 3 ]; then exit 1; fi
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chhss-backfill-${{ inputs.start }}-${{ inputs.end }}
+          path: results/
+          retention-days: 90

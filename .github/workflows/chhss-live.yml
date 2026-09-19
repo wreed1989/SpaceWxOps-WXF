@@ -1,0 +1,74 @@
+name: Coronal Hole HSS Outlook data
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/chhss-live.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: chhss-live-publisher
+  cancel-in-progress: false
+jobs:
+  observation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ce13873a02fd60b3671e51dd5c4656d374bc10a2
+          path: worker
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          path: publication
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install tested numerical dependencies
+        run: python -m pip install 'requests==2.34.2' 'numpy==2.5.3' 'scipy==1.18.1' 'astropy==7.2.2' 'sunpy[map,net]==7.1.2' 'reproject==0.21.0' 'Pillow==12.3.0' 'scikit-image==0.26.0'
+      - name: Retrieve and process real observations
+        id: process
+        continue-on-error: true
+        run: python -u worker/chhss/pipeline.py live --output product
+      - name: Publish only the independent CH/HSS data namespace
+        if: always()
+        run: |
+          if [ ! -f product/status.json ]; then exit 1; fi
+          cd publication
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            mkdir -p chhss-data
+            cp ../product/status.json chhss-data/status.json
+            for file in current.json recurrence.json; do
+              if [ -f "../product/$file" ]; then cp "../product/$file" "chhss-data/$file"; fi
+            done
+            if [ -d ../product/live-ledger ]; then
+              mkdir -p chhss-data/live-ledger
+              cp ../product/live-ledger/*.json chhss-data/live-ledger/
+            fi
+            git add chhss-data
+            if git diff --cached --quiet; then break; fi
+            git commit -m 'Refresh registered CH/HSS observations and signed polarity'
+            if git push origin HEAD:main; then break; fi
+            if [ "$attempt" = 3 ]; then exit 1; fi
+          done
+      - name: Preserve run evidence
+        if: always()
+        run: |
+          mkdir -p product/source
+          cp worker/chhss/core.py worker/chhss/pipeline.py product/source/
+          git -C worker rev-parse HEAD > product/source-commit.txt
+          python -m pip freeze > product/environment.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chhss-live-evidence
+          path: product/
+          retention-days: 30
+      - name: Fail visibly when science input was unavailable
+        if: steps.process.outcome != 'success'
+        run: exit 1

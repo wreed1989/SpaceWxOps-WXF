@@ -1,0 +1,48 @@
+name: Coronal Hole HSS integration
+on:
+  push:
+    branches: [chhss-data-integration]
+    paths: ['chhss/**', '.github/workflows/chhss-integration.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: chhss-integration
+  cancel-in-progress: false
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: pip install 'sunpy[map]>=7,<8' 'reproject>=0.14,<1' requests
+      - name: Read actual AIA/HMI data interfaces
+        run: python chhss/acquire.py --discover integration/acquisition
+      - name: Inspect downloaded FITS
+        if: always()
+        run: |
+          python - <<'PY'
+          import json,pathlib,numpy as np
+          from astropy.io import fits
+          out=pathlib.Path('integration/acquisition');report={}
+          for f in out.glob('*.fits'):
+            try:
+              with fits.open(f) as hdus:
+                report[f.name]=[{'header':dict(h.header),'shape':h.data.shape if h.data is not None else None,'min':float(np.nanmin(h.data)) if h.data is not None and h.data.ndim==2 else None,'max':float(np.nanmax(h.data)) if h.data is not None and h.data.ndim==2 else None} for h in hdus]
+            except Exception as e:report[f.name]={'error':str(e)}
+          (out/'headers.json').write_text(json.dumps(report,indent=2,default=str))
+          PY
+      - name: Capture exact source and offline scientific dependencies for reproduction
+        if: always()
+        run: |
+          cp -r chhss integration/source
+          pip download --only-binary=:all: -d integration/wheels astropy pyerfa astropy-iers-data sunpy reproject --no-deps
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chhss-integration-evidence
+          path: integration/
+          retention-days: 7

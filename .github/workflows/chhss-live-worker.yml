@@ -1,0 +1,66 @@
+name: Coronal Hole HSS data refresh
+on:
+  push:
+    branches: [chhss-data-integration]
+    paths: ['chhss/current.py', '.github/workflows/chhss-live-worker.yml']
+  workflow_dispatch:
+  schedule:
+    - cron: '19 * * * *'
+permissions:
+  contents: write
+concurrency:
+  group: chhss-live-data-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install scientific dependencies
+        run: pip install 'sunpy[map]>=7,<8' 'reproject>=0.14,<1' requests
+      - name: Acquire and process co-timed AIA and signed HMI
+        id: measurement
+        continue-on-error: true
+        run: python chhss/current.py --out chhss-data --cache evidence/inputs
+      - name: Publish current/health and immutable forward measurement records
+        if: always()
+        env:
+          DATA_BRANCH: ${{ github.ref_name }}
+        run: |
+          test -f chhss-data/health.json || exit 0
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add chhss-data/
+          if ! git diff --cached --quiet; then
+            git commit -m 'Refresh Coronal Hole HSS numeric inputs [skip ci]'
+            for attempt in 1 2 3; do
+              git pull --rebase origin "$DATA_BRANCH"
+              git push origin "HEAD:$DATA_BRANCH" && break
+              test "$attempt" != 3 || exit 1
+              sleep 3
+            done
+          fi
+      - name: Save reproducible evidence
+        if: always()
+        run: |
+          mkdir -p evidence/source evidence/output
+          cp chhss/*.py evidence/source/
+          cp chhss-data/*.json evidence/output/ || true
+          pip freeze > evidence/requirements-tested.txt
+          pip download --only-binary=:all: --no-deps -d evidence/wheels 'sunpy>=7,<8' 'reproject>=0.14,<1' parfive mpl-animators dask dask-image zarr astropy-healpix pyavm cloudpickle partd toolz locket pims slicerator numcodecs donfig aioftp crc32c typing_extensions
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chhss-current-processing
+          path: evidence/
+          retention-days: 7
+      - name: Reflect measurement failures in workflow status
+        if: steps.measurement.outcome == 'failure'
+        run: exit 1

@@ -131,7 +131,7 @@
   function markup() {
     return `<div class="hsv-scene" data-helio-version="${VERSION}">
       <div class="hsv-toolbar"><span class="hsv-status" data-hsv-status>AWAITING DATA</span><div class="hsv-controls">
-        <label>Forcing <select data-hsv-mode aria-label="Heliospheric animation data mode"><option value="live">Live data</option><option value="quiet">Preview: quiet</option><option value="storm">Preview: storm</option><option value="recovery">Preview: recovery</option></select></label>
+        <label>Forcing <select data-hsv-mode aria-label="Heliospheric animation data mode"><option value="live">Live data</option><option value="quiet">Preview: Quiet</option><option value="storm">Preview: Storm</option><option value="recovery">Preview: Recovery</option></select></label>
         <span class="hsv-view-label">Sun → Earth</span>
         <button type="button" data-hsv-pause aria-pressed="false">Pause</button><button type="button" data-hsv-info aria-expanded="false" aria-label="Explain animation and data drivers">Info</button>
       </div></div>
@@ -426,7 +426,11 @@
 (()=>{
   'use strict';
   const ORBITS=['LEO','MEO','GEO','HEO'],COLORS=['#34d399','#facc15','#ef4444','#a855f7'],NAMES=['Nominal','Elevated','High','Severe'];
+  const TAU=2*Math.PI,RE=56,CX=500,CY=270,W=1000,H=580;
   const limits={ap:4*3600000,proton:20*60000,electron:20*60000};
+  const clamp=(v,lo=0,hi=1)=>Math.max(lo,Math.min(hi,v));
+  const mix=(a,b,t)=>a+(b-a)*t;
+  const TITLES={quiet:'Quiet',storm:'Storm',recovery:'Recovery'};
   function derive(snapshot={},now=Date.now(),policy=window.SpaceWxRiskPolicy){
     const samples={},values={};
     for(const key of Object.keys(limits)){
@@ -442,42 +446,193 @@
     return {samples,values,complete,anyFresh:count>0,status,matrix,levels,selected:snapshot.selected||'LEO',archive:!!snapshot.archive};
   }
   function label(model,orbit){const level=model.levels[orbit]||0;return !model.anyFresh?'Unavailable':!model.complete?(level?'At least '+NAMES[level]:'Incomplete'):NAMES[level];}
-  function markup(compact=false){return `<div class="sr-scene" data-compact="${compact}"><div class="sr-toolbar"><strong data-sr-status>AWAITING DATA</strong><div><button data-sr-pause aria-label="Pause satellite illustration" aria-pressed="false">Pause</button> <button data-sr-info aria-expanded="false">Info</button></div></div><div class="sr-viewport"><canvas role="img" aria-label="Satellite orbit environment illustration"></canvas></div><div class="sr-orbits">${ORBITS.map(o=>`<button data-risk-orbit="${o}" aria-pressed="false">${o}<small data-sr-level="${o}">Unavailable</small></button>`).join('')}</div><div class="sr-drivers">${[['ap','PLANETARY Ap'],['proton','≥10 MeV PROTONS · PFU'],['electron','>2 MeV · 24 H FLUENCE']].map(([k,t])=>`<div class="sr-driver" data-sr-driver="${k}"><span>${t}</span><b>—</b><small>Awaiting data</small></div>`).join('')}</div><div class="sr-caption">Orbit colors follow observed environmental thresholds. Illustration is not to scale; satellites are illustrative, not tracked objects.</div><div class="sr-info" hidden>Uses the existing orbit-impact screening rules and your alert thresholds. Ap drives the geomagnetic/drag context; ≥10 MeV protons and >2 MeV 24-hour electron fluence (electrons cm⁻² sr⁻¹) drive the radiation context. This is environmental screening, not a spacecraft failure probability or an orbit-resolved radiation forecast. Ap expires 4 hours after its interval end (or timestamp for point samples); particle samples after 20 minutes. The electron integral also requires at least 23 hours of valid coverage in the preceding day. Partial inputs remain incomplete; archive and missing data cannot appear nominal.</div></div>`;}
+  function previewSnapshot(mode,now=Date.now()){
+    const values={quiet:{ap:5,proton:.2,electron:3e7,flux:80},storm:{ap:140,proton:4,electron:1.5e7,flux:8},recovery:{ap:18,proton:.4,electron:6e8,flux:8000}}[mode];
+    if(!values)return null;
+    const time=new Date(now).toISOString();
+    return {preview:true,samples:Object.fromEntries(Object.keys(limits).map(key=>[key,{value:values[key],time,coverageOK:true}])),electronFlux:{value:values.flux,time}};
+  }
+  function beltState(snapshot,model,mode='live',now=Date.now()){
+    const sample=snapshot.electronFlux||{},time=Date.parse(sample.time),fluxValid=Number.isFinite(sample.value)&&sample.value>=0&&Number.isFinite(time)&&time<=now+300000&&now-time<=20*60000&&!model.archive;
+    // Conservative display gate, independent of user alert thresholds. GOES
+    // electrons are unreliable during significant solar-proton events (SWPC).
+    const contaminated=model.samples.proton.fresh&&model.values.proton>=10;
+    const loadingKnown=fluxValid&&model.samples.proton.fresh&&!contaminated;
+    const loading=loadingKnown?clamp(Math.log10(1+sample.value)/4):null;
+    const activity=model.samples.ap.fresh?clamp((model.values.ap-15)/125):null;
+    let inner=3.35,outer=6.4,spread=1;
+    if(activity!==null){inner-=.5*activity;outer-=.65*activity;spread+=.15*activity;}
+    // Preview geometry is deliberately pedagogical, not a fitted belt forecast.
+    if(mode==='recovery'){inner=3.05;outer=6.8;spread=1.12;}
+    const explanation=mode==='quiet'?'Typical quiet configuration · separated belts, modest outer electrons'
+      :mode==='storm'?'Storm example · inward broadening, outer-edge compression and electron dropout'
+      :mode==='recovery'?'Recovery example · replenished, brighter outer electron belt'
+      :contaminated?'GOES electrons may be proton-contaminated · loading unavailable'
+      :loadingKnown?(activity===null?'GOES electron shading · reference geometry; Ap unavailable':'Ap-driven illustrative geometry · GOES electron shading')
+      :model.archive?'Archive · reference geometry only':fluxValid?'Proton check unavailable · loading unavailable':'GOES electron loading unavailable · reference shading';
+    return {inner,outer,spread,loading,loadingKnown,activity,contaminated,flux:fluxValid?sample.value:null,time:sample.time,explanation,
+      // Unknown data renders a muted reference belt, not an empty belt.
+      intensity:loadingKnown?.04+.96*loading**2:.18,geometryKnown:activity!==null};
+  }
+  // Earth-centred radii in Earth radii, not altitude. Representative orbits,
+  // rather than a claim that all MEO/HEO spacecraft share one path.
+  const orbitSpecs={LEO:{per:1.13,apo:1.13,inc:51.6,node:.25,speed:.5},MEO:{per:4.17,apo:4.17,inc:55,node:-.38,speed:.19},GEO:{per:6.61,apo:6.61,inc:0,node:0,speed:.09},HEO:{per:1.15,apo:7.2,inc:63.4,node:.22,speed:.13}};
+  function orbitPoint(orbit,angle){
+    const g=orbitSpecs[orbit],a=(g.per+g.apo)/2,e=(g.apo-g.per)/(g.apo+g.per),b=a*Math.sqrt(1-e*e),inc=g.inc*Math.PI/180;
+    const x=a*(Math.cos(angle)-e),y=b*Math.sin(angle),yy=y*Math.cos(inc),z=y*Math.sin(inc);
+    return [x*Math.cos(g.node)-yy*Math.sin(g.node),x*Math.sin(g.node)+yy*Math.cos(g.node),z];
+  }
+  function beltPoint(l,lat,lon){
+    // Dipole field-shell reference: r = L cos²(latitude). Bounded latitude
+    // distributions form volumes, rather than flat Saturn-like equatorial rings.
+    const r=l*Math.cos(lat)**2,x=r*Math.cos(lat)*Math.cos(lon),y=r*Math.cos(lat)*Math.sin(lon),z=r*Math.sin(lat),tilt=11*Math.PI/180;
+    return [x*Math.cos(tilt)+z*Math.sin(tilt),y,-x*Math.sin(tilt)+z*Math.cos(tilt)];
+  }
+  const cutaway=lon=>{const a=(lon%TAU+TAU)%TAU;return a>.18&&a<1.22;};
+  function project([x,y,z]){return {x:CX+RE*x,y:CY+RE*(.46*y-.888*z),depth:.888*y+.46*z};}
+  function markup(compact=false){return `<div class="sr-scene" data-compact="${compact}">
+    <div class="sr-toolbar"><strong data-sr-status>AWAITING DATA</strong><div class="sr-controls"><select data-sr-mode aria-label="Satellite environment mode"><option value="live">Live data</option><option value="quiet">Preview: Quiet</option><option value="storm">Preview: Storm</option><option value="recovery">Preview: Recovery</option></select><button data-sr-pause aria-label="Pause satellite illustration" aria-pressed="false">Pause</button><button data-sr-info aria-expanded="false">Info</button></div></div>
+    <div class="sr-preview-note" data-sr-preview hidden>SYNTHETIC PREVIEW · does not change live alerts or impact analysis</div>
+    <div class="sr-viewport"><canvas role="img" aria-label="Earth, radiation belts and representative satellite orbits"></canvas></div>
+    <div class="sr-belt-key"><span><i class="sr-inner-key"></i>Inner belt · mainly trapped protons</span><span><i class="sr-outer-key"></i>Outer belt · electrons</span><span>Slot between belts</span></div>
+    <div class="sr-belt-state"><span data-sr-belt-state></span><b data-sr-flux></b></div>
+    <div class="sr-orbits">${ORBITS.map(o=>`<button data-risk-orbit="${o}" aria-pressed="false">${o}<small data-sr-level="${o}">Unavailable</small></button>`).join('')}</div>
+    <div class="sr-drivers">${[['ap','PLANETARY Ap'],['proton','≥10 MeV SOLAR PROTONS · PFU'],['electron','>2 MeV · 24 H FLUENCE']].map(([k,t])=>`<div class="sr-driver" data-sr-driver="${k}"><span>${t}</span><b>—</b><small>Awaiting data</small></div>`).join('')}</div>
+    <div class="sr-caption">${compact?"Earth-scaled cutaway · illustrative boundaries and motion. GOES is a local GEO proxy.":"Cutaway view · Earth-scaled reference geometry; belt boundaries and motion are illustrative. GOES samples GEO, not the entire belt. Orbit colors indicate environmental screening; spacecraft are representative."}</div>
+    <div class="sr-info" hidden><p>A front sector is cut away to expose the two dipole-shaped reference volumes and the intervening slot: inner belt roughly 1.2–2.4 Earth radii; outer belt roughly 3–7 Earth radii from Earth's centre. The gap and boundaries depend on energy and conditions. The inner belt is mainly trapped protons; the solar-proton feed does not measure its population.</p><p>Live outer-belt brightness uses fresh GOES >2 MeV flux at GEO as a qualitative proxy. Ap adjusts a schematic outer boundary. These inputs cannot recover global belt extent, pitch-angle distributions or density. During ≥10 MeV solar-proton flux ≥10 PFU, electron shading is withheld because contamination is possible; this conservative display gate is independent of alert settings.</p><p>Storm is one possible dropout/compression example. Recovery illustrates subsequent electron buildup; neither response is guaranteed. Preview values never enter live feeds, alerts, or the impact analysis. Inner-belt intensity remains a reference in every mode.</p><p>Representative radii: LEO 1.13 Rᴇ, GPS-like MEO 4.17 Rᴇ, GEO 6.61 Rᴇ, elliptical HEO 1.15–7.2 Rᴇ. Belts use an idealized 11° dipole tilt. Spacecraft and trapped-particle motion are illustrative, not orbit propagation.</p><p>Orbit screening uses your alert rules. Particle inputs expire after 20 minutes, Ap 4 hours after its interval end; electron fluence needs 23 hours of valid coverage in the preceding day. This is not a spacecraft failure probability.</p><p><a href="https://www.nasa.gov/missions/van-allen-probes/nasas-van-allen-probes-revolutionize-view-of-radiation-belts/" target="_blank" rel="noopener">NASA belt dynamics</a> · <a href="https://www.swpc.noaa.gov/products/goes-electron-flux" target="_blank" rel="noopener">SWPC GOES electron limits</a></p></div>
+  </div>`;}
+  let seed=39121;
+  const random=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646;};
+  const clouds=[1200,2600].map(n=>Array.from({length:n},()=>({l:(random()+random())/2,lat:(random()+random()+random()-1.5)/1.5,lon:random()*TAU,size:.6+random()*1.2,a:.35+random()*.65})));
+  const stars=Array.from({length:150},()=>({x:random()*W,y:random()*H,r:.5+random()*.65,a:.12+random()*.25}));
   const scenes=new Map();let earth=null;
   class Scene{
-    constructor(root){this.root=root;this.canvas=root.querySelector('canvas');this.ctx=this.canvas.getContext('2d');this.viewport=root.querySelector('.sr-viewport');this.model=derive();this.phase=0;this.frame=0;this.last=0;this.visible=false;this.paused=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    constructor(root){
+      this.root=root;this.canvas=root.querySelector('canvas');this.ctx=this.canvas.getContext('2d');this.viewport=root.querySelector('.sr-viewport');
+      this.mode='live';this.model=derive();this.phase=0;this.frame=0;this.last=0;this.visible=false;this.current=null;this.cacheKey='';
+      this.reduced=window.matchMedia('(prefers-reduced-motion: reduce)');this.paused=this.reduced.matches;
+      this.motionChange=()=>{this.paused=this.reduced.matches;this.pauseLabel();this.poll();};this.reduced.addEventListener('change',this.motionChange);
       earth ||= window.SpaceWxHeliosphere.createEarthTexture();
+      this.layers=[0,1].map(()=>{const c=document.createElement('canvas');c.width=W;c.height=H;return c;});
       this.resize=new ResizeObserver(()=>this.draw());this.resize.observe(this.viewport);
       this.visibility=new IntersectionObserver(entries=>{this.visible=entries.some(e=>e.isIntersecting);this.wake();});this.visibility.observe(root);
-      this.click=e=>{if(e.target.closest('[data-sr-pause]')){this.paused=!this.paused;this.pauseLabel();this.wake();}if(e.target.closest('[data-sr-info]')){const info=root.querySelector('.sr-info');info.hidden=!info.hidden;root.querySelector('[data-sr-info]').setAttribute('aria-expanded',String(!info.hidden));}const orbit=e.target.closest('[data-risk-orbit]')?.dataset.riskOrbit;if(orbit){e.stopPropagation();window.dispatchEvent(new CustomEvent('risk-orbit-select',{detail:orbit}));scan();}};root.addEventListener('click',this.click);this.pauseLabel();this.poll();}
-    pauseLabel(){const b=this.root.querySelector('[data-sr-pause]');b.textContent=this.paused?'Play':'Pause';b.setAttribute('aria-pressed',String(this.paused));b.setAttribute('aria-label',(this.paused?'Play':'Pause')+' satellite illustration');}
-    poll(){this.model=derive(window.SpaceWxRiskTelemetry?.()||{});const m=this.model;this.root.dataset.quality=m.complete?'live':m.anyFresh?'partial':'unknown';this.root.querySelector('[data-sr-status]').textContent=m.status;
-      for(const orbit of ORBITS){const el=this.root.querySelector(`[data-sr-level="${orbit}"]`);el.textContent=label(m,orbit);el.style.setProperty('--risk-color',!m.anyFresh||(!m.complete&&!m.levels[orbit])?'#839baa':COLORS[m.levels[orbit]]);el.parentElement.setAttribute('aria-pressed',String(orbit===m.selected));}
-      for(const key of Object.keys(limits)){const s=m.samples[key],el=this.root.querySelector(`[data-sr-driver="${key}"]`);el.dataset.stale=String(!s.fresh);el.querySelector('b').textContent=s.fresh?(key==='electron'?s.value.toExponential(2):key==='proton'?s.value.toFixed(2):s.value.toFixed(0)):'—';el.querySelector('small').textContent=s.status+(Number.isFinite(Date.parse(s.time))?' · '+new Date(s.time).toISOString().slice(11,16)+(Number.isFinite(Date.parse(s.validThrough))?'–'+new Date(s.validThrough).toISOString().slice(11,16):'')+'Z':'');}
-      this.canvas.setAttribute('aria-label',m.status+'. '+ORBITS.map(o=>o+' '+label(m,o)).join('; ')+'. Schematic orbit environment.');this.draw();this.wake();}
-    wake(){if(this.frame||this.paused||!this.visible||document.hidden)return;this.last=0;this.frame=requestAnimationFrame(t=>this.tick(t));}
-    tick(t){this.frame=0;if(this.paused||!this.visible||document.hidden||!this.root.isConnected)return;if(t-this.last>=40){this.phase+=this.last?Math.min(.08,(t-this.last)/1000):0;this.last=t;this.draw();}this.frame=requestAnimationFrame(t=>this.tick(t));}
-    draw(){const box=this.viewport.getBoundingClientRect();if(!box.width||!box.height)return;const dpr=Math.min(2,window.devicePixelRatio||1),w=Math.round(box.width*dpr),h=Math.round(box.height*dpr);if(this.canvas.width!==w||this.canvas.height!==h){this.canvas.width=w;this.canvas.height=h;}const c=this.ctx;c.setTransform(1,0,0,1,0,0);c.fillStyle='#030b13';c.fillRect(0,0,w,h);const scale=Math.min(w/760,h/360);c.setTransform(scale,0,0,scale,(w-760*scale)/2,(h-360*scale)/2);
-      const bg=c.createRadialGradient(380,180,20,380,180,360);bg.addColorStop(0,'#142d40');bg.addColorStop(1,'#030b13');c.fillStyle=bg;c.fillRect(0,0,760,360);
-      for(let i=0;i<95;i++){c.globalAlpha=.12+(i%5)*.065;c.fillStyle='#b4d0de';c.beginPath();c.arc((i*193+37)%760,(i*97+41)%360,i%4?.65:1,0,Math.PI*2);c.fill();}c.globalAlpha=1;
-      const geometry=[{rx:94,ry:47,a:.22},{rx:168,ry:77,a:-.14},{rx:244,ry:103,a:.08},{rx:302,ry:89,a:-.34}],m=this.model;
-      const path=(g,start,end)=>{c.beginPath();c.ellipse(380,180,g.rx,g.ry,g.a,start,end);};
-      // Back halves sit behind the sunlit Earth, front halves in front.
-      for(let layer=0;layer<2;layer++){
-        for(let i=3;i>=0;i--){const orbit=ORBITS[i],level=m.levels[orbit],known=m.anyFresh&&(m.complete||level>0),color=known?COLORS[level]:'#567082',g=geometry[i],selected=orbit===m.selected;c.strokeStyle=color;c.globalAlpha=layer?(selected?.9:.54):.25;c.lineWidth=selected?2:1;path(g,layer?0:Math.PI,layer?Math.PI:Math.PI*2);c.stroke();
-          if(known&&level>0){c.globalAlpha=.06*level;c.lineWidth=7+level*3;path(g,0,Math.PI*2);c.stroke();}c.globalAlpha=1;
-          const t=(this.phase*(.24-i*.043)+i*1.9)%(Math.PI*2),front=Math.sin(t)>=0;if(front===Boolean(layer)){const px=g.rx*Math.cos(t),py=g.ry*Math.sin(t),x=380+px*Math.cos(g.a)-py*Math.sin(g.a),y=180+px*Math.sin(g.a)+py*Math.cos(g.a);c.save();c.translate(x,y);c.rotate(g.a-.3);c.fillStyle='#274e67';c.strokeStyle='#8aaebc';c.lineWidth=.8;c.fillRect(-13,-4,8,8);c.strokeRect(-13,-4,8,8);c.fillRect(5,-4,8,8);c.strokeRect(5,-4,8,8);c.fillStyle=known?color:'#8b9dac';c.fillRect(-4,-5,8,10);c.restore();}
-        }
-        if(layer===0){const halo=c.createRadialGradient(380,180,47,380,180,68);halo.addColorStop(0,'rgba(91,184,220,.22)');halo.addColorStop(1,'rgba(37,123,177,0)');c.fillStyle=halo;c.fillRect(310,110,140,140);c.drawImage(earth,327,127,106,106);c.strokeStyle='#8bcbd766';c.lineWidth=1;c.beginPath();c.arc(380,180,51,0,Math.PI*2);c.stroke();}
-      }
-      c.textAlign='center';c.font='10px ui-monospace,monospace';c.fillStyle='#92afc1';c.fillText('EARTH',380,250);c.fillStyle='#617f92';c.fillText('SUNLIT SIDE',205,322);c.fillText('NIGHTSIDE',548,322);
-      for(const [i,x,y]of [[0,485,205],[1,198,151],[2,625,173],[3,121,284]]){c.fillStyle='#bdd1df';c.font='600 11px ui-monospace,monospace';c.fillText(ORBITS[i],x,y);}c.setTransform(1,0,0,1,0,0);
+      this.click=e=>{
+        if(e.target.closest('[data-sr-pause]')){this.paused=!this.paused;this.pauseLabel();this.poll();}
+        if(e.target.closest('[data-sr-info]')){const info=root.querySelector('.sr-info');info.hidden=!info.hidden;root.querySelector('[data-sr-info]').setAttribute('aria-expanded',String(!info.hidden));}
+        const orbit=e.target.closest('[data-risk-orbit]')?.dataset.riskOrbit;
+        if(orbit){e.stopPropagation();window.dispatchEvent(new CustomEvent('risk-orbit-select',{detail:orbit}));scan();}
+      };
+      this.change=e=>{if(e.target.matches('[data-sr-mode]')){this.mode=TITLES[e.target.value]?e.target.value:'live';this.poll();}};
+      root.addEventListener('click',this.click);root.addEventListener('change',this.change);this.pauseLabel();this.poll();
     }
-    stop(){cancelAnimationFrame(this.frame);this.resize.disconnect();this.visibility.disconnect();this.root.removeEventListener('click',this.click);}
+    pauseLabel(){const b=this.root.querySelector('[data-sr-pause]');b.textContent=this.paused?'Play':'Pause';b.setAttribute('aria-pressed',String(this.paused));b.setAttribute('aria-label',(this.paused?'Play':'Pause')+' satellite illustration');}
+    poll(){
+      const live=window.SpaceWxRiskTelemetry?.()||{},preview=this.mode!=='live';
+      const snapshot=preview?{...previewSnapshot(this.mode),selected:live.selected}:live;
+      this.model=derive(snapshot);this.belts=beltState(snapshot,this.model,this.mode);
+      const m=this.model;this.root.dataset.quality=preview?'preview':m.complete?'live':m.anyFresh?'partial':'unknown';this.root.dataset.mode=this.mode;
+      this.root.querySelector('[data-sr-status]').textContent=preview?'PREVIEW: '+TITLES[this.mode]:m.status;
+      this.root.querySelector('[data-sr-preview]').hidden=!preview;
+      this.root.querySelector('[data-sr-belt-state]').textContent=this.belts.explanation;
+      this.root.querySelector('[data-sr-flux]').textContent=this.belts.loadingKnown?(preview?'Illustrative':'GOES GEO')+' >2 MeV: '+this.belts.flux.toLocaleString(undefined,{maximumFractionDigits:1})+' e⁻ cm⁻² s⁻¹ sr⁻¹'+(!preview?' · '+new Date(this.belts.time).toISOString().slice(11,16)+'Z':''):'Reference outer-belt shading';
+      for(const orbit of ORBITS){const el=this.root.querySelector(`[data-sr-level="${orbit}"]`);el.textContent=label(m,orbit);el.style.setProperty('--risk-color',!m.anyFresh||(!m.complete&&!m.levels[orbit])?'#839baa':COLORS[m.levels[orbit]]);el.parentElement.setAttribute('aria-pressed',String(orbit===m.selected));}
+      for(const key of Object.keys(limits)){
+        const s=m.samples[key],el=this.root.querySelector(`[data-sr-driver="${key}"]`);el.dataset.stale=String(!s.fresh);
+        el.querySelector('b').textContent=s.fresh?(key==='electron'?s.value.toExponential(2):key==='proton'?s.value.toFixed(2):s.value.toFixed(0)):'—';
+        el.querySelector('small').textContent=preview?'Illustrative input':s.status+(Number.isFinite(Date.parse(s.time))?' · '+new Date(s.time).toISOString().slice(11,16)+(Number.isFinite(Date.parse(s.validThrough))?'–'+new Date(s.validThrough).toISOString().slice(11,16):'')+'Z':'');
+      }
+      this.canvas.setAttribute('aria-label',(preview?'Synthetic '+TITLES[this.mode]+' preview. ':m.status+'. ')+this.belts.explanation+'. Inner proton belt, slot region, outer electron belt; illustrative boundaries. '+ORBITS.map(o=>o+' '+label(m,o)).join('; '));
+      if(!this.current||this.paused)this.current={...this.belts};
+      this.draw();this.wake();
+    }
+    wake(){if(this.frame||this.paused||!this.visible||document.hidden)return;this.last=0;this.frame=requestAnimationFrame(t=>this.tick(t));}
+    tick(t){
+      this.frame=0;if(this.paused||!this.visible||document.hidden||!this.root.isConnected)return;
+      if(t-this.last>=40){const dt=this.last?Math.min(.08,(t-this.last)/1000):0;this.phase+=dt;this.last=t;
+        for(const key of ['inner','outer','spread','intensity'])this.current[key]=mix(this.current[key],this.belts[key],1-Math.exp(-dt/1.1));
+        this.draw();
+      }this.frame=requestAnimationFrame(t=>this.tick(t));
+    }
+    beltLayers(){
+      const b=this.current,key=[b.inner,b.outer,b.spread,b.intensity].map(v=>Math.round(v*35)).join(':')+':'+this.belts.loadingKnown;
+      if(this.cacheKey===key)return;this.cacheKey=key;
+      const cs=this.layers.map(layer=>{const c=layer.getContext('2d');c.clearRect(0,0,W,H);return c;});
+      for(let band=1;band>=0;band--){
+        const lo=band?b.inner:1.25,hi=band?b.outer:2.4,maxLat=(band?36*b.spread:30)*Math.PI/180;
+        const rgb=band?(this.belts.loadingKnown?'102,182,255':'113,139,157'):'255,181,92',strength=band?.04+.5*b.intensity:.37;
+        // Translucent dipole-shell latitude ribbons give the cloud its volume.
+        for(let j=-10;j<=10;j++){
+          const lat=maxLat*j/11,weight=Math.cos(j/11*Math.PI/2)**2,low=Math.max(lo,1.08/Math.cos(lat)**2);
+          for(let side=0;side<2;side++){
+            const c=cs[side];c.fillStyle=`rgba(${rgb},${strength*.052*weight})`;
+            for(let k=0;k<84;k++){
+              const t0=k/84*TAU,t1=(k+1)/84*TAU;if(cutaway((t0+t1)/2))continue;
+              const points=[project(beltPoint(low,lat,t0)),project(beltPoint(hi,lat,t0)),project(beltPoint(hi,lat,t1)),project(beltPoint(low,lat,t1))];
+              if((points.reduce((v,p)=>v+p.depth,0)>0)!==Boolean(side))continue;
+              c.beginPath();points.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));c.closePath();c.fill();
+            }
+          }
+        }
+        for(const p of clouds[band]){
+          if(cutaway(p.lon))continue;
+          const lat=p.lat*maxLat,point=beltPoint(mix(lo,hi,p.l),lat,p.lon);if(Math.hypot(...point)<1.08)continue;
+          const pos=project(point),c=cs[pos.depth>0?1:0];
+          c.fillStyle=`rgba(${rgb},${strength*p.a*(1-.5*Math.abs(p.lat))})`;c.beginPath();c.arc(pos.x,pos.y,p.size*(band?1.25:1.15),0,TAU);c.fill();
+        }
+        for(const lon of [.18,1.22]){
+          const c=cs[1],points=[];
+          for(let j=-20;j<=20;j++)points.push(project(beltPoint(hi,maxLat*j/20,lon)));
+          for(let j=20;j>=-20;j--){const lat=maxLat*j/20;points.push(project(beltPoint(Math.max(lo,1.08/Math.cos(lat)**2),lat,lon)));}
+          c.beginPath();points.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));c.closePath();
+          c.fillStyle=`rgba(${rgb},${band?.03+.18*b.intensity:.22})`;c.fill();c.strokeStyle=`rgba(${rgb},.28)`;c.lineWidth=.8;c.stroke();
+        }
+      }
+    }
+    drawOrbit(c,orbit,front){
+      const m=this.model,level=m.levels[orbit],known=m.anyFresh&&(m.complete||level>0),selected=orbit===m.selected;
+      c.strokeStyle=known?COLORS[level]:'#708999';c.globalAlpha=front?(selected?.95:.46):.22;c.lineWidth=selected?1.8:1;
+      c.setLineDash(orbit==='HEO'?[5,5]:[]);c.beginPath();let drawing=false;
+      for(let i=0;i<=160;i++){const p=project(orbitPoint(orbit,i/160*TAU));if((p.depth>=0)===front){if(!drawing)c.moveTo(p.x,p.y);else c.lineTo(p.x,p.y);drawing=true;}else drawing=false;}c.stroke();c.setLineDash([]);c.globalAlpha=1;
+      const i=ORBITS.indexOf(orbit),p=project(orbitPoint(orbit,this.phase*orbitSpecs[orbit].speed+i*1.3));
+      if((p.depth>=0)===front){c.save();c.translate(p.x,p.y);c.rotate(-.25);c.fillStyle='#2f5c7a';c.strokeStyle='#bed4e0';c.lineWidth=.8;for(const x of [-12,5]){c.fillRect(x,-3.5,7,7);c.strokeRect(x,-3.5,7,7);}c.fillStyle=known?COLORS[level]:'#a1b2c0';c.fillRect(-3.5,-4.5,7,9);c.restore();}
+    }
+    drawTracers(c,front){
+      for(let band=0;band<2;band++)for(let i=0;i<(band?20:9);i++){
+        const b=this.current,l=band?mix(b.inner+.2,b.outer-.2,(i%7)/7):1.5+(i%4)*.19;
+        const lat=Math.sin(this.phase*(band?1.2:.6)+i*2.3)*(band?.37:.27),lon=i*2.4+this.phase*(band?.1:-.055),p=project(beltPoint(l,lat,lon));
+        if(cutaway(lon)||(p.depth>0)!==front)continue;
+        c.globalAlpha=band?(this.belts.loadingKnown?.18+.5*b.intensity:.12):.38;c.fillStyle=band?'#c4e7ff':'#ffe2a3';c.beginPath();c.arc(p.x,p.y,band?1.65:1.3,0,TAU);c.fill();
+      }c.globalAlpha=1;
+    }
+    draw(){
+      if(!this.current)return;const box=this.viewport.getBoundingClientRect();if(!box.width||!box.height)return;
+      const dpr=Math.min(2,window.devicePixelRatio||1),w=Math.round(box.width*dpr),h=Math.round(box.height*dpr);
+      if(this.canvas.width!==w||this.canvas.height!==h){this.canvas.width=w;this.canvas.height=h;}
+      const c=this.ctx;c.setTransform(1,0,0,1,0,0);c.fillStyle='#030a13';c.fillRect(0,0,w,h);
+      const scale=Math.min(w/W,h/H);c.setTransform(scale,0,0,scale,(w-W*scale)/2,(h-H*scale)/2);
+      const bg=c.createRadialGradient(CX,CY,30,CX,CY,440);bg.addColorStop(0,'#152e42');bg.addColorStop(1,'#030a13');c.fillStyle=bg;c.fillRect(0,0,W,H);
+      for(const s of stars){c.globalAlpha=s.a;c.fillStyle='#b8d4e5';c.beginPath();c.arc(s.x,s.y,s.r,0,TAU);c.fill();}c.globalAlpha=1;
+      this.beltLayers();c.drawImage(this.layers[0],0,0);for(const orbit of ORBITS)this.drawOrbit(c,orbit,false);this.drawTracers(c,false);
+      const glow=c.createRadialGradient(CX,CY,RE*.92,CX,CY,RE*1.35);glow.addColorStop(0,'rgba(95,184,230,.23)');glow.addColorStop(1,'rgba(35,98,154,0)');c.fillStyle=glow;c.fillRect(CX-RE*1.4,CY-RE*1.4,RE*2.8,RE*2.8);c.drawImage(earth,CX-RE,CY-RE,RE*2,RE*2);
+      c.drawImage(this.layers[1],0,0);this.drawTracers(c,true);for(const orbit of ORBITS)this.drawOrbit(c,orbit,true);
+      // Fixed callouts keep labels separate from the moving spacecraft.
+      const callout=(text,x,y,to,color)=>{c.strokeStyle=color+'77';c.lineWidth=.8;c.beginPath();c.moveTo(x,y+6);c.lineTo(to.x,to.y);c.stroke();c.font='600 17px Inter,system-ui,sans-serif';c.textAlign='left';c.fillStyle=color;c.fillText(text,x,y);};
+      callout('INNER BELT',570,110,project(beltPoint(1.9,.15,.18)),'#eec283');
+      callout('OUTER BELT',745,72,project(beltPoint(this.current.outer-.6,.1,.18)),'#93c9ee');
+      callout('SLOT',660,466,project(beltPoint(2.7,0,1.22)),'#a7baca');
+      c.textAlign='center';c.font='11px ui-monospace,monospace';c.fillStyle='#d0e1ea';c.fillText('EARTH',CX,CY+RE+18);
+      for(const [orbit,angle] of [['LEO',.6],['MEO',3.7],['GEO',.15],['HEO',3.1]]){const p=project(orbitPoint(orbit,angle));c.fillStyle='#d0e1ea';c.font='600 15px ui-monospace,monospace';c.fillText(orbit,p.x,p.y-13);}
+      c.fillStyle='#7e9caf';c.font='12px ui-monospace,monospace';c.textAlign='left';c.fillText('CUTAWAY · EARTH-CENTRED RADIAL REFERENCE',57,526);
+      c.strokeStyle='#5d7e9477';c.beginPath();c.moveTo(58,551);c.lineTo(58+7*RE,551);c.stroke();
+      for(const n of [0,1,2,4,6,7]){const x=58+n*RE;c.beginPath();c.moveTo(x,547);c.lineTo(x,555);c.stroke();c.fillText(n+' Rᴇ',x-7,571);}
+      c.textAlign='right';c.fillStyle=this.mode==='live'?'#8bafc4':'#e6c980';c.font='11px ui-monospace,monospace';c.fillText(this.mode==='live'?'ILLUSTRATIVE BOUNDARIES':'SYNTHETIC '+TITLES[this.mode].toUpperCase()+' SCENARIO',945,551);
+      c.setTransform(1,0,0,1,0,0);
+    }
+    stop(){cancelAnimationFrame(this.frame);this.resize.disconnect();this.visibility.disconnect();this.reduced.removeEventListener('change',this.motionChange);this.root.removeEventListener('click',this.click);this.root.removeEventListener('change',this.change);}
   }
   function mount(panel){let root=panel.querySelector('.sr-scene');if(!root){panel.innerHTML=markup();root=panel.querySelector('.sr-scene');}if(!scenes.has(root))scenes.set(root,new Scene(root));else scenes.get(root).poll();return root;}
   function scan(){const panel=document.getElementById('militaryRiskPanel');if(panel&&!panel.querySelector('.sr-scene'))mount(panel);for(const [root,scene]of scenes)if(!root.isConnected){scene.stop();scenes.delete(root);}for(const root of document.querySelectorAll('.sr-scene')){if(!scenes.has(root))scenes.set(root,new Scene(root));else scenes.get(root).poll();}}
-  window.SpaceWxSatelliteRisk={derive,label,markup,mount,refresh:scan};
+  window.SpaceWxSatelliteRisk={derive,label,markup,mount,previewSnapshot,beltState,orbitPoint,beltPoint,refresh:scan};
   document.addEventListener('DOMContentLoaded',()=>{scan();const timer=setInterval(scan,10000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)scan();});window.addEventListener('spacewx:alert-rules-changed',scan);window.addEventListener('beforeunload',()=>{clearInterval(timer);for(const scene of scenes.values())scene.stop();},{once:true});});
 })();
 </script>
@@ -7956,7 +8111,7 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
               <div class="card-body">
                 <div class="satellite-risk-stack wx-particle">
                   <div class="satellite-risk-map wx-particle-plot"><div id="militaryRiskPanel"></div></div>
-                  <details class="sr-analysis"><summary>Orbit impact analysis</summary><div class="risk-matrix" id="riskGrid"></div></details>
+                  <details class="sr-analysis"><summary>Live orbit impact analysis</summary><div class="risk-matrix" id="riskGrid"></div></details>
                 </div>
               </div>
             </article>
@@ -14305,7 +14460,7 @@ function dedupeRadioBurstRows(rows) {
         const latest = (rows, field) => rows.filter(row => Number.isFinite(toNumber(row[field])) && toNumber(row[field]) >= 0 && timeOf(row)).sort(byTime).at(-1);
         const electrons = electronRows2Mev();
         const apRow = latest(apHistoryRows(), "ap_value");
-        riskTelemetry = { samples: {
+        riskTelemetry = { electronFlux: { value: v.electronFlux, time: timeOf(latest(electrons, 'flux')) }, samples: {
           ap: { value: v.ap, time: timeOf(apRow), validThrough: apRow?.interval_end },
           proton: { value: v.proton, time: timeOf(latest(protonRowsAtThreshold(normalizeRows(state.data.proton), 10), 'flux')) },
           electron: { value: v.electron, time: timeOf(latest(electrons, 'flux')), coverageOK: electronCoverageHours(electrons) >= 23 }
@@ -36283,7 +36438,7 @@ window.SpaceWxMonitorLayout=(()=>{
     if(key==='model.sep')return {cols:24,rows:54};
     if(key==='model.electron')return {cols:24,rows:44};
     if(key==='model.nairas')return {cols:24,rows:58};
-    if(key==='forecast.risk')return {cols:12,rows:60};
+    if(key==='forecast.risk')return {cols:24,rows:70};
     if(kind==='visual')return {cols:key==='helio'?24:12,rows:45};
     if(/imagery|hmi|spot|suvi|aurora|drap|risk|solar-system/.test(key))return {cols:12,rows:45};
     if(/timeline|discussion|forecast-table|recurrence|donki|enlil|hourly-geomag|flare/.test(key))return {cols:24,rows:51};
@@ -36507,6 +36662,20 @@ window.SpaceWxMonitorLayout=(()=>{
 #card-satellite-risk .satellite-risk-stack.wx-details-open{height:auto!important}
 .fd-monitor-layout .fd-wall-product>#card-satellite-risk:has(.wx-details-open){height:auto;overflow:visible}
 .fd-monitor-layout .fd-wall-product:has(#card-satellite-risk .wx-details-open){height:auto}
+.sr-toolbar{flex-wrap:wrap;gap:7px}.sr-controls{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-left:auto}
+.sr-controls select{max-width:180px;background:#102a3c;color:#daedf5;border:1px solid #426177;border-radius:4px;padding:5px 7px;font:11px Inter,system-ui,sans-serif}
+.sr-scene[data-quality=preview]{border-color:#75643c}.sr-scene[data-quality=preview] .sr-toolbar strong{color:#edd18d}
+.sr-preview-note{flex-shrink:0;padding:6px 12px;background:#322a1c;color:#edd18d;border-bottom:1px solid #665235;font:9px ui-monospace,monospace;letter-spacing:.04em}
+.sr-preview-note[hidden]{display:none}
+.sr-belt-key{display:flex;justify-content:center;flex-wrap:wrap;gap:7px 16px;padding:7px 10px;border-top:1px solid #213b4d;font-size:10px;color:#b2c9d6;flex-shrink:0}
+.sr-belt-key span{display:flex;align-items:center;gap:5px}.sr-belt-key i{width:7px;height:7px;border-radius:50%;display:inline-block}.sr-inner-key{background:#eeb775;box-shadow:0 0 7px #dd983c77}.sr-outer-key{background:#89c4f5;box-shadow:0 0 7px #89c4f577}
+.sr-belt-state{display:flex;flex-direction:column;gap:4px;padding:5px 12px 8px;color:#8eafc2;font-size:10px;line-height:1.5;flex-shrink:0}.sr-belt-state b{font-weight:500;color:#bdd8e8;font-variant-numeric:tabular-nums}
+.sr-info{max-height:calc(100% - 60px);overflow:auto;box-sizing:border-box}.sr-info p{margin:0 0 10px}.sr-info p:last-child{margin:0}.sr-info a{color:#a1d9fa;text-decoration:underline}
+#card-satellite-risk .satellite-risk-stack.wx-particle{min-height:625px}
+#card-satellite-risk .satellite-risk-map.wx-particle-plot{min-height:590px}
+#militaryRiskPanel .sr-viewport{min-height:270px}
+.sr-scene[data-compact=true] .sr-viewport{min-height:190px}.sr-scene[data-compact=true] .sr-belt-key{font-size:9px;gap:5px 10px}
+.hsv-view-label{font-size:11px;color:#aec9d8}
 </style>
 <script id="fdDeskScript">
 (function () {

@@ -19,14 +19,16 @@ class NAIRASTests(unittest.TestCase):
             root = Path(directory)
             feed = root / 'feed.json'
             feed.write_text(json.dumps({'schemaVersion': 'chhss-feed-1'}))
-            source = {'schemaVersion': 'nairas-effective-dose-1', 'sources': {'forecast': {
-                'sourceTime': '2026-09-06T20:15:00Z', 'unit': 'mSv/h', 'values': [.012],
+            source = {'schemaVersion': 'nairas-effective-dose-1', 'sources': {'nowcast': {
+                'sourceTime': '2026-09-19T04:00:00Z', 'unit': 'mSv/h', 'values': [.012],
                 'error': '</script>source unavailable'}}}
+            original = json.loads(json.dumps(source))
+            source['sources']['forecast'] = {'sourceTime': '2026-09-06T20:15:00Z'}
             nairas = root / 'nairas.json'; nairas.write_text(json.dumps(source))
             output = build(root / 'dashboard.html', feed=feed, nairas=nairas).read_text()
             embedded = output.split('id="nairasBootstrap">')[1].split('</script>')[0]
             self.assertNotIn('</script>', embedded)
-            self.assertEqual(json.loads(embedded), source)
+            self.assertEqual(json.loads(embedded), original)
 
     def test_provider_concatenated_metadata(self):
         self.assertEqual(decode('{"effective_dose":[10]}{"Neutron_Monitor":{}}')['effective_dose'], [10])
@@ -69,11 +71,12 @@ class NAIRASTests(unittest.TestCase):
             retrieve('nowcast', 2643, lambda *a, **k: Response())
 
     def test_outage_preserves_old_epoch_without_relabelling(self):
-        old = {'sourceTime': '2026-09-06T20:15:00Z', 'retrievedAt': '2026-09-19T04:00:00Z', 'values': [.01]}
+        old = {'sourceTime': '2026-09-19T04:00:00Z', 'retrievedAt': '2026-09-19T04:00:00Z', 'values': [.01]}
         def fail(*args, **kwargs): raise TimeoutError('source timeout')
-        result = collect({'sources': {'forecast': old}}, fail)
-        self.assertEqual(result['sources']['forecast']['sourceTime'], old['sourceTime'])
-        self.assertEqual(result['sources']['forecast']['retrievedAt'], old['retrievedAt'])
+        result = collect({'sources': {'nowcast': old}}, fail)
+        self.assertEqual(result['sources']['nowcast']['sourceTime'], old['sourceTime'])
+        self.assertEqual(result['sources']['nowcast']['retrievedAt'], old['retrievedAt'])
         self.assertIn('timeout', result['sources']['nowcast']['error'])
+        self.assertEqual(set(result['sources']), {'nowcast'})
 
 if __name__ == '__main__': unittest.main()

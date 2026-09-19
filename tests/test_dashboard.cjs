@@ -233,10 +233,8 @@ assert.equal(dose.point(fullGrid,-90,0).rate,.02);
 assert.equal(dose.point(fullGrid,90,360).rate,.03);
 assert.equal(dose.point(fullGrid,60,-100).longitude,-100);
 assert.equal(dose.point(fullGrid,91,0),null);
-assert.equal(dose.status({...fullGrid,sourceTime:'2026-09-06T20:15:00Z'},'forecast',Date.parse('2026-09-19T06:00Z')).warning,true);
-assert.match(dose.status(fullGrid,'forecast',Date.parse('2026-09-19T06:00Z')).text,/validity interval not supplied/);
-assert.equal(dose.status(fullGrid,'nowcast',Date.parse('2026-09-19T06:00Z')).warning,false);
-assert.equal(dose.status(fullGrid,'nowcast',Date.parse('2026-09-19T08:00Z')).warning,true);
+assert.equal(dose.status(fullGrid,Date.parse('2026-09-19T06:00Z')).warning,false);
+assert.equal(dose.status(fullGrid,Date.parse('2026-09-19T08:00Z')).warning,true);
 const north=dose.polarGrid(fullGrid,1,2),south=dose.polarGrid(fullGrid,-1,2);
 assert.equal(north.z[180][180],.06); // 2 h at .03 mSv/h
 assert.equal(south.z[180][180],.04); // 2 h at .02 mSv/h
@@ -279,14 +277,16 @@ assert.deepEqual(renderCalls,[['wind',true],['Xray'],['Proton'],['Epam'],['Elect
 // Wheel events over a plot move the page; modifier gestures remain untouched.
 const scrollArea={scrollTop:500,clientHeight:800};let prevented=0,stopped=0;
 const wheelContext=vm.createContext({stage:{closest:()=>scrollArea}});
-vm.runInContext(desk.match(/  function scrollMonitorPage\(event\) \{[\s\S]*?\n  \}/)[0],wheelContext);
+vm.runInContext(desk.match(/  function scrollWorkspacePage\(event\) \{[\s\S]*?\n  \}/)[0],wheelContext);
 const wheel={target:{closest:()=>true},deltaY:-100,deltaMode:0,preventDefault:()=>prevented++,stopPropagation:()=>stopped++};
-wheelContext.scrollMonitorPage(wheel);assert.equal(scrollArea.scrollTop,400);
-wheelContext.scrollMonitorPage({...wheel,deltaY:2,deltaMode:1});assert.equal(scrollArea.scrollTop,432);
-wheelContext.scrollMonitorPage({...wheel,deltaY:1,deltaMode:2});assert.equal(scrollArea.scrollTop,1232);
-for(const modifier of ['ctrlKey','metaKey','shiftKey'])wheelContext.scrollMonitorPage({...wheel,[modifier]:true});
-wheelContext.scrollMonitorPage({...wheel,target:{closest:()=>false}});
+wheelContext.scrollWorkspacePage(wheel);assert.equal(scrollArea.scrollTop,400);
+wheelContext.scrollWorkspacePage({...wheel,deltaY:2,deltaMode:1});assert.equal(scrollArea.scrollTop,432);
+wheelContext.scrollWorkspacePage({...wheel,deltaY:1,deltaMode:2});assert.equal(scrollArea.scrollTop,1232);
+for(const modifier of ['ctrlKey','metaKey','shiftKey'])wheelContext.scrollWorkspacePage({...wheel,[modifier]:true});
+wheelContext.scrollWorkspacePage({...wheel,target:{closest:()=>false}});
 assert.equal(scrollArea.scrollTop,1232);assert.equal(prevented,3);assert.equal(stopped,3);
+wheelContext.scrollWorkspacePage({...wheel,target:{closest:selector=>selector.includes('.fd-model-workspace .fd-stage')}});
+assert.equal(scrollArea.scrollTop,1132);assert.equal(prevented,4);assert.equal(stopped,4);
 vm.runInContext(scripts.find(([,a])=>a.includes('id="productFlow"'))[2],products);
 assert.equal(products.window.SpaceWxProductFlow.rowsForContent(54,600,30),54);
 assert.equal(products.window.SpaceWxProductFlow.rowsForContent(54,1400,30),120);
@@ -541,3 +541,26 @@ const swpcFunctions=['parse3DayForecast','currentSwpcFlareProbabilities'].map(na
 const t=vm.createContext({state:{data:{forecast:':Prediction_dates: 2026 Sep 20 2026 Sep 21 2026 Sep 22\nClass_M 15 20 25\nClass_X 1 2 3\n'}},toNumber:v=>v==null?NaN:Number(v)});vm.runInContext(swpcFunctions,t);
 assert.equal(t.currentSwpcFlareProbabilities().validStart,'2026-09-20T00:00:00.000Z');assert.equal(t.currentSwpcFlareProbabilities().validEnd,'2026-09-21T00:00:00.000Z');
 }
+
+// Map navigation changes the projection only; dose values and shared units remain unchanged.
+const southOnly=dose.chart(fullGrid,1,false,{lat:-60,lon:120},'south');
+assert.equal(southOnly.traces.filter(t=>t.type==='heatmap').length,1);
+assert.equal(southOnly.traces[0].customdata[180][180][0],-90);
+assert.equal(southOnly.traces[0].z[180][180],.02);
+assert.equal(southOnly.layout.xaxis2.fixedrange,false);
+assert.equal(southOnly.layout.yaxis2.fixedrange,false);
+assert.equal(southOnly.layout.dragmode,'pan');
+assert.deepEqual(Array.from(southOnly.layout.xaxis2.domain),[0,1]);
+const northOnly=dose.chart(fullGrid,2,true,{lat:60,lon:-100},'north');
+assert.deepEqual(Array.from(northOnly.layout.yaxis.domain),[0,1]);
+assert.equal(northOnly.traces[0].z[180][180],.06);
+assert.equal(northOnly.layout.coloraxis.cmax,southOnly.layout.coloraxis.cmax*2);
+const navCode=desk.match(/  function modelNavigation\(\) \{[\s\S]*?\n  \}/)[0];
+const navContext=vm.createContext({PIPELINES:{huxt:{name:'CME | Solar Wind'},swig:{name:'Coronal Hole / HSS Outlook'},flare:{name:'Solar Flare Probability'},sep:{name:'SEP / Proton'},nairas:{name:'Radiation Dose · 20 km'},charging:{name:'Electron Forecast'}},state:{selectedModel:'nairas'},esc:s=>s});
+vm.runInContext(navCode,navContext);
+const nav=navContext.modelNavigation();
+assert.equal((nav.match(/data-fd-model=/g)||[]).length,6);
+assert.equal((nav.match(/aria-current="page"/g)||[]).length,1);
+assert.match(nav,/data-fd-model="nairas" aria-current="page"/);
+assert.equal((desk.match(/\$\{modelNavigation\(\)\}/g)||[]).length,4);
+console.log('Shared model navigation and interactive radiation-map projections passed');

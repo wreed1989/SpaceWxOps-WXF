@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "chhss-health-1",
+  "checkedAt": "2026-09-19T01:57:24.437512Z",
+  "status": "current",
+  "observationTime": "2026-09-19T00:57:04.842000Z",
+  "hmiTime": "2026-09-19T00:59:25Z",
+  "maskId": "6df138f545c431e8093965db43626625ce4c739ed574eb0a3bae9301d22be62f",
+  "polarity": {
+    "E": 1,
+    "M": null,
+    "W": null
+  },
+  "inputQuality": {
+    "aia": {
+      "value": 1073741824,
+      "allowedMask": 1073741824,
+      "warning": "Near-real-time product; definitive calibration may differ"
+    },
+    "hmi": {
+      "value": 1024,
+      "allowedMask": 1024,
+      "warning": "Some level-1 cosmic-ray lists unavailable; spatial outlier screening applied; NRT provisional"
+    }
+  },
+  "operationallyValidated": false,
+  "message": "Numeric AIA/HMI processing succeeded; automatic CH candidates and forecasts still require validation"
+}

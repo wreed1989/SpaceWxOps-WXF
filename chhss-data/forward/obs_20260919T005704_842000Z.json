@@ -1,0 +1,91 @@
+{
+  "observationTime": "2026-09-19T00:57:04.842000Z",
+  "issuedAt": "2026-09-19T01:57:24.403104Z",
+  "maskId": "6df138f545c431e8093965db43626625ce4c739ed574eb0a3bae9301d22be62f",
+  "measurementVersion": "aia193-radial-contrast-candidates-wcs-v1",
+  "windows": {
+    "E": {
+      "A": 0.2515044727568447,
+      "disk": 18445,
+      "ch": 4639,
+      "centroidLat": -8.844435978261833,
+      "centroidCmd": -27.976765541084248
+    },
+    "M": {
+      "A": 0.14362347233883757,
+      "disk": 21438,
+      "ch": 3079,
+      "centroidLat": 25.258969301811913,
+      "centroidCmd": -0.9042296319721906
+    },
+    "W": {
+      "A": 0.12957441040932502,
+      "disk": 18445,
+      "ch": 2390,
+      "centroidLat": 39.04821108830969,
+      "centroidCmd": 28.381066211790312
+    }
+  },
+  "polarity": {
+    "E": {
+      "coreDefinition": "20deg-hgs",
+      "polarity": 1,
+      "fluxImbalance": 0.285341257791952,
+      "meanBr": 2.661080110739415,
+      "medianBr": 0.880451503899946,
+      "nValid": 4407,
+      "nMasked": 4639,
+      "validMaskedPixelFraction": 0.9499892218150463,
+      "quality": "signed-field QA; detector unvalidated",
+      "thresholds": {
+        "minPixels": 100,
+        "minCoverage": 0.8,
+        "minImbalance": 0.15,
+        "minMeanBrG": 1,
+        "minMu": 0.4
+      }
+    },
+    "M": {
+      "coreDefinition": "20deg-hgs",
+      "polarity": null,
+      "fluxImbalance": 0.09397129931361317,
+      "meanBr": 0.778693472693484,
+      "medianBr": 0.13325177421457585,
+      "nValid": 2911,
+      "nMasked": 3079,
+      "validMaskedPixelFraction": 0.9454368301396557,
+      "quality": "mixed/weak/insufficient",
+      "thresholds": {
+        "minPixels": 100,
+        "minCoverage": 0.8,
+        "minImbalance": 0.15,
+        "minMeanBrG": 1,
+        "minMu": 0.4
+      }
+    },
+    "W": {
+      "coreDefinition": "20deg-hgs",
+      "polarity": null,
+      "fluxImbalance": -0.14091544561491132,
+      "meanBr": -1.121944109547329,
+      "medianBr": -0.34421781023039166,
+      "nValid": 2167,
+      "nMasked": 2390,
+      "validMaskedPixelFraction": 0.9066945606694561,
+      "quality": "mixed/weak/insufficient",
+      "thresholds": {
+        "minPixels": 100,
+        "minCoverage": 0.8,
+        "minImbalance": 0.15,
+        "minMeanBrG": 1,
+        "minMu": 0.4
+      }
+    }
+  },
+  "qualification": {
+    "operationallyValidated": false,
+    "detector": "Automatic candidates; manual interpretation required",
+    "magneticField": "Measured signed HMI; quantitative per-core QA; NRT warning retained",
+    "forecast": "Core-area relation not promoted by successful ingestion"
+  }
+}

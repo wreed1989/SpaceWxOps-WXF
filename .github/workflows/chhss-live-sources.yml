@@ -1,0 +1,46 @@
+name: CHHSS live source discovery
+on:
+  push:
+    branches: [chhss-data-integration]
+    paths: ['.github/workflows/chhss-live-sources.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Inspect live-data interfaces without substituting images for signed measurements
+        run: |
+          mkdir -p live-discovery
+          python - <<'PY'
+          import urllib.request,urllib.parse,concurrent.futures,json,pathlib,re,datetime
+          root=pathlib.Path('live-discovery');now=datetime.datetime.now(datetime.timezone.utc)
+          param=urllib.parse.urlencode(dict(op='rs_list',ds='hmi.M_45s_nrt[$]',key='T_REC,T_OBS,DATE-OBS,QUALITY,INSTRUME,BUNIT',seg='magnetogram'))
+          urls={host.split('//')[1]+'-info':host+'/cgi-bin/ajax/jsoc_info?'+param for host in ['https://jsoc.stanford.edu','http://jsoc.stanford.edu','https://jsoc1.stanford.edu','https://jsoc2.stanford.edu']}
+          urls.update({'jsoc-root':'https://jsoc.stanford.edu/','hmi-root':'https://hmi.stanford.edu/data/','gong-swpc':'https://services.swpc.noaa.gov/products/gong/zqs/','gong-full':'https://gong2.nso.edu/oQR/zqa/','gong-data':'https://gong.nso.edu/data/magmap/QR/','oma-data':'https://sdo.oma.be/data/','oma-hmi1':'https://sdo.oma.be/data/hmi_science_level1/','oma-hmi15':'https://sdo.oma.be/data/hmi_science_level1_5/magnetogram/','oma-aia1':'https://sdo.oma.be/data/aia_science_level1/0193/','oma-aia2':'https://sdo.oma.be/data/aia_science_level2/0193/','oma-synoptic':'https://sdo.oma.be/data/aia_synoptic/0193/','jsoc-aia':'https://jsoc1.stanford.edu/data/aia/synoptic/','jsoc-hmi':'https://jsoc1.stanford.edu/data/hmi/images/','vso-interface':'https://sdac.virtualsolar.org/cgi/search'})
+          def get(item):
+            k,u=item;r={'url':u}
+            try:
+              with urllib.request.urlopen(urllib.request.Request(u,headers={'User-Agent':'CHHSS/1.0'}),timeout=25) as x:
+                b=x.read(2000000);r.update(status=x.status,bytes=len(b),type=x.headers.get('Content-Type'));(root/(k+'.response')).write_bytes(b)
+                if 'oma-' in k:
+                  h=b.decode('utf8','replace');r['links']=re.findall(r'href="([^"?#]+)"',h)
+                  path=u
+                  for i in range(4):
+                    sub=sorted(set(z for z in re.findall(r'href="([^"?#]+)"',h) if re.fullmatch(r'\d{2,4}/',z)))
+                    if not sub:break
+                    path=urllib.parse.urljoin(path,sub[-1]);h=urllib.request.urlopen(path,timeout=25).read(2000000).decode('utf8','replace')
+                    (root/(k+'-deep'+str(i)+'.response')).write_text(h);r['latestDirectory']=path
+                    r['latestFiles']=re.findall(r'href="([^"]+\.fits(?:\.gz)?)"',h)[-12:]
+            except Exception as e:r['error']=str(e)
+            print(k,json.dumps(r),flush=True);return k,r
+          r=dict(concurrent.futures.ThreadPoolExecutor(6).map(get,urls.items()));(root/'report.json').write_text(json.dumps(r,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chhss-live-source-evidence
+          path: live-discovery/
+          retention-days: 7

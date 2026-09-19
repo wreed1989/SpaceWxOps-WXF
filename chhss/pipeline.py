@@ -55,17 +55,21 @@ class Acquire:
         for row in rows:
             try:
                 t=hmi_time(row);q=int(str(row.get('QUALITY')),0)
-                # Only informational observable NRT bit permitted. This is not
-                # the same definition as bit 10 in lower-level filtergrams.
+                # Observable 0x400 is NOCOSMICRAY (missing cosmic-ray lists),
+                # NOT an NRT identity bit. Accepted only as DEGRADED,
+                # with independent temporal sign agreement required below.
                 good=q==0 or (series.endswith('_nrt') and q==0x400 and int(str(row.get('QUALLEV1','0')),0)&0x40000000)
                 if good and (when is None or abs((t-target).total_seconds())<=1200):ok.append((abs((t-target).total_seconds()),t,row))
             except (ValueError,TypeError):continue
         if not ok:raise ValueError('No quality-accepted signed HMI observation in requested window')
         ok.sort(key=(lambda x:x[1]) if when is None else (lambda x:x[0]),reverse=when is None)
         _,t,row=ok[0];seg=row['_segment']
+        self.reference=next((x[2] for x in ok[1:] if 600<=(t-x[1]).total_seconds()<=1800),None) if when is None else None
         if not seg.startswith('/SUM'):raise ValueError('HMI segment offline/missing; staged export required: '+seg)
         p,src=self.download(urljoin(JSOC,seg),'hmi/'+digest((series+row['T_REC']).encode())[:24]+'.fits')
         m=raw_hmi_map(p,row);src={**src,'series':series,'record':row['T_REC'],'metadata':row['_metadata'],'quality':row['QUALITY'],'observationTime':iso(t)}
+        src['degraded']=int(str(row['QUALITY']),0)==0x400
+        src['qualityFlags']=['NOCOSMICRAY'] if src['degraded'] else []
         return m,src,t
     def aia(self,when,wavelength):
         import sunpy.map
@@ -104,8 +108,9 @@ def raw_hmi_map(path,row):
 
 def check_map(m,label,quality=True,expected_wave=None):
     import astropy.units as u
-    keys=['ctype1','ctype2','crpix1','crpix2','cdelt1','cdelt2','dsun_obs','hgln_obs','hglt_obs','rsun_obs']
-    if any(k not in m.meta for k in keys):raise ValueError(label+': incomplete WCS/observer header')
+    keys=['ctype1','ctype2','crpix1','crpix2','cdelt1','cdelt2','dsun_obs','rsun_obs']
+    if any(k not in m.meta for k in keys):raise ValueError(label+': missing WCS '+str([k for k in keys if k not in m.meta]))
+    if not (all(k in m.meta for k in ['hgln_obs','hglt_obs']) or all(k in m.meta for k in ['crln_obs','crlt_obs'])):raise ValueError(label+': observer longitude/latitude missing')
     if label not in str(m.instrument).upper():raise ValueError(label+': wrong instrument')
     if quality and int(str(m.meta.get('quality','-1')),0)!=0:raise ValueError(label+': nonzero or missing QUALITY')
     if expected_wave and abs(m.wavelength.to_value(u.angstrom)-expected_wave)>1:raise ValueError('Wrong AIA wavelength')
@@ -115,7 +120,7 @@ def make_pack(acq,when=None,size=512):
     import astropy.units as u
     from astropy.coordinates import SkyCoord
     import sunpy.map
-    from sunpy.coordinates import frames,transform_with_sun_center
+    from sunpy.coordinates import frames,transform_with_sun_center,propagate_with_solar_surface
     from PIL import Image
     from skimage.measure import find_contours
     warnings.filterwarnings('ignore',category=Warning,module='astropy.io.fits')
@@ -137,21 +142,42 @@ def make_pack(acq,when=None,size=512):
             registered,foot=maps[wave].reproject_to(target.wcs,return_footprint=True,order='bilinear');channels[wave]=np.asarray(registered.data,dtype=float);valid&=(foot>=.99)&np.isfinite(registered.data)
         # Average before resampling to avoid selecting sparse high-res pixels.
         reduced=hmi.superpixel(u.Quantity([4,4],u.pix),func=np.mean);hm,hfoot=reduced.reproject_to(target.wcs,return_footprint=True,order='bilinear')
-    blos=np.asarray(hm.data,dtype=float)*hmi.unit.to(u.G);b0=float(target.observer_coordinate.lat.to_value(u.rad));latr=np.radians(lat);lonr=np.radians(cmd)
+    blos=np.asarray(hm.data,dtype=float)*hmi.unit.to(u.G)
+    prior=None;prior_foot=None;prior_src=None
+    if hsrc['degraded'] and acq.reference:
+        row=acq.reference;pp,prior_src=acq.download(urljoin(JSOC,row['_segment']),'hmi/'+digest(('reference'+row['T_REC']).encode())[:24]+'.fits')
+        ref=raw_hmi_map(pp,row).superpixel(u.Quantity([4,4],u.pix),func=np.mean)
+        with propagate_with_solar_surface():
+            oldmap,prior_foot=ref.reproject_to(target.wcs,return_footprint=True,order='bilinear')
+        prior=np.asarray(oldmap.data,dtype=float)*ref.unit.to(u.G);prior_src={**prior_src,'observationTime':iso(hmi_time(row)),'record':row['T_REC'],'quality':row['QUALITY']}
+    b0=float(target.observer_coordinate.lat.to_value(u.rad));latr=np.radians(lat);lonr=np.radians(cmd)
     cosc=np.sin(latr)*np.sin(b0)+np.cos(latr)*np.cos(b0)*np.cos(lonr);ds=target.dsun.to_value(u.m);rs=target.rsun_meters.to_value(u.m);mu=(ds*cosc-rs)/np.sqrt(ds*ds+rs*rs-2*ds*rs*cosc)
     mask,components,detector=segment(channels,valid,rho);labels,win=windows(mask,valid,cmd,lat)
-    sectors={k:polarity(mask&(labels==i),blos,mu,hfoot) for i,k in enumerate(CORES,1)}
+    def diagnose(region):
+        result=polarity(region,blos,mu,hfoot)
+        if hsrc['degraded']:
+            comparison=polarity(region,prior,mu,prior_foot) if prior is not None else None
+            agree=bool(result['polarity'] is not None and comparison and comparison['polarity']==result['polarity'])
+            result['temporalAgreement']=agree;result['referenceEvidence']=comparison
+            if not agree:result['polarity']=None;result['quality']='degraded HMI: temporal sign not established'
+            else:result['quality']='degraded HMI: sign consistent in two observations'
+        return result
+    sectors={k:diagnose(mask&(labels==i)) for i,k in enumerate(CORES,1)}
     raster=np.flipud(mask).astype(np.uint8);cl=np.flipud(labels).astype(np.uint8);mask_id=digest(raster.tobytes());holes=[];contours=[]
     for i in range(1,int(components.max())+1):
         reg=components==i;n=int(reg.sum())
         if not n:continue
-        ph=polarity(reg,blos,mu,hfoot);lat0=float(np.mean(lat[reg]));lon0=float(np.mean(cmd[reg]));key='E' if lon0<-10 else 'W' if lon0>10 else 'M';hid=f'CH-{et:%Y%m%d}-{i:02d}'
-        holes.append({'id':hid,'name':hid,'type':'coronal-hole candidate','latitude':lat0,'longitude':lon0,'lat':lat0,'lon':lon0,'cmd':lon0,'areaFraction':float(n/valid.sum()),'areaPct':float(100*n/valid.sum()),'width':float(np.max(cmd[reg])-np.min(cmd[reg])),'polarity':ph['polarity'],'polarityEvidence':ph,'source':VERSION,'sectorKey':key,'quantitative':True,'time':iso(et),'coordinateFrame':'HGS'})
+        ph=diagnose(reg);lat0=float(np.mean(lat[reg]));lon0=float(np.mean(cmd[reg]));key='E' if lon0<-10 else 'W' if lon0>10 else 'M';hid=f'CH-{et:%Y%m%d}-{i:02d}'
+        holes.append({'id':hid,'name':hid,'type':'coronal-hole candidate','latitude':lat0,'longitude':lon0,'lat':lat0,'lon':lon0,'cmd':lon0,'areaDisk':float(n/(np.pi*R*R)),'areaFraction':float(n/(np.pi*R*R)),'areaPct':float(100*n/(np.pi*R*R)),'width':float(np.max(cmd[reg])-np.min(cmd[reg])),'polarity':ph['polarity'],'polarityEvidence':ph,'source':VERSION,'sectorKey':key,'quantitative':True,'time':iso(et),'coordinateFrame':'HGS'})
         for line in find_contours(np.flipud(reg).astype(float),.5):
-            points=line[::max(1,len(line)//160)];contours.append({'id':hid,'points':[[float(x/size*100),float(y/size*100)] for y,x in points]})
+            points=line[::max(1,len(line)//160)]
+            ring=[{'lat':float(lat[int(np.clip(round(size-1-y),0,size-1)),int(np.clip(round(x),0,size-1))]),'lon':float(cmd[int(np.clip(round(size-1-y),0,size-1)),int(np.clip(round(x),0,size-1))])} for y,x in points]
+            ring=[v for v in ring if np.isfinite(v['lat']) and np.isfinite(v['lon'])]
+            contours.append({'id':hid,'lat':lat0,'lon':lon0,'nPix':n,'areaPct':float(100*n/(np.pi*R*R)),'ring':ring,'points':[[float(x/size*100),float(y/size*100)] for y,x in points]})
+            if not holes[-1].get('ring'):holes[-1]['ring']=ring
     data=np.maximum(channels[193],0);lo,hi=np.percentile(data[valid],[1,99.7]);norm=np.nan_to_num(np.clip((np.log1p(data)-np.log1p(lo))/max(1e-9,np.log1p(hi)-np.log1p(lo)),0,1));rgb=np.stack([norm**.55,norm**1.1*.8,norm**2*.28],axis=-1);rgb[rho>1.06]=0
     out=io.BytesIO();Image.fromarray(np.flipud((rgb*255).astype(np.uint8))).save(out,format='PNG')
-    pol={'schemaVersion':'chhss-polarity-1','source':'HMI LOS FITS + matched AIA mask','units':'G','quantity':'B_R','radialApproximation':'B_LOS/mu; no vector information','registrationQuality':'wcs-reprojected','observationTime':iso(ht),'euvObservationTime':iso(et),'muMin':.4,'maskId':mask_id,'sector':sectors,'hmiQuality':hsrc['quality'],'hmiSource':hsrc,'hmiPrebin':'4x4 arithmetic mean; then WCS bilinear to 512 grid'}
+    pol={'schemaVersion':'chhss-polarity-1','source':'HMI LOS FITS + matched AIA mask','units':'G','quantity':'B_R','radialApproximation':'B_LOS/mu; no vector information','registrationQuality':'wcs-reprojected','observationTime':iso(ht),'euvObservationTime':iso(et),'muMin':.4,'maskId':mask_id,'sector':sectors,'hmiQuality':hsrc['quality'],'degraded':hsrc['degraded'],'qualityFlags':hsrc['qualityFlags'],'temporalReference':prior_src,'hmiSource':hsrc,'hmiPrebin':'4x4 arithmetic mean; then WCS bilinear to 512 grid'}
     pack={'schemaVersion':'chhss-science-1','product':'Coronal Hole / HSS Outlook','measurementEngine':VERSION,'observationTime':iso(et),'availableAt':iso(datetime.now(UTC)),'generatedAt':iso(datetime.now(UTC)),'historical':when is not None,'maskId':mask_id,'source':{'instrument':'AIA193','euv':sources,'hmi':hsrc},'preview':{'url':'data:image/png;base64,'+base64.b64encode(out.getvalue()).decode(),'role':'Unannotated numerical AIA193 raster; display stretch never drives segmentation'},'measured':{'ok':True,'width':size,'height':size,'cx':cx,'cy':size-1-cy,'radius':R,'scienceRadius':.97*R,'imageProduct':'aia193','maskId':mask_id,'rasterEncoding':'runs-u8-v1','maskRuns':encode_runs(raster),'coreLabelRuns':encode_runs(cl),'geometry':{'registration':'wcs','northUp':True,'b0Deg':float(np.degrees(b0)),'limbRadiusPx':R,'scienceRadiusPx':.97*R,'cx':cx,'cy':size-1-cy,'sourceWCSHeader':target.wcs.to_header_string()},'window':win,'sector':{},'contours':contours},'holes':holes,'polarity':pol,'detector':detector,'notes':['Automatic multi-passband low-intensity candidate mask, not CHIMERA or a manually validated CH catalogue.','AIA and HMI use observed WCS, observer position and actual timestamps, including TAI conversion.','Polarity is independent per core and component; unknown is not quiet or neutral.','No trained forecast coefficients, local Bz prediction, source-to-Earth connectivity certification or Dst-to-G conversion.']}
     assert digest(decode_runs(pack['measured']['maskRuns'],(size,size)).tobytes())==mask_id
     return pack
@@ -197,7 +223,13 @@ def live(acq,output):
     try:
         pack=make_pack(acq);dump(output/'current.json',pack);stamp=pack['observationTime'].replace(':','').replace('-','')
         dump(output/'live-ledger'/f'{stamp}.json',{'observationTime':pack['observationTime'],'availableAt':pack['availableAt'],'maskId':pack['maskId'],'windows':pack['measured']['window'],'polarity':pack['polarity']['sector'],'methodVersion':VERSION,'kind':'forward-collected measurement, not an issued human forecast'})
-        status.update(ok=True,observationTime=pack['observationTime'],maskId=pack['maskId'],perCore={k:v['polarity'] for k,v in pack['polarity']['sector'].items()})
+        status.update(ok=True,observationTime=pack['observationTime'],maskId=pack['maskId'],degraded=pack['polarity']['degraded'],qualityFlags=pack['polarity']['qualityFlags'],perCore={k:v['polarity'] for k,v in pack['polarity']['sector'].items()})
+        try:
+            recent=output/'recurrence-source';recent.mkdir(parents=True,exist_ok=True)
+            rows=get_truth(acq,datetime.now(UTC)-timedelta(days=75),datetime.now(UTC),recent)
+            dump(output/'recurrence.json',{'schemaVersion':'chhss-recurrence-1','generatedAt':iso(datetime.now(UTC)),'source':'NASA OMNI2 retrospective hourly','rows':rows})
+            status['recurrenceRows']=len(rows)
+        except Exception as e:status['recurrenceError']=str(e)
     except Exception as e:status.update(ok=False,error=str(e),trace=traceback.format_exc())
     status['finishedAt']=iso(datetime.now(UTC));dump(output/'status.json',status);print(json.dumps(status),flush=True);return status['ok']
 
@@ -212,3 +244,5 @@ def main():
     dump(a.output/'integration-summary.json',{'backfill':report['coverage'],'live':ok,'metrics':report['metrics'],'methodVersion':VERSION})
     if report['coverage']['successfulCases']==0 or not ok:sys.exit(2)
 if __name__=='__main__':main()
+
+# CHHSS_QA_UPGRADE_1

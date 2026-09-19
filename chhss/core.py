@@ -77,12 +77,12 @@ def windows(mask,valid,cmd,lat):
 
 def issue_case(pack):
     """Retrospective reconstruction; never a fabricated historical issuance."""
-    w=pack['measured']['window'];k=max(CORES,key=lambda k:w[k]['A']);signal=w[k]['A']>=.025
+    w=pack['measured']['window'];k=max(['W','M','E'],key=lambda k:w[k]['A']);signal=w[k]['A']>=.02
     if not signal:k='M'
     obs=date(pack['observationTime']);issuance=obs.replace(hour=18,minute=0,second=0,microsecond=0)
     if issuance<obs:issuance+=timedelta(days=1)
     target=(issuance+timedelta(days=LAGS[k])).replace(hour=0,minute=0,second=0,microsecond=0)
-    return {'caseId':f'{VERSION}:{obs:%Y%m%dT%H%M}:{pack["maskId"][:12]}','kind':'retrospective-reconstruction','issueTime':iso(issuance),'sourceObservationTime':pack['observationTime'],'retrievedAt':pack['availableAt'],'targetStart':iso(target),'targetEnd':iso(target+timedelta(days=1)),'core':k,'coreAreaFraction':w[k]['A'],'speedKms':350+900*w[k]['A'],'signal':signal,'maskId':pack['maskId'],'measurementEngine':VERSION,'polarity':(pack.get('polarity') or {}).get('sector',{}).get(k,{}).get('polarity'),'groupId':f'timeblock-{obs:%Y}-'+str((obs.timetuple().tm_yday-1)//34),'groupMeaning':'Conservative 34-day time block, not a proven recurrent-hole identity.'}
+    return {'caseId':f'{VERSION}:{obs:%Y%m%dT%H%M}:{pack["maskId"][:12]}','kind':'retrospective-reconstruction','issueTime':iso(issuance),'sourceObservationTime':pack['observationTime'],'retrievedAt':pack['availableAt'],'targetStart':iso(target),'targetEnd':iso(target+timedelta(days=1)),'core':k,'coreAreaFraction':w[k]['A'],'speedKms':350+900*w[k]['A'] if signal else None,'signal':signal,'maskId':pack['maskId'],'measurementEngine':VERSION,'polarity':(pack.get('polarity') or {}).get('sector',{}).get(k,{}).get('polarity'),'groupId':f'timeblock-{obs:%Y}-'+str((obs.timetuple().tm_yday-1)//34),'groupMeaning':'Conservative 34-day time block, not a proven recurrent-hole identity.'}
 
 def daily_truth(rows):
     buckets={}
@@ -96,6 +96,7 @@ def verify(cases,truth,failed=0):
     """
     pairs=[];excluded=[]
     for c in cases:
+        if c['speedKms'] is None:excluded.append({'caseId':c['caseId'],'reason':'No issued core-speed signal; abstention, not a fabricated background forecast'});continue
         t=date(c['targetStart']);y=truth.get(t.strftime('%Y-%m-%d'),{});base=truth.get((t-timedelta(days=27)).strftime('%Y-%m-%d'),{})
         if y.get('speed') is None or base.get('speed') is None:excluded.append({'caseId':c['caseId'],'reason':'Target or recurrence has <18 valid hours'});continue
         pairs.append({**c,'observedSpeed':y['speed'],'recurrenceSpeed':base['speed'],'error':c['speedKms']-y['speed'],'baselineError':base['speed']-y['speed'],'targetHours':y['hours'],'recurrenceHours':base['hours'],'icmeState':'unknown'})
@@ -112,4 +113,6 @@ def verify(cases,truth,failed=0):
             v=stats([r for j in rng.integers(0,len(blocks),len(blocks)) for r in blocks[j]])['skill']
             if v is not None:skills.append(v)
         ci=[float(x) for x in np.percentile(skills,[2.5,97.5])] if skills else None
-    return {'schemaVersion':'chhss-validation-1','product':'Coronal Hole / HSS Outlook','generatedAt':iso(datetime.now(UTC)),'methodVersion':VERSION,'provenance':{'target':'Fixed forecast-selected UTC daily mean speed; >=18 hourly observations','baseline':'Same daily-mean statistic at target minus 27 days','truth':'NASA OMNI2 retrospective hourly, not vintage real-time data','caseType':'reconstructed predictions from numerical FITS, not forecasts issued historically','selection':'All scheduled dates; no event-only selection; no fitted coefficients or holdout tuning','icmeCoverage':'Not supplied: all-events results only','uncertainty':'34-day time-block bootstrap; recurring-source identity not established'},'coverage':{'successfulCases':len(cases),'failedAcquisitionDays':failed,'scoredPairs':len(pairs),'excludedPairs':len(excluded),'timeBlocks':len(groups)},'metrics':{**stats(pairs),'skill95TimeBlockCI':ci},'strata':{'signal':stats([r for r in pairs if r['signal']]),'noSignal':stats([r for r in pairs if not r['signal']])},'promotion':{'eligible':False,'reason':'Data/processing functioning does not establish operational forecast skill; detector, event timing, source connectivity and independent validation remain required.'},'pairs':pairs,'excluded':excluded}
+    return {'schemaVersion':'chhss-validation-1','product':'Coronal Hole / HSS Outlook','generatedAt':iso(datetime.now(UTC)),'methodVersion':VERSION,'provenance':{'target':'Fixed forecast-selected UTC daily mean speed; >=18 hourly observations','baseline':'Same daily-mean statistic at target minus 27 days','truth':'NASA OMNI2 retrospective hourly, not vintage real-time data','caseType':'reconstructed predictions from numerical FITS, not forecasts issued historically','selection':'All scheduled dates; no event-only selection; no fitted coefficients or holdout tuning','icmeCoverage':'Not supplied: all-events results only','uncertainty':'34-day time-block bootstrap; recurring-source identity not established'},'coverage':{'successfulCases':len(cases),'abstainedCases':sum(c['speedKms'] is None for c in cases),'failedAcquisitionDays':failed,'scoredPairs':len(pairs),'excludedPairs':len(excluded),'timeBlocks':len(groups)},'metrics':{**stats(pairs),'skill95TimeBlockCI':ci},'strata':{'signal':stats([r for r in pairs if r['signal']]),'noSignal':stats([r for r in pairs if not r['signal']])},'promotion':{'eligible':False,'reason':'Data/processing functioning does not establish operational forecast skill; detector, event timing, source connectivity and independent validation remain required.'},'pairs':pairs,'excluded':excluded}
+
+# CHHSS_QA_UPGRADE_1

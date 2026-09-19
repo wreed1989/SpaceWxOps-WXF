@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: ce13873a02fd60b3671e51dd5c4656d374bc10a2
+          ref: f99e2b556a49be2dcbb94e20ed20c32e302dabbc
           path: worker
       - uses: actions/checkout@v6
         with:
@@ -30,7 +30,7 @@ jobs:
       - name: Retrieve and process real observations
         id: process
         continue-on-error: true
-        run: python -u worker/chhss/pipeline.py live --output product
+        run: python -u worker/chhss/live.py --output product
       - name: Publish only the independent CH/HSS data namespace
         if: always()
         run: |
@@ -60,7 +60,7 @@ jobs:
         if: always()
         run: |
           mkdir -p product/source
-          cp worker/chhss/core.py worker/chhss/pipeline.py product/source/
+          cp worker/chhss/core.py worker/chhss/pipeline.py worker/chhss/live.py product/source/
           git -C worker rev-parse HEAD > product/source-commit.txt
           python -m pip freeze > product/environment.txt
       - uses: actions/upload-artifact@v4

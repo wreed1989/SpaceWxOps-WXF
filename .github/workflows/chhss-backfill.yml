@@ -1,0 +1,50 @@
+name: CH HSS historical backfill
+on:
+  push:
+    branches: [chhss-ingestion-20260918]
+    paths: ['.github/workflows/chhss-backfill.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        period:
+          - {name: jan2024, start: '2024-01-01', end: '2024-02-01'}
+          - {name: feb2024, start: '2024-02-01', end: '2024-03-01'}
+          - {name: mar2024, start: '2024-03-01', end: '2024-04-01'}
+          - {name: live, start: '', end: ''}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install processing dependencies
+        run: python -m pip install 'requests>=2.32,<3' 'numpy>=2,<3' 'scipy>=1.14,<2' 'astropy>=6,<8' 'sunpy[map,net]>=6,<8' 'reproject>=0.14,<1' 'Pillow>=11,<13' 'scikit-image>=0.25,<1'
+      - name: Process real historical measurements
+        if: matrix.period.name != 'live'
+        run: python -u chhss/pipeline.py backfill --start '${{ matrix.period.start }}' --end '${{ matrix.period.end }}' --output results
+      - name: Process current signed polarity
+        if: matrix.period.name == 'live'
+        run: python -u chhss/pipeline.py live --output results
+      - name: Save reproducibility evidence
+        if: always()
+        run: |
+          mkdir -p results/source
+          cp chhss/core.py chhss/pipeline.py results/source/
+          git rev-parse HEAD > results/source-commit.txt
+          python -m pip freeze > results/environment.txt
+          if [ -d .chhss-cache ]; then
+            find .chhss-cache -name '*.source.json' -print0 | tar --null -T - -czf results/acquisition-manifests.tar.gz
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chhss-${{ matrix.period.name }}
+          path: results/
+          retention-days: 30

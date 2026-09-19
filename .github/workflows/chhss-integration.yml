@@ -7,12 +7,12 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: chhss-integration
+  group: chhss-data-worker-${{ github.ref }}
   cancel-in-progress: false
 jobs:
-  process:
+  acquire:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -27,7 +27,7 @@ jobs:
           python - <<'PY'
           import json,pathlib,numpy as np
           from astropy.io import fits
-          out=pathlib.Path('integration/acquisition');report={}
+          out=pathlib.Path('integration/acquisition');out.mkdir(parents=True,exist_ok=True);report={}
           for f in out.glob('*.fits'):
             try:
               with fits.open(f) as hdus:
@@ -35,14 +35,37 @@ jobs:
             except Exception as e:report[f.name]={'error':str(e)}
           (out/'headers.json').write_text(json.dumps(report,indent=2,default=str))
           PY
-      - name: Capture exact source and offline scientific dependencies for reproduction
+      - name: Capture exact source and offline scientific dependencies
         if: always()
         run: |
-          cp -r chhss integration/source
+          mkdir -p integration/source
+          cp chhss/*.py integration/source/
           pip download --only-binary=:all: -d integration/wheels astropy pyerfa astropy-iers-data sunpy reproject --no-deps
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: chhss-integration-evidence
+          name: chhss-acquisition-evidence
           path: integration/
           retention-days: 7
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: pip install 'sunpy[map]>=7,<8' requests
+      - uses: actions/cache@v4
+        with:
+          path: .cache/chhss
+          key: chhss-archive-2025-${{ github.run_id }}
+          restore-keys: chhss-archive-2025-
+      - name: Backfill observed 2025 masks and like-for-like OMNI targets
+        run: python chhss/backfill.py --start 2025-01-01 --end 2026-01-01 --out chhss-data --limit 400 --workers 2
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chhss-backfill-evidence
+          path: chhss-data/
+          retention-days: 14

@@ -100,6 +100,7 @@ This remains research/shadow guidance. M1+ has positive grouped holdout skill; X
 The [Monitor layout guide](docs/monitor-layout.md) explains selection, removal,
 resizing and saved views. [Particle products and future options](docs/particle-forecasting-options.md)
 describes the connected UMASEP, HESPERIA REleASE and SWPC REFM feeds.
-[NAIRAS radiation dose](docs/radiation-dose.md) documents the NH/SH 20 km maps,
-effective dose rate in mSv/h, constant-exposure dose estimates in mSv, and dated
-SEP event forecasts.
+[NAIRAS radiation dose](docs/radiation-dose.md) documents the configurable 20 km
+effective-dose nowcast in the Alert card and forecast-only Models visibility.
+The [iSWA input review and WXF SEP design](docs/iswa-inputs-and-sep-design.md)
+identifies current numeric feeds and a scientifically testable event-triggered model.

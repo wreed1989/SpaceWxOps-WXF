@@ -5,30 +5,53 @@ altitude**, using effective dose (not absorbed dose or ambient dose equivalent).
 Radiation forecasting is deferred. The old UMASEP event forecast is no longer
 fetched, embedded, or offered in the product selector.
 
-## Interactive maps
+## Alert card
 
-The two polar maps include the equator. Choose both hemispheres, NH or SH; hover
-for the original grid-cell coordinates and rate; click to select a location.
-Latitude/longitude fields offer keyboard access. Drag to pan, use +/− to zoom,
-focus the selected location or reset to the full hemisphere. The mouse wheel
-scrolls the page. Product refreshes and quantity changes retain the map view;
-changing hemisphere resets its extent. Both hemispheres share a color scale.
-Coordinate labels clip at the viewport when zoomed. Coastlines are Natural Earth
-1:110m public-domain data embedded in the HTML.
+**Effective Dose · 20 km** appears alongside the other Alert criteria. Click it
+for source time, selected grid location, NH/SH maxima, and configured thresholds.
+Alert Settings offers a global maximum, NH maximum, SH maximum, or a specific
+latitude/longitude. Point selection uses the nearest original 1° cell. Missing
+cells remain unavailable; maxima describe available cells, not interpolated data.
 
-The projection displays the nearest original **1° cell**, without smoothing dose
-values. Zoom does not increase data resolution. Opaque hover labels show source
-coordinates and values; the white ring marks the selected location. Model mode
-lets the map and notes expand down the page. Monitor keeps its resizable cards.
+NAIRAS supplies **µSv/h**, converted once to **mSv/h**. The tile displays a rate,
+not an accumulated dose. Yellow/red/purple thresholds and sound preferences are
+editable and persist with the other alert settings. Blank levels are disabled;
+configured levels must be nonnegative and increasing. No health or office
+exposure limits are invented. The supplied SST reference of 3 mrem/h converts to
+0.03 mSv/h, but its dose definition/altitude must match before adopting it as a
+20 km effective-dose criterion.
 
-NAIRAS supplies **µSv/h**, converted once to **mSv/h**. The optional exposure
-control shows a **constant-rate dose estimate in mSv** (rate × hours at one
-location), not a forecast or a time-integrated flight calculation. Units remain
-explicit even for a one-hour estimate whose numerical value equals the rate.
+Unknown/stale readings have a neutral state and cannot trigger a new popup or
+sound. A stale interval does not reset an active threshold crossing. Startup
+primes the existing state without alarming on an already elevated value.
+Changing the monitored location also primes that area's state. Valid increases
+through configured thresholds follow the same popup/audio behavior as the other
+criteria. The summary labels current exceedances as nowcasts, not observed
+crossing times. Rate values use the source product epoch.
+
+## Forecast-only Models entry
+
+Radiation is absent from Models, the Product Catalog and the Monitor tile picker
+while no radiation forecast is connected. Saved nowcast-only tiles are removed
+on load; a saved radiation model selection returns to CME | Solar Wind.
+
+The existing interactive polar-map renderer is retained for future use, but is
+not offered as a forecast. A future integration must register
+`window.SpaceWxRadiationForecast` with:
+
+- `available()` returning exactly `true` only for a scientifically usable,
+  nonexpired forecast or runnable forecast method; nowcasts do not qualify.
+- `mount(root)` rendering forecast quantities, original issue/valid dates,
+  altitude, dose definition, units, provenance and uncertainty.
+- Optional `unmount()` for cleanup. Dispatch `spacewx:radiation-forecast-updated`
+  when availability changes so navigation/catalog/saved tiles update together.
+
+This contract does not supply a forecasting method. Forecast development remains
+deferred. No stale event forecast is restored to make the tab appear.
 
 ## Freshness and ingestion
 
-The nowcast is normally hourly. A grid more than three hours old is marked stale
+The nowcast is normally hourly. A future-dated grid is withheld from alerts. A grid more than three hours old is marked stale
 and reported as a feed issue, even if its JSON downloaded successfully. Fetching
 an old grid never updates its product epoch. The latest dated grid remains
 available through an outage, with its status visible.
@@ -39,7 +62,8 @@ and coordinates, then normalizes ordering. Missing/fill values remain null.
 The parser accepts the provider's appended `Neutron_Monitor` metadata object.
 
 The hourly publisher writes `chhss-data/nairas.json`; the downloadable HTML
-embeds the full nowcast and checks the public publication every five minutes.
+embeds the full nowcast and checks the public publication every five minutes,
+independent of which desk tab is open.
 The builder also strips the retired forecast from older source snapshots.
 No unrelated observation archive is introduced.
 

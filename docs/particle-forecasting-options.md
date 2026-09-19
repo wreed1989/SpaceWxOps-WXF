@@ -20,12 +20,11 @@ integrations.
   with straight dashed joins and does not invent an hourly forecast. Negative fill
   values remain gaps. The linear fluence axis starts at zero, with proportional
   headroom in electrons cm⁻² sr⁻¹ per day; it is not a PFU axis.
-- **Radiation Dose · 20 km:** native interactive north/south polar maps from the
-  complete 1° global NAIRAS effective-dose-rate grid. Select current hourly nowcast
-  or latest UMASEP-coupled SEP event forecast. Hover/click a map cell or enter
-  latitude/longitude. See [radiation dose details](radiation-dose.md).
-- All three products appear in Model and individually in Monitor's Radiation
-  catalog. **Refresh** retrieves published outputs; no local solver is implied.
+- **Radiation nowcast:** 20 km effective dose rate is in the **Alert card**, with
+  configurable geography, thresholds and audio. Radiation appears in Models
+  only after a usable forecast adapter is connected. See [radiation details](radiation-dose.md).
+- Proton and electron products appear in Models and Monitor's Radiation catalog.
+  **Refresh** retrieves published outputs; no local solver is implied.
 
 NASA ISWA does not grant browser CORS access. The existing hourly publisher relays
 UMASEP and REleASE numeric submissions, GOES ≥10/≥50 MeV observations, and REFM to

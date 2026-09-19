@@ -1,6 +1,6 @@
 # SpaceWxOps WXF flare forecasting
 
-This repository contains the current research model, reproducible training data, daily forecast workflow, evidence branches, and standalone Operations Wall dashboard for M1+/X1+ solar-flare forecasting.
+This repository contains the current research model, reproducible training data, daily forecast workflows, and one maintained standalone Operations Wall dashboard for M1+/X1+ solar-flare forecasting.
 
 ## Current output
 
@@ -79,7 +79,11 @@ python build_dataset_manifest.py
 
 ## Dashboard
 
-The latest standalone dashboard is `dashboard/SpaceWxOps_3.9_WXF_FullDisk_XModel_Standalone.html`. It retains the active-region HMI continuum/magnetogram loop, displays SWPC first, distinguishes magnetic predictions from coverage fallbacks, and embeds the current forecast/model report for offline use. Run `embed_dashboard_data.py` after refreshing model artifacts and the forecast.
+The canonical dashboard is [`SpaceWxOps_Coronal_Hole_HSS_Outlook.html`](SpaceWxOps_Coronal_Hole_HSS_Outlook.html). It contains the active-region HMI loop, SWPC/WXF comparisons, and registered coronal-hole/HSS tools. The old dashboard path redirects here. Run `python embed_dashboard_data.py` to update its offline flare payload and model report.
+
+CH/HSS acquisition and historical verification use the maintained `chhss/` package. See [CHHSS_Setup.md](CHHSS_Setup.md) for the current feed contract, September 2026 acceptance range, reproducible commands, and evidence retention. Full recent backfill datasets live in versioned release assets; compact products and checksummed manifests stay in Git.
+
+See [docs/CONSOLIDATION.md](docs/CONSOLIDATION.md) for the dependency inventory and retirement decisions.
 
 ## Research status
 

@@ -4,21 +4,20 @@ on:
     - cron: '23 * * * *'
   push:
     branches: [main]
-    paths: ['.github/workflows/chhss-live.yml']
+    paths: ['.github/workflows/chhss-live.yml', 'chhss/**', 'requirements-chhss.txt']
   workflow_dispatch:
 permissions:
   contents: write
 concurrency:
-  group: chhss-live-publisher
+  group: chhss-live-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   observation:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: 4c0e78c224dfec00f0eeef81cda4201df353acb7
           path: worker
       - uses: actions/checkout@v6
         with:
@@ -27,16 +26,26 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-      - name: Install tested numerical dependencies
-        run: python -m pip install 'requests==2.34.2' 'numpy==2.5.3' 'scipy==1.18.1' 'astropy==7.2.2' 'sunpy[map,net]==7.1.2' 'reproject==0.21.0' 'Pillow==12.3.0' 'scikit-image==0.26.0'
+          cache: pip
+          cache-dependency-path: worker/requirements-chhss.txt
+      - name: Install maintained processing runtime
+        run: python -m pip install -r worker/requirements-chhss.txt
+      - name: Test science and publication contracts
+        working-directory: worker
+        run: python -m unittest discover -s tests -v
       - name: Retrieve and process real observations
         id: process
         continue-on-error: true
-        run: python -u worker/chhss/live.py --output product
-      - name: Publish only the independent CH/HSS data namespace
-        if: always()
+        env:
+          PYTHONPATH: worker
+        run: python -u -m chhss.live --output product
+      - name: Publish current measurements and dashboard feed
+        if: always() && github.ref == 'refs/heads/main' && steps.process.outcome != 'skipped'
+        env:
+          PYTHONPATH: ${{ github.workspace }}/worker
         run: |
-          if [ ! -f product/status.json ]; then exit 1; fi
+          set -euo pipefail
+          test -s product/status.json
           cd publication
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
@@ -52,9 +61,10 @@ jobs:
               mkdir -p chhss-data/live-ledger
               cp ../product/live-ledger/*.json chhss-data/live-ledger/
             fi
+            python -m chhss.publish --root chhss-data
             git add chhss-data
             if git diff --cached --quiet; then break; fi
-            git commit -m 'Refresh registered CH/HSS observations and signed polarity'
+            git commit -m 'Refresh registered CH/HSS observations and dashboard feed'
             if git push origin HEAD:main; then break; fi
             if [ "$attempt" = 3 ]; then exit 1; fi
           done
@@ -62,7 +72,8 @@ jobs:
         if: always()
         run: |
           mkdir -p product/source
-          cp worker/chhss/core.py worker/chhss/pipeline.py worker/chhss/live.py worker/chhss/aia_quality.py product/source/
+          cp worker/chhss/*.py product/source/
+          cp worker/requirements-chhss.txt product/source/
           git -C worker rev-parse HEAD > product/source-commit.txt
           python -m pip freeze > product/environment.txt
           if [ -d .chhss-cache/quality ]; then cp -r .chhss-cache/quality product/; fi

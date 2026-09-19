@@ -1,0 +1,9 @@
+# Runtime already used by the successful registered-observation workflows.
+requests==2.34.2
+numpy==2.5.3
+scipy==1.18.1
+astropy==7.2.2
+sunpy[map,net]==7.1.2
+reproject==0.21.0
+Pillow==12.3.0
+scikit-image==0.26.0

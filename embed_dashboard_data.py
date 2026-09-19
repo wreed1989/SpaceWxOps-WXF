@@ -20,7 +20,7 @@ def replace_between(text: str, start: str, end: str, replacement: str) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--html", type=Path, required=True)
+    parser.add_argument("--html", type=Path, default=Path("SpaceWxOps_Coronal_Hole_HSS_Outlook.html"))
     parser.add_argument("--forecast", type=Path, default=Path("flare_guidance.json"))
     parser.add_argument("--training-report", type=Path, default=Path("sharp_mag_training_report.json"))
     args = parser.parse_args()

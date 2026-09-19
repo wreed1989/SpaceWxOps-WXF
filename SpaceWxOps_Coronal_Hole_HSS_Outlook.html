@@ -29185,6 +29185,20 @@ window.CHHSSData = (() => {
       // use in live forecasting, so it can still be inspected/exported.
       const S=window.CHHSSScience,t=S.sciencePack(p,{historical:true});if(!t.ok)throw new Error(t.errors.join(' '));
       const m=p.measured,n=m.width*m.height;
+      if(!Number.isInteger(n)||n<1||n>1024*1024)throw new Error('Invalid raster dimensions.');
+      function decode(runs,maximum){
+        if(!Array.isArray(runs)||runs.length%2||runs.length>2*n)throw new Error('Invalid raster runs.');
+        const result=[];
+        for(let i=0;i<runs.length;i+=2){const value=runs[i],count=runs[i+1];
+          if(!Number.isInteger(value)||value<0||value>maximum||!Number.isInteger(count)||count<=0||result.length+count>n)throw new Error('Invalid raster run value or length.');
+          for(let j=0;j<count;j++)result.push(value);
+        }
+        if(result.length!==n)throw new Error('Raster run length mismatch.');
+        return result;
+      }
+      if(m.rasterEncoding==='runs-u8-v1'){
+        m.mask=decode(m.maskRuns,1);m.coreLabels=decode(m.coreLabelRuns,3);
+      }
       if(n>1024*1024||!Array.isArray(m.mask)||m.mask.length!==n||m.mask.some(v=>v!==0&&v!==1))throw new Error('Invalid binary mask.');
       if(!Array.isArray(m.coreLabels)||m.coreLabels.length!==n||m.coreLabels.some(v=>![0,1,2,3].includes(v)))throw new Error('Invalid WCS core labels.');
       if(!window.crypto?.subtle)throw new Error('SHA-256 unavailable in this browser context.');
@@ -29197,7 +29211,7 @@ window.CHHSSData = (() => {
       if(feed.recurrence.rows.length>5000)throw new Error('Recurrence feed exceeds 5000 hourly samples.');
       const seen=new Set();for(const r of feed.recurrence.rows){const t=date(r.time_tag);if(!t||t>Date.now()+300000||t%3600000!==0||seen.has(t))throw new Error('Invalid or duplicate recurrence hour.');seen.add(t);if(r.speed!==null&&(!num(r.speed)||r.speed<=0||r.speed>=5000))throw new Error('Invalid recurrence speed.');}
     }
-    if(feed.verification && (feed.verification.schemaVersion!=='chhss-validation-2'||!feed.verification.provenance||!feed.verification.metrics))throw new Error('Invalid verification report.');
+    if(feed.verification && (feed.verification.schemaVersion!=='chhss-validation-1'||!feed.verification.provenance||!feed.verification.metrics))throw new Error('Invalid verification report.');
     return feed;
   }
   let applied='';
@@ -29235,7 +29249,7 @@ window.CHHSSData = (() => {
     const t=new Date(validTime);if(!Number.isFinite(t.getTime()))return null;
     const lo=Date.UTC(t.getUTCFullYear(),t.getUTCMonth(),t.getUTCDate())-27*86400000,hi=lo+86400000;
     const rows=persistenceRows().filter(r=>date(r.time_tag)>=lo&&date(r.time_tag)<hi);
-    return rows.length>=20?rows.reduce((s,r)=>s+r.speed,0)/rows.length:null;
+    return rows.length>=18?rows.reduce((s,r)=>s+r.speed,0)/rows.length:null;
   }
   function download(value,name){const u=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
   function mount(){
@@ -29253,16 +29267,16 @@ window.CHHSSData = (() => {
   function paint(){const panel=q('#chhssDataService');if(!panel)return;
     const set=(key,s)=>{const el=panel.querySelector('[data-chds-'+key+']');if(el&&el.textContent!==String(s))el.textContent=s;};
     const f=state.feed,p=current(),stored=f?.current,b=f?.status?.backfill,r=f?.verification;
-    set('state',state.loading?'Fetching feed':p?(state.error?'Cached input · refresh failed':'Current measured input'):stored?'Stale input · withheld':'Producer not connected');
+    set('state',state.loading?'Fetching feed':p?(state.error||f?.status?.current?.ok===false?'Last-good input · refresh failed':'Current measured input'):stored?'Stale input · withheld':'Producer not connected');
     set('observation',stored?.observationTime&&date(stored.observationTime)?new Date(stored.observationTime).toISOString().slice(0,19).replace('T',' ')+' UTC':'No measured package');
     const tested=p?window.CHHSSScience.polarityRecord(p.polarity,{maskId:p.maskId,observationTime:p.observationTime}):null;
     set('signs',['E','M','W'].map(k=>{const v=tested?.sector?.[k]?.polarity;return v===1?'+ outward':v===-1?'− inward':'unknown';}).join(' / '));
     set('history',b&&num(b.requestedDays)?`${b.completedDays??0} / ${b.requestedDays??0} days · ${b.failedDays??0} failed`:'Awaiting worker');
-    set('n',r?String(r.pairedTargets??0):'—');
+    set('n',r?String(r.coverage?.scoredPairs??0):'—');
     set('error',state.error||f?.status?.current?.error||'');
     set('source',`${state.source} · publication ${f?.generatedAt||'unavailable'} · recipe ${f?.recipe||'not received'}`);
-    const scores=panel.querySelector('[data-chds-scores]');const metric=r?.metrics?.[f?.recipe];
-    const msg=metric?`Retrospective paired daily-mean speed: ${metric.allPaired.n} targets; MAE ${fmt(metric.allPaired.mae)} km/s; recurrence MAE ${fmt(metric.allPaired.recurrenceMAE)} km/s. Held-out: ${metric.heldOut.n} targets; MAE ${fmt(metric.heldOut.mae)} km/s. ${r.provenance?.limitation||''}`:'No verification results have been published. A connected feed is not a validation claim.';
+    const scores=panel.querySelector('[data-chds-scores]');const metric=r?.metrics;
+    const msg=metric?`Retrospective period ${f.verificationPeriod||'reported in provenance'}: ${metric.n} paired daily-mean targets; MAE ${fmt(metric.mae)} km/s; recurrence MAE ${fmt(metric.recurrenceMae)} km/s. ${r.provenance?.icmeCoverage||''}. ${r.promotion?.reason||'Research only; no operational promotion.'}`:'No verification results have been published for a current dataset. A connected feed is not a validation claim.';
     if(scores.textContent!==msg)scores.textContent=msg;
   }
   function start(){initPromise=initialize();mount();setInterval(()=>{mount();paint();},2000);setInterval(()=>{if(!document.hidden)refresh();},300000);}
@@ -32471,7 +32485,7 @@ async function fetchChHssPersistence() {
         const published=window.CHHSSData?.getState()?.feed;
         const bf=published?.status?.backfill,vr=published?.verification;
         add("backfill","Historical backfill",bf?.completedDays ? "warn" : "fail",bf ? `${bf.completedDays} / ${bf.requestedDays} days; ${bf.failedDays} failed` : "No published backfill received.");
-        add("verification","Paired verification",vr?.pairedTargets ? "warn" : "fail",vr ? `${vr.pairedTargets} paired daily-mean speed targets; operational qualification is separate.` : "Awaiting producer verification.");
+        add("verification","Paired verification",vr?.coverage?.scoredPairs ? "warn" : "fail",vr ? `${vr.coverage?.scoredPairs??0} paired daily-mean speed targets; operational qualification is separate.` : "Awaiting producer verification.");
         const rm = russellMcPherronContext(ch?.sourceTime || new Date(), ch?.slices?.M?.polarity ?? hmi?.polarity);
         add("rm", "Russell–McPherron", polarityKnown(ch?.slices?.M?.polarity ?? (hmi?.numeric ? hmi.polarity : null)) ? "pass" : "warn",
           rmSeasonDisplay(ch?.sourceTime || new Date(), ch?.slices?.M?.polarity ?? (hmi?.numeric ? hmi.polarity : null)).line);

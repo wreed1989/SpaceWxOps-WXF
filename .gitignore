@@ -3,3 +3,13 @@ __pycache__/
 .DS_Store
 sharp-mag-work/
 cache/
+
+.venv*/
+.chhss-cache/
+product/
+results/
+dist/
+chhss-data/backfill/**/*.zip
+chhss-data/backfill/**/history/
+*.fits
+*.fits.gz

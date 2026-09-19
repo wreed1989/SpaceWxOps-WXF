@@ -59,6 +59,8 @@ def build(output, feed=None, solar_cycle=None, cme_scoreboard=None, particle_for
         snapshot=json.loads(radiation.read_text())
         if snapshot.get('schemaVersion')!='nairas-effective-dose-1':
             raise ValueError('Invalid NAIRAS snapshot')
+        # Retire old event forecasts even when rebuilding from an older publication.
+        snapshot['sources'] = {k: v for k, v in snapshot.get('sources', {}).items() if k == 'nowcast'}
         slot='<!-- NAIRAS_BOOTSTRAP_SLOT -->'
         if html.count(slot)!=1:raise ValueError('Canonical HTML must contain one NAIRAS slot')
         encoded=json.dumps(snapshot,separators=(',',':'),allow_nan=False).replace('<','\\u003c')

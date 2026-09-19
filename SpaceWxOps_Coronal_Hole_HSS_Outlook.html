@@ -6974,20 +6974,11 @@ textarea { font: inherit; }
 .fd-empty-pane p { max-width: 330px; margin: 6px auto 0; font-size: 9px; line-height: 1.5; }
 
 .fd-model-layout { min-height: 100%; display: grid; grid-template-columns: 252px minmax(0,1fr); gap: 8px; }
-.fd-model-list,
 .fd-model-canvas,
 .fd-forecast-panel,
 .fd-coordinate-panel { min-width: 0; border: 1px solid var(--fd-line); background: var(--fd-panel); }
 .fd-panel-heading { min-height: 43px; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 7px 9px; border-bottom: 1px solid var(--fd-line); }
 .fd-panel-heading h2 { margin: 2px 0 0; font-size: 11px; }
-.fd-model-list-body { padding: 6px; }
-.fd-model-lane { width: 100%; display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 4px 8px; padding: 9px 8px; border: 1px solid transparent; color: var(--fd-muted); background: transparent; text-align: left; cursor: pointer; }
-.fd-model-lane + .fd-model-lane { border-top-color: var(--fd-line); }
-.fd-model-lane:hover,
-.fd-model-lane.active { border-color: var(--fd-line-strong); color: var(--fd-text); background: var(--fd-panel-2); }
-.fd-model-lane strong { font-size: 9px; }
-.fd-model-lane span { color: var(--fd-faint); font: 700 7px ui-monospace, monospace; }
-.fd-model-lane small { grid-column: 1 / -1; color: var(--fd-muted); font-size: 7px; line-height: 1.35; }
 .fd-model-canvas { display: grid; grid-template-rows: auto minmax(330px,1fr) auto; }
 .fd-model-visual { min-height: 330px; position: relative; display: grid; place-items: center; overflow: hidden; background: #02080d; }
 .fd-model-visual .fd-ensemble-svg { width: 100%; height: 100%; min-height: 360px; }
@@ -7411,30 +7402,6 @@ body.fd-inspector-collapsed .fd-inspector-head > div { display: none; }
 
 @media (min-width: 821px) {
   body.fd-flare-desk .fd-model-layout { grid-template-columns: minmax(0,1fr); }
-  body.fd-flare-desk .fd-model-list { display: grid; grid-template-columns: auto minmax(0,1fr); }
-  body.fd-flare-desk .fd-model-list > .fd-panel-heading {
-    min-width: 170px;
-    border-right: 1px solid var(--fd-line);
-    border-bottom: 0;
-  }
-  body.fd-flare-desk .fd-model-list-body {
-    min-width: 0;
-    display: grid;
-    grid-template-columns: repeat(6,minmax(100px,1fr));
-    overflow-x: auto;
-    padding: 4px;
-  }
-  body.fd-flare-desk .fd-model-lane { min-height: 49px; padding: 6px 8px; }
-  body.fd-flare-desk .fd-model-lane + .fd-model-lane {
-    border-top-color: transparent;
-    border-left-color: var(--fd-line);
-  }
-  body.fd-flare-desk .fd-model-lane small {
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
-  }
 }
 
 body.fd-flare-desk .fd-flare-workspace {
@@ -7919,30 +7886,6 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
 
 @media (min-width: 821px) {
   body.fd-ch-desk .fd-model-layout { grid-template-columns: minmax(0,1fr); }
-  body.fd-ch-desk .fd-model-list { display: grid; grid-template-columns: auto minmax(0,1fr); }
-  body.fd-ch-desk .fd-model-list > .fd-panel-heading {
-    min-width: 170px;
-    border-right: 1px solid var(--fd-line);
-    border-bottom: 0;
-  }
-  body.fd-ch-desk .fd-model-list-body {
-    min-width: 0;
-    display: grid;
-    grid-template-columns: repeat(6,minmax(100px,1fr));
-    overflow-x: auto;
-    padding: 4px;
-  }
-  body.fd-ch-desk .fd-model-lane { min-height: 49px; padding: 6px 8px; }
-  body.fd-ch-desk .fd-model-lane + .fd-model-lane {
-    border-top-color: transparent;
-    border-left-color: var(--fd-line);
-  }
-  body.fd-ch-desk .fd-model-lane small {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
 }
 
 @media (min-width: 1280px) {
@@ -36123,7 +36066,7 @@ window.SpaceWxRecurrenceCompare = (function () {
 .wx-context.wx-cycle{background:radial-gradient(ellipse at 85% 0,rgba(40,98,133,.16),transparent 45%),#091722!important;padding:24px!important}.wx-context.wx-cycle .wx-eyebrow{font-size:10px;font-weight:700;letter-spacing:.16em;color:#78a9bc;text-transform:uppercase}.wx-context.wx-cycle h2{font-size:27px;letter-spacing:-.04em;margin:7px 0}.wx-context.wx-cycle .wx-cycle-intro{margin:0 0 20px;font-size:12px;color:#a1b8c7}.wx-context.wx-cycle .wx-facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;border:0;padding:0}.wx-context.wx-cycle .wx-facts>div{background:linear-gradient(145deg,#112a3a,#0a1c29);padding:14px;border:1px solid #284353;border-radius:9px}.wx-context.wx-cycle .wx-facts strong{font-size:23px;font-variant-numeric:tabular-nums;margin-top:6px;letter-spacing:-.025em}.wx-context.wx-cycle .wx-facts>div:last-child strong{font-size:15px;line-height:1.4}.wx-context.wx-cycle .wx-facts>div:nth-child(2) strong{color:#71dfed}.wx-context.wx-cycle .wx-facts>div:nth-child(3) strong{color:#ffc786}.wx-context.wx-cycle .wx-facts span{font-size:10px;text-transform:uppercase;letter-spacing:.06em}.wx-context.wx-cycle .wx-actions{margin:20px 0 12px}.wx-context.wx-cycle .wx-actions button{border-radius:20px;padding:7px 14px;font-size:11px}.wx-context.wx-cycle [data-cycle-refresh]{margin-left:auto;background:transparent}.wx-context.wx-cycle .wx-chart-panel{background:#0b1d2a;border:1px solid #2a4558;border-radius:12px;padding:15px 12px 4px}.wx-context.wx-cycle .wx-plot-key{display:flex;flex-wrap:wrap;gap:17px;color:#a8becb;font-size:10px;padding:2px 12px 10px}.wx-context.wx-cycle .wx-plot-key span{display:flex;gap:6px;align-items:center}.wx-context.wx-cycle .wx-plot-key i{display:inline-block;width:20px;height:0;border-top:2px solid #88a9b9}.wx-context.wx-cycle .wx-plot-key .monthly{opacity:.45;border-top-width:1px}.wx-context.wx-cycle .wx-plot-key .smooth{border-color:#e1f0f5;border-top-width:3px}.wx-context.wx-cycle .wx-plot-key .prediction{border-top-style:dashed}.wx-context.wx-cycle .wx-plot-key .range{height:8px;background:#8eaabd33;border:1px solid #8eaabd77;border-radius:2px}.wx-context.wx-cycle .wx-cycle-plot{height:620px}.wx-context.wx-cycle details{border-top:1px solid #243e4f;padding-top:12px;margin-top:14px;font-size:11px;color:#a1b8c7}.wx-context.wx-cycle summary{cursor:pointer;color:#96b4c4}.wx-context.wx-cycle .wx-status{font-size:11px}.wx-context.wx-cycle .wx-method-note{font-size:11px;color:#8da7b8;margin:12px 0 0}.ch-hss-geometry{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}.ch-hss-geometry path{fill:#39d6ee1a;stroke:#76efff;stroke-width:.35;stroke-linejoin:round}.fd-wall-close{width:24px;height:24px;flex:0 0 24px;border:1px solid #395061;border-radius:4px;background:#112432;color:#c8dce6;font-size:18px;cursor:pointer;line-height:20px}.fd-wall-close:hover{background:#642f3b;border-color:#e8838e;color:#fff}.fd-swpc-workspace{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-content:start}.fd-swpc-workspace #fdChronSlot{min-height:500px}.fd-swpc-workspace .fd-coordinate-panel:first-child{border-color:#497a96}.fd-swpc-workspace .fd-coordinate-panel:first-child .fd-panel-heading h2{font-size:17px}.fd-swpc-workspace .fd-product-frame{min-height:0}.fd-swpc-workspace #fdGuideSlot{max-height:650px;overflow:auto}@media(max-width:900px){.wx-context.wx-cycle .wx-facts{grid-template-columns:repeat(2,minmax(0,1fr))}.wx-context.wx-cycle{padding:16px!important}.wx-context.wx-cycle .wx-cycle-plot{height:570px}}
 
 #fdCmeProducts{display:block;align-self:start}
-.fd-model-layout:has(#fdCmeProducts){grid-template-columns:minmax(0,1fr);align-content:start}.fd-model-layout:has(#fdCmeProducts) .fd-model-list-body{display:flex;flex-wrap:wrap}.fd-model-layout:has(#fdCmeProducts) .fd-model-lane{flex:1;min-width:130px}.fd-model-layout:has(#fdCmeProducts) .fd-model-lane small{display:none}
+.fd-model-layout:has(#fdCmeProducts){grid-template-columns:minmax(0,1fr);align-content:start}
 .wx-context{padding:20px;color:#d5e7f0;background:#091722;min-width:0}.wx-context h2{margin:0 0 6px;font-size:20px}.wx-context p{color:#a9bfcd;line-height:1.6}.wx-context a{color:#6cd2ed}.wx-context .wx-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:14px 0}.wx-context button{background:#142a3a;color:#d5e7f0;border:1px solid #385064;padding:7px 12px;border-radius:5px;cursor:pointer}.wx-context button[aria-pressed=true]{border-color:#66d2ed;background:#164156}.wx-context button:disabled{opacity:.5;cursor:default}.wx-context .wx-facts{display:flex;gap:24px;flex-wrap:wrap;padding:14px 0;border-block:1px solid #263d4d}.wx-context .wx-facts strong{display:block;font-size:19px;color:#fff}.wx-context .wx-facts span{font-size:12px;color:#94adbd}.wx-context .wx-status{font-size:12px;overflow-wrap:anywhere}.wx-context .wx-cycle-plot{height:580px;min-height:360px}.wx-cme-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.wx-cme-card{background:#0d202f;border:1px solid #294153;border-radius:8px;padding:16px;min-width:0}.wx-cme-card h3{margin:0 0 6px}.wx-cme-card img{width:100%;height:auto;display:block;background:#050b12;min-height:160px;object-fit:contain}.wx-cme-card input[type=range]{width:100%}.wx-cme-card .wx-planned{display:inline-block;color:#e6c987;font-size:11px;border:1px solid #726446;border-radius:4px;padding:3px 7px;margin-bottom:10px}.wx-cme-card:last-child{grid-column:1/-1}.fd-rc-hole-marker.review{border-style:dashed;opacity:.75}.wx-ch-summary{padding:9px 14px;color:#b9d2df;font-size:12px;border-bottom:1px solid #2b4253}.wx-context [hidden]{display:none!important}@media(max-width:1000px){.wx-cme-grid{grid-template-columns:1fr}.wx-context{padding:12px}}
 </style>
 <script id="solarCycleProduct">
@@ -36362,9 +36305,9 @@ window.SpaceWxRecurrenceCompare = (function () {
 .wx-particle img{width:100%;height:auto;display:block;background:#fff;border-radius:5px}.wx-particle img[hidden]{display:none}.wx-particle a{color:#8cdeef}.wx-particle table{border-collapse:collapse;width:100%;font-size:11px}.wx-particle td,.wx-particle th{padding:9px 8px;border-bottom:1px solid #264355;text-align:left;vertical-align:top}.wx-particle th{color:#8eb2c7;font-size:10px;text-transform:uppercase}.wx-particle-table{overflow:auto}.wx-particle-plot{width:100%;height:390px;min-width:0}.wx-particle-stat{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.wx-particle-stat>div{flex:1;min-width:130px;padding:12px;background:#142e3e;border-radius:7px;font-size:11px;color:#9bbacc}.wx-particle-stat strong{display:block;font-size:20px;color:#e6f4fb;margin-top:4px}.wx-particle-logos{display:flex;align-items:center;gap:12px}.wx-particle-logos img{width:auto;height:35px;max-width:140px}.wx-particle details{margin-top:14px;color:#9bbacc}.wx-particle summary{cursor:pointer}.wx-particle .wx-particle-dates{font-variant-numeric:tabular-nums}
 .fd-app{width:100%!important;max-width:100vw}
 body.fd-ready{min-width:0!important}
-.fd-app.fd-particle-workspace .fd-shell{grid-template-columns:var(--fd-dock) minmax(0,1fr)}
-.fd-app.fd-particle-workspace .fd-inspector{display:none}
-.fd-app.fd-particle-workspace .fd-model-layout{display:block}.fd-app.fd-particle-workspace .fd-model-list{margin-bottom:10px}.fd-app.fd-particle-workspace .fd-model-list-body{display:flex;overflow:auto}.fd-app.fd-particle-workspace .fd-model-lane{flex:1;min-width:135px}.fd-app.fd-particle-workspace .fd-model-canvas{min-height:0}
+.fd-app.fd-model-workspace .fd-shell{grid-template-columns:var(--fd-dock) minmax(0,1fr)}
+.fd-app.fd-model-workspace .fd-inspector{display:none}
+.fd-app.fd-model-workspace .fd-model-layout{display:block}.fd-app.fd-model-workspace .fd-model-canvas{min-height:0}
 @media(min-width:821px) and (max-width:1180px){
 .fd-topbar{grid-template-columns:178px minmax(0,1fr) auto}.fd-case-context{display:none}
 .fd-app.fd-monitor-workspace{--fd-dock:190px}
@@ -36375,12 +36318,12 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace{--fd-dock:48px}
 body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button small,body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-dock-search,body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-dock-head>div{display:none}
 }
 @media(min-width:821px) and (max-width:1050px){.fd-topbar{grid-template-columns:220px minmax(0,1fr) 94px}.fd-status-cluster{grid-template-columns:94px}.fd-status-cluster .fd-utc{grid-column:1}.fd-hazards,.fd-health-row{display:none}}
-.fd-app:is(.fd-monitor-workspace,.fd-particle-workspace) .fd-bottom-rail{grid-template-columns:minmax(0,1fr) auto}
-.fd-app:is(.fd-monitor-workspace,.fd-particle-workspace) .fd-run-summary{display:none}
-.fd-app:is(.fd-monitor-workspace,.fd-particle-workspace) .fd-time-controller{display:flex;min-width:0}
-.fd-app:is(.fd-monitor-workspace,.fd-particle-workspace) :is(#fdGlobalTime,.fd-time-readout,[data-fd-play]){display:none}
-.fd-app:is(.fd-monitor-workspace,.fd-particle-workspace) .fd-time-controller:after{content:'Each product shows its own observation or forecast dates';color:#89a9bb;font-size:10px;padding:0 10px}
-@media(max-width:700px){.fd-app:is(.fd-monitor-workspace,.fd-particle-workspace) .fd-time-controller:after{display:none}}
+.fd-app:is(.fd-monitor-workspace,.fd-model-workspace) .fd-bottom-rail{grid-template-columns:minmax(0,1fr) auto}
+.fd-app:is(.fd-monitor-workspace,.fd-model-workspace) .fd-run-summary{display:none}
+.fd-app:is(.fd-monitor-workspace,.fd-model-workspace) .fd-time-controller{display:flex;min-width:0}
+.fd-app:is(.fd-monitor-workspace,.fd-model-workspace) :is(#fdGlobalTime,.fd-time-readout,[data-fd-play]){display:none}
+.fd-app:is(.fd-monitor-workspace,.fd-model-workspace) .fd-time-controller:after{content:'Each product shows its own observation or forecast dates';color:#89a9bb;font-size:10px;padding:0 10px}
+@media(max-width:700px){.fd-app:is(.fd-monitor-workspace,.fd-model-workspace) .fd-time-controller:after{display:none}}
 </style>
 <!-- WXF_ELECTRON_BOOTSTRAP_SLOT -->
 <script id="wxfElectronProduct">
@@ -36647,13 +36590,12 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
   const utc=s=>Number.isFinite(Date.parse(s))?new Date(s).toISOString().replace('T',' ').slice(0,16)+' UTC':'unavailable';
   const mounted=new Map();let snapshot={sources:{}},pending=null;
   function valid(s){return s?.altitudeKm===20&&s.unit==='mSv/h'&&s.values?.length===65160&&s.latitudes?.length===181&&s.longitudes?.length===360&&s.latitudes.every((v,i)=>v===i-90)&&s.longitudes.every((v,i)=>v===i)&&s.values.every(v=>v===null||(Number.isFinite(v)&&v>=0))&&Number.isFinite(Date.parse(s.sourceTime));}
-  function accept(candidate){if(candidate?.schemaVersion!=='nairas-effective-dose-1')return;for(const kind of ['nowcast','forecast']){const next=candidate.sources?.[kind],prior=snapshot.sources[kind];if(valid(next)&&(!prior||Date.parse(next.retrievedAt)>=Date.parse(prior.retrievedAt)))snapshot.sources[kind]=next;}}
+  function accept(candidate){if(candidate?.schemaVersion!=='nairas-effective-dose-1')return;for(const kind of ['nowcast']){const next=candidate.sources?.[kind],prior=snapshot.sources[kind];if(valid(next)&&(!prior||Date.parse(next.retrievedAt)>=Date.parse(prior.retrievedAt)))snapshot.sources[kind]=next;}}
   try{accept(JSON.parse(document.getElementById('nairasBootstrap')?.textContent||'null'));}catch(_){}
-  function status(source,kind,now=Date.now()){
-    if(!valid(source))return {warning:true,text:kind==='forecast'?'Event forecast unavailable':'Current dose grid unavailable'};
+  function status(source,now=Date.now()){
+    if(!valid(source))return {warning:true,text:'Current dose grid unavailable'};
     const age=(now-Date.parse(source.sourceTime))/3600000;
     if(age < -1)return {warning:true,text:'Product epoch is in the future · check source timing'};
-    if(kind==='forecast')return {warning:age>24,text:(age>24?'No current event forecast · latest event product ':'Latest SEP event forecast · product epoch ')+utc(source.sourceTime)+' · provider validity interval not supplied'};
     return {warning:age>3,text:(age>3?'STALE nowcast · ':'Hourly nowcast · ')+utc(source.sourceTime)};
   }
   function point(source,lat,lon){
@@ -36673,34 +36615,37 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
   function outlines(hemisphere){
     const x=[],y=[];for(const line of COAST){for(const [lon,lat]of line){if(lat*hemisphere<0){x.push(null);y.push(null);continue;}const p=project(lat,lon,hemisphere);x.push(p[0]);y.push(p[1]);}x.push(null);y.push(null);}return {x,y,type:'scatter',mode:'lines',line:{color:'#dfecf0',width:.7},hoverinfo:'skip',showlegend:false};
   }
-  function chart(source,multiplier=1,stacked=false,location=null){
+  function chart(source,multiplier=1,stacked=false,location=null,view='both'){
+    const single=view!=='both';
     const maximum=source.values.reduce((m,v)=>Math.max(m,v??0),0)*multiplier;
     const cmax=Math.max(.005*multiplier,Math.ceil(maximum/(.005*multiplier))*.005*multiplier);
-    const traces=[],layout={autosize:true,paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'#081521',margin:{l:16,r:16,t:38,b:72},font:{family:'Inter, system-ui, sans-serif',color:'#b4cad7',size:11},showlegend:false,hovermode:'closest',hoverlabel:{bgcolor:'#102534',bordercolor:'#7ba4b7',font:{color:'#f0f8fb',size:12},namelength:-1},annotations:[],shapes:[],coloraxis:{cmin:0,cmax,colorscale:[[0,'#101b39'],[.16,'#313c78'],[.34,'#206e98'],[.52,'#25a5ad'],[.70,'#86d3ba'],[.85,'#e9df96'],[1,'#ffb365']],colorbar:{orientation:'h',x:.5,xanchor:'center',y:-.08,yanchor:'top',title:{text:multiplier===1?'Effective dose rate · mSv/h':'Effective dose · mSv',side:'bottom'},thickness:10,len:.78,tickformat:'.3f',nticks:5,outlinewidth:0,tickcolor:'#7596a9'}}};
+    const traces=[],mapLabels=[],layout={autosize:true,paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'#081521',margin:{l:16,r:16,t:38,b:72},font:{family:'Inter, system-ui, sans-serif',color:'#b4cad7',size:11},showlegend:false,hovermode:'closest',dragmode:'pan',hoverlabel:{bgcolor:'#102534',bordercolor:'#7ba4b7',font:{color:'#f0f8fb',size:12},namelength:-1},annotations:[],shapes:[],coloraxis:{cmin:0,cmax,colorscale:[[0,'#101b39'],[.16,'#313c78'],[.34,'#206e98'],[.52,'#25a5ad'],[.70,'#86d3ba'],[.85,'#e9df96'],[1,'#ffb365']],colorbar:{orientation:'h',x:.5,xanchor:'center',y:-.08,yanchor:'top',title:{text:multiplier===1?'Effective dose rate · mSv/h':'Effective dose · mSv',side:'bottom'},thickness:10,len:.78,tickformat:'.3f',nticks:5,outlinewidth:0,tickcolor:'#7596a9'}}};
     for(const [i,hemisphere]of [1,-1].entries()){
-      const axis=i?'x2':'x',yaxis=i?'y2':'y',domain=stacked?[0,1]:i?[.52,1]:[0,.48],vertical=stacked?(i?[0,.44]:[.56,1]):[0,1];
-      layout['xaxis'+(i?'2':'')]={domain,anchor:yaxis,range:[-108,108],visible:false,fixedrange:true,constrain:'domain'};
-      layout['yaxis'+(i?'2':'')]={domain:vertical,anchor:axis,range:[-108,108],visible:false,scaleanchor:axis,scaleratio:1,fixedrange:true,constrain:'domain'};
-      const coast=outlines(hemisphere);
+      if((view==='north'&&hemisphere<0)||(view==='south'&&hemisphere>0))continue;
+      const axis=i?'x2':'x',yaxis=i?'y2':'y',domain=single||stacked?[0,1]:i?[.52,1]:[0,.48],vertical=!single&&stacked?(i?[0,.44]:[.56,1]):[0,1];
+      layout['xaxis'+(i?'2':'')]={domain,anchor:yaxis,range:[-108,108],visible:false,fixedrange:false,constrain:'domain'};
+      layout['yaxis'+(i?'2':'')]={domain:vertical,anchor:axis,range:[-108,108],visible:false,scaleanchor:axis,scaleratio:1,fixedrange:false,constrain:'domain'};
+      const coast=outlines(hemisphere),labels={x:[],y:[],text:[],type:'scatter',mode:'text',xaxis:axis,yaxis,textfont:{size:9,color:'#d8e9eb'},hoverinfo:'skip',cliponaxis:true,showlegend:false};
       traces.push({...polarGrid(source,hemisphere,multiplier),type:'heatmap',xaxis:axis,yaxis,coloraxis:'coloraxis',zsmooth:false,hoverongaps:false,hovertemplate:`<b>%{customdata[0]}° latitude · %{customdata[1]}° longitude</b><br>Effective dose rate %{customdata[2]:.5f} mSv/h${multiplier!==1?'<br>Constant-rate estimate %{z:.5f} mSv':''}<extra>${hemisphere===1?'NH':'SH'} · 20 km</extra>`},
         {...coast,xaxis:axis,yaxis,line:{color:'#07121d',width:2.3}}, {...coast,xaxis:axis,yaxis,line:{color:'#e6f2ed',width:.8}});
       for(const radius of [30,60,90]){
         layout.shapes.push({type:'circle',xref:axis,yref:yaxis,x0:-radius,y0:-radius,x1:radius,y1:radius,line:{color:radius===90?'#a3bfcb':'#e2f5f74a',width:radius===90?1:.6,dash:radius===90?'solid':'dot'}});
-        if(radius<90)layout.annotations.push({xref:axis,yref:yaxis,x:radius*.707,y:radius*.707,text:(90-radius)+'°'+(hemisphere>0?'N':'S'),showarrow:false,font:{size:9,color:'#d8e9eb'},bgcolor:'#142c39',borderpad:1});
+        if(radius<90){labels.x.push(radius*.707);labels.y.push(radius*.707);labels.text.push((90-radius)+'°'+(hemisphere>0?'N':'S'));}
       }
-      for(const lon of [0,90,180,-90]){const [x,y]=project(0,lon,hemisphere);layout.shapes.push({type:'line',xref:axis,yref:yaxis,x0:0,y0:0,x1:x,y1:y,line:{color:'#ecf6ff25',width:.6,dash:'dot'}});layout.annotations.push({xref:axis,yref:yaxis,x:x*1.10,y:y*1.10,text:lon===0?'0°':Math.abs(lon)===180?'180°':Math.abs(lon)+'°'+(lon>0?'E':'W'),showarrow:false,font:{size:9,color:'#9bb8c8'}});}
+      for(const lon of [0,90,180,-90]){const [x,y]=project(0,lon,hemisphere);layout.shapes.push({type:'line',xref:axis,yref:yaxis,x0:0,y0:0,x1:x,y1:y,line:{color:'#ecf6ff25',width:.6,dash:'dot'}});labels.x.push(x*1.10);labels.y.push(y*1.10);labels.text.push(lon===0?'0°':Math.abs(lon)===180?'180°':Math.abs(lon)+'°'+(lon>0?'E':'W'));}
+      mapLabels.push(labels);
       layout.annotations.push({xref:'paper',yref:'paper',x:(domain[0]+domain[1])/2,y:vertical[1]+(stacked?.03:.065),text:`<b>${hemisphere===1?'NORTHERN':'SOUTHERN'} HEMISPHERE</b>`,showarrow:false,xanchor:'center',font:{size:10,color:'#d6ecf5'}});
       if(location&&location.lat*hemisphere>=0){const [x,y]=project(location.lat,location.lon,hemisphere);traces.push({type:'scatter',mode:'markers',x:[x],y:[y],xaxis:axis,yaxis,marker:{symbol:'circle-open',size:13,color:'#ffffff',line:{width:2}},hoverinfo:'skip',showlegend:false});}
-    }return {traces,layout};
+    }return {traces:[...traces,...mapLabels],layout};
   }
   async function refresh(){
-    if(pending)return pending;pending=(async()=>{const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),20000);try{const response=await fetch(RELAY,{signal:ctrl.signal,cache:'no-store',credentials:'omit'});if(!response.ok)throw Error('HTTP '+response.status);const d=await response.json();if(d?.schemaVersion!=='nairas-effective-dose-1'||!valid(d.sources?.nowcast))throw Error('Invalid NAIRAS current grid');accept(d);window.SpaceWxHeaderStatus?.report('nairas','NAIRAS publication',!d.sources.nowcast.error,d.sources.nowcast.error||'Current grid parsed');return '';}catch(e){window.SpaceWxHeaderStatus?.report('nairas','NAIRAS publication',false,e.message);return 'Refresh unavailable · retained dated grids.';}finally{clearTimeout(timer);pending=null;}})();return pending;
+    if(pending)return pending;pending=(async()=>{const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),20000);try{const response=await fetch(RELAY,{signal:ctrl.signal,cache:'no-store',credentials:'omit'});if(!response.ok)throw Error('HTTP '+response.status);const d=await response.json();if(d?.schemaVersion!=='nairas-effective-dose-1'||!valid(d.sources?.nowcast))throw Error('Invalid NAIRAS current grid');accept(d);window.SpaceWxHeaderStatus?.report('nairas','NAIRAS publication',!d.sources.nowcast.error&&!status(d.sources.nowcast).warning,d.sources.nowcast.error||status(d.sources.nowcast).text);return '';}catch(e){window.SpaceWxHeaderStatus?.report('nairas','NAIRAS publication',false,e.message);return 'Refresh unavailable · retained dated grids.';}finally{clearTimeout(timer);pending=null;}})();return pending;
   }
   function mount(root){
-    root.classList.add('wx-particle','wx-nairas');let mode='nowcast',metric='rate',hours=1,error='',disposed=false,location={lat:60,lon:-100};
-    root.innerHTML=`<div class="wx-particle-header"><div><span class="wx-particle-eyebrow">NASA LANGLEY / CCMC · NAIRAS</span><h2>Effective Dose · 20 km</h2></div><button data-nairas-refresh>Refresh</button></div><div class="wx-particle-toolbar"><label>Product <select data-nairas-mode aria-label="NAIRAS product"><option value="nowcast">Current hourly nowcast</option><option value="forecast">Latest SEP event forecast</option></select></label><label>Display <select data-nairas-metric aria-label="Dose quantity"><option value="rate">Effective dose rate · mSv/h</option><option value="dose">Constant-rate dose estimate · mSv</option></select></label><label>Exposure <input data-nairas-hours aria-label="Exposure hours" type="number" min="0.25" max="24" step="0.25" value="1"> h</label></div><p class="wx-particle-status" data-nairas-status role="status"></p><p class="wx-particle-status wx-particle-warning" data-nairas-forecast-status></p><div class="wx-particle-plot wx-nairas-plot" data-nairas-plot></div><div class="wx-nairas-point"><label>Latitude <input data-nairas-lat aria-label="Dose latitude" type="number" min="-90" max="90" step="1" value="60"></label><label>Longitude <input data-nairas-lon aria-label="Dose longitude" type="number" min="-180" max="180" step="1" value="-100"></label><span data-nairas-point></span></div><p class="wx-particle-status" data-nairas-assumption></p><details><summary>Data, map &amp; model details</summary><p>Effective dose at 20 km barometric altitude. Full global 1° latitude/longitude numerical grid, projected onto north and south polar maps. Pole at centre; circles at 60°, 30° and the equator. Hover or click to inspect the nearest source grid cell. Both hemispheres share one scale for the selected product. The colour bar updates when the product or exposure changes. The white ring marks the selected location. Source µSv/h is divided by 1,000 to obtain mSv/h.</p><p data-nairas-source></p><p>Hourly nowcasts describe the current environment. UMASEP-coupled forecasts are event-triggered SEP peak guidance, not a continuous hourly forecast. The feed supplies a product epoch but no explicit validity interval; older products remain dated event references.</p><a href="https://ccmc.gsfc.nasa.gov/models/NAIRAS~4/" target="_blank" rel="noopener">NAIRAS documentation</a> · <a href="${RELAY}" target="_blank" rel="noopener">Published numeric grids</a> · <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth coastline</a></details>`;
-    const plot=root.querySelector('[data-nairas-plot]');let stacked=root.clientWidth<560;
-    const sizeObserver=typeof ResizeObserver==='function'?new ResizeObserver(()=>{const next=root.clientWidth<560;if(next!==stacked){stacked=next;paint();}}):null;sizeObserver?.observe(root);
+    root.classList.add('wx-particle','wx-nairas');const mode='nowcast';let metric='rate',view='both',hours=1,error='',disposed=false,location={lat:60,lon:-100};
+    root.innerHTML=`<div class="wx-particle-header"><div><span class="wx-particle-eyebrow">NASA LANGLEY / CCMC · NAIRAS</span><h2>Effective Dose Nowcast · 20 km</h2></div><button data-nairas-refresh>Refresh</button></div><div class="wx-particle-toolbar"><label>Display <select data-nairas-metric aria-label="Dose quantity"><option value="rate">Effective dose rate · mSv/h</option><option value="dose">Constant-rate dose estimate · mSv</option></select></label><label>Exposure <input data-nairas-hours aria-label="Exposure hours" type="number" min="0.25" max="24" step="0.25" value="1"> h</label></div><p class="wx-particle-status" data-nairas-status role="status"></p><div class="wx-nairas-point"><label>Latitude <input data-nairas-lat aria-label="Dose latitude" type="number" min="-90" max="90" step="1" value="60"></label><label>Longitude <input data-nairas-lon aria-label="Dose longitude" type="number" min="-180" max="180" step="1" value="-100"></label><span data-nairas-point role="status" aria-live="polite"></span></div><div class="wx-nairas-map-tools"><label>Map <select data-nairas-view aria-label="Radiation map view"><option value="both">Both hemispheres</option><option value="north">Northern Hemisphere</option><option value="south">Southern Hemisphere</option></select></label><div class="wx-nairas-zoom" role="group" aria-label="Radiation map navigation"><button type="button" data-nairas-zoom="in" aria-label="Zoom radiation map in">＋</button><button type="button" data-nairas-zoom="out" aria-label="Zoom radiation map out">−</button><button type="button" data-nairas-focus>Focus selected location</button><button type="button" data-nairas-reset>Reset map</button></div></div><p class="wx-nairas-map-help">Hover for dose values · click to select a location · drag to pan · use ＋ / − to zoom. Scrolling moves the page.</p><div class="wx-particle-plot wx-nairas-plot" data-nairas-plot aria-label="Interactive effective dose maps at 20 km"></div><p class="wx-particle-status" data-nairas-assumption></p><details><summary>Data, map &amp; model details</summary><p>Effective dose at 20 km barometric altitude. Full global 1° latitude/longitude numerical grid, projected onto north and south polar maps. Pole at centre; circles at 60°, 30° and the equator. Hover or click to inspect the nearest source grid cell. The hemisphere selector enlarges either map. Drag to pan, use the zoom buttons to change scale, or focus the selected location. Reset restores the full hemisphere; the mouse wheel always scrolls the page. Zoom changes the view, not the 1° source resolution. Both hemispheres share one scale for the selected product. The colour bar updates when the product or exposure changes. The white ring marks the selected location. Source µSv/h is divided by 1,000 to obtain mSv/h.</p><p data-nairas-source></p><p>Hourly nowcasts describe the environment at the displayed product epoch. Radiation forecasting is not connected. The exposure estimate holds that nowcast rate constant; it does not predict changing radiation conditions.</p><a href="https://ccmc.gsfc.nasa.gov/models/NAIRAS~4/" target="_blank" rel="noopener">NAIRAS documentation</a> · <a href="${RELAY}" target="_blank" rel="noopener">Published numeric grids</a> · <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth coastline</a></details><details><summary>Availability &amp; alternative sources</summary><p>We retain the latest dated grid if a new nowcast is delayed; grids older than three hours are flagged stale. Refresh retrieves the latest publication; it does not change the grid’s original epoch.</p><p><a href="https://spacewx.com/current-data/" target="_blank" rel="noopener">Space Environment Technologies</a> also distributes NAIRAS. Numeric access must be arranged with the provider; a public 20 km grid endpoint has not been verified. Their <a href="https://spacewx.com/radian/" target="_blank" rel="noopener">RADIAN service</a> is commercial.</p><p><a href="https://www.faa.gov/data_research/research/med_humanfacs/aeromedical/radiobiology/cari7" target="_blank" rel="noopener">FAA CARI-7A</a> is a potential independent effective-dose calculation at 20 km. It needs maintained radiation inputs and local model validation before use as a live fallback. No substitute model is connected here.</p></details>`;
+    const plot=root.querySelector('[data-nairas-plot]');let stacked=root.clientWidth<700;
+    const sizeObserver=typeof ResizeObserver==='function'?new ResizeObserver(()=>{const next=root.clientWidth<700;if(next!==stacked){stacked=next;paint();}}):null;sizeObserver?.observe(root);
     let markerUpdate=Promise.resolve();
     function markLocation(){markerUpdate=markerUpdate.then(async()=>{
       if(disposed)return;
@@ -36708,18 +36653,44 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
       const indices=[];for(let i=0;i<(plot.data?.length||0);i++)if(plot.data[i].marker?.symbol==='circle-open')indices.push(i);
       if(indices.length)await window.Plotly.deleteTraces(plot,indices);
       if(disposed)return;
+      if((view==='north'&&location.lat<0)||(view==='south'&&location.lat>=0))return;
       const hemisphere=location.lat<0?-1:1,[x,y]=project(location.lat,location.lon,hemisphere);
       await window.Plotly.addTraces(plot,{type:'scatter',mode:'markers',x:[x],y:[y],xaxis:hemisphere>0?'x':'x2',yaxis:hemisphere>0?'y':'y2',marker:{symbol:'circle-open',size:13,color:'#ffffff',line:{width:2}},hoverinfo:'skip',showlegend:false});
     }).catch(()=>{});}
-    function readout(){const source=snapshot.sources[mode],p=point(source,location.lat,location.lon);root.querySelector('[data-nairas-point]').textContent=p&&p.rate!==null?`${p.latitude}°, ${p.longitude}° · ${p.rate.toFixed(5)} mSv/h → ${(p.rate*hours).toFixed(5)} mSv over ${hours} h`:'Selected cell unavailable';root.querySelector('[data-nairas-assumption]').textContent=`${metric==='dose'?'MAP: constant-rate dose estimate in mSv. ':''}Dose estimate assumes the selected ${mode==='forecast'?'event forecast peak':'nowcast'} rate remains constant for ${hours} h at one location. It is not a time-integrated flight or future exposure forecast.`;}
-    function paint(){if(disposed)return;const source=snapshot.sources[mode],state=status(source,mode),forecast=status(snapshot.sources.forecast,'forecast'),statusEl=root.querySelector('[data-nairas-status]');statusEl.textContent=state.text+(source?.error?' · Source retrieval failed':'')+(error?' · '+error:'');statusEl.classList.toggle('wx-particle-warning',state.warning);root.querySelector('[data-nairas-forecast-status]').textContent=mode==='nowcast'&&forecast.warning?forecast.text:'';
+    function readout(){const source=snapshot.sources[mode],p=point(source,location.lat,location.lon);root.querySelector('[data-nairas-point]').textContent=p&&p.rate!==null?`${p.latitude}°, ${p.longitude}° · ${p.rate.toFixed(5)} mSv/h → ${(p.rate*hours).toFixed(5)} mSv over ${hours} h`:'Selected cell unavailable';root.querySelector('[data-nairas-assumption]').textContent=`${metric==='dose'?'MAP: constant-rate dose estimate in mSv. ':''}Dose estimate assumes the selected nowcast rate remains constant for ${hours} h at one location. It is not a time-integrated flight or future exposure forecast.`;}
+    function paint(){if(disposed)return;const source=snapshot.sources[mode],state=status(source),statusEl=root.querySelector('[data-nairas-status]');statusEl.textContent=state.text+(source?.error?' · Source retrieval failed':'')+(error?' · '+error:'');statusEl.classList.toggle('wx-particle-warning',state.warning);
       if(!valid(source)){window.Plotly?.purge(plot);plot.textContent='No valid 20 km effective-dose grid received. Refresh to retry.';readout();return;}
-      plot.classList.toggle('wx-nairas-stacked',stacked);const result=chart(source,metric==='dose'?hours:1,stacked,location);result.layout.coloraxis.colorbar.title.text=metric==='dose'?'Effective dose estimate · mSv':'Effective dose rate · mSv/h';
+      plot.classList.toggle('wx-nairas-stacked',stacked&&view==='both');const result=chart(source,metric==='dose'?hours:1,stacked,location,view);result.layout.uirevision=`${mode}:${view}:${stacked}`;result.layout.coloraxis.colorbar.title.text=metric==='dose'?'Effective dose estimate · mSv':'Effective dose rate · mSv/h';
       // Unit selection is explicit even when a one-hour estimate equals the rate numerically.
       if(metric==='dose')for(const trace of result.traces)if(trace.type==='heatmap')trace.hovertemplate='%{customdata[0]}° latitude · %{customdata[1]}° longitude<br>Rate %{customdata[2]:.5f} mSv/h<br>Constant-rate estimate %{z:.5f} mSv<extra>20 km · '+hours+' h</extra>';
-      window.Plotly?.react(plot,result.traces,result.layout,{responsive:true,displaylogo:false,modeBarButtonsToRemove:['select2d','lasso2d','zoom2d','pan2d','autoScale2d']}).then(()=>{plot.removeAllListeners?.('plotly_click');plot.on?.('plotly_click',e=>{const p=e.points?.[0]?.customdata;if(!p)return;location={lat:p[0],lon:p[1]};root.querySelector('[data-nairas-lat]').value=location.lat;root.querySelector('[data-nairas-lon]').value=location.lon;readout();markLocation();});});
-      root.querySelector('[data-nairas-source]').innerHTML=`Product epoch ${utc(source.sourceTime)} · retrieved ${utc(source.retrievedAt)} · ${source.sepEvent?'SEP flag set':'SEP flag not set'} · <a href="${esc(source.sourceURL)}" target="_blank" rel="noopener">Original ISWA numeric file</a>`;readout();}
-    function controlChange(e){if(e.target.matches('[data-nairas-mode]')){mode=e.target.value;paint();}if(e.target.matches('[data-nairas-metric]')){metric=e.target.value;paint();}if(e.target.matches('[data-nairas-hours]')){hours=Math.max(.25,Math.min(24,Number(e.target.value)||1));e.target.value=hours;paint();}if(e.target.matches('[data-nairas-lat],[data-nairas-lon]')){location={lat:Math.max(-90,Math.min(90,+root.querySelector('[data-nairas-lat]').value)),lon:Math.max(-180,Math.min(180,+root.querySelector('[data-nairas-lon]').value))};root.querySelector('[data-nairas-lat]').value=location.lat;root.querySelector('[data-nairas-lon]').value=location.lon;readout();markLocation();}}
+      const painting=window.Plotly?.react(plot,result.traces,result.layout,{responsive:true,displaylogo:false,displayModeBar:false,scrollZoom:false,doubleClick:false}).then(()=>{plot.removeAllListeners?.('plotly_click');plot.on?.('plotly_click',e=>{const p=e.points?.[0]?.customdata;if(!p)return;location={lat:p[0],lon:p[1]};root.querySelector('[data-nairas-lat]').value=location.lat;root.querySelector('[data-nairas-lon]').value=location.lon;readout();markLocation();});});
+      root.querySelector('[data-nairas-source]').innerHTML=`Product epoch ${utc(source.sourceTime)} · retrieved ${utc(source.retrievedAt)} · ${source.sepEvent?'SEP flag set':'SEP flag not set'} · <a href="${esc(source.sourceURL)}" target="_blank" rel="noopener">Original ISWA numeric file</a>`;readout();return painting;}
+    function controlChange(e){if(e.target.matches('[data-nairas-view]')){view=e.target.value;paint();}if(e.target.matches('[data-nairas-metric]')){metric=e.target.value;paint();}if(e.target.matches('[data-nairas-hours]')){hours=Math.max(.25,Math.min(24,Number(e.target.value)||1));e.target.value=hours;paint();}if(e.target.matches('[data-nairas-lat],[data-nairas-lon]')){location={lat:Math.max(-90,Math.min(90,+root.querySelector('[data-nairas-lat]').value)),lon:Math.max(-180,Math.min(180,+root.querySelector('[data-nairas-lon]').value))};root.querySelector('[data-nairas-lat]').value=location.lat;root.querySelector('[data-nairas-lon]').value=location.lon;readout();markLocation();}}
+    function navigateMap(action){
+      if(!plot.classList.contains('js-plotly-plot'))return;
+      const changes={};
+      for(const suffix of ['', '2']){
+        const xaxis=plot._fullLayout?.['xaxis'+suffix],yaxis=plot._fullLayout?.['yaxis'+suffix];
+        if(!xaxis||!yaxis)continue;
+        for(const [key,axis] of [['xaxis'+suffix,xaxis],['yaxis'+suffix,yaxis]]){
+          const center=(axis.range[0]+axis.range[1])/2,half=(axis.range[1]-axis.range[0])/2;
+          const span=Math.max(2,Math.min(108,half*(action==='in'?.65:1/.65)));
+          changes[key+'.range']=action==='reset'?[-108,108]:[center-span,center+span];
+        }
+      }
+      window.Plotly.relayout(plot,changes);
+    }
+    root.querySelectorAll('[data-nairas-zoom]').forEach(button=>button.onclick=()=>navigateMap(button.dataset.nairasZoom));
+    root.querySelector('[data-nairas-reset]').onclick=()=>navigateMap('reset');
+    root.querySelector('[data-nairas-focus]').onclick=()=>{
+      const hemisphere=location.lat<0?-1:1,suffix=hemisphere>0?'':'2';
+      view=hemisphere>0?'north':'south';root.querySelector('[data-nairas-view]').value=view;
+      Promise.resolve(paint()).then(()=>{
+        if(disposed||!valid(snapshot.sources[mode]))return;
+        const [x,y]=project(location.lat,location.lon,hemisphere);
+        window.Plotly.relayout(plot,{['xaxis'+suffix+'.range']:[x-20,x+20],['yaxis'+suffix+'.range']:[y-20,y+20]});
+      });
+    };
     root.addEventListener('change',controlChange);
     root.addEventListener('input',e=>{if(e.target.value===''||!Number.isFinite(+e.target.value))return;if(e.target.matches('[data-nairas-hours]')&&+e.target.value>=.25&&+e.target.value<=24)controlChange(e);if(e.target.matches('[data-nairas-lat],[data-nairas-lon]'))controlChange(e);});
     async function update(){const button=root.querySelector('[data-nairas-refresh]');button.disabled=true;error=await refresh();if(!disposed){paint();button.disabled=false;}}
@@ -36993,6 +36964,24 @@ window.SpaceWxMonitorLayout=(()=>{
 .sr-scene[data-compact=true] .sr-viewport{height:auto;flex:1 1 0;min-height:150px}
 .sr-scene[data-compact=true] :is(.sr-toolbar,.sr-orbits,.sr-caption){flex-shrink:0}
 </style>
+
+<style id="modelNavigationStyles">
+.fd-model-nav{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;margin-bottom:12px;padding:4px 0 8px;border-bottom:1px solid var(--fd-line);min-width:0}
+.fd-model-tab{min-height:46px;padding:9px 12px;border:1px solid transparent;border-radius:5px;background:transparent;color:var(--fd-muted);font:600 12px/1.35 Inter,system-ui,sans-serif;text-align:center;cursor:pointer}
+.fd-model-tab:hover{background:var(--fd-panel-2);color:var(--fd-text)}
+.fd-model-tab.active{color:#ddf7ff;background:#123244;border-color:#376c82;box-shadow:inset 0 -2px #55c7e8}
+.fd-model-tab:focus-visible{outline:2px solid #78d6e8;outline-offset:2px}
+@media(max-width:1300px){.fd-model-nav{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){.fd-model-nav{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.fd-model-canvas.wx-nairas{height:auto;min-height:0;overflow:visible}
+.fd-model-canvas.wx-nairas .wx-nairas-plot{height:560px;min-height:460px;flex:none}
+.fd-model-canvas.wx-nairas .wx-nairas-plot.wx-nairas-stacked{height:940px;min-height:940px}
+.wx-nairas-map-tools{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:10px 0}
+.wx-nairas-map-tools label{display:flex;align-items:center;gap:8px}.wx-nairas-map-tools .wx-nairas-zoom{display:flex;gap:5px}
+.wx-nairas-point{padding:12px 14px;border:1px solid #315568;border-radius:7px;background:#0a1b28;margin:8px 0}
+.wx-nairas-point [data-nairas-point]{flex-basis:100%;font-variant-numeric:tabular-nums;color:#e0f5fc}
+.wx-nairas-map-help{margin:5px 0!important;font-size:12px!important;color:#9cbdcb!important}
+</style>
 <script id="fdDeskScript">
 (function () {
   "use strict";
@@ -37068,8 +37057,8 @@ window.SpaceWxMonitorLayout=(()=>{
     nairas: {
       name: "Radiation Dose · 20 km", family: "Radiation", maturity: "NAIRAS · NASA CCMC",
       compute: "Provider products", members: 0,
-      description: "Northern and southern hemisphere effective-dose rates and SEP event forecasts at 20 km.",
-      inputs: "NAIRAS hourly grid · UMASEP event forecast", provenance: "NASA Langley / CCMC"
+      description: "Interactive northern and southern hemisphere effective-dose nowcasts at 20 km.",
+      inputs: "NAIRAS hourly 20 km effective-dose grid", provenance: "NASA Langley / CCMC"
     },
     charging: {
       name: "Electron Forecast", family: "Radiation", maturity: "WXF EXPERIMENTAL · REFM",
@@ -39402,14 +39391,15 @@ window.SpaceWxMonitorLayout=(()=>{
     renderFlareAnalysis();
   }
 
+  function modelNavigation() {
+    return `<nav class="fd-model-nav" aria-label="Model products">${Object.entries(PIPELINES).map(([key,item])=>`<button type="button" class="fd-model-tab${key===state.selectedModel?' active':''}" data-fd-model="${key}" aria-current="${key===state.selectedModel?'page':'false'}">${esc(item.name)}</button>`).join('')}</nav>`;
+  }
+
   function renderFlareModel(pipeline) {
     const guidance = flareGuidanceSnapshot();
     setWorkbench("MODEL · SOLAR SOURCE", "Solar flare forecasting platform", "Select a numbered active region to connect morphology, HMI evolution, flare history, provenance, and M1+/X1+ method guidance.", false);
     stage.innerHTML = `<div class="fd-model-layout">
-      <section class="fd-model-list">
-        <div class="fd-panel-heading"><div><span class="fd-eyebrow">PIPELINES</span><h2>Model stack</h2></div><button type="button" class="fd-button" data-fd-region-analysis>REGION ANALYSIS</button></div>
-        <div class="fd-model-list-body">${Object.entries(PIPELINES).map(([key, item]) => `<button type="button" class="fd-model-lane${key === state.selectedModel ? " active" : ""}" data-fd-model="${key}"><strong>${esc(item.name)}</strong><span>${esc(item.maturity)}</span><small>${esc(item.family)} · ${esc(item.compute)}<br>${esc(item.description)}</small></button>`).join("")}</div>
-      </section>
+      ${modelNavigation()}
       <section class="fd-model-canvas fd-flare-model-canvas">
         <div class="fd-panel-heading"><div><span class="fd-eyebrow">OPERATIONAL GUIDANCE · NO RUN REQUIRED</span><h2>${esc(pipeline.name)}</h2><small>SWPC is always the first benchmark. Numbered-region selection drives the forecast, morphology, HMI evolution, event history, and dataset provenance below.</small></div><div class="fd-button-row"><button type="button" class="fd-button primary" data-fd-region-analysis>OPEN REGION WORKBENCH</button></div></div>
         <div class="fd-flare-workspace">
@@ -39420,12 +39410,6 @@ window.SpaceWxMonitorLayout=(()=>{
             <section class="fd-flare-analysis" id="fdFlareAnalysis"><div class="fd-analysis-empty">Select a numbered active region to load its forecast workbench.</div></section>
             <div class="fd-flare-footer"><div><span>SELECTED REGION</span><strong id="fdFlareRegionSummary">${esc(guidance.selectedRegion)}</strong></div><div><span>NUMBERED REGIONS</span><strong id="fdFlareRegionCount">${guidance.activeRegions || "Awaiting ingest"}</strong></div><div><span>GUIDANCE SOURCES</span><strong id="fdFlareMethodCount">${guidance.methodsAvailable || "Loading"}</strong></div><div><span>DATASETS</span><strong id="fdFlareDatasetSummary">SRS/GOES C23 · NADC · SHARP · SDO V2</strong></div></div>
           </section>
-          <aside class="fd-flare-sidebar">
-            <section class="fd-flare-side-section"><span class="fd-eyebrow">FORECAST OBJECT</span><h3>Region-aware M1+/X1+ guidance</h3><p>The probability table, solar-disk navigator, and active-region workbench are one synchronized forecast surface.</p><div class="fd-flare-thresholds"><div><span>EVENT CLASS</span><strong>M1+</strong></div><div><span>EVENT CLASS</span><strong>X1+</strong></div></div><div class="fd-flare-valid-inline"><span>VALID PERIOD</span><strong id="fdFlareValidSummary">${esc(guidance.valid)}</strong><small>Region selection, the disk overlay, and forecast card stay synchronized.</small></div></section>
-            <section class="fd-flare-side-section"><span class="fd-eyebrow">FORECAST SYNTHESIS</span><h3>WXF SHARP live-compatible · cross-era evidence isolated</h3><p>SWPC remains first. WXF SHARP is the live-compatible trained research model. The new merged SMARP–SHARP baseline is trained across cycles 23–25 and publishes cycle-held-out evidence, but stays disconnected from today’s forecast because X1+ reliability, GONG/KPVT transfer and matched-SWPC gates remain open. WXF SDO Temporal remains a separate image branch.</p></section>
-            <section class="fd-flare-side-section"><span class="fd-eyebrow">SELECTED-REGION WORKFLOW</span><h3>From sunspot to forecast</h3><div class="fd-wxf-branches"><div class="fd-wxf-branch"><span>1</span><div><strong>Choose a numbered region</strong><small>Use the live disk or the active-region cards.</small></div></div><div class="fd-wxf-branch"><span>2</span><div><strong>Inspect evolution and morphology</strong><small>Tracked HMI cutouts, McIntosh, magnetic class, area, spot count, extent and location.</small></div></div><div class="fd-wxf-branch"><span>3</span><div><strong>Review history and methods</strong><small>Region-attributed events, explicit source records and M1+/X1+ method outputs.</small></div></div></div><button type="button" class="fd-button primary" data-fd-region-analysis>GO TO REGION WORKBENCH</button></section>
-            <section class="fd-flare-side-section"><span class="fd-eyebrow">EVALUATION GUARDRAIL</span><h3>Region-disjoint, forward in time</h3><p>Training and backtests must keep every active-region identity in one fold and issue predictions strictly from data available at forecast time. Score Brier skill, reliability, PR-AUC and TSS separately for M1+ and X1+.</p></section>
-          </aside>
         </div>
       </section>
     </div>`;
@@ -39511,10 +39495,7 @@ window.SpaceWxMonitorLayout=(()=>{
   function renderChModel(pipeline) {
     setWorkbench("MODEL · CORONAL HOLES", "Coronal Hole / HSS Outlook", "Earth-facing hole identification, audited Outlook research outlook, 27-day analog, polarity, and geomagnetic response stay on one desk. No queued run is required.", false);
     stage.innerHTML = `<div class="fd-model-layout">
-      <section class="fd-model-list">
-        <div class="fd-panel-heading"><div><span class="fd-eyebrow">PIPELINES</span><h2>Model stack</h2></div><button type="button" class="fd-button" data-fd-ch-info>ABOUT OUTLOOK / 1</button></div>
-        <div class="fd-model-list-body">${Object.entries(PIPELINES).map(([key, item]) => `<button type="button" class="fd-model-lane${key === state.selectedModel ? " active" : ""}" data-fd-model="${key}"><strong>${esc(item.name)}</strong><span>${esc(item.maturity)}</span><small>${esc(item.family)} · ${esc(item.compute)}<br>${esc(item.description)}</small></button>`).join("")}</div>
-      </section>
+      ${modelNavigation()}
       <section class="fd-model-canvas fd-ch-model-canvas">
         <div class="fd-panel-heading"><div><span class="fd-eyebrow">SHADOW GUIDANCE · VALIDATION REQUIRED</span><h2>${esc(pipeline.name)}</h2><small>Start with Recurrence Compare (prior rotation LEFT, current RIGHT, same wavelength), then the CH/HSS shadow outlook: audited Outlook, OMNI analog, HMI polarity, retired research branch. Two disks plus inspect — not a four-up mosaic.</small></div><div class="fd-button-row"><button type="button" class="fd-button" data-fd-ch-refresh>REFRESH OUTLOOK</button><button type="button" class="fd-button primary" data-fd-ch-info>METHODS</button></div></div>
         <div class="fd-ch-workspace">
@@ -39634,7 +39615,7 @@ window.SpaceWxMonitorLayout=(()=>{
 
   function renderCmeModel(pipeline) {
     setWorkbench("MODEL PRODUCTS", pipeline.name, "ENLIL · HUXt · NASA CME Scoreboard · PyCAT planned", false);
-    stage.innerHTML = `<div class="fd-model-layout"><section class="fd-model-list"><div class="fd-panel-heading"><h2>Model stack</h2></div><div class="fd-model-list-body">${Object.entries(PIPELINES).map(([key,item])=>`<button type="button" class="fd-model-lane${key===state.selectedModel?' active':''}" data-fd-model="${key}"><strong>${esc(item.name)}</strong><span>${esc(item.maturity)}</span><small>${esc(item.description)}</small></button>`).join('')}</div></section><section class="fd-model-canvas" id="fdCmeProducts"></section></div>`;
+    stage.innerHTML = `<div class="fd-model-layout">${modelNavigation()}<section class="fd-model-canvas" id="fdCmeProducts"></section></div>`;
     window.SpaceWxCME.mount($("#fdCmeProducts", stage));
     setInspectorTitle("CME | Solar Wind");
   }
@@ -39655,27 +39636,11 @@ window.SpaceWxMonitorLayout=(()=>{
       renderChModel(pipeline);
       return;
     }
-    setWorkbench("PUBLISHED FORECASTS", pipeline.name, "Provider issue times and valid windows · automatic refresh", false);
-    stage.innerHTML = `<div class="fd-model-layout"><section class="fd-model-list"><div class="fd-model-list-body">${Object.entries(PIPELINES).map(([key,item])=>`<button type="button" class="fd-model-lane${key===state.selectedModel?' active':''}" data-fd-model="${key}"><strong>${esc(item.name)}</strong><span>${esc(item.maturity)}</span></button>`).join('')}</div></section><section class="fd-model-canvas" id="fdParticleProducts"></section></div>`;
+    setWorkbench(state.selectedModel==="nairas"?"RADIATION NOWCAST":"PUBLISHED FORECASTS", pipeline.name, state.selectedModel==="nairas"?"Latest 20 km effective-dose grid · original product epoch · automatic refresh":"Provider issue times and valid windows · automatic refresh", false);
+    stage.innerHTML = `<div class="fd-model-layout">${modelNavigation()}<section class="fd-model-canvas" id="fdParticleProducts"></section></div>`;
     if(state.selectedModel==='nairas')window.SpaceWxNAIRAS.mount($("#fdParticleProducts",stage));
     else window.SpaceWxParticles.mount($("#fdParticleProducts",stage),state.selectedModel==='sep'?'sep':'electron');
     setInspectorTitle(pipeline.name);
-  }
-
-  function modelInspector() {
-    const pipeline = PIPELINES[state.selectedModel];
-    const run = state.run;
-    const completed = run.status === "complete";
-    if (state.selectedModel === "huxt") return `<section class="fd-inspector-section"><h3>Published model products</h3><p class="fd-note">SWPC WSA–ENLIL and University of Reading HUXt are independent forecasts. Compare their issue times and CME inputs before interpreting differences.</p></section><section class="fd-inspector-section"><h3>PyCAT</h3><p class="fd-note">Planned CME geometry analysis. No connected analysis service or output yet.</p></section><section class="fd-inspector-section"><h3>Solar-cycle context</h3><button type="button" class="fd-button" data-fd-product="solar.cycle">OPEN SOLAR CYCLE</button><p class="fd-note">Monthly activity context is separate from event arrival predictions.</p></section>`;
-    if (state.selectedModel === "flare") {
-      const guidance = flareGuidanceSnapshot();
-      return `<section class="fd-inspector-section"><h3>Current flare guidance</h3><div class="fd-meta-list"><div><span>ACCESS</span><strong>AVAILABLE WITHOUT A RUN</strong></div><div><span>REGION</span><strong id="fdFlareInspectorRegion">${esc(guidance.selectedRegion)}</strong></div><div><span>VALIDITY</span><strong id="fdFlareInspectorValid">${esc(guidance.valid)}</strong></div><div><span>THRESHOLDS</span><strong>M1+ · X1+</strong></div><div><span>ACTIVE REGIONS</span><strong id="fdFlareInspectorRegionCount">${guidance.activeRegions || "Awaiting ingest"}</strong></div><div><span>DATA SOURCES</span><strong id="fdFlareInspectorData">3 INTERNAL DATA STREAMS</strong></div></div><div class="fd-button-row"><button type="button" class="fd-button primary" data-fd-region-analysis>OPEN REGION WORKBENCH</button></div></section><section class="fd-inspector-section"><h3>Method integration</h3><div class="fd-meta-list"><div><span>OFFICIAL</span><strong>SWPC · PINNED FIRST</strong></div><div><span>WXF</span><strong>DIRECT M1+ · DIRECT X1+ · FULL-DISK UNION</strong></div><div><span>HISTORY</span><strong>CAUSAL EVENT FEATURES · ACTIVE</strong></div><div><span>IMAGERY</span><strong>HMI CONTINUUM + MAGNETOGRAM LOOP</strong></div></div></section><section class="fd-inspector-section"><h3>Dataset checks</h3><div class="fd-meta-list"><div><span>MORPHOLOGY</span><strong>NOAA/SWPC SRS</strong></div><div><span>EVOLUTION</span><strong>SDO/HMI 24-HOUR LOOP</strong></div><div><span>HISTORY</span><strong>NOAA EDITED EVENTS</strong></div><div><span>MAGNETIC</span><strong>JSOC SHARP CEA</strong></div></div></section><div class="fd-note">All operational analysis remains in this page. External research methods affect guidance only where their logic or validated model artifacts are installed and auditable.</div>`;
-    }
-    if (state.selectedModel === "swig") {
-      const ch = chForecastSnapshot();
-      return `<section class="fd-inspector-section"><h3>Current CH/HSS guidance</h3><div class="fd-meta-list"><div><span>ACCESS</span><strong>AVAILABLE WITHOUT A RUN</strong></div><div><span>STATUS</span><strong>${esc(String(ch.status || "pending").toUpperCase())}</strong></div><div><span>HOLE</span><strong>${esc(ch.hole)}</strong></div><div><span>POLARITY</span><strong>${esc(String(ch.polarity).toUpperCase())}</strong></div><div><span>SPEED WINDOW</span><strong>${esc(ch.hssWindow)}</strong></div><div><span>PEAK SPEED</span><strong>${esc(ch.peakSpeed)}</strong></div><div><span>GEOMAG</span><strong>${esc(ch.kp)}</strong></div><div><span>QUALITY</span><strong>${esc(ch.quality)}</strong></div></div><div class="fd-button-row"><button type="button" class="fd-button primary" data-fd-ch-info>METHODS</button><button type="button" class="fd-button" data-fd-ch-refresh>REFRESH</button></div></section><section class="fd-inspector-section"><h3>Workflow</h3><div class="fd-meta-list"><div><span>1 MAP</span><strong>AIA 211/193/171 MEASUREMENT</strong></div><div><span>2 OUTLOOK</span><strong>AUDITED CORE-ONLY · DURATION WITHHELD</strong></div><div><span>3 ANALOG</span><strong>OMNI T−27d · same UTC day</strong></div><div><span>4 POLARITY</span><strong>HMI LOS + RUSSELL–MCPHERRON</strong></div></div></section><section class="fd-inspector-section"><h3>Issuance notes</h3><p class="fd-note">Live CH/HSS engine from the 2 WS ops wall, restyled for this desk. It does not replace WSA–ENLIL, HUXt, or official SWPC watches. Original scalar coefficients are retained; invalid input substitutions and duration/G conversions are not.</p></section>`;
-    }
-    return `<section class="fd-inspector-section"><h3>Published particle forecasts</h3><p class="fd-note">Forecasts load automatically. Refresh retrieves published results; no local run is required. Read each provider's issue and valid times.</p></section>`;
   }
 
   function forecastInspector() {
@@ -39697,7 +39662,7 @@ window.SpaceWxMonitorLayout=(()=>{
   function renderInspector() {
     if (!inspector) return;
     if (state.view === "product") inspector.innerHTML = productInspector();
-    else if (state.preset === "model") inspector.innerHTML = modelInspector();
+    else if (state.preset === "model") inspector.innerHTML = "";
     else if (state.preset === "forecast") inspector.innerHTML = forecastInspector();
     else if (state.preset === "coordinate") inspector.innerHTML = coordinateInspector();
     else inspector.innerHTML = "";
@@ -39705,7 +39670,7 @@ window.SpaceWxMonitorLayout=(()=>{
 
   function updateChrome() {
     if (!app) return;
-    app.classList.toggle("fd-particle-workspace",state.preset==="model"&&state.view!=="product"&&["sep","charging","nairas"].includes(state.selectedModel));
+    app.classList.toggle("fd-model-workspace",state.preset==="model"&&state.view!=="product");
     const steps = ["inputs", "modeling", "draft", "review", "issued"];
     const activeIndex = Math.max(0, steps.indexOf(state.cycleStatus));
     const stepper = $("#fdCycleStepper", app);
@@ -39726,7 +39691,7 @@ window.SpaceWxMonitorLayout=(()=>{
     const valid = new Date(Date.UTC(2026, 7, 25, Number(state.cycle)) + state.globalHour * 3600000);
     $("#fdInitTime", app).textContent = `25 AUG · ${state.cycle}Z`;
     $("#fdValidTime", app).textContent = valid.toLocaleString("en-GB", { day: "2-digit", month: "short", hour: "2-digit", timeZone: "UTC", hour12: false }).replace(",", " ·") + "Z";
-    const independentTime=(state.view==="product" && visiblePaneCount()===1 && state.paneProducts[0]==="solar.cycle") || (state.view!=="product" && state.preset==="model" && ["huxt","sep","charging","nairas"].includes(state.selectedModel)) || state.preset==="monitor";
+    const independentTime=(state.view==="product" && visiblePaneCount()===1 && state.paneProducts[0]==="solar.cycle") || (state.view!=="product" && state.preset==="model") || state.preset==="monitor";
     $("#fdGlobalTime",app).disabled=independentTime;
     $("[data-fd-play]",app).disabled=independentTime;
     if(independentTime){$("#fdInitTime",app).textContent="ON PRODUCT";$("#fdValidTime",app).textContent="PROVIDER DATES";$("#fdLeadTime",app).textContent="OWN CONTROLS";if(!run.id)$("#fdRunStatus",app).textContent="PUBLISHED PRODUCTS";}
@@ -40065,8 +40030,8 @@ window.SpaceWxMonitorLayout=(()=>{
     if(node){node.style.setProperty('--fd-tile-cols',tile.cols);node.style.setProperty('--fd-tile-rows',tile.rows);node.dataset.size=tile.cols;const w=$('[data-fd-tile-width]',node),h=$('[data-fd-tile-height]',node);if(w)w.value=tile.cols;if(h)h.value=tile.rows;window.SpaceWxProductFlow?.resized(node,deltaHeight);scheduleResize(node);}
     if(save)saveState();
   }
-  function scrollMonitorPage(event) {
-    if (!event.target.closest('.fd-monitor-layout') || event.ctrlKey || event.metaKey || event.shiftKey || !event.deltaY) return;
+  function scrollWorkspacePage(event) {
+    if (!event.target.closest('.fd-monitor-layout, .fd-model-workspace .fd-stage') || event.ctrlKey || event.metaKey || event.shiftKey || !event.deltaY) return;
     const scroller = stage.closest('.fd-stage');
     if (!scroller) return;
     const delta = event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? scroller.clientHeight : 1);
@@ -40075,7 +40040,7 @@ window.SpaceWxMonitorLayout=(()=>{
     event.stopPropagation();
   }
   function bindEvents() {
-    app.addEventListener('wheel', scrollMonitorPage, {capture:true, passive:false});
+    app.addEventListener('wheel', scrollWorkspacePage, {capture:true, passive:false});
 
     app.addEventListener('keydown',event=>{
       const handle=event.target.closest('[data-fd-resize-handle]');if(!handle||!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(event.key))return;

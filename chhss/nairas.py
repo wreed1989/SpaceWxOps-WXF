@@ -2,7 +2,8 @@
 
 The provider's effective_dose field is in microSieverts/hour (CCMC NAIRAS
 model documentation). Convert once to mSv/hour. Product epochs are preserved;
-fetching the latest event forecast does not make an old SEP event current.
+delayed nowcasts remain explicitly dated.
+Radiation forecasting is not connected.
 """
 import json
 import math
@@ -14,7 +15,7 @@ from urllib.parse import urlparse
 import requests
 
 HOST = 'iswa.ccmc.gsfc.nasa.gov'
-SOURCES = {'nowcast': 2643, 'forecast': 3589}
+SOURCES = {'nowcast': 2643}
 DOCS = 'https://ccmc.gsfc.nasa.gov/models/NAIRAS~4/'
 
 
@@ -82,7 +83,7 @@ def retrieve(kind, data_id, get=requests.get):
 
 def collect(previous=None, get=requests.get):
     result = {'schemaVersion': 'nairas-effective-dose-1', 'sources': {}}
-    with ThreadPoolExecutor(max_workers=2) as pool:
+    with ThreadPoolExecutor(max_workers=len(SOURCES)) as pool:
         jobs = {k: pool.submit(retrieve, k, v, get) for k, v in SOURCES.items()}
         for key, job in jobs.items():
             try:

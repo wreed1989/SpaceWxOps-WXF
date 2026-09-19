@@ -6,6 +6,39 @@ const {webcrypto} = require('node:crypto');
 const html = fs.readFileSync('SpaceWxOps_Coronal_Hole_HSS_Outlook.html', 'utf8');
 const scripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)];
 for (const [, , code] of scripts) new vm.Script(code);
+// Product contracts use the actual inline implementation. Dates, missing
+// observations and independent ENLIL runs must survive source ingestion.
+const products=vm.createContext({window:{},document:{getElementById(){return null;}},localStorage:{getItem(){return null;}},Date,Map,Set});
+for(const id of ['solarCycleProduct','cmeSolarWindProduct'])vm.runInContext(scripts.find(([,a])=>a.includes(`id="${id}"`))[2],products);
+const cycle=products.window.SpaceWxSolarCycle;
+const observed=cycle.parse([{'time-tag':'2026-08',ssn:76,smoothed_ssn:-1,'f10.7':116.22}, {'time-tag':'invalid',ssn:900}, {'time-tag':'2026-02',ssn:77.4,smoothed_ssn:99.8}], 'observed');
+assert.equal(observed.length,2);
+assert.equal(observed[0].date,'2026-02');
+assert.equal(observed[1].smoothed_ssn,null);
+assert.equal(observed[0]['f10.7'],null);
+const predicted=cycle.parse([{'time-tag':'2030-12',predicted_ssn:8.1,low_ssn:0,high_ssn:13.6}], 'predicted');
+const traces=cycle.traces(observed,predicted);
+assert.equal(traces[1].y[1],null);
+assert.equal(traces[2].y[0],0);
+assert.equal(traces[4].line.dash,'dash');
+assert.equal(traces[9].y[0],null);
+assert.throws(()=>cycle.parse({'error':'unavailable'},'observed'),/Expected monthly/);
+const trend=Array.from({length:7},(_,i)=>({date:`2026-0${i+1}`,smoothed_ssn:150-i*10}));
+assert.equal(cycle.phase(trend).label,'Declining smoothed trend');
+const frames=products.window.SpaceWxCME.framesFrom('<a href="enlil_com1_111_20260918T010000.jpg">old</a><a href="enlil_com2_222_20260919T010000.jpg">new</a><a href="enlil_com2_222_20260919T000000.jpg">new</a><a href="https://evil.test/enlil_com2_222_20260919T040000.jpg">external</a><a href="latest.jpg">latest</a>');
+assert.equal(frames.length,2);
+assert.equal(frames[0].run,'enlil_com2_222');
+assert.equal(frames[0].valid,'2026-09-19T00:00:00Z');
+assert.match(frames[0].url,/^https:\/\/services\.swpc\.noaa\.gov\//);
+assert.doesNotMatch(html,/OSPREI CME Morphology|HUXt Solar Wind \+ CME/);
+// Exercise the recurrence inspector's per-hole sign QA, including degraded HMI.
+const recurrence=scripts.find(([,a])=>a.includes('id="fdRecurrenceCompareScript"'))[2];
+const signCode=recurrence.match(/  function measuredHoleSign\(h,ch\) \{[\s\S]*?\n  \}/)[0];
+const holeContext=vm.createContext({Date});vm.runInContext(signCode,holeContext);
+const magnetic={hmiPolarity:{numeric:true},sourceTimeVerified:true,sourceTime:new Date().toISOString(),registeredPack:{polarity:{degraded:true}}};
+const region={polarity:1,polarityEvidence:{fluxImbalance:.6,meanBr:2,nValid:100,nMasked:110,validMaskedPixelFraction:.91,temporalAgreement:true}};
+assert.equal(holeContext.measuredHoleSign(region,magnetic),1);
+assert.equal(holeContext.measuredHoleSign({...region,polarityEvidence:{...region.polarityEvidence,temporalAgreement:false}},magnetic),null);
 const fixture = JSON.parse(fs.readFileSync('chhss-data/feed.json'));
 // Repeatable ingestion tests at the actual fixture acquisition time. Separate
 // stale checks below advance the clock without relabeling the observation.

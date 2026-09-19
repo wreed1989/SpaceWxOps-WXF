@@ -4,7 +4,7 @@ Thresholds are fixed research choices, not a claim of operational calibration.
 from datetime import datetime, timedelta, timezone
 import numpy as np
 from scipy import ndimage as ndi
-VERSION='chhss-euv-hmi-20260919.1'
+VERSION='chhss-euv-hmi-20260919.2'
 CORES={'E':(-40.,-20.),'M':(-10.,10.),'W':(20.,40.)}
 LAGS={'E':6,'M':4,'W':2}
 UTC=timezone.utc
@@ -61,11 +61,33 @@ def segment(channels,valid,rho):
         diagnostics[str(wavelength)]={'radialMedian':profile.round(4).tolist(),'positivePixels':int(ok.sum())}
     candidate=valid&(normalized[193]<.58)&(normalized[211]<.60)&(normalized[171]<1.05)
     candidate=ndi.binary_opening(candidate,iterations=1);candidate=ndi.binary_closing(candidate,iterations=2)&valid
-    labels,n=ndi.label(candidate);sizes=np.bincount(labels.ravel());minimum=max(50,int(valid.sum()*.001))
+    structure=ndi.generate_binary_structure(2,2)
+    labels,n=ndi.label(candidate,structure);sizes=np.bincount(labels.ravel());minimum=max(50,int(valid.sum()*.001))
     keep=np.flatnonzero(sizes>=minimum);keep=keep[keep!=0];mask=np.isin(labels,keep)&valid
     if mask.sum()/valid.sum()>.45:raise ValueError('Candidate area >45%: segmentation failure gate')
-    labels,n=ndi.label(mask)
-    return mask,labels,{'method':VERSION,'thresholds':{'193':.58,'211':.60,'171':1.05},'channels':diagnostics,'components':int(n),'minimumComponentPixels':minimum,'candidateDiskFraction':float(mask.sum()/valid.sum()),'qualification':'Automatic EUV candidate mask; detector and forecast skill not certified.'}
+    # Darkness in every band also selects filaments and quiet-Sun patches.
+    # Require a cool-passband excess relative to BOTH hotter bands, measured
+    # against the local radial references. These conservative research gates
+    # are not the fitted CHIMERA curves and do not encode a desired hole count.
+    ratio193=normalized[171]/np.maximum(normalized[193],1e-6)
+    ratio211=normalized[171]/np.maximum(normalized[211],1e-6)
+    evidence=[];accepted=[]
+    for label in sorted(keep,key=lambda i:int(sizes[i]),reverse=True):
+        region=labels==label
+        cool193=float(np.median(ratio193[region]));cool211=float(np.median(ratio211[region]))
+        support=float(np.mean((ratio193[region]>=1.5)&(ratio211[region]>=1.5)))
+        passed=cool193>=1.5 and cool211>=1.5 and support>=.5
+        if passed:accepted.append(int(label))
+        y,x=np.nonzero(region)
+        evidence.append({'candidate':len(evidence)+1,'component':len(accepted) if passed else None,
+                         'accepted':passed,'pixels':int(sizes[label]),'centroidXPx':float(x.mean()),
+                         'centroidYPx':float(y.mean()),'cool193Ratio':cool193,'cool211Ratio':cool211,
+                         'thermalSupportFraction':support,
+                         'reason':'Cool-corona contrast supported' if passed else 'Dark patch lacks consistent cool-corona contrast; filament/quiet-Sun ambiguity'})
+    mask=np.isin(labels,accepted)&valid
+    selected=np.zeros(labels.shape,dtype=np.int32)
+    for i,label in enumerate(accepted,1):selected[labels==label]=i
+    return mask,selected,{'method':VERSION,'thresholds':{'193':.58,'211':.60,'171':1.05,'cool193Ratio':1.5,'cool211Ratio':1.5,'thermalSupportFraction':.5},'channels':diagnostics,'rawComponents':len(keep),'components':len(accepted),'componentEvidence':evidence,'minimumComponentPixels':minimum,'candidateDiskFraction':float(mask.sum()/valid.sum()),'qualification':'Thermally screened CH candidates; magnetic evidence reported separately. No certified detection accuracy or forecast skill.'}
 
 def windows(mask,valid,cmd,lat):
     labels=np.zeros(mask.shape,dtype=np.uint8);out={}

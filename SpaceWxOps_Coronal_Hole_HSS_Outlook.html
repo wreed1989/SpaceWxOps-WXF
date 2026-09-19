@@ -10484,6 +10484,58 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
         };
       };
 
+      // Catalog panels reuse the same observations as the original Shift charts.
+      // Render on mount and on feed refresh, independently of the hidden tab state.
+      function renderCatalogObservations(keys) {
+        const wind = () => renderShiftSolarWind(currentValues());
+        const renderers = {
+          "brief.imf": wind, "brief.speed": wind, "brief.density": wind,
+          "brief.xray": renderShiftXray, "brief.proton": renderShiftProton,
+          "brief.epam": renderShiftEpam, "brief.electron-flux": renderShiftElectronFlux,
+          "brief.electron-fluence": renderShiftElectronFluence, "brief.ap": renderShiftAp,
+          "brief.timeline": renderShiftTimeline
+        };
+        const selected = keys || Array.from(document.querySelectorAll('.fd-product-frame[data-product^="brief."]'), frame => frame.dataset.product);
+        for (const render of new Set(selected.map(key => renderers[key]).filter(Boolean))) render();
+      }
+      let catalogRenderFrame = 0;
+      const catalogRenderKeys = new Set();
+      function queueCatalogObservations(keys) {
+        keys.forEach(key => catalogRenderKeys.add(key));
+        if (!catalogRenderFrame) catalogRenderFrame = requestAnimationFrame(() => {
+          catalogRenderFrame = 0;
+          const selected = [...catalogRenderKeys]; catalogRenderKeys.clear();
+          renderCatalogObservations(selected);
+        });
+      }
+      window.SpaceWxObservationPanels = { render: queueCatalogObservations };
+
+      // Shared alert policy for observed and forecast particle products.
+      // REFM is 24-hour fluence; never apply an instantaneous flux threshold to it.
+      function particleThresholds(key) {
+        const colors = { yellow: '#facc15', red: '#ef4444', purple: '#a855f7' };
+        return ['yellow', 'red', 'purple'].filter(level => Number.isFinite(state.rules[key]?.[level]) && state.rules[key][level] > 0)
+          .map(level => ({ level, value: state.rules[key][level], color: colors[level], label: level === 'purple' ? 'Purple' : level[0].toUpperCase() + level.slice(1) }));
+      }
+      function particleAlertColor(key, value, quiet = '#38bdf8') {
+        return ({ yellow: '#facc15', red: '#ef4444', magenta: '#a855f7' })[alertLevelFromRule(key, value)] || quiet;
+      }
+      function particleThresholdOverlay(key, yMax, options = {}) {
+        const { xref = 'paper', yref = 'y', prefix = '', logarithmic = false, bands = true } = options;
+        const rules = particleThresholds(key), sorted = rules.slice().sort((a, b) => a.value - b.value);
+        const shapes = [], annotations = [];
+        for (const [index, item] of sorted.entries()) {
+          if (item.value > yMax) continue;
+          const end = Math.min(yMax, sorted[index + 1]?.value ?? yMax);
+          if (bands && end > item.value) shapes.push({ type: 'rect', xref, yref, x0: 0, x1: 1, y0: item.value, y1: end, fillcolor: transparentize(particleAlertColor(key, item.value), .065), line: { width: 0 }, layer: 'below' });
+          shapes.push({ type: 'line', xref, yref, x0: 0, x1: 1, y0: item.value, y1: item.value, line: { color: transparentize(item.color, .72), width: 1.3, dash: 'dash' }, layer: 'below' });
+          const value = item.value >= 100000 ? item.value.toExponential(1) : String(item.value);
+          annotations.push({ xref, x: .98, xanchor: 'right', yref, y: logarithmic ? Math.log10(item.value) : item.value, yanchor: 'bottom', text: `${prefix}${item.label} · ${value}`, showarrow: false, font: { color: readableThresholdColor(item.color), size: 9 }, bgcolor: isLightTheme() ? 'rgba(248,250,252,.86)' : 'rgba(8,13,18,.76)' });
+        }
+        return { shapes, annotations };
+      }
+      window.SpaceWxAlertStyle = { thresholds: particleThresholds, color: particleAlertColor, level: alertLevelFromRule, overlay: particleThresholdOverlay };
+
       const els = {};
       const plotConfig = { displayModeBar: false, responsive: true, displaylogo: false };
 
@@ -12581,7 +12633,7 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
         renderForecastTab(values);
         renderProductsTab();
         if (state.currentTab === "shift") renderShiftChange(values);
-        else renderShiftDetSchedule();
+        else { renderShiftDetSchedule(); renderCatalogObservations(); }
         updateImageFrames();
         renderHealth();
         applyPulseStates(values);
@@ -13439,7 +13491,9 @@ function activeRadioBurstRows(minutes = 30) {
       }
 
       function saveAlertRules() {
-        return writeAlertSetting("rules", JSON.stringify(state.rules));
+        const saved = writeAlertSetting("rules", JSON.stringify(state.rules));
+        window.dispatchEvent(new CustomEvent('spacewx:alert-rules-changed'));
+        return saved;
       }
 
       function thresholdCard(thresholds) {
@@ -21174,8 +21228,10 @@ function dedupeRadioBurstRows(rows) {
           .filter((value) => Number.isFinite(value) && value > 0);
         const observedMax = values.length ? Math.max(...values) : 1;
         const observedMin = values.length ? Math.min(...values) : 0.1;
-        const max = observedMax < 2 ? 60 : observedMax < 10 ? 70 : observedMax < 40 ? 80 : Math.min(100000, Math.max(100, observedMax * 1.35));
-        const min = Math.max(0.01, Math.min(0.1, observedMin * 0.5));
+        const observedCeiling = observedMax < 2 ? 60 : observedMax < 10 ? 70 : observedMax < 40 ? 80 : Math.min(100000, Math.max(100, observedMax * 1.35));
+        const limits = [...particleThresholds('proton'), ...particleThresholds('proton50')].map(rule => rule.value);
+        const max = Math.max(observedCeiling, ...limits.map(value => value * 1.3));
+        const min = Math.max(.000001, Math.min(.1, observedMin * .5, ...limits.map(value => value * .5)));
         const tickvals = [0.01, 0.1, 1, 10, 40, 100, 1000, 10000].filter((value) => value >= min && value <= max);
         return {
           min,
@@ -21292,20 +21348,13 @@ function dedupeRadioBurstRows(rows) {
       }
 
       function protonZoneShapes(yMax = 100) {
-        return [
-          ...thresholdBandShapes([
-            { y0: 10, y1: Math.min(40, yMax), color: "#facc15", alpha: 0.07 },
-            { y0: 40, y1: yMax, color: "#ef4444", alpha: 0.065 }
-          ]),
-          ...thresholdShapes([[10, "rgba(250,204,21,0.66)"], [40, "rgba(239,68,68,0.68)"]])
-        ];
+        return particleThresholdOverlay('proton', yMax).shapes.concat(particleThresholdOverlay('proton50', yMax, {bands:false}).shapes);
       }
 
       function protonThresholdAnnotations(yMax = 100) {
-        return [
-          { label: "SEU Elevated", y: 10, color: "#facc15" },
-          { label: "SEU Moderate", y: 40, color: "#ef4444" }
-        ].filter((item) => item.y <= yMax).map((item) => thresholdLabel(item.label, item.y, item.color));
+        const ten = particleThresholdOverlay('proton', yMax, {prefix:'≥10 MeV · ', logarithmic:true}).annotations;
+        const fifty = particleThresholdOverlay('proton50', yMax, {prefix:'≥50 MeV · ', logarithmic:true}).annotations.map(label => ({...label, x:.02, xanchor:'left'}));
+        return ten.concat(fifty);
       }
 
       function xrayAxis(rows) {
@@ -21576,26 +21625,15 @@ function dedupeRadioBurstRows(rows) {
       }
 
       function electronFluenceColor(value) {
-        if (value >= 4.8e8) return "#ef4444";
-        if (value >= 1.1e8) return "#facc15";
-        return "#38bdf8";
+        return particleAlertColor('electron', value);
       }
 
       function electronFluenceContextShapes() {
-        return [
-          ...thresholdBandShapes([
-            { y0: 1.1e8, y1: 4.8e8, color: "#facc15", alpha: 0.065 },
-            { y0: 4.8e8, y1: 1e10, color: "#ef4444", alpha: 0.06 }
-          ]),
-          ...thresholdShapes([[1.1e8, "rgba(250,204,21,0.72)"], [4.8e8, "rgba(239,68,68,0.72)"]])
-        ];
+        return particleThresholdOverlay('electron', Math.max(1e10, ...particleThresholds('electron').map(rule => rule.value * 10))).shapes;
       }
 
       function electronFluenceThresholdLabels() {
-        return [
-          thresholdLabel("Elevated", 1.1e8, "#facc15"),
-          thresholdLabel("High", 4.8e8, "#ef4444")
-        ];
+        return particleThresholdOverlay('electron', Infinity, {logarithmic:true}).annotations;
       }
 
       function thresholdLabel(text, y, color) {
@@ -36163,10 +36201,24 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
     if(now>end)return 'EXPIRED';
     return now<start?'Upcoming valid time':'Within valid window';
   }
+  const alertStyle=()=>window.SpaceWxAlertStyle;
+  function applyThresholds(chart,key,values,yref='y'){
+    const rules=alertStyle()?.thresholds(key)||[],positive=values.filter(v=>Number.isFinite(v)&&v>0).concat(rules.map(r=>r.value));
+    const min=positive.length?Math.min(...positive)*.6:.1,max=positive.length?Math.max(...positive)*1.6:100;
+    const axis=yref==='y'?'yaxis':'yaxis'+yref.slice(1);
+    chart[axis]={...chart[axis],range:[Math.log10(min),Math.log10(max)]};
+    const overlay=alertStyle()?.overlay(key,max,{yref,logarithmic:true})||{shapes:[],annotations:[]};
+    chart.shapes=(chart.shapes||[]).concat(overlay.shapes);chart.annotations=(chart.annotations||[]).concat(overlay.annotations);
+  }
   function refmSeries(data,days=30){
     const rows=data.rows.slice(-days),f=data.latest.forecast;
-    return [{name:'Observed >2 MeV',x:rows.map(r=>r.day),y:rows.map(r=>r.observed),type:'scatter',mode:'lines+markers',marker:{size:4},connectgaps:false,line:{color:'#64d5e3',width:2.4},hovertemplate:'%{x|%d %b %Y}<br>Observed %{y:.2e}<extra></extra>'},
-      {name:'REFM forecast',x:f.map(r=>r.day),y:f.map(r=>r.value),type:'scatter',mode:'lines+markers',connectgaps:false,line:{color:'#ffb66d',width:2.7,dash:'dash'},marker:{size:8},hovertemplate:'%{x|%d %b %Y}<br>Forecast %{y:.2e}<extra></extra>'}];
+    const colors=values=>values.map(value=>alertStyle()?.color('electron',value)||'#38bdf8');
+    return [{name:'Observed >2 MeV',x:rows.map(r=>r.day),y:rows.map(r=>r.observed),type:'scatter',mode:'lines+markers',marker:{size:5,color:colors(rows.map(r=>r.observed))},connectgaps:false,line:{color:'#64d5e3',width:2.4},hovertemplate:'%{x|%d %b %Y}<br>Observed %{y:.2e}<extra></extra>'},
+      {name:'REFM forecast',x:f.map(r=>r.day),y:f.map(r=>r.value),type:'scatter',mode:'lines+markers',connectgaps:false,line:{color:'#ffb66d',width:2.7,dash:'dash'},marker:{size:9,color:colors(f.map(r=>r.value)),line:{color:'#0c1c29',width:1}},hovertemplate:'%{x|%d %b %Y}<br>Forecast %{y:.2e}<extra></extra>'}];
+  }
+  function refmChart(data,days=30){
+    const traces=refmSeries(data,days),chart=layout('24 h fluence · e⁻ cm⁻² sr⁻¹');
+    applyThresholds(chart,'electron',traces.flatMap(trace=>trace.y));return {traces,layout:chart};
   }
   let snapshot={sources:{}},pending=null;
   function accept(candidate){if(candidate?.schemaVersion!=='particle-forecasts-1'||!candidate.sources)return;for(const [key,value]of Object.entries(candidate.sources)){const prior=snapshot.sources[key];if(value.payload&&(!prior?.retrievedAt||Date.parse(value.retrievedAt)>=Date.parse(prior.retrievedAt)))snapshot.sources[key]=value;}snapshot.schemaVersion='particle-forecasts-1';}
@@ -36196,7 +36248,7 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
   function layout(title){return {autosize:true,paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'#0c1c29',font:{color:'#b1c8d8',size:11},margin:{l:64,r:20,t:28,b:45},legend:{orientation:'h',x:0,y:1.13},xaxis:{type:'date',title:'UTC',gridcolor:'#263e4f',tickformat:'%d %b'},yaxis:{type:'log',title:{text:title,standoff:8},gridcolor:'#263e4f',exponentformat:'power',automargin:true},hovermode:'x unified'};}
   function prediction(row){return row.flux!==null?fmt(row.flux)+' '+esc(row.units):row.allClear===true?'Below '+esc(row.threshold)+' '+esc(row.thresholdUnits)+' event threshold':row.allClear===false?'Threshold exceedance forecast':'No intensity supplied';}
   function protonChart(sources,hours=24,now=Date.now()){
-    const traces=[],chart=layout('≥10 MeV · pfu'),colors=['#69d9f0','#c5a4ff'];chart.showlegend=false;chart.margin.t=24;chart.margin.b=38;chart.shapes=[];chart.annotations=[];
+    const traces=[],chart=layout('≥10 MeV · pfu'),colors=['#fb923c','#38bdf8'];chart.showlegend=false;chart.margin.t=24;chart.margin.b=38;chart.shapes=[];chart.annotations=[];
     const start=now-hours*3600000,forecasts=[10,50].map(e=>{try{return parseSEP(sources['umasep'+e]?.payload)[0];}catch(_){return null;}});
     const future=Math.max(now+3600000,...forecasts.filter(r=>r&&Date.parse(r.end)>now&&Date.parse(r.end)<now+24*3600000).map(r=>Date.parse(r.end)));
     chart.xaxis={...chart.xaxis,range:[new Date(start).toISOString(),new Date(future).toISOString()],anchor:'y',showticklabels:false,title:undefined};
@@ -36208,8 +36260,9 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
       if(forecast&&Date.parse(forecast.end)>=start){
         chart.shapes.push({type:'rect',xref,yref:'paper',x0:forecast.start,x1:forecast.end,y0:lo,y1:hi,fillcolor:color+'16',line:{width:0},layer:'below'});
         if(forecast.threshold!==null&&forecast.thresholdUnits==='pfu')chart.shapes.push({type:'line',xref,yref,x0:forecast.start,x1:forecast.end,y0:forecast.threshold,y1:forecast.threshold,line:{color,width:1,dash:'dot'}});
-        if(forecast.flux!==null&&forecast.units==='pfu')traces.push({name:'Published peak',type:'scatter',mode:'markers',xaxis:xref,yaxis:yref,x:[new Date((Date.parse(forecast.start)+Date.parse(forecast.end))/2).toISOString()],y:[forecast.flux],error_x:{type:'constant',value:(Date.parse(forecast.end)-Date.parse(forecast.start))/2,color,thickness:1},marker:{color,size:10,symbol:'diamond'},hovertemplate:'Provider peak estimate: %{y:.3g} pfu<br>Horizontal bar: validity window, not peak timing<extra>UMASEP</extra>'});
+        if(forecast.flux!==null&&forecast.units==='pfu')traces.push({name:'Published peak',type:'scatter',mode:'markers',xaxis:xref,yaxis:yref,x:[new Date((Date.parse(forecast.start)+Date.parse(forecast.end))/2).toISOString()],y:[forecast.flux],error_x:{type:'constant',value:(Date.parse(forecast.end)-Date.parse(forecast.start))/2,color,thickness:1},marker:{color:alertStyle()?.color(i?'proton50':'proton',forecast.flux,color)||color,size:10,symbol:'diamond'},hovertemplate:'Provider peak estimate: %{y:.3g} pfu<br>Horizontal bar: validity window, not peak timing<extra>UMASEP</extra>'});
       }
+      applyThresholds(chart,i?'proton50':'proton',data.map(r=>r.flux).concat(forecast?.flux,forecast?.threshold),yref);
       chart.annotations.push({text:`<b>≥${energy} MeV</b> · GOES observed / UMASEP forecast window`,xref:'paper',yref:'paper',x:0,y:hi+.035,showarrow:false,xanchor:'left',font:{color,size:10}});
     });return {traces,layout:chart};
   }
@@ -36218,27 +36271,31 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
     root.classList.add('wx-particle');const sep=kind==='sep';let period=sep?24:30,error='',disposed=false;
     root.innerHTML=`<div class="wx-particle-header"><div><span class="wx-particle-eyebrow">${sep?'NASA CCMC + NOAA GOES':'NOAA SWPC · DAILY GUIDANCE'}</span><h2>${sep?'SEP / Proton · ≥10 & ≥50 MeV':'Electron Forecast · >2 MeV'}</h2></div><button data-particle-refresh>Refresh</button></div><p class="wx-particle-status" data-particle-status role="status"></p><div class="wx-particle-content" data-particle-data></div>`;
     function paint(){
-      if(disposed)return;const target=root.querySelector('[data-particle-data]');
+      if(disposed)return;const target=root.querySelector('[data-particle-data]'),detailsOpen=!!target.querySelector('details[open]');
+      target.querySelectorAll('.js-plotly-plot').forEach(plot=>window.Plotly?.purge(plot));
       root.querySelector('[data-particle-status]').textContent=error+(error?' · Retaining dated data.':sep?'GOES 5-minute observations · NASA forecast snapshot hourly · refresh every 5 minutes.':'Daily SWPC guidance · check for updates every 5 minutes.');
       if(!sep){
         const source=snapshot.sources.refm;let d;try{d=parseREFM(source?.payload);}catch(_){target.innerHTML='<p>No valid SWPC electron forecast received yet. Refresh to retry.</p>';return;}
         const expired=Date.now()>=Date.parse(d.latest.forecast.at(-1).day+'T00:00:00Z')+86400000;
-        target.innerHTML=`<div class="wx-particle-stat">${d.latest.forecast.map(f=>`<div><span>${f.day} UTC</span><strong>${fmt(f.value)}</strong></div>`).join('')}</div><div class="wx-particle-toolbar"><span class="wx-particle-status ${expired?'wx-particle-warning':''}">${expired?'EXPIRED · ':''}Issued ${utc(d.issued)} · electrons cm⁻² sr⁻¹ per 24 h</span><label>History <select data-refm-range aria-label="Electron forecast history">${[14,30,60].map(n=>`<option value="${n}"${n===period?' selected':''}>${n} days</option>`).join('')}</select></label></div><div class="wx-particle-plot" data-refm-plot></div><p class="wx-particle-status">One value per UTC day. Three forecast points; dashed joins guide the eye and do not imply hourly predictions.</p><details><summary>Source &amp; interpretation</summary><p>Daily >2 MeV electron fluence at geosynchronous orbit on a logarithmic scale. Cyan: observed. Orange: REFM forecast. Missing values stay gaps. Retrieved ${utc(source.retrievedAt)}${source.error?' · Source refresh failed':''}.</p><p>REFM describes the electron environment, not individual spacecraft failure.</p><a href="${REFM}" target="_blank" rel="noopener">Numerical bulletin</a> · <a href="https://www.spaceweather.gov/products/relativistic-electron-forecast-model" target="_blank" rel="noopener">SWPC model description</a></details>`;
-        window.Plotly?.react(target.querySelector('[data-refm-plot]'),refmSeries(d,period),layout('Daily fluence'),{responsive:true,displaylogo:false});target.querySelector('[data-refm-range]').onchange=e=>{period=+e.target.value;paint();};
+        target.innerHTML=`<div class="wx-particle-stat">${d.latest.forecast.map(f=>`<div><span>${f.day} UTC</span><strong style="color:${alertStyle()?.color('electron',f.value)||'#38bdf8'}">${fmt(f.value)}</strong></div>`).join('')}</div><div class="wx-particle-toolbar"><span class="wx-particle-status ${expired?'wx-particle-warning':''}">${expired?'EXPIRED · ':''}Issued ${utc(d.issued)} · electrons cm⁻² sr⁻¹ per 24 h</span><label>History <select data-refm-range aria-label="Electron forecast history">${[14,30,60].map(n=>`<option value="${n}"${n===period?' selected':''}>${n} days</option>`).join('')}</select></label></div><div class="wx-particle-plot" data-refm-plot></div><p class="wx-particle-status">One value per UTC day. Bands and marker colors follow Alert Settings → Electron Fluence. Dashed joins guide the eye; they do not imply hourly predictions.</p><details><summary>Source &amp; interpretation</summary><p>Daily >2 MeV electron fluence at geosynchronous orbit on a logarithmic scale. Cyan line: observed. Orange dashed line: REFM forecast. Marker colors and yellow/red/purple bands use your configured 24-hour fluence rules, not the instantaneous electron-flux warning threshold. Missing values stay gaps. Retrieved ${utc(source.retrievedAt)}${source.error?' · Source refresh failed':''}.</p><p>REFM describes the electron environment, not individual spacecraft failure.</p><a href="${REFM}" target="_blank" rel="noopener">Numerical bulletin</a> · <a href="https://www.spaceweather.gov/products/relativistic-electron-forecast-model" target="_blank" rel="noopener">SWPC model description</a></details>`;
+        const chart=refmChart(d,period);window.Plotly?.react(target.querySelector('[data-refm-plot]'),chart.traces,chart.layout,{responsive:true,displaylogo:false});target.querySelector('[data-refm-range]').onchange=e=>{period=+e.target.value;paint();};
       }else{
         let rows=[];for(const key of ['umasep10','umasep50','release30','release60','release90']){const source=snapshot.sources[key];try{rows.push(...parseSEP(source?.payload).map(r=>({...r,key,retrieved:source.retrievedAt,error:source.error})));}catch(_){} }
         const uma=rows.filter(r=>r.key.startsWith('umasep')),observation=parseProtons(snapshot.sources.goesProtons?.payload,10).at(-1),old=!observation||Date.now()-observation.time>30*60000;
-        target.innerHTML=`<div class="wx-proton-summary">${[10,50].map(e=>{const r=uma.find(r=>r.key==='umasep'+e);return `<div><strong>≥${e} MeV</strong><span>${r?prediction(r):'Forecast unavailable'}</span><small class="${!r||freshness(r)==='EXPIRED'?'wx-particle-warning':''}">${r?freshness(r)+' · '+utc(r.start)+' – '+utc(r.end):'No dated submission'}</small></div>`;}).join('')}</div><div class="wx-particle-toolbar"><span class="wx-particle-status ${old?'wx-particle-warning':''}">${old?'OBSERVATIONS STALE / UNAVAILABLE · ':''}GOES latest ${observation?utc(new Date(observation.time).toISOString()):'unavailable'}</span><label>History <select data-proton-range aria-label="Proton history">${[6,24,72].map(n=>`<option value="${n}"${n===period?' selected':''}>${n} hours</option>`).join('')}</select></label></div><div class="wx-particle-plot" data-proton-plot></div><p class="wx-particle-status">Shading: published UMASEP forecast interval. Dotted line: event threshold. An all-clear forecast supplies no flux curve; it is never drawn as zero. Log scale · pfu = protons cm⁻² s⁻¹ sr⁻¹.</p><details><summary>Numerical predictions, timing &amp; sources</summary><div class="wx-particle-table"><table><thead><tr><th>Model / energy</th><th>Issue / valid · UTC</th><th>Prediction</th><th>Status</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r.model)}<br>${esc(r.energy)}</td><td>Issued ${utc(r.issued)}<br>${utc(r.start)} – ${utc(r.end)}<br>Retrieved ${utc(r.retrieved)}</td><td>${prediction(r)}</td><td>${freshness(r)}${r.error?' · Refresh failed':''}</td></tr>`).join('')}</tbody></table></div><p>HESPERIA REleASE's 15.8–39.8 and 28.2–50.1 MeV differential bands are separate from the ≥10 / ≥50 MeV integral channels. REleASE: University of Kiel and IAASARS / National Observatory of Athens, EU Horizon 2020 grant 637324. UMASEP: University of Málaga. Distributed by NASA CCMC.</p><a href="${GOES}" target="_blank" rel="noopener">GOES raw observations</a> · <a href="${RELAY}" target="_blank" rel="noopener">Numerical forecast snapshot</a> · <a href="https://ccmc.gsfc.nasa.gov/models/UMASEP~v3/" target="_blank" rel="noopener">UMASEP</a> · <a href="https://ccmc.gsfc.nasa.gov/models/HESPERIA_REleASE~v3/" target="_blank" rel="noopener">REleASE attribution</a></details>`;
+        target.innerHTML=`<div class="wx-proton-summary">${[10,50].map(e=>{const r=uma.find(r=>r.key==='umasep'+e);return `<div><strong>≥${e} MeV</strong><span>${r?prediction(r):'Forecast unavailable'}</span><small class="${!r||freshness(r)==='EXPIRED'?'wx-particle-warning':''}">${r?freshness(r)+' · '+utc(r.start)+' – '+utc(r.end):'No dated submission'}</small></div>`;}).join('')}</div><div class="wx-particle-toolbar"><span class="wx-particle-status ${old?'wx-particle-warning':''}">${old?'OBSERVATIONS STALE / UNAVAILABLE · ':''}GOES latest ${observation?utc(new Date(observation.time).toISOString()):'unavailable'}</span><label>History <select data-proton-range aria-label="Proton history">${[6,24,72].map(n=>`<option value="${n}"${n===period?' selected':''}>${n} hours</option>`).join('')}</select></label></div><div class="wx-particle-plot" data-proton-plot></div><p class="wx-particle-status">Yellow/red/purple bands: your Alert Settings for each energy channel. Vertical tint: UMASEP forecast interval. Dotted line: provider event threshold, independent of your settings. An all-clear forecast supplies no flux curve; it is never drawn as zero. Log scale · pfu = protons cm⁻² s⁻¹ sr⁻¹.</p><details><summary>Numerical predictions, timing &amp; sources</summary><div class="wx-particle-table"><table><thead><tr><th>Model / energy</th><th>Issue / valid · UTC</th><th>Prediction</th><th>Status</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r.model)}<br>${esc(r.energy)}</td><td>Issued ${utc(r.issued)}<br>${utc(r.start)} – ${utc(r.end)}<br>Retrieved ${utc(r.retrieved)}</td><td>${prediction(r)}</td><td>${freshness(r)}${r.error?' · Refresh failed':''}</td></tr>`).join('')}</tbody></table></div><p>HESPERIA REleASE's 15.8–39.8 and 28.2–50.1 MeV differential bands are separate from the ≥10 / ≥50 MeV integral channels. REleASE: University of Kiel and IAASARS / National Observatory of Athens, EU Horizon 2020 grant 637324. UMASEP: University of Málaga. Distributed by NASA CCMC.</p><a href="${GOES}" target="_blank" rel="noopener">GOES raw observations</a> · <a href="${RELAY}" target="_blank" rel="noopener">Numerical forecast snapshot</a> · <a href="https://ccmc.gsfc.nasa.gov/models/UMASEP~v3/" target="_blank" rel="noopener">UMASEP</a> · <a href="https://ccmc.gsfc.nasa.gov/models/HESPERIA_REleASE~v3/" target="_blank" rel="noopener">REleASE attribution</a></details>`;
         const chart=protonChart(snapshot.sources,period);window.Plotly?.react(target.querySelector('[data-proton-plot]'),chart.traces,chart.layout,{responsive:true,displaylogo:false});target.querySelector('[data-proton-range]').onchange=e=>{period=+e.target.value;paint();};
       }
+      if(detailsOpen&&target.querySelector('details'))target.querySelector('details').open=true;
+      window.SpaceWxProductFlow?.sync(root);
     }
     async function update(){const button=root.querySelector('[data-particle-refresh]');button.disabled=true;error=(await refresh())[sep?'sep':'electron'];if(!disposed){paint();button.disabled=false;}}
-    root.querySelector('[data-particle-refresh]').onclick=update;paint();update();
+    root.querySelector('[data-particle-refresh]').onclick=update;window.addEventListener('spacewx:alert-rules-changed',paint);paint();update();
+    window.SpaceWxProductFlow.attach(root);
     const timer=setInterval(()=>{if(root.isConnected)update();else stop();},5*60000);
-    function stop(){disposed=true;clearInterval(timer);mounted.delete(root);}mounted.set(root,stop);return stop;
+    function stop(){disposed=true;clearInterval(timer);window.removeEventListener('spacewx:alert-rules-changed',paint);window.SpaceWxProductFlow.detach(root);root.querySelectorAll('.js-plotly-plot').forEach(plot=>window.Plotly?.purge(plot));mounted.delete(root);}mounted.set(root,stop);return stop;
   }
   function unmount(){for(const stop of [...mounted.values()])stop();}
-  window.SpaceWxParticles={mount,unmount,parseREFM,parseSEP,parseProtons,protonChart,freshness,refmSeries,refresh};
+  window.SpaceWxParticles={mount,unmount,parseREFM,parseSEP,parseProtons,protonChart,freshness,refmSeries,refmChart,refresh};
 })();
 </script>
 
@@ -36311,8 +36368,8 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
     root.addEventListener('change',controlChange);
     root.addEventListener('input',e=>{if(e.target.matches('[data-nairas-hours]')&&e.target.value!==''&&Number.isFinite(+e.target.value)&&+e.target.value>=.25&&+e.target.value<=24)controlChange(e);});
     async function update(){const button=root.querySelector('[data-nairas-refresh]');button.disabled=true;error=await refresh();if(!disposed){paint();button.disabled=false;}}
-    root.querySelector('[data-nairas-refresh]').onclick=update;paint();update();const timer=setInterval(()=>{if(root.isConnected)update();else stop();},5*60000);
-    function stop(){disposed=true;clearInterval(timer);sizeObserver?.disconnect();mounted.delete(root);}mounted.set(root,stop);return stop;
+    root.querySelector('[data-nairas-refresh]').onclick=update;paint();update();window.SpaceWxProductFlow.attach(root);const timer=setInterval(()=>{if(root.isConnected)update();else stop();},5*60000);
+    function stop(){disposed=true;clearInterval(timer);sizeObserver?.disconnect();window.SpaceWxProductFlow.detach(root);window.Plotly?.purge(plot);mounted.delete(root);}mounted.set(root,stop);return stop;
   }
   function unmount(){for(const stop of [...mounted.values()])stop();}
   window.SpaceWxNAIRAS={mount,unmount,valid,status,point,project,polarGrid,chart};
@@ -36371,7 +36428,7 @@ window.SpaceWxMonitorLayout=(()=>{
 .fd-wall-resize{position:absolute;right:2px;bottom:2px;width:25px;height:25px;border:0;background:linear-gradient(135deg,transparent 45%,#214453 45%);color:#9fe1f4;cursor:nwse-resize;touch-action:none;z-index:8;font-size:14px}
 .fd-wall-resize:focus-visible{outline:2px solid #7ddaea}
 .fd-monitor-layout .fd-wall-tile.resizing{border-color:#71def0;transition:none}
-.fd-monitor-layout .fd-wall-tile-body{overflow:auto;overscroll-behavior:contain}
+.fd-monitor-layout .fd-wall-tile-body{overflow:auto;overscroll-behavior:auto}
 .fd-monitor-layout .fd-wall-product{display:block;min-height:0}
 .fd-monitor-layout .fd-wall-product>.card{height:100%;min-height:0!important;display:flex;flex-direction:column}
 .fd-monitor-layout .fd-wall-product>.card>.card-body{flex:1;min-height:0;display:flex;flex-direction:column}
@@ -36470,6 +36527,71 @@ window.SpaceWxMonitorLayout=(()=>{
 .wx-particle .wx-particle-header{gap:6px}
 }
 </style>
+
+<style id="productFlowStyles">
+.wx-particle details[open]{max-height:none;overflow:visible}
+.wx-particle.wx-details-open{height:auto!important;min-height:var(--wx-closed-height,0px);overflow:visible!important}
+.wx-particle.wx-details-open .wx-particle-content{flex:none;min-height:0}
+.wx-particle.wx-details-open .wx-particle-plot{flex:none;height:var(--wx-open-plot-height,430px)!important}
+.fd-monitor-layout .fd-wall-tile:has(.wx-details-open) .fd-wall-tile-body{overflow:visible}
+</style>
+<script id="productFlow">
+(()=>{
+  'use strict';
+  const flows=new Map();
+  // The user's saved height describes the collapsed card. Extra rows exist only
+  // while its notes are open and never enter localStorage or named layouts.
+  function rowsForContent(baseRows,contentHeight,chromeHeight){return Math.max(baseRows,Math.ceil((contentHeight+chromeHeight+8)/12));}
+  function attach(root){
+    if(flows.has(root))return;
+    const state={root,open:false,closedHeight:0,plotHeight:0,plot:null,frame:0,lastWidth:0,lastHeight:0};
+    function remember(){
+      if(root.querySelector('details[open]'))return;
+      const plot=root.querySelector('.wx-particle-plot');
+      if(root.clientHeight>0)state.closedHeight=root.offsetHeight;
+      if(plot?.clientHeight>0)state.plotHeight=plot.clientHeight;
+    }
+    function fit(){
+      const wrapper=root.closest('.fd-wall-tile');if(!wrapper)return;
+      if(!state.open){wrapper.style.removeProperty('grid-row');return;}
+      const body=wrapper.querySelector('.fd-wall-tile-body'),style=getComputedStyle(body);
+      const chrome=wrapper.offsetHeight-body.clientHeight+(parseFloat(style.paddingTop)||0)+(parseFloat(style.paddingBottom)||0);
+      const rows=rowsForContent(+wrapper.style.getPropertyValue('--fd-tile-rows'),root.offsetHeight,chrome);
+      const span='span '+rows;if(wrapper.style.gridRow!==span)wrapper.style.gridRow=span;
+    }
+    function sync(){
+      if(!root.isConnected)return;
+      const plot=root.querySelector('.wx-particle-plot');
+      if(plot!==state.plot){if(state.plot)observer?.unobserve(state.plot);state.plot=plot;if(plot)observer?.observe(plot);}
+      const open=!!root.querySelector('details[open]');
+      if(open){
+        if(!state.open){state.closedHeight ||= root.offsetHeight;state.plotHeight ||= plot?.clientHeight||300;}
+        root.style.setProperty('--wx-closed-height',state.closedHeight+'px');
+        root.style.setProperty('--wx-open-plot-height',state.plotHeight+'px');
+      }
+      state.open=open;root.classList.toggle('wx-details-open',open);fit();if(!open)remember();
+      if(plot&&(plot.clientWidth!==state.lastWidth||plot.clientHeight!==state.lastHeight)){
+        state.lastWidth=plot.clientWidth;state.lastHeight=plot.clientHeight;
+        if(plot.classList.contains('js-plotly-plot'))Promise.resolve(window.Plotly?.Plots.resize(plot)).catch(()=>{});
+      }
+    }
+    function queue(){if(!state.frame)state.frame=requestAnimationFrame(()=>{state.frame=0;sync();});}
+    function beforeToggle(event){if(event.target.closest('summary'))remember();}
+    const observer=typeof ResizeObserver==='function'?new ResizeObserver(queue):null;
+    observer?.observe(root);
+    root.addEventListener('click',beforeToggle,true);
+    root.addEventListener('toggle',queue,true);
+    state.sync=sync;
+    state.resized=delta=>{if(state.open){state.closedHeight=Math.max(0,state.closedHeight+delta);state.plotHeight=Math.max(160,state.plotHeight+delta);}sync();queue();};
+    state.stop=()=>{observer?.disconnect();cancelAnimationFrame(state.frame);root.removeEventListener('click',beforeToggle,true);root.removeEventListener('toggle',queue,true);};
+    flows.set(root,state);queue();
+  }
+  function sync(root){flows.get(root)?.sync();}
+  function resized(node,delta){for(const state of flows.values())if(node.contains(state.root))state.resized(delta);}
+  function detach(root){flows.get(root)?.stop();flows.delete(root);}
+  window.SpaceWxProductFlow={attach,sync,resized,detach,rowsForContent};
+})();
+</script>
 
 <script id="fdDeskScript">
 (function () {
@@ -36623,11 +36745,11 @@ window.SpaceWxMonitorLayout=(()=>{
         ["realtime.proton", "GOES Proton Flux", "LIVE"],
         ["realtime.epam", "ACE EPAM", "LIVE"],
         ["realtime.electron", "Electron Flux", "LIVE"],
-        ["brief.proton", "Proton Flux — Alternate Panel", "ALT"],
-        ["brief.epam", "ACE EPAM — Alternate Panel", "ALT"],
-        ["brief.electron-flux", "Electron Flux — Alternate Panel", "ALT"],
+        ["brief.proton", "Proton Flux", "LIVE"],
+        ["brief.epam", "ACE EPAM", "LIVE"],
+        ["brief.electron-flux", "Electron Flux", "LIVE"],
         ["brief.electron-fluence", "Electron Fluence", "DATA"],
-        ["brief.xray", "X-ray Flux — Alternate Panel", "ALT"]
+        ["brief.xray", "X-ray Flux", "LIVE"]
       ]
     },
     {
@@ -36658,9 +36780,9 @@ window.SpaceWxMonitorLayout=(()=>{
       name: "Operational Support",
       domain: "impact",
       products: [
-        ["brief.imf", "IMF — Alternate Panel", "ALT"],
-        ["brief.speed", "Solar Wind Speed — Alternate Panel", "ALT"],
-        ["brief.density", "Solar Wind Density — Alternate Panel", "ALT"],
+        ["brief.imf", "IMF", "LIVE"],
+        ["brief.speed", "Solar Wind Speed", "LIVE"],
+        ["brief.density", "Solar Wind Density", "LIVE"],
         ["brief.recurrence", "27-Day Recurrence Viewer", "SOLAR"],
         ["brief.timeline", "Forecast Outlook Timeline", "FCST"],
         ["brief.stoplight", "Operational Status Summary", "OPS"],
@@ -38041,6 +38163,7 @@ window.SpaceWxMonitorLayout=(()=>{
       }
     }
     target.appendChild(frame);
+    window.SpaceWxObservationPanels?.render([key]);
     scheduleResize(frame);
     return frame;
   }
@@ -39571,12 +39694,24 @@ window.SpaceWxMonitorLayout=(()=>{
   }
 
   function applyTileSize(tile,size,save=true) {
+    const deltaHeight=(size.rows-tile.rows)*12;
     Object.assign(tile,size,{layoutVersion:window.SpaceWxMonitorLayout.version});
     const node=$(`.fd-wall-tile[data-tile-id="${CSS.escape(tile.id)}"]`,app);
-    if(node){node.style.setProperty('--fd-tile-cols',tile.cols);node.style.setProperty('--fd-tile-rows',tile.rows);node.dataset.size=tile.cols;const w=$('[data-fd-tile-width]',node),h=$('[data-fd-tile-height]',node);if(w)w.value=tile.cols;if(h)h.value=tile.rows;scheduleResize(node);}
+    if(node){node.style.setProperty('--fd-tile-cols',tile.cols);node.style.setProperty('--fd-tile-rows',tile.rows);node.dataset.size=tile.cols;const w=$('[data-fd-tile-width]',node),h=$('[data-fd-tile-height]',node);if(w)w.value=tile.cols;if(h)h.value=tile.rows;window.SpaceWxProductFlow?.resized(node,deltaHeight);scheduleResize(node);}
     if(save)saveState();
   }
+  function scrollMonitorPage(event) {
+    if (!event.target.closest('.fd-monitor-layout') || event.ctrlKey || event.metaKey || event.shiftKey || !event.deltaY) return;
+    const scroller = stage.closest('.fd-stage');
+    if (!scroller) return;
+    const delta = event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? scroller.clientHeight : 1);
+    scroller.scrollTop += delta;
+    event.preventDefault();
+    event.stopPropagation();
+  }
   function bindEvents() {
+    app.addEventListener('wheel', scrollMonitorPage, {capture:true, passive:false});
+
     app.addEventListener('keydown',event=>{
       const handle=event.target.closest('[data-fd-resize-handle]');if(!handle||!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(event.key))return;
       const tile=state.monitorTiles.find(t=>t.id===handle.dataset.fdResizeHandle);if(!tile)return;event.preventDefault();

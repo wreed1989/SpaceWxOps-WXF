@@ -98,3 +98,66 @@ analysis; see the [SWPC/Met Office development overview](https://cpaess.ucar.edu
 It has no fabricated measurements, controls or output. OSPREI has been removed
 from the model catalog and saved selections migrate safely. SEP/proton and
 electron model integration is outside this change.
+
+## Display and comparison update (2026-09-19)
+
+The registered preview now contains a genuine RGB image: AIA 211 Å → red,
+193 Å → green, 171 Å → blue. Each channel receives its own display-only log
+stretch on the common WCS grid. This replaces the erroneous assignment of the
+193 Å quicklook to `compositeUrl`. It does not change segmentation, HMI values
+or forecast coefficients. Helioviewer's opaque single-channel layers are no
+longer stacked and labelled RGB.
+
+The recurrence view and main CH map render each accepted component's measured
+raster contour, with the same frame transform as the image. Outlines appear only
+on the registered 193 Å preview and registered RGB. Selecting the same identifier
+again clears the feature selection and cursor. Excluded patches have markers
+only; their geometry is not fabricated. SUVI is removed from these dropdowns
+because no matched SUVI measurement/archive adapter is used.
+
+For the reference epoch, the worker resolves actual NASA SDO RGB browse filenames
+in a three-day window around the prior Carrington rotation. This avoids the
+browser's cross-origin restriction on NASA directory listings and invented
+rounded-minute filenames. The frontend accepts only images within two hours of
+the requested reference and shows the actual filename timestamp. It never places
+current measured boundaries on the prior epoch. Arbitrary reference dates outside
+this small index may be unavailable; AIA 193 remains a Helioviewer comparison
+option. This is current-date recurrence context, not a historical backfill.
+
+The Solar Cycle view now uses coordinated cyan/amber panels, subdued monthly
+curves, emphasized smoothed curves, dashed predictions, published-range shading,
+a shared UTC date axis, a prediction-period background and concise custom legend.
+The four context cards, range controls and collapsed timing/source notes retain
+all underlying data and missing-value behavior.
+
+Every configurable Monitor wall tile has a top-left remove button, including
+pinned tiles. Removal persists in the saved layout; the catalog/customization
+controls can restore tiles. The SWPC workspace places the alert timeline above
+supporting official products; the local draft and coordination-note panels have
+been removed.
+
+## NASA CME Arrival Scoreboard
+
+The CME workspace also ingests the [NASA CCMC CME Scoreboard](https://ccmc.gsfc.nasa.gov/scoreboards/cme/earth/).
+This is an additional agency forecast source, separate from DONKI event analyses
+and the SWPC ENLIL run. The rolling window is the last 30 days, with both active
+and closed events requested (`closeOutCMEsOnly=false`,
+`skipNoArrivalObservedCMEs=false`). NASA M2M, Met Office, KSWC and other available
+submissions remain separate rows. Each retains its submission time, predicted
+arrival, reported asymmetric uncertainty, Kp range, confidence and notes. Missing
+values remain missing. Provider averages/medians are labelled summaries and do
+not count as independent models. Observed arrivals are separate from predictions.
+
+The arrival plot compares submitted times and reported uncertainty. NASA image
+links in submission notes expose the associated published propagation animation
+when available. Image valid times stay on the provider's image; submission and
+retrieval times are not model initiation times. No local ensemble is executed.
+
+The service currently uses `kauai.ccmc.gsfc.nasa.gov/CMEscoreboard/WS/get/predictions`.
+NASA's [announced migration](https://ccmc.gsfc.nasa.gov/news/major-updates/) is
+September 30, 2026; the adapter switches to
+`ccmc.gsfc.nasa.gov/CMESB-Earth/WS/get/predictions` on that date, retaining the
+alternate endpoint as a fallback. Refresh is manual or every 15 minutes while
+mounted. A failed refresh preserves the last successful dated snapshot with an
+error message. The build flag `--cme-scoreboard` embeds a `{rows,retrievedAt,source}`
+snapshot for downloaded-HTML startup.

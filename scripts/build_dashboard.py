@@ -11,7 +11,7 @@ ROOT=Path(__file__).resolve().parents[1]
 SLOT='<!-- CHHSS_BOOTSTRAP_SLOT -->'
 
 
-def build(output, feed=None, solar_cycle=None):
+def build(output, feed=None, solar_cycle=None, cme_scoreboard=None):
     html=(ROOT/'SpaceWxOps_Coronal_Hole_HSS_Outlook.html').read_text()
     payload=json.loads(Path(feed or ROOT/'chhss-data/feed.json').read_text())
     if payload.get('schemaVersion')!='chhss-feed-1':
@@ -30,6 +30,14 @@ def build(output, feed=None, solar_cycle=None):
             raise ValueError('Canonical HTML must contain one solar-cycle slot')
         encoded=json.dumps(solar,separators=(',',':'),allow_nan=False).replace('<','\\u003c').replace('\u2028','\\u2028').replace('\u2029','\\u2029')
         html=html.replace(slot,slot+'\n<script type="application/json" id="solarCycleBootstrap">'+encoded+'</script>')
+    if cme_scoreboard:
+        snapshot=json.loads(Path(cme_scoreboard).read_text())
+        if not isinstance(snapshot.get('rows'),list) or not snapshot.get('retrievedAt'):
+            raise ValueError('CME Scoreboard snapshot requires rows and retrieval time')
+        slot='<!-- CME_SCOREBOARD_BOOTSTRAP_SLOT -->'
+        if html.count(slot)!=1:raise ValueError('Canonical HTML must contain one CME Scoreboard slot')
+        encoded=json.dumps(snapshot,separators=(',',':'),allow_nan=False).replace('<','\\u003c').replace('\u2028','\\u2028').replace('\u2029','\\u2029')
+        html=html.replace(slot,slot+'\n<script type="application/json" id="cmeScoreboardBootstrap">'+encoded+'</script>')
     output=Path(output)
     output.parent.mkdir(parents=True,exist_ok=True)
     output.write_text(html)
@@ -41,5 +49,6 @@ if __name__=='__main__':
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--feed',type=Path)
     parser.add_argument('--solar-cycle',type=Path,help='Full observed/predicted NOAA snapshot with original retrieval time')
+    parser.add_argument('--cme-scoreboard',type=Path,help='Dated current NASA CME Scoreboard response')
     args=parser.parse_args()
-    print(build(args.output,args.feed,args.solar_cycle))
+    print(build(args.output,args.feed,args.solar_cycle,args.cme_scoreboard))

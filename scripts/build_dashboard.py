@@ -11,7 +11,7 @@ ROOT=Path(__file__).resolve().parents[1]
 SLOT='<!-- CHHSS_BOOTSTRAP_SLOT -->'
 
 
-def build(output, feed=None, solar_cycle=None, cme_scoreboard=None):
+def build(output, feed=None, solar_cycle=None, cme_scoreboard=None, particle_forecasts=None):
     html=(ROOT/'SpaceWxOps_Coronal_Hole_HSS_Outlook.html').read_text()
     payload=json.loads(Path(feed or ROOT/'chhss-data/feed.json').read_text())
     if payload.get('schemaVersion')!='chhss-feed-1':
@@ -38,6 +38,15 @@ def build(output, feed=None, solar_cycle=None, cme_scoreboard=None):
         if html.count(slot)!=1:raise ValueError('Canonical HTML must contain one CME Scoreboard slot')
         encoded=json.dumps(snapshot,separators=(',',':'),allow_nan=False).replace('<','\\u003c').replace('\u2028','\\u2028').replace('\u2029','\\u2029')
         html=html.replace(slot,slot+'\n<script type="application/json" id="cmeScoreboardBootstrap">'+encoded+'</script>')
+    particles=Path(particle_forecasts or ROOT/'chhss-data/particle-forecasts.json')
+    if particles.exists():
+        snapshot=json.loads(particles.read_text())
+        if snapshot.get('schemaVersion')!='particle-forecasts-1':
+            raise ValueError('Invalid particle-forecast snapshot')
+        slot='<!-- PARTICLE_FORECAST_BOOTSTRAP_SLOT -->'
+        if html.count(slot)!=1:raise ValueError('Canonical HTML must contain one particle slot')
+        encoded=json.dumps(snapshot,separators=(',',':'),allow_nan=False).replace('<','\\u003c')
+        html=html.replace(slot,slot+'\n<script type="application/json" id="particleForecastBootstrap">'+encoded+'</script>')
     output=Path(output)
     output.parent.mkdir(parents=True,exist_ok=True)
     output.write_text(html)
@@ -50,5 +59,6 @@ if __name__=='__main__':
     parser.add_argument('--feed',type=Path)
     parser.add_argument('--solar-cycle',type=Path,help='Full observed/predicted NOAA snapshot with original retrieval time')
     parser.add_argument('--cme-scoreboard',type=Path,help='Dated current NASA CME Scoreboard response')
+    parser.add_argument('--particle-forecasts',type=Path,help='Dated published particle-model snapshot')
     args=parser.parse_args()
-    print(build(args.output,args.feed,args.solar_cycle,args.cme_scoreboard))
+    print(build(args.output,args.feed,args.solar_cycle,args.cme_scoreboard,args.particle_forecasts))

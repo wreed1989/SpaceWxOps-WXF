@@ -36093,6 +36093,191 @@ window.SpaceWxRecurrenceCompare = (function () {
 })();
 </script>
 
+<!-- PARTICLE_FORECAST_BOOTSTRAP_SLOT -->
+<style id="particleForecastStyles">
+.wx-particle{display:block!important;padding:20px;color:#dcebf4;min-width:0;background:linear-gradient(145deg,#102333,#0b1823);font-size:13px;line-height:1.5}
+.wx-particle h2{font-size:25px;margin:0 0 6px}.wx-particle h3{font-size:17px;margin:0 0 6px}.wx-particle p{color:#aac2d0;margin:8px 0 14px}
+.wx-particle-header{display:flex;justify-content:space-between;gap:14px;align-items:start;flex-wrap:wrap}.wx-particle-eyebrow{color:#78d6e8;font-size:10px;letter-spacing:.14em;font-weight:700}
+.wx-particle button,.wx-particle select{padding:7px 11px;background:#153548;color:#d9f5ff;border:1px solid #3b6376;border-radius:5px;font:inherit}.wx-particle button{cursor:pointer}
+.wx-particle-section{padding:18px;margin-top:18px;border:1px solid #2d4a5d;border-radius:10px;background:#0c1c29;min-width:0}.wx-particle .wx-particle-status{font-size:11px;color:#a4bccb}.wx-particle .wx-particle-warning{color:#ffc486}
+.wx-particle img{width:100%;height:auto;display:block;background:#fff;border-radius:5px}.wx-particle img[hidden]{display:none}.wx-particle a{color:#8cdeef}.wx-particle table{border-collapse:collapse;width:100%;font-size:11px}.wx-particle td,.wx-particle th{padding:9px 8px;border-bottom:1px solid #264355;text-align:left;vertical-align:top}.wx-particle th{color:#8eb2c7;font-size:10px;text-transform:uppercase}.wx-particle-table{overflow:auto}.wx-particle-plot{width:100%;height:390px;min-width:0}.wx-particle-stat{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.wx-particle-stat>div{flex:1;min-width:130px;padding:12px;background:#142e3e;border-radius:7px;font-size:11px;color:#9bbacc}.wx-particle-stat strong{display:block;font-size:20px;color:#e6f4fb;margin-top:4px}.wx-particle-logos{display:flex;align-items:center;gap:12px}.wx-particle-logos img{width:auto;height:35px;max-width:140px}.wx-particle details{margin-top:14px;color:#9bbacc}.wx-particle summary{cursor:pointer}.wx-particle .wx-particle-dates{font-variant-numeric:tabular-nums}
+.fd-app{width:100%!important;max-width:100vw}
+body.fd-ready{min-width:0!important}
+.fd-app.fd-particle-workspace .fd-shell{grid-template-columns:var(--fd-dock) minmax(0,1fr)}
+.fd-app.fd-particle-workspace .fd-inspector{display:none}
+.fd-app.fd-particle-workspace .fd-model-layout{display:block}.fd-app.fd-particle-workspace .fd-model-list{margin-bottom:10px}.fd-app.fd-particle-workspace .fd-model-list-body{display:flex;overflow:auto}.fd-app.fd-particle-workspace .fd-model-lane{flex:1;min-width:135px}.fd-app.fd-particle-workspace .fd-model-canvas{min-height:0}
+@media(min-width:821px) and (max-width:1180px){
+.fd-topbar{grid-template-columns:178px minmax(0,1fr) auto}.fd-case-context{display:none}
+.fd-app.fd-monitor-workspace{--fd-dock:190px}
+.fd-app.fd-monitor-workspace .fd-dock-head>div,.fd-app.fd-monitor-workspace .fd-dock-search,.fd-app.fd-monitor-workspace .fd-product-button strong,.fd-app.fd-monitor-workspace .fd-product-button small{display:block}
+.fd-app.fd-monitor-workspace .fd-product-group>button{display:flex}
+.fd-app.fd-monitor-workspace .fd-product-button{grid-template-columns:4px minmax(0,1fr) auto;text-align:left;place-items:initial;padding:8px}.fd-app.fd-monitor-workspace .fd-product-button i{width:4px;height:20px}
+body.fd-dock-collapsed .fd-app.fd-monitor-workspace{--fd-dock:48px}
+body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button small,body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-dock-search,body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-dock-head>div{display:none}
+}
+@media(min-width:821px) and (max-width:1050px){.fd-topbar{grid-template-columns:220px minmax(0,1fr) 94px}.fd-status-cluster{grid-template-columns:94px}.fd-status-cluster .fd-utc{grid-column:1}.fd-hazards,.fd-health-row{display:none}}
+.fd-app:is(.fd-monitor-workspace,.fd-particle-workspace) .fd-bottom-rail{grid-template-columns:minmax(0,1fr) auto}
+.fd-app:is(.fd-monitor-workspace,.fd-particle-workspace) .fd-run-summary{display:none}
+.fd-app:is(.fd-monitor-workspace,.fd-particle-workspace) .fd-time-controller{display:flex;min-width:0}
+.fd-app:is(.fd-monitor-workspace,.fd-particle-workspace) :is(#fdGlobalTime,.fd-time-readout,[data-fd-play]){display:none}
+.fd-app:is(.fd-monitor-workspace,.fd-particle-workspace) .fd-time-controller:after{content:'Each product shows its own observation or forecast dates';color:#89a9bb;font-size:10px;padding:0 10px}
+@media(max-width:700px){.fd-app:is(.fd-monitor-workspace,.fd-particle-workspace) .fd-time-controller:after{display:none}}
+</style>
+<script id="particleForecastProduct">
+(()=>{
+  'use strict';
+  const RELAY='https://raw.githubusercontent.com/wreed1989/SpaceWxOps-WXF/main/chhss-data/particle-forecasts.json';
+  const REFM='https://services.swpc.noaa.gov/text/relativistic-electron-fluence-tabular.txt';
+  const ISWA='https://iswa.ccmc.gsfc.nasa.gov/api/redirect?dataID=';
+  const CACHE='spacewx-particle-forecasts-v1';
+  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const utc=x=>Number.isFinite(Date.parse(x))?new Date(x).toISOString().replace('T',' ').replace(/\.\d{3}Z$/,' UTC'):'Unavailable';
+  const number=x=>x===null||x===undefined||x===''||!Number.isFinite(+x)||+x<0?null:+x;
+  const fmt=x=>x===null||x===undefined?'Unavailable':x.toExponential(2);
+  function parseREFM(text){
+    if(typeof text!=='string')throw Error('Expected SWPC REFM bulletin');
+    const created=text.match(/:Created:\s*(\d{4})\s+([A-Za-z]{3})\s+(\d{1,2})\s+(\d{2})(\d{2}) UTC/),months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const issued=created&&months.indexOf(created[2])>=0?new Date(Date.UTC(+created[1],months.indexOf(created[2]),+created[3],+created[4],+created[5])).toISOString():null;
+    const rows=text.split(/\r?\n/).filter(l=>/^\d{4}\s+\d{2}\s+\d{2}\s/.test(l)).map(l=>{
+      const a=l.trim().split(/\s+/);if(a.length!==8)return null;
+      const day=`${a[0]}-${a[1]}-${a[2]}`,date=Date.parse(day+'T00:00:00Z');if(!Number.isFinite(date)||new Date(date).toISOString().slice(0,10)!==day)return null;
+      return {day,observed:number(a[3]),wind:number(a[4]),forecast:a.slice(5).map((v,i)=>({day:new Date(date+(i+1)*86400000).toISOString().slice(0,10),value:number(v),lead:i+1}))};
+    }).filter(Boolean).sort((a,b)=>a.day.localeCompare(b.day));
+    if(!issued||!rows.length)throw Error('No dated REFM forecast rows');
+    return {issued,rows,latest:rows.at(-1)};
+  }
+  function parseSEP(payload){
+    const s=payload?.sep_forecast_submission;
+    if(!s||!Number.isFinite(Date.parse(s.issue_time))||!Array.isArray(s.forecasts))throw Error('Invalid dated SEP submission');
+    return s.forecasts.filter(f=>f.species==='proton'&&Number.isFinite(Date.parse(f.prediction_window?.start_time))&&Number.isFinite(Date.parse(f.prediction_window?.end_time))).map(f=>({
+      model:s.model?.short_name||'Published model',issued:s.issue_time,start:f.prediction_window.start_time,end:f.prediction_window.end_time,
+      energy:`${+f.energy_channel?.max<0?'≥':''}${f.energy_channel?.min}${+f.energy_channel?.max>=0?'–'+f.energy_channel.max:''} ${f.energy_channel?.units||'MeV'}`,
+      flux:number(f.peak_intensity?.intensity),units:f.peak_intensity?.units||'',allClear:typeof f.all_clear?.all_clear_boolean==='boolean'?f.all_clear.all_clear_boolean:null,
+      threshold:number(f.all_clear?.threshold),thresholdUnits:f.all_clear?.threshold_units||'',location:f.location||''
+    }));
+  }
+  function freshness(row,now=Date.now()){
+    const end=Date.parse(row.end),start=Date.parse(row.start);
+    if(!Number.isFinite(end)||!Number.isFinite(start))return 'Timing unavailable';
+    if(now>end)return 'EXPIRED';
+    return now<start?'Upcoming valid time':'Within valid window';
+  }
+  function refmSeries(data,days=30){
+    const rows=data.rows.slice(-days),f=data.latest.forecast;
+    return [{name:'Observed >2 MeV',x:rows.map(r=>r.day),y:rows.map(r=>r.observed),type:'scatter',mode:'lines',connectgaps:false,line:{color:'#64d5e3',width:2.4},hovertemplate:'%{x|%d %b %Y}<br>Observed %{y:.2e}<extra></extra>'},
+      {name:'REFM forecast',x:f.map(r=>r.day),y:f.map(r=>r.value),type:'scatter',mode:'lines+markers',connectgaps:false,line:{color:'#ffb66d',width:2.7,dash:'dash'},marker:{size:8},hovertemplate:'%{x|%d %b %Y}<br>Forecast %{y:.2e}<extra></extra>'}];
+  }
+  let snapshot={sources:{}},pending=null;
+  function accept(candidate){if(candidate?.schemaVersion!=='particle-forecasts-1'||!candidate.sources)return;for(const [key,value]of Object.entries(candidate.sources)){const prior=snapshot.sources[key];if(value.payload&&(!prior?.retrievedAt||Date.parse(value.retrievedAt)>=Date.parse(prior.retrievedAt)))snapshot.sources[key]=value;}snapshot.schemaVersion='particle-forecasts-1';}
+  try{accept(JSON.parse(localStorage.getItem(CACHE)));}catch(_){}
+  try{accept(JSON.parse(document.getElementById('particleForecastBootstrap')?.textContent||'null'));}catch(_){}
+  async function get(url,text=false){const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),15000);try{const r=await fetch(url,{signal:ctrl.signal,cache:'no-store',credentials:'omit'});if(!r.ok)throw Error('HTTP '+r.status);return text?r.text():r.json();}finally{clearTimeout(timer);}}
+  async function refresh(){
+    if(pending)return pending;
+    pending=(async()=>{
+      const results=await Promise.allSettled([get(RELAY),get(REFM,true)]);
+      const errors={sep:'',electron:''};
+      if(results[0].status==='fulfilled')accept(results[0].value);else errors.sep='NASA numerical snapshot refresh unavailable';
+      if(results[1].status==='fulfilled'){try{parseREFM(results[1].value);snapshot.sources.refm={payload:results[1].value,retrievedAt:new Date().toISOString(),sourceURL:REFM};}catch(_){errors.electron='SWPC returned an invalid REFM bulletin';}}else errors.electron='SWPC REFM refresh unavailable';
+      try{localStorage.setItem(CACHE,JSON.stringify(snapshot));}catch(_){}
+      return errors;
+    })().finally(()=>{pending=null;});return pending;
+  }
+  function layout(title){return {height:390,paper_bgcolor:'#0c1c29',plot_bgcolor:'#0c1c29',font:{color:'#b1c8d8',size:11},margin:{l:75,r:20,t:45,b:65},legend:{orientation:'h',x:0,y:1.16},xaxis:{type:'date',title:'Valid date · UTC',gridcolor:'#263e4f',tickformat:'%d %b'},yaxis:{type:'log',title:{text:title,standoff:10},gridcolor:'#263e4f',exponentformat:'power',automargin:true},hovermode:'x unified'};}
+  const mounted=new Map();
+  function mount(root,kind){
+    root.classList.add('wx-particle');const sep=kind==='sep';let period=30,error='',disposed=false;
+    root.innerHTML=`<div class="wx-particle-header"><div><span class="wx-particle-eyebrow">PUBLISHED FORECASTS · ${sep?'RESEARCH GUIDANCE':'NOAA SWPC'}</span><h2>${sep?'SEP / Proton':'Electron Forecast'}</h2><p>${sep?'UMASEP and HESPERIA REleASE · predictions from their operating providers.':'REFM · >2 MeV electron fluence at geosynchronous orbit.'}</p></div><button data-particle-refresh>Refresh forecasts</button></div><p class="wx-particle-status" data-particle-status role="status"></p><div data-particle-data></div>${sep?`<section class="wx-particle-section"><div class="wx-particle-header"><div><h3>UMASEP · latest provider chart</h3><p>Short-lead proton-event prediction · University of Málaga / NASA CCMC</p></div><label>Energy <select data-particle-energy aria-label="UMASEP energy"><option value="1647">≥10 MeV</option><option value="1650">≥100 MeV</option></select></label></div><p class="wx-particle-status" data-image-status="umasep"></p><a data-image-link="umasep" target="_blank" rel="noopener"><img data-particle-image="umasep" alt="Current UMASEP proton forecast from NASA ISWA"></a></section><section class="wx-particle-section"><h3>HESPERIA REleASE · latest provider chart</h3><p>ACE electron measurements provide advance warning of 15.8–39.8 and 28.2–50.1 MeV proton flux, at 30, 60 and 90 minutes.</p><p class="wx-particle-status" data-image-status="release"></p><a data-image-link="release" target="_blank" rel="noopener"><img data-particle-image="release" alt="Current HESPERIA REleASE ACE EPAM proton forecasts"></a><details><summary>Model attribution and interpretation</summary><p>HESPERIA REleASE: University of Kiel and National Observatory of Athens / IAASARS, supported by EU Horizon 2020 grant 637324. Distributed by NASA CCMC. Research guidance; the two differential energy bands are distinct from GOES integral ≥10 MeV pfu.</p><div class="wx-particle-logos"><img src="https://ccmc.gsfc.nasa.gov/static/images/hesperia_logo.png" alt="HESPERIA"><img src="https://ccmc.gsfc.nasa.gov/static/images/europe_flag.jpg" alt="European Union"></div><a href="https://ccmc.gsfc.nasa.gov/models/HESPERIA_REleASE~v3/" target="_blank" rel="noopener">HESPERIA REleASE model and acknowledgements</a> · <a href="https://ccmc.gsfc.nasa.gov/models/UMASEP~v3/" target="_blank" rel="noopener">UMASEP model description</a></details></section>`:''}`;
+    function image(name,id){const img=root.querySelector(`[data-particle-image="${name}"]`),status=root.querySelector(`[data-image-status="${name}"]`),url=ISWA+id;img.hidden=false;root.querySelector(`[data-image-link="${name}"]`).href=url;status.textContent='Loading latest published forecast…';img.onload=()=>{status.textContent=`Provider chart loaded ${utc(new Date().toISOString())}. Read issue, input-data and valid times printed on the chart; loading time does not establish freshness. Click to expand.`;};img.onerror=()=>{img.hidden=true;status.textContent='Provider image unavailable. Open the source link to retry; numerical snapshot above remains dated independently.';};img.src=url+'&refresh='+Date.now();}
+    function paint(){
+      if(disposed)return;const target=root.querySelector('[data-particle-data]');
+      root.querySelector('[data-particle-status]').textContent=error+(error?' · Retained successfully retrieved, dated data.':'Forecasts refresh automatically every 5 minutes.');
+      if(!sep){
+        const source=snapshot.sources.refm;let d;try{d=parseREFM(source?.payload);}catch(_){target.innerHTML='<p>No valid SWPC electron forecast received yet. Refresh to retry.</p>';return;}
+        const forecastEnd=Date.parse(d.latest.forecast.at(-1).day+'T00:00:00Z')+86400000,expired=Date.now()>=forecastEnd;
+        target.innerHTML=`<p class="wx-particle-status ${expired?'wx-particle-warning':''}">Issued ${utc(d.issued)} · ${expired?'EXPIRED · retained for reference':'Forecast covers '+d.latest.forecast[0].day+' through '+d.latest.forecast.at(-1).day+' UTC'}<br>Retrieved ${utc(source.retrievedAt)}${source.error?' · Source refresh failed':''}</p><div class="wx-particle-stat">${d.latest.forecast.map(f=>`<div>DAY ${f.lead} · ${f.day}<strong>${fmt(f.value)}</strong>electrons cm⁻² sr⁻¹ / 24 h</div>`).join('')}</div><section class="wx-particle-section"><div class="wx-particle-header"><div><h3>Daily electron fluence</h3><p>Observed history and the latest three-day REFM prediction</p></div><label>History <select data-refm-range aria-label="Electron forecast history">${[14,30,60].map(n=>`<option value="${n}"${n===period?' selected':''}>${n} days</option>`).join('')}</select></label></div><div class="wx-particle-plot" data-refm-plot></div><p class="wx-particle-status">Logarithmic scale · daily fluence in electrons cm⁻² sr⁻¹ / 24 h. Each forecast day is the subsequent UTC day after the last observed row; missing values remain gaps.</p></section><p>REFM predicts the energetic-electron environment at GEO. It does not predict individual spacecraft charging or hardware failure.</p><a href="${REFM}" target="_blank" rel="noopener">SWPC numerical bulletin</a> · <a href="https://www.spaceweather.gov/products/relativistic-electron-forecast-model" target="_blank" rel="noopener">Model interpretation</a>`;
+        window.Plotly?.react(target.querySelector('[data-refm-plot]'),refmSeries(d,period),layout('Daily >2 MeV fluence'),{responsive:true,displaylogo:false});target.querySelector('[data-refm-range]').onchange=e=>{period=+e.target.value;paint();};
+      }else{
+        let rows=[];for(const key of ['umasep10','umasep100','release30','release60','release90']){const source=snapshot.sources[key];try{rows.push(...parseSEP(source?.payload).map(r=>({...r,retrieved:source.retrievedAt,error:source.error})));}catch(_){} }
+        target.innerHTML=`<section class="wx-particle-section"><h3>Latest numerical submissions</h3><p class="wx-particle-status">NASA numerical submissions are relayed hourly. The provider charts below request the latest output every 5 minutes. Check each issue and valid time; expired submissions remain clearly labelled.</p>${rows.length?`<div class="wx-particle-table"><table><thead><tr><th>Model / energy</th><th>Issued / valid · UTC</th><th>Published prediction</th><th>Validity now</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r.model)}<br>${esc(r.energy)} · ${esc(r.location)}</td><td class="wx-particle-dates">Issued ${utc(r.issued)}<br>Valid ${utc(r.start)}${r.start!==r.end?' – '+utc(r.end):''}</td><td>${r.flux!==null?fmt(r.flux)+' '+esc(r.units):r.allClear===true?'Below '+esc(r.threshold)+' '+esc(r.thresholdUnits)+' event threshold':r.allClear===false?'Threshold exceedance forecast':'No intensity supplied'}</td><td class="${freshness(r)==='EXPIRED'?'wx-particle-warning':''}">${freshness(r)}${r.error?'<br>Refresh failed':''}</td></tr>`).join('')}</tbody></table></div><details><summary>Snapshot retrieval times</summary>${[...new Set(rows.map(r=>r.model+' · '+utc(r.retrieved)))].map(v=>'<p>'+esc(v)+'</p>').join('')}</details>`:'<p>Numerical submissions are temporarily unavailable. Live provider charts are loaded independently below.</p>'}</section>`;
+      }
+    }
+    async function update(){const button=root.querySelector('[data-particle-refresh]');button.disabled=true;if(sep){image('umasep',root.querySelector('[data-particle-energy]').value);image('release',1221);}error=(await refresh())[sep?'sep':'electron'];if(!disposed){paint();button.disabled=false;}}
+    if(sep)root.querySelector('[data-particle-energy]').onchange=e=>image('umasep',e.target.value);
+    root.querySelector('[data-particle-refresh]').onclick=update;paint();update();
+    const timer=setInterval(()=>{if(root.isConnected)update();else stop();},5*60000);
+    function stop(){disposed=true;clearInterval(timer);mounted.delete(root);}mounted.set(root,stop);return stop;
+  }
+  function unmount(){for(const stop of [...mounted.values()])stop();}
+  window.SpaceWxParticles={mount,unmount,parseREFM,parseSEP,freshness,refmSeries,refresh};
+})();
+</script>
+
+<script id="monitorLayoutPolicy">
+window.SpaceWxMonitorLayout=(()=>{
+  const widths=[8,12,16,24],version=2;
+  const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+  function defaults(kind,key){
+    if(key==='solar.cycle')return {cols:24,rows:29};
+    if(/^model\.(sep|electron)$/.test(key))return {cols:24,rows:25};
+    if(kind==='visual')return {cols:key==='helio'?24:12,rows:15};
+    if(/imagery|hmi|spot|suvi|aurora|drap|risk|solar-system/.test(key))return {cols:12,rows:15};
+    if(/timeline|discussion|forecast-table|recurrence|donki|enlil|hourly-geomag|flare/.test(key))return {cols:24,rows:17};
+    return {cols:24,rows:10};
+  }
+  function dimensions(cols,rows){return {cols:widths.reduce((a,b)=>Math.abs(b-cols)<Math.abs(a-cols)?b:a),rows:clamp(Math.round(Number(rows)||10),8,42)};}
+  function normalize(items,valid){
+    const seen=new Set();return (Array.isArray(items)?items:[]).filter(t=>t&&valid(t.kind==='visual'?'visual':'product',t.key)).map(t=>{
+      const kind=t.kind==='visual'?'visual':'product',id=kind+':'+t.key;
+      if(seen.has(id))return null;seen.add(id);
+      const preset=defaults(kind,t.key),size=t.layoutVersion===version?dimensions(t.cols,t.rows):dimensions(Math.max(Number(t.cols)||0,preset.cols),Math.max(Number(t.rows)||0,preset.rows));
+      return {id,kind,key:t.key,...size,pinned:false,layoutVersion:version};
+    }).filter(Boolean);
+  }
+  function resize(start,dx,dy,gridWidth){return dimensions(start.cols+dx/(gridWidth+8)*24,start.rows+dy/36);}
+  return {version,widths,defaults,dimensions,normalize,resize};
+})();
+</script>
+<style id="monitorWorkspaceStyles">
+.fd-app.fd-monitor-workspace .fd-shell{grid-template-columns:var(--fd-dock) minmax(0,1fr)}
+.fd-app.fd-monitor-workspace .fd-inspector{display:none}
+.fd-app.fd-monitor-workspace .fd-workbench{grid-template-rows:48px minmax(0,1fr)}
+.fd-app.fd-monitor-workspace .fd-workbench-head{display:flex}
+.fd-app.fd-monitor-workspace .fd-global-alert-rail{display:none!important}
+.fd-monitor-layout{display:block;min-height:0}
+.fd-monitor-layout .fd-wall-grid{grid-template-columns:repeat(24,minmax(0,1fr));grid-auto-rows:28px;grid-auto-flow:row;gap:8px}
+.fd-monitor-layout .fd-wall-tile{position:relative;grid-column:span var(--fd-tile-cols);grid-row:span var(--fd-tile-rows);grid-template-rows:44px minmax(0,1fr);min-height:0}
+.fd-monitor-layout .fd-wall-tile-head{grid-template-columns:24px 24px minmax(0,1fr) auto;gap:4px}
+.fd-monitor-layout .fd-wall-tile-head>div{min-width:0}
+.fd-monitor-layout .fd-wall-tile-head strong{font-size:11px}
+.fd-monitor-layout .fd-wall-tile-head span{font-size:8px}
+.fd-wall-drag{touch-action:none;cursor:grab}.fd-wall-drag:active{cursor:grabbing}
+.fd-wall-tile-controls{gap:4px}
+.fd-wall-tile-controls button{font-size:14px}
+.fd-tile-sizing{position:relative}
+.fd-tile-sizing>summary{list-style:none;cursor:pointer;padding:5px 9px;border:1px solid #355467;border-radius:4px;font-size:10px;color:#aacddb}
+.fd-tile-sizing[open]>div{position:fixed;z-index:110;display:grid;gap:10px;background:#102633;border:1px solid #4a7185;padding:12px;box-shadow:0 8px 22px #0009;transform:translateX(-130px);width:200px}
+.fd-tile-sizing button{width:auto!important;font-size:11px!important}
+.fd-tile-sizing label{display:grid;gap:5px;color:#bdd8e6;font-size:11px}
+.fd-tile-sizing select,.fd-tile-sizing input{width:100%;padding:6px;background:#091c28;color:#e6f3fa;border:1px solid #426276}
+.fd-wall-resize{position:absolute;right:2px;bottom:2px;width:25px;height:25px;border:0;background:linear-gradient(135deg,transparent 45%,#214453 45%);color:#9fe1f4;cursor:nwse-resize;touch-action:none;z-index:8;font-size:14px}
+.fd-wall-resize:focus-visible{outline:2px solid #7ddaea}
+.fd-monitor-layout .fd-wall-tile.resizing{border-color:#71def0;transition:none}
+.fd-monitor-layout .fd-wall-tile-body{overflow:auto;overscroll-behavior:contain}
+.fd-monitor-layout .fd-wall-product{display:block;min-height:0}
+.fd-monitor-layout .fd-wall-product>.card{height:100%;min-height:0!important;display:flex;flex-direction:column}
+.fd-monitor-layout .fd-wall-product>.card>.card-body{flex:1;min-height:0;display:flex;flex-direction:column}
+.fd-monitor-layout .fd-wall-product .plot{min-height:180px!important;flex:1;height:100%!important}
+.fd-monitor-layout .fd-wall-product .js-plotly-plot,.fd-monitor-layout .fd-wall-product .plot-container,.fd-monitor-layout .fd-wall-product .svg-container{min-height:0!important}
+.fd-monitor-layout .wx-cycle{height:100%;min-height:100%;display:flex;flex-direction:column}
+.fd-monitor-layout .wx-cycle .wx-chart-panel{flex:1;min-height:350px;display:flex;flex-direction:column}
+.fd-monitor-layout .wx-cycle .wx-cycle-plot{flex:1;min-height:300px;height:100%!important}
+.fd-monitor-layout .wx-cycle .wx-facts{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.fd-monitor-layout .fd-wall-empty{grid-column:1/-1;grid-row:span 11}
+.fd-monitor-layout .fd-wall-tile.focused{grid-column:1/-1}
+@media(max-width:700px){.fd-monitor-layout .fd-wall-tile{grid-column:1/-1}.fd-monitor-layout .fd-wall-tile-head strong{font-size:10px}.fd-tile-sizing[open]>div{right:10px;transform:none}.fd-app.fd-monitor-workspace .fd-shell{grid-template-columns:48px minmax(0,1fr)}}
+</style>
+
 <script id="fdDeskScript">
 (function () {
   "use strict";
@@ -36160,28 +36345,16 @@ window.SpaceWxRecurrenceCompare = (function () {
       labels: ["Forecast window", "Spatial scope", "Thresholds", "Guidance"]
     },
     sep: {
-      name: "SEP / Proton",
-      family: "Radiation",
-      maturity: "RESEARCH",
-      compute: "CPU transport",
-      members: 48,
-      description: "Empirical screening followed by optional focused-transport scenario modeling.",
-      inputs: "CME/shock · IMF connection · ambient wind",
-      provenance: "Empirical + EPREM concept adapter",
-      summary: ["48", ">10 MeV", "Parker", "SCREEN"],
-      labels: ["Scenarios", "Primary channel", "Field model", "Mode"]
+      name: "SEP / Proton", family: "Radiation", maturity: "PUBLISHED FORECASTS",
+      compute: "Provider products", members: 0,
+      description: "UMASEP and HESPERIA REleASE proton forecasts with published issue and valid times.",
+      inputs: "GOES X-ray / protons · ACE electrons", provenance: "UMASEP · HESPERIA REleASE / NASA CCMC"
     },
     charging: {
-      name: "Orbit Charging Risk",
-      family: "Operational impacts",
-      maturity: "SCREENING",
-      compute: "Local thresholds",
-      members: 1,
-      description: "Environmental screening from electron/proton flux and geomagnetic context; not a failure probability.",
-      inputs: "GOES · Kp/Ap · SWPC · SHELLS-ready adapter",
-      provenance: "Charging screen 0.3 · thresholds configured locally",
-      summary: ["GEO", "MEO", "LEO", "SCREEN"],
-      labels: ["Primary", "Secondary", "Context", "Output"]
+      name: "Electron Forecast", family: "Radiation", maturity: "NOAA SWPC REFM",
+      compute: "Provider products", members: 0,
+      description: "Observed daily >2 MeV electron fluence and SWPC's three-day GEO forecast.",
+      inputs: "Solar wind · GEO electrons", provenance: "NOAA SWPC REFM"
     }
   };
 
@@ -36245,6 +36418,8 @@ window.SpaceWxRecurrenceCompare = (function () {
       name: "Radiation",
       domain: "particles",
       products: [
+        ["model.sep", "SEP / Proton Forecast", "MODEL"],
+        ["model.electron", "Electron Forecast", "MODEL"],
         ["realtime.proton", "GOES Proton Flux", "LIVE"],
         ["realtime.epam", "ACE EPAM", "LIVE"],
         ["realtime.electron", "Electron Flux", "LIVE"],
@@ -36271,7 +36446,8 @@ window.SpaceWxRecurrenceCompare = (function () {
       name: "Alerts + Official",
       domain: "official",
       products: [
-        ["events.timeline", "SWPC Alert Timeline", "SWPC"],
+        ["realtime.alerts", "Live Alert Summary", "LIVE"],
+      ["events.timeline", "SWPC Alert Timeline", "SWPC"],
         ["events.alerts", "SWPC Alerts", "SWPC"],
         ["events.discussion", "SWPC Discussion", "SWPC"],
         ["events.forecast-table", "SWPC Forecast Table", "SWPC"],
@@ -37089,41 +37265,7 @@ window.SpaceWxRecurrenceCompare = (function () {
   }
 
   function normalizeMonitorTiles(candidate) {
-    const source = Array.isArray(candidate) ? candidate : DEFAULT_MONITOR_TILES;
-    const legacyAlertTile = source.some((item) => item?.kind !== "visual" && item?.key === "realtime.alerts");
-    const seen = new Set();
-    const tiles = [];
-    source.slice(0, 12).forEach((item) => {
-      if (!item || typeof item !== "object") return;
-      const kind = item.kind === "visual" ? "visual" : "product";
-      const key = String(item.key || "");
-      if ((kind === "visual" && !SPECIAL_TILES[key]) || (kind === "product" && !PRODUCT_LOOKUP.has(key))) return;
-      const identity = `${kind}:${key}`;
-      if (seen.has(identity)) return;
-      seen.add(identity);
-      tiles.push({
-        id: identity,
-        kind,
-        key,
-        cols: normalizedTileColumns(item.cols, tileMinimumColumns(kind, key)),
-        rows: kind === "visual" && key === "helio" ? 13 : clamp(Math.round(Number(item.rows) || tileMinimumRows(kind, key) + 2), tileMinimumRows(kind, key), 22),
-        pinned: Boolean(item.pinned)
-      });
-    });
-    // Existing saved walls used the local alert evaluator as a movable tile.
-    // It is now a persistent rail, so promote that occupied slot to the new
-    // hourly geomag product without disturbing the rest of the saved layout.
-    if (legacyAlertTile && !seen.has(`product:${HOURLY_GEOMAG_PRODUCT}`) && tiles.length < 12) {
-      tiles.push({
-        id: `product:${HOURLY_GEOMAG_PRODUCT}`,
-        kind: "product",
-        key: HOURLY_GEOMAG_PRODUCT,
-        cols: 12,
-        rows: tileMinimumRows("product", HOURLY_GEOMAG_PRODUCT),
-        pinned: false
-      });
-    }
-    return tiles;
+    return window.SpaceWxMonitorLayout.normalize(Array.isArray(candidate)?candidate:DEFAULT_MONITOR_TILES,(kind,key)=>kind==='visual'?!!SPECIAL_TILES[key]:PRODUCT_LOOKUP.has(key));
   }
 
   function defaultState() {
@@ -37138,7 +37280,7 @@ window.SpaceWxRecurrenceCompare = (function () {
       forecaster2: "Forecaster B",
       layout: "single",
       activePane: 0,
-      paneProducts: ["realtime.imf", "forecast.aurora", "realtime.xray", "forecast.risk"],
+      paneProducts: [null,null,null,null],
       monitorTiles: DEFAULT_MONITOR_TILES.map((tile) => ({ ...tile })),
       monitorCustomizing: false,
       selectedProduct: null,
@@ -37173,11 +37315,13 @@ window.SpaceWxRecurrenceCompare = (function () {
     base.paneProducts = Array.from({ length: 4 }, (_, index) => (base.paneProducts || [])[index] === "brief.ap" ? null : (base.paneProducts || [])[index] || null);
     base.monitorTiles = normalizeMonitorTiles(base.monitorTiles);
     base.monitorCustomizing = false;
+    if(base.preset==='monitor')base.view='monitor';
     base.snapshots = Array.isArray(base.snapshots) ? base.snapshots.slice(0, 10) : [];
     base.activity = Array.isArray(base.activity) ? base.activity.slice(0, 30) : [];
     base.run = Object.assign(defaultState().run, base.run || {});
     if (!PIPELINES[base.selectedModel]) base.selectedModel = "huxt";
-    if (!PIPELINES[base.run.model] || base.run.model === "huxt") base.run = {...defaultState().run, status:"idle", progress:0, id:null};
+    base.run = {...defaultState().run, status:"idle", progress:0, id:null};
+    base.preferredRun = null;
     base.playing = false;
     return base;
   }
@@ -37676,13 +37820,16 @@ window.SpaceWxRecurrenceCompare = (function () {
     frame.className = `fd-product-frame${options.bare ? " bare" : ""}${options.className ? ` ${options.className}` : ""}`;
     frame.dataset.product = key;
     if (!options.bare) frame.innerHTML = `<div class="fd-product-toolbar"><div><span>${product.domain === "official" ? "OFFICIAL SWPC" : esc(product.badge)}</span><strong>${esc(product.label)}</strong></div><div class="fd-product-tools"><button type="button" data-fd-replace="${esc(key)}" aria-label="Replace product">↔</button><button type="button" data-fd-focus="${esc(key)}" aria-label="Focus product">↗</button></div></div>`;
-    if (key === "solar.cycle") {
+    if (key === "model.sep" || key === "model.electron") {
+      window.SpaceWxParticles.mount(frame,key === "model.sep" ? "sep" : "electron");
+    } else if (key === "solar.cycle") {
       window.SpaceWxSolarCycle.mount(frame);
     } else if (key === HOURLY_GEOMAG_PRODUCT) {
       mountHourlyGeomagProduct(frame);
     } else {
       const card = findCard(key);
       if (card) {
+      if(key==="realtime.alerts"){const settings=$("#alertSettingsShortcut",app);const header=$(".card-header",card);if(settings&&header)header.appendChild(settings);}
       frame.appendChild(card);
       } else {
         const empty = document.createElement("div");
@@ -37725,7 +37872,7 @@ window.SpaceWxRecurrenceCompare = (function () {
     } else if (toolsMode === "monitor") {
       tools.innerHTML = "";
       tools.style.display = "none";
-      wallActions.innerHTML = `<button type="button" class="fd-button${state.monitorCustomizing ? " primary" : ""}" data-fd-wall-edit>${state.monitorCustomizing ? "DONE" : "CUSTOMIZE"}</button><button type="button" class="fd-button" data-fd-tile-picker>+ ADD TILE</button>${state.monitorCustomizing ? '<button type="button" class="fd-button" data-fd-reset-wall>RESET</button>' : ""}`;
+      wallActions.innerHTML = `<button type="button" class="fd-button" data-fd-tile-picker>+ ADD PRODUCT</button>`;
       wallActions.style.display = "flex";
     } else {
       tools.innerHTML = "";
@@ -37736,7 +37883,9 @@ window.SpaceWxRecurrenceCompare = (function () {
   }
 
   function renderPreset() {
+    window.SpaceWxParticles.unmount();
     window.SpaceWxCME?.unmount();
+    resizeObserver?.disconnect();
     if (flareWorkspaceObserver) {
       flareWorkspaceObserver.disconnect();
       flareWorkspaceObserver = null;
@@ -37747,7 +37896,7 @@ window.SpaceWxRecurrenceCompare = (function () {
     document.body.classList.toggle("fd-ch-desk", chDeskActive);
     stashProducts();
     stashVisuals();
-    mountGlobalAlertRail();
+    if(state.preset!=="monitor")mountGlobalAlertRail();
     $$("[data-fd-preset]", app).forEach((button) => button.classList.toggle("active", button.dataset.fdPreset === state.preset));
     if (state.view === "product") renderProductWorkspace();
     else if (state.preset === "model") renderModel();
@@ -37777,9 +37926,9 @@ window.SpaceWxRecurrenceCompare = (function () {
     return PRODUCT_LOOKUP.get(tile.key) || { label: tile.key, badge: "DATA", domain: "wind" };
   }
 
-  function monitorTileControls(tile, index) {
-    const locked = tile.pinned ? " disabled" : "";
-    return `<div class="fd-wall-tile-controls"><button type="button" data-fd-tile-open="${esc(tile.id)}" aria-label="Open ${esc(monitorTileDefinition(tile).label)} in focus view" title="Open in focus view">↗</button>${state.monitorCustomizing ? `<button type="button" data-fd-tile-pin="${esc(tile.id)}" aria-label="${tile.pinned ? "Unpin" : "Pin"} tile" title="${tile.pinned ? "Unpin" : "Pin"}">${tile.pinned ? "●" : "○"}</button><button type="button" data-fd-tile-move="${esc(tile.id)}" data-direction="-1"${index === 0 || tile.pinned ? " disabled" : ""} aria-label="Move tile earlier">←</button><button type="button" data-fd-tile-move="${esc(tile.id)}" data-direction="1"${index === state.monitorTiles.length - 1 || tile.pinned ? " disabled" : ""} aria-label="Move tile later">→</button><button type="button" data-fd-tile-size="${esc(tile.id)}" data-direction="-1" aria-label="Make tile smaller">−</button><button type="button" data-fd-tile-size="${esc(tile.id)}" data-direction="1" aria-label="Make tile larger">+</button>` : ""}</div>`;
+  function monitorTileControls(tile,index) {
+    const label=esc(monitorTileDefinition(tile).label);
+    return `<div class="fd-wall-tile-controls"><button type="button" data-fd-tile-move="${esc(tile.id)}" data-direction="-1"${index===0?' disabled':''} aria-label="Move ${label} earlier">↑</button><button type="button" data-fd-tile-move="${esc(tile.id)}" data-direction="1"${index===state.monitorTiles.length-1?' disabled':''} aria-label="Move ${label} later">↓</button><details class="fd-tile-sizing"><summary aria-label="Resize ${label}">Size</summary><div><label>Width<select data-fd-tile-width="${esc(tile.id)}" aria-label="${label} width">${[[8,'One third'],[12,'Half'],[16,'Two thirds'],[24,'Full width']].map(([n,label])=>`<option value="${n}"${tile.cols===n?' selected':''}>${label}</option>`).join('')}</select></label><label>Height (grid rows)<input type="number" min="8" max="42" step="1" value="${tile.rows}" data-fd-tile-height="${esc(tile.id)}" aria-label="${label} height"></label><button type="button" data-fd-tile-default="${esc(tile.id)}">Recommended size</button></div></details><button type="button" data-fd-tile-open="${esc(tile.id)}" aria-label="${tile.cols===24?'Reduce':'Expand'} ${label} ${tile.cols===24?'to half width':'to full width'}">↔</button></div>`;
   }
 
   function mountMonitorTile(tile, grid, index) {
@@ -37792,7 +37941,7 @@ window.SpaceWxRecurrenceCompare = (function () {
     wrapper.draggable = false;
     wrapper.style.setProperty("--fd-tile-cols", String(tile.cols));
     wrapper.style.setProperty("--fd-tile-rows", String(tile.rows));
-    wrapper.innerHTML = `<header class="fd-wall-tile-head"><button type="button" class="fd-wall-close" data-fd-tile-remove="${esc(tile.id)}" aria-label="Remove ${esc(definition.label)} from view" title="Remove from view">×</button><button type="button" class="fd-wall-drag" data-fd-tile-drag="${esc(tile.id)}" draggable="${state.monitorCustomizing && !tile.pinned ? "true" : "false"}"${state.monitorCustomizing && !tile.pinned ? "" : " disabled"} aria-label="Drag ${esc(definition.label)}">⠿</button><div><span>${definition.domain === "official" ? "OFFICIAL SWPC" : esc(definition.badge || "DATA")}</span><strong>${esc(definition.label)}</strong></div>${monitorTileControls(tile, index)}</header><div class="fd-wall-tile-body"></div>`;
+    wrapper.innerHTML = `<header class="fd-wall-tile-head"><button type="button" class="fd-wall-close" data-fd-tile-remove="${esc(tile.id)}" aria-label="Remove ${esc(definition.label)} from view" title="Remove from view">×</button><button type="button" class="fd-wall-drag" data-fd-tile-drag="${esc(tile.id)}" draggable="false" aria-label="Drag ${esc(definition.label)}">⠿</button><div><span>${definition.domain === "official" ? "OFFICIAL SWPC" : esc(definition.badge || "DATA")}</span><strong>${esc(definition.label)}</strong></div>${monitorTileControls(tile, index)}</header><div class="fd-wall-tile-body"></div><button type="button" class="fd-wall-resize" data-fd-resize-handle="${esc(tile.id)}" aria-label="Drag to resize ${esc(definition.label)}" title="Drag to snap width and height; use Size for keyboard controls">⌟</button>`;
     grid.appendChild(wrapper);
     const body = $(".fd-wall-tile-body", wrapper);
     if (tile.kind === "visual") {
@@ -37815,8 +37964,8 @@ window.SpaceWxRecurrenceCompare = (function () {
   }
 
   function renderMonitor() {
-    setWorkbench("", "", "", "monitor");
-    stage.innerHTML = `<div class="fd-monitor-layout${state.monitorCustomizing ? " customizing" : ""}"><div class="fd-linked-strip" id="fdLinkedStrip"></div><div class="fd-wall-grid" id="fdWallGrid"></div></div>`;
+    setWorkbench("YOUR WORKSPACE", "Monitor", "Select products to add or remove · drag to reorder · Size or corner handle to resize", "monitor");
+    stage.innerHTML = `<div class="fd-monitor-layout${state.monitorCustomizing ? " customizing" : ""}"><div class="fd-wall-grid" id="fdWallGrid"></div></div>`;
     renderLinkedStrip();
     const grid = $("#fdWallGrid", stage);
     if (!state.monitorTiles.length) {
@@ -37980,14 +38129,9 @@ window.SpaceWxRecurrenceCompare = (function () {
       toast(`${monitorTileDefinition(state.monitorTiles[existing]).label} is already on the wall`);
       return;
     }
-    if (state.monitorTiles.length >= 12) {
-      toast("The operations wall supports up to 12 active tiles");
-      return;
-    }
+
     if ((kind === "product" && !PRODUCT_LOOKUP.has(key)) || (kind === "visual" && !SPECIAL_TILES[key])) return;
-    const minCols = tileMinimumColumns(kind, key);
-    const minRows = tileMinimumRows(kind, key);
-    state.monitorTiles.push({ id: identity, kind, key, cols: minCols, rows: minRows + 2, pinned: false });
+    state.monitorTiles.push({ id: identity, kind, key, ...window.SpaceWxMonitorLayout.defaults(kind,key), layoutVersion:2, pinned:false });
     state.preset = "monitor";
     state.view = "monitor";
     logActivity(`${monitorTileDefinition(state.monitorTiles[state.monitorTiles.length - 1]).label} added to operations wall`);
@@ -38010,7 +38154,7 @@ window.SpaceWxRecurrenceCompare = (function () {
 
   function moveMonitorTile(id, direction) {
     const index = state.monitorTiles.findIndex((tile) => tile.id === id);
-    if (index < 0 || state.monitorTiles[index].pinned) return;
+    if (index < 0) return;
     const target = clamp(index + direction, 0, state.monitorTiles.length - 1);
     if (target === index) return;
     const [tile] = state.monitorTiles.splice(index, 1);
@@ -38040,7 +38184,7 @@ window.SpaceWxRecurrenceCompare = (function () {
   }
 
   function resetMonitorWall() {
-    state.monitorTiles = DEFAULT_MONITOR_TILES.map((tile) => ({ ...tile }));
+    state.monitorTiles = normalizeMonitorTiles(DEFAULT_MONITOR_TILES);
     state.monitorCustomizing = false;
     logActivity("Default operations wall restored");
     saveState();
@@ -38050,10 +38194,8 @@ window.SpaceWxRecurrenceCompare = (function () {
   }
 
   function openMonitorTile(id) {
-    const tile = state.monitorTiles.find((item) => item.id === id);
-    if (!tile) return;
-    if (tile.kind === "product") openProduct(tile.key);
-    else openProduct(tile.key === "helio" ? "forecast.solar-system" : "forecast.risk");
+    const tile=state.monitorTiles.find(t=>t.id===id);if(!tile)return;
+    tile.cols=tile.cols===24?12:24;tile.layoutVersion=2;saveState();renderPreset();
   }
 
   function visiblePaneCount() {
@@ -38805,6 +38947,7 @@ window.SpaceWxRecurrenceCompare = (function () {
     setInspectorTitle("CME | Solar Wind");
   }
   function renderModel() {
+    window.SpaceWxParticles.unmount();
     window.SpaceWxCME?.unmount();
     if (window.SpaceWxRecurrenceCompare && typeof window.SpaceWxRecurrenceCompare.unmount === "function") {
       try { window.SpaceWxRecurrenceCompare.unmount(); } catch (ignore) {}
@@ -38819,14 +38962,10 @@ window.SpaceWxRecurrenceCompare = (function () {
       renderChModel(pipeline);
       return;
     }
-    setWorkbench("MODEL", "Run, compare, verify, promote", "The model queue stays alive while you monitor, forecast, or coordinate.", false);
-    stage.innerHTML = `<div class="fd-model-layout"><section class="fd-model-list"><div class="fd-panel-heading"><div><span class="fd-eyebrow">PIPELINES</span><h2>Model stack</h2></div><button type="button" class="fd-button" data-fd-configure>NEW RUN</button></div><div class="fd-model-list-body">${Object.entries(PIPELINES).map(([key, item]) => `<button type="button" class="fd-model-lane${key === state.selectedModel ? " active" : ""}" data-fd-model="${key}"><strong>${esc(item.name)}</strong><span>${esc(item.maturity)}</span><small>${esc(item.family)} · ${esc(item.compute)}<br>${esc(item.description)}</small></button>`).join("")}</div></section><section class="fd-model-canvas"><div class="fd-panel-heading"><div><span class="fd-eyebrow">ACTIVE OUTPUT</span><h2>${esc(pipeline.name)}</h2></div><div class="fd-button-row"><button type="button" class="fd-button" data-fd-model-inputs>INPUTS</button><button type="button" class="fd-button primary" data-fd-configure>CONFIGURE + RUN</button></div></div><div class="fd-model-visual">${ensembleSvg(state.selectedModel)}<div class="fd-model-watermark">CONCEPT DATA • NOT FOR OPERATIONS</div></div><div class="fd-model-summary">${pipeline.summary.map((value, index) => `<div><span>${esc(pipeline.labels[index])}</span><strong>${esc(value)}</strong></div>`).join("")}</div></section></div>`;
-    setInspectorTitle("Run Inspector");
-  }
-
-  function monitorInspector() {
-    const pinned = state.monitorTiles.filter((tile) => tile.pinned).length;
-    return `<section class="fd-inspector-section"><h3>Operations Wall</h3><div class="fd-meta-list"><div><span>ACTIVE</span><strong>${state.monitorTiles.length} / 12 tiles</strong></div><div><span>PINNED</span><strong>${pinned}</strong></div><div><span>GRID</span><strong>24-column constrained layout</strong></div><div><span>SAVED</span><strong>Automatically on this device</strong></div></div></section><section class="fd-inspector-section"><h3>Current Signals</h3><div class="fd-meta-list"><div><span>IMF</span><strong>${esc(readMetric(["imfHeader"], "Awaiting feed"))}</strong></div><div><span>WIND</span><strong>${esc(readMetric(["speedHeader"], "Awaiting feed"))}</strong></div><div><span>X-RAY</span><strong>${esc(readMetric(["xrayHeader"], "Awaiting feed"))}</strong></div><div><span>AP</span><strong>${esc(readMetric(["apHeader"], "Awaiting feed"))}</strong></div></div></section><section class="fd-inspector-section"><h3>Wall Contents</h3><div class="fd-meta-list">${state.monitorTiles.map((tile) => { const item = monitorTileDefinition(tile); return `<div><span>${tile.cols}/24${tile.pinned ? " · PIN" : ""}</span><strong>${esc(item.label)}</strong></div>`; }).join("") || `<p class="fd-note">No tiles are active.</p>`}</div></section><div class="fd-note">Products are mounted once and remain live. Add them to the wall for simultaneous monitoring or open them in the evidence workspace for focused analysis.</div>`;
+    setWorkbench("PUBLISHED FORECASTS", pipeline.name, "Provider issue times and valid windows · automatic refresh", false);
+    stage.innerHTML = `<div class="fd-model-layout"><section class="fd-model-list"><div class="fd-model-list-body">${Object.entries(PIPELINES).map(([key,item])=>`<button type="button" class="fd-model-lane${key===state.selectedModel?' active':''}" data-fd-model="${key}"><strong>${esc(item.name)}</strong><span>${esc(item.maturity)}</span></button>`).join('')}</div></section><section class="fd-model-canvas" id="fdParticleProducts"></section></div>`;
+    window.SpaceWxParticles.mount($("#fdParticleProducts",stage),state.selectedModel==='sep'?'sep':'electron');
+    setInspectorTitle(pipeline.name);
   }
 
   function modelInspector() {
@@ -38842,7 +38981,7 @@ window.SpaceWxRecurrenceCompare = (function () {
       const ch = chForecastSnapshot();
       return `<section class="fd-inspector-section"><h3>Current CH/HSS guidance</h3><div class="fd-meta-list"><div><span>ACCESS</span><strong>AVAILABLE WITHOUT A RUN</strong></div><div><span>STATUS</span><strong>${esc(String(ch.status || "pending").toUpperCase())}</strong></div><div><span>HOLE</span><strong>${esc(ch.hole)}</strong></div><div><span>POLARITY</span><strong>${esc(String(ch.polarity).toUpperCase())}</strong></div><div><span>SPEED WINDOW</span><strong>${esc(ch.hssWindow)}</strong></div><div><span>PEAK SPEED</span><strong>${esc(ch.peakSpeed)}</strong></div><div><span>GEOMAG</span><strong>${esc(ch.kp)}</strong></div><div><span>QUALITY</span><strong>${esc(ch.quality)}</strong></div></div><div class="fd-button-row"><button type="button" class="fd-button primary" data-fd-ch-info>METHODS</button><button type="button" class="fd-button" data-fd-ch-refresh>REFRESH</button></div></section><section class="fd-inspector-section"><h3>Workflow</h3><div class="fd-meta-list"><div><span>1 MAP</span><strong>AIA 211/193/171 MEASUREMENT</strong></div><div><span>2 OUTLOOK</span><strong>AUDITED CORE-ONLY · DURATION WITHHELD</strong></div><div><span>3 ANALOG</span><strong>OMNI T−27d · same UTC day</strong></div><div><span>4 POLARITY</span><strong>HMI LOS + RUSSELL–MCPHERRON</strong></div></div></section><section class="fd-inspector-section"><h3>Issuance notes</h3><p class="fd-note">Live CH/HSS engine from the 2 WS ops wall, restyled for this desk. It does not replace WSA–ENLIL, HUXt, or official SWPC watches. Original scalar coefficients are retained; invalid input substitutions and duration/G conversions are not.</p></section>`;
     }
-    return `<section class="fd-inspector-section"><h3>${esc(pipeline.name)}</h3><div class="fd-meta-list"><div><span>READINESS</span><strong>${esc(pipeline.maturity)}</strong></div><div><span>INPUTS</span><strong>${esc(pipeline.inputs)}</strong></div><div><span>COMPUTE</span><strong>${esc(pipeline.compute)}</strong></div><div><span>PROVENANCE</span><strong>${esc(pipeline.provenance)}</strong></div></div></section><section class="fd-inspector-section"><h3>Active run</h3><div class="fd-meta-list"><div><span>RUN ID</span><strong>${esc(run.id || "Not queued")}</strong></div><div><span>STATE</span><strong>${esc(run.status.toUpperCase())}</strong></div><div><span>PROGRESS</span><strong>${run.progress}% · ${run.failed || 0} failed</strong></div><div><span>QUALITY</span><strong>${completed ? "COMPLETE · NOT YET APPROVED" : "PENDING"}</strong></div></div><div class="fd-button-row"><button type="button" class="fd-button primary" data-fd-configure>CONFIGURE + RUN</button><button type="button" class="fd-button" data-fd-promote ${completed ? "" : "disabled"}>USE IN FORECAST</button></div></section><section class="fd-inspector-section"><h3>Context evidence</h3><div class="fd-button-row">${PIPELINE_BUNDLES[state.selectedModel].map((key) => `<button type="button" class="fd-button" data-fd-product="${key}">${esc((PRODUCT_LOOKUP.get(key) || {}).label || key)}</button>`).join("")}</div></section><div class="fd-note">Model calculations are not executed in this browser. Run requests are queued to configured CPU, MPI or GPU services; this desk displays returned products and provenance. Demo values remain synthetic until a compute service reports a verified run ID. Only display transforms and configured screening thresholds may run locally.</div>`;
+    return `<section class="fd-inspector-section"><h3>Published particle forecasts</h3><p class="fd-note">Forecasts load automatically. Refresh retrieves published results; no local run is required. Read each provider's issue and valid times.</p></section>`;
   }
 
   function forecastInspector() {
@@ -38867,11 +39006,12 @@ window.SpaceWxRecurrenceCompare = (function () {
     else if (state.preset === "model") inspector.innerHTML = modelInspector();
     else if (state.preset === "forecast") inspector.innerHTML = forecastInspector();
     else if (state.preset === "coordinate") inspector.innerHTML = coordinateInspector();
-    else inspector.innerHTML = monitorInspector();
+    else inspector.innerHTML = "";
   }
 
   function updateChrome() {
     if (!app) return;
+    app.classList.toggle("fd-particle-workspace",state.preset==="model"&&state.view!=="product"&&["sep","charging"].includes(state.selectedModel));
     const steps = ["inputs", "modeling", "draft", "review", "issued"];
     const activeIndex = Math.max(0, steps.indexOf(state.cycleStatus));
     const stepper = $("#fdCycleStepper", app);
@@ -38894,15 +39034,23 @@ window.SpaceWxRecurrenceCompare = (function () {
     const valid = new Date(Date.UTC(2026, 7, 25, Number(state.cycle)) + state.globalHour * 3600000);
     $("#fdInitTime", app).textContent = `25 AUG · ${state.cycle}Z`;
     $("#fdValidTime", app).textContent = valid.toLocaleString("en-GB", { day: "2-digit", month: "short", hour: "2-digit", timeZone: "UTC", hour12: false }).replace(",", " ·") + "Z";
-    const independentTime=(state.view==="product" && visiblePaneCount()===1 && state.paneProducts[0]==="solar.cycle") || (state.view!=="product" && state.preset==="model" && state.selectedModel==="huxt");
+    const independentTime=(state.view==="product" && visiblePaneCount()===1 && state.paneProducts[0]==="solar.cycle") || (state.view!=="product" && state.preset==="model" && ["huxt","sep","charging"].includes(state.selectedModel)) || state.preset==="monitor";
     $("#fdGlobalTime",app).disabled=independentTime;
     $("[data-fd-play]",app).disabled=independentTime;
     if(independentTime){$("#fdInitTime",app).textContent="ON PRODUCT";$("#fdValidTime",app).textContent="PROVIDER DATES";$("#fdLeadTime",app).textContent="OWN CONTROLS";if(!run.id)$("#fdRunStatus",app).textContent="PUBLISHED PRODUCTS";}
     $$("[data-fd-layout]", app).forEach((button) => button.classList.toggle("active", button.dataset.fdLayout === state.layout));
-    $$(".fd-product-button", app).forEach((button) => button.classList.toggle("active", state.paneProducts.includes(button.dataset.fdProduct)));
+    $$(".fd-product-button", app).forEach(button=>{
+      const active=state.preset==='monitor'?state.monitorTiles.some(t=>t.key===button.dataset.fdProduct):state.paneProducts.includes(button.dataset.fdProduct);
+      button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active));
+      if(state.preset==='monitor')button.title=active?'Click to remove from Monitor':'Click to add to Monitor';
+    });
   }
 
   function openProduct(key, pane) {
+    if(state.preset==='monitor'){
+      const tile=state.monitorTiles.find(t=>t.kind==='product'&&t.key===key);
+      if(tile)removeMonitorTile(tile.id);else addMonitorTile(key);return;
+    }
     if (key === "realtime.alerts") {
       const rail = $(".fd-global-alert-rail", app);
       if (rail) {
@@ -38916,6 +39064,7 @@ window.SpaceWxRecurrenceCompare = (function () {
       toast(`Product adapter unavailable: ${key}`);
       return;
     }
+    if(!Number.isInteger(pane)){state.layout="single";state.activePane=0;state.paneProducts=[null,null,null,null];}
     const existing = state.paneProducts.indexOf(key);
     state.view = "product";
     if (existing >= 0 && existing < visiblePaneCount()) {
@@ -39128,7 +39277,7 @@ window.SpaceWxRecurrenceCompare = (function () {
     $("#fdDrawerEyebrow", app).textContent = "OPERATIONS WALL";
     $("#fdDrawerTitle", app).textContent = "Add tiles";
     $("#fdDrawerContent", app).innerHTML = `<section class="fd-inspector-section"><h3>Situation canvases</h3><p class="fd-note">These are operational synthesis views built for the wall. Each can appear only once.</p><div class="fd-tile-picker-grid">${Object.entries(SPECIAL_TILES).map(([key, item]) => `<button type="button" class="fd-tile-picker-item${isAdded("visual", key) ? " added" : ""}" data-fd-add-visual="${key}" ${isAdded("visual", key) ? "disabled" : ""}><span>${esc(item.badge)}</span><strong>${esc(item.label)}</strong><small>${isAdded("visual", key) ? "Already on wall" : "Add to wall"}</small></button>`).join("")}</div></section>${PRODUCT_GROUPS.map((group) => `<section class="fd-inspector-section"><h3>${esc(group.name)}</h3><div class="fd-tile-picker-grid">${group.products.map((item) => `<button type="button" class="fd-tile-picker-item${isAdded("product", item[0]) ? " added" : ""}" data-fd-add-tile="${esc(item[0])}" ${isAdded("product", item[0]) ? "disabled" : ""}><span>${esc(item[2])}</span><strong>${esc(item[1])}</strong><small>${isAdded("product", item[0]) ? "Already on wall" : "Add to wall"}</small></button>`).join("")}</div></section>`).join("")}`;
-    $("#fdDrawerFoot", app).innerHTML = `<span class="fd-eyebrow" style="margin-right:auto">${state.monitorTiles.length} / 12 TILES</span><button type="button" class="fd-button" data-fd-close>Done</button>`;
+    $("#fdDrawerFoot", app).innerHTML = `<span class="fd-eyebrow" style="margin-right:auto">${state.monitorTiles.length} TILES</span><button type="button" class="fd-button" data-fd-close>Done</button>`;
   }
 
   function openDrawer(kind) {
@@ -39216,8 +39365,29 @@ window.SpaceWxRecurrenceCompare = (function () {
     frame.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "smooth" });
   }
 
+  function applyTileSize(tile,size,save=true) {
+    Object.assign(tile,size,{layoutVersion:2});
+    const node=$(`.fd-wall-tile[data-tile-id="${CSS.escape(tile.id)}"]`,app);
+    if(node){node.style.setProperty('--fd-tile-cols',tile.cols);node.style.setProperty('--fd-tile-rows',tile.rows);node.dataset.size=tile.cols;const w=$('[data-fd-tile-width]',node),h=$('[data-fd-tile-height]',node);if(w)w.value=tile.cols;if(h)h.value=tile.rows;scheduleResize(node);}
+    if(save)saveState();
+  }
   function bindEvents() {
+    app.addEventListener('change',event=>{
+      const width=event.target.dataset.fdTileWidth,height=event.target.dataset.fdTileHeight;
+      if(!width&&!height)return;const tile=state.monitorTiles.find(t=>t.id===(width||height));if(!tile)return;
+      applyTileSize(tile,window.SpaceWxMonitorLayout.dimensions(width?+event.target.value:tile.cols,height?+event.target.value:tile.rows));
+    });
+    app.addEventListener('pointerdown',event=>{
+      const handle=event.target.closest('[data-fd-resize-handle]');if(!handle)return;
+      const tile=state.monitorTiles.find(t=>t.id===handle.dataset.fdResizeHandle),node=handle.closest('.fd-wall-tile'),grid=$('#fdWallGrid',app);if(!tile||!grid)return;
+      event.preventDefault();const start={...tile},x=event.clientX,y=event.clientY,width=grid.clientWidth;handle.setPointerCapture(event.pointerId);node.classList.add('resizing');
+      const move=e=>applyTileSize(tile,window.SpaceWxMonitorLayout.resize(start,e.clientX-x,e.clientY-y,width),false);
+      const end=()=>{handle.removeEventListener('pointermove',move);handle.removeEventListener('pointerup',end);handle.removeEventListener('pointercancel',cancel);node.classList.remove('resizing');saveState();};
+      const cancel=()=>{applyTileSize(tile,start);end();};
+      handle.addEventListener('pointermove',move);handle.addEventListener('pointerup',end);handle.addEventListener('pointercancel',cancel);
+    });
     app.addEventListener("click", (event) => {
+      const resetSize=event.target.closest('[data-fd-tile-default]');if(resetSize){const tile=state.monitorTiles.find(t=>t.id===resetSize.dataset.fdTileDefault);if(tile)applyTileSize(tile,window.SpaceWxMonitorLayout.defaults(tile.kind,tile.key));return;}
       if (event.target.closest("[data-fd-geomag-refresh]")) {
         refreshHourlyGeomag(true).catch((error) => toast(`Hourly geomag refresh failed: ${error.message || error}`));
         return;
@@ -39308,7 +39478,7 @@ window.SpaceWxRecurrenceCompare = (function () {
         }
         return;
       }
-      if (event.target.closest("[data-fd-configure]")) { configureRun(); return; }
+      if (event.target.closest("[data-fd-configure]")) { toast("Published forecasts load automatically; no local model run is required."); return; }
       if (event.target.closest("[data-fd-ch-refresh]")) {
         if (window.SpaceWxChHss && window.SpaceWxChHss.refresh) {
           toast("Refreshing CH/HSS outlook…");
@@ -39420,48 +39590,24 @@ window.SpaceWxRecurrenceCompare = (function () {
       }
     });
 
-    app.addEventListener("dragstart", (event) => {
-      const handle = event.target.closest("[data-fd-tile-drag]");
-      if (!handle || !state.monitorCustomizing || handle.disabled) {
-        if (handle) event.preventDefault();
-        return;
-      }
-      draggedTileId = handle.dataset.fdTileDrag;
-      const tile = handle.closest(".fd-wall-tile");
-      if (tile) tile.classList.add("dragging");
-      if (event.dataTransfer) {
-        event.dataTransfer.effectAllowed = "move";
-        event.dataTransfer.setData("text/plain", draggedTileId);
-      }
-    });
-
-    app.addEventListener("dragover", (event) => {
-      const target = event.target.closest(".fd-wall-tile");
-      if (!draggedTileId || !target || target.dataset.tileId === draggedTileId) return;
-      event.preventDefault();
-      $$(".fd-wall-tile.drop-target", app).forEach((tile) => tile.classList.remove("drop-target"));
-      target.classList.add("drop-target");
-      if (event.dataTransfer) event.dataTransfer.dropEffect = "move";
-    });
-
-    app.addEventListener("drop", (event) => {
-      const target = event.target.closest(".fd-wall-tile");
-      if (!draggedTileId || !target || target.dataset.tileId === draggedTileId) return;
-      event.preventDefault();
-      const sourceIndex = state.monitorTiles.findIndex((tile) => tile.id === draggedTileId);
-      const targetIndex = state.monitorTiles.findIndex((tile) => tile.id === target.dataset.tileId);
-      if (sourceIndex >= 0 && targetIndex >= 0 && !state.monitorTiles[sourceIndex].pinned) {
-        const [tile] = state.monitorTiles.splice(sourceIndex, 1);
-        state.monitorTiles.splice(targetIndex, 0, tile);
-        saveState();
-        renderPreset();
-      }
-      draggedTileId = null;
-    });
-
-    app.addEventListener("dragend", () => {
-      draggedTileId = null;
-      $$(".fd-wall-tile.dragging,.fd-wall-tile.drop-target", app).forEach((tile) => tile.classList.remove("dragging", "drop-target"));
+    app.addEventListener('pointerdown',event=>{
+      const handle=event.target.closest('[data-fd-tile-drag]');if(!handle)return;
+      event.preventDefault();const source=handle.closest('.fd-wall-tile'),id=source.dataset.tileId;
+      handle.setPointerCapture(event.pointerId);source.classList.add('dragging');
+      let destination=null;
+      const clear=()=>$$('.fd-wall-tile.drop-target',app).forEach(t=>t.classList.remove('drop-target'));
+      const move=e=>{
+        clear();destination=document.elementFromPoint(e.clientX,e.clientY)?.closest('.fd-wall-tile');
+        if(destination&&destination!==source)destination.classList.add('drop-target');
+        const scroller=stage.parentElement,r=scroller.getBoundingClientRect();
+        if(e.clientY>r.bottom-35)scroller.scrollTop+=20;else if(e.clientY<r.top+35)scroller.scrollTop-=20;
+      };
+      const cleanup=()=>{handle.removeEventListener('pointermove',move);handle.removeEventListener('pointerup',end);handle.removeEventListener('pointercancel',cancel);clear();source.classList.remove('dragging');};
+      const end=()=>{const targetId=destination?.dataset.tileId;cleanup();if(!targetId||targetId===id)return;
+        const from=state.monitorTiles.findIndex(t=>t.id===id),to=state.monitorTiles.findIndex(t=>t.id===targetId);
+        if(from<0||to<0)return;const [tile]=state.monitorTiles.splice(from,1);state.monitorTiles.splice(to,0,tile);saveState();renderPreset();
+      };
+      const cancel=()=>cleanup();handle.addEventListener('pointermove',move);handle.addEventListener('pointerup',end);handle.addEventListener('pointercancel',cancel);
     });
   }
 

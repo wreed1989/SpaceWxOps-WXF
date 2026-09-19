@@ -1,0 +1,65 @@
+name: Preserve completed CH HSS backfill
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/chhss-persist-quarter.yml']
+  workflow_dispatch:
+permissions:
+  actions: read
+  contents: write
+jobs:
+  preserve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - uses: actions/download-artifact@v4
+        with:
+          run-id: 35414024925
+          github-token: ${{ github.token }}
+          pattern: chhss-*2024
+          path: completed
+      - name: Assemble completed observations without changing measurements
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,hashlib,zipfile
+          dest=Path('assembled');dest.mkdir(exist_ok=True)
+          cases=[];days=[];sources=[];history={}
+          for name in ['jan2024','feb2024','mar2024']:
+            p=Path('completed')/('chhss-'+name)
+            cases.extend(json.loads((p/'cases.json').read_text()))
+            days.extend(json.loads((p/'backfill-progress.json').read_text())['days'])
+            sources.append({'period':name,'commit':(p/'source-commit.txt').read_text().strip(),'omni':json.loads((p/'omni-manifest.json').read_text())})
+            for f in sorted((p/'history').glob('*.json')):
+              key=f.stem
+              assert key not in history,'Duplicate observation date'
+              history[key]={'file':f,'sha256':hashlib.sha256(f.read_bytes()).hexdigest()}
+          assert len(cases)==89 and len(days)==91 and len(history)==89,'Unexpected completed backfill coverage'
+          assert len({c['caseId'] for c in cases})==89,'Duplicate cases'
+          (dest/'cases.json').write_text(json.dumps(sorted(cases,key=lambda c:c['issueTime']),separators=(',',':')))
+          (dest/'progress.json').write_text(json.dumps({'scheduled':91,'processed':89,'failed':2,'days':days},separators=(',',':')))
+          (dest/'provenance.json').write_text(json.dumps({'sourceRun':35414024925,'period':'2024-01-01/2024-04-01 exclusive','sourceArtifacts':sources,'observations':{k:v['sha256'] for k,v in history.items()}},separators=(',',':')))
+          with zipfile.ZipFile(dest/'registered_observations.zip','w',zipfile.ZIP_DEFLATED,compresslevel=6) as z:
+            for k,v in history.items():z.write(v['file'],'history/'+k+'.json')
+          print('Persisting',len(cases),'real cases,',len(history),'registered measurements; no new forecasts or fits')
+          PY
+      - name: Publish independent archive namespace
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            dest=chhss-data/backfill/2024-01-01_2024-04-01
+            mkdir -p "$dest"
+            cp assembled/* "$dest/"
+            cp chhss-data/validation.json "$dest/validation.json"
+            git add "$dest"
+            if git diff --cached --quiet; then break; fi
+            git commit -m 'Preserve 89 real registered AIA/HMI cases and Q1 backfill provenance'
+            if git push origin HEAD:main; then break; fi
+            if [ "$attempt" = 3 ]; then exit 1; fi
+          done

@@ -35929,6 +35929,7 @@ window.SpaceWxRecurrenceCompare = (function () {
 
 <!-- SOLAR_CYCLE_BOOTSTRAP_SLOT -->
 <style id="solarContextStyles">
+#fdCmeProducts{display:block;align-self:start}
 .wx-context{padding:20px;color:#d5e7f0;background:#091722;min-width:0}.wx-context h2{margin:0 0 6px;font-size:20px}.wx-context p{color:#a9bfcd;line-height:1.6}.wx-context a{color:#6cd2ed}.wx-context .wx-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:14px 0}.wx-context button{background:#142a3a;color:#d5e7f0;border:1px solid #385064;padding:7px 12px;border-radius:5px;cursor:pointer}.wx-context button[aria-pressed=true]{border-color:#66d2ed;background:#164156}.wx-context button:disabled{opacity:.5;cursor:default}.wx-context .wx-facts{display:flex;gap:24px;flex-wrap:wrap;padding:14px 0;border-block:1px solid #263d4d}.wx-context .wx-facts strong{display:block;font-size:19px;color:#fff}.wx-context .wx-facts span{font-size:12px;color:#94adbd}.wx-context .wx-status{font-size:12px;overflow-wrap:anywhere}.wx-context .wx-cycle-plot{height:580px;min-height:360px}.wx-cme-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.wx-cme-card{background:#0d202f;border:1px solid #294153;border-radius:8px;padding:16px;min-width:0}.wx-cme-card h3{margin:0 0 6px}.wx-cme-card img{width:100%;height:auto;display:block;background:#050b12;min-height:160px;object-fit:contain}.wx-cme-card input[type=range]{width:100%}.wx-cme-card .wx-planned{display:inline-block;color:#e6c987;font-size:11px;border:1px solid #726446;border-radius:4px;padding:3px 7px;margin-bottom:10px}.wx-cme-card:last-child{grid-column:1/-1}.fd-rc-hole-marker.review{border-style:dashed;opacity:.75}.wx-ch-summary{padding:9px 14px;color:#b9d2df;font-size:12px;border-bottom:1px solid #2b4253}.wx-context [hidden]{display:none!important}@media(max-width:1000px){.wx-cme-grid{grid-template-columns:1fr}.wx-context{padding:12px}}
 </style>
 <script id="solarCycleProduct">
@@ -38812,6 +38813,7 @@ window.SpaceWxRecurrenceCompare = (function () {
   function productInspector() {
     const key = state.paneProducts[state.activePane] || state.paneProducts[0];
     const product = PRODUCT_LOOKUP.get(key);
+    if(key==="solar.cycle") return `<section class="fd-inspector-section"><h3>Solar Cycle</h3><p class="fd-note">NOAA monthly sunspot and F10.7 indices. Dates on each curve are observation or prediction months; this product does not use the shared event-time slider.</p><p class="fd-note">Select Cycle 25, Cycles 24–25 or the full record. The phase label is an inferred smoothed trend, with the six-month observation lag shown on the chart.</p></section>`;
     return `<section class="fd-inspector-section"><h3>${esc(product ? product.label : "Evidence pane")}</h3><div class="fd-meta-list"><div><span>KEY</span><strong>${esc(key || "Empty")}</strong></div><div><span>SOURCE</span><strong>${esc(product ? product.badge : "Unavailable")}</strong></div><div><span>VALID TIME</span><strong>T+${String(state.globalHour).padStart(3, "0")} h</strong></div><div><span>LAYOUT</span><strong>${esc(state.layout.toUpperCase())}</strong></div></div></section><section class="fd-inspector-section"><h3>Pane assignment</h3><div class="fd-button-row">${Array.from({ length: visiblePaneCount() }, (_, index) => `<button type="button" class="fd-button${state.activePane === index ? " primary" : ""}" data-fd-pane="${index}">PANE ${index + 1}</button>`).join("")}</div></section><div class="fd-note">Product cards are mounted as singletons. A product cannot silently duplicate across panes; selecting it again activates its existing pane.</div>`;
   }
 
@@ -38848,6 +38850,10 @@ window.SpaceWxRecurrenceCompare = (function () {
     const valid = new Date(Date.UTC(2026, 7, 25, Number(state.cycle)) + state.globalHour * 3600000);
     $("#fdInitTime", app).textContent = `25 AUG · ${state.cycle}Z`;
     $("#fdValidTime", app).textContent = valid.toLocaleString("en-GB", { day: "2-digit", month: "short", hour: "2-digit", timeZone: "UTC", hour12: false }).replace(",", " ·") + "Z";
+    const independentTime=(state.view==="product" && visiblePaneCount()===1 && state.paneProducts[0]==="solar.cycle") || (state.view!=="product" && state.preset==="model" && state.selectedModel==="huxt");
+    $("#fdGlobalTime",app).disabled=independentTime;
+    $("[data-fd-play]",app).disabled=independentTime;
+    if(independentTime){$("#fdInitTime",app).textContent="ON PRODUCT";$("#fdValidTime",app).textContent="PROVIDER DATES";$("#fdLeadTime",app).textContent="OWN CONTROLS";if(!run.id)$("#fdRunStatus",app).textContent="PUBLISHED PRODUCTS";}
     $$("[data-fd-layout]", app).forEach((button) => button.classList.toggle("active", button.dataset.fdLayout === state.layout));
     $$(".fd-product-button", app).forEach((button) => button.classList.toggle("active", state.paneProducts.includes(button.dataset.fdProduct)));
   }

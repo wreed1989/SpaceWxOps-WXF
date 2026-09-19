@@ -1,14 +1,14 @@
 {
   "schemaVersion": "wxf-huxt-1",
-  "issuedAt": "2026-09-19T21:04:22.878303+00:00",
+  "issuedAt": "2026-09-19T21:31:21.290767+00:00",
   "status": "experimental",
   "model": "HUXt 5.0.3",
   "upstreamCommit": "4d5b60bedb4b30ad140a8ea4972c4f5396c687ff",
   "source": {
     "url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/wsa_enlil/prod/wsa_enlil.20260919/wsa_enlil.mrid00000000.inputs.tar.gz",
     "sha256": "e4d483f5443c4db1c6971162df711694c939a98ccb2bc9f1ea56e44717cb4cb5",
-    "retrievedAt": "2026-09-19T21:04:23.579398+00:00",
-    "path": "/Users/Billiam/Documents/Codex/2026-09-18/https-github-com-wreed1989-spacewxops-wxf/work/huxt-live/swpc-ambient-inputs.tar.gz"
+    "retrievedAt": "2026-09-19T21:31:22.071017+00:00",
+    "path": "/home/runner/work/SpaceWxOps-WXF/SpaceWxOps-WXF/product/huxt-evidence/swpc-ambient-inputs.tar.gz"
   },
   "boundary": {
     "boundaryEpoch": "2026-09-18T23:14:03.840014935+00:00",
@@ -22,8 +22,8 @@
   },
   "cmeSource": {
     "url": "https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/CMEAnalysis?startDate=2026-09-11&endDate=2026-09-19&mostAccurateOnly=true&catalog=M2M_CATALOG&feature=LE",
-    "sha256": "e0f42d35bcbe67ec56c1a1c03e9780b9fbdd238ac42e9bf3034280c6444308a3",
-    "retrievedAt": "2026-09-19T21:04:23.956124+00:00"
+    "sha256": "e3e61c50eed440289582d57a4fd7c4c90fe1322a3a3d47386d674e8c20050f94",
+    "retrievedAt": "2026-09-19T21:31:22.607519+00:00"
   },
   "cmeInputs": [
     {
@@ -65,6 +65,16 @@
       "latitude": 39.0,
       "longitude": 115.0,
       "source": "https://kauai.ccmc.gsfc.nasa.gov/DONKI/view/CMEAnalysis/48714/-1"
+    },
+    {
+      "id": "2026-09-19T18:48:00-CME-001",
+      "submittedAt": "2026-09-19T21:30:00+00:00",
+      "launchAt21_5": "2026-09-20T06:14:00+00:00",
+      "speed": 321.0,
+      "halfAngle": 45.0,
+      "latitude": 16.0,
+      "longitude": -90.0,
+      "source": "https://kauai.ccmc.gsfc.nasa.gov/DONKI/view/CMEAnalysis/48732/-1"
     }
   ],
   "simulationStart": "2026-09-12T21:00:00+00:00",
@@ -72,33 +82,27 @@
   "units": "km/s",
   "rows": [
     {
-      "time": "2026-09-18T21:09:52.200977+00:00",
-      "ambientSpeed": 633.050242579932,
-      "cmeSpeed": 633.050242579932,
-      "phase": "reconstruction"
-    },
-    {
       "time": "2026-09-18T21:33:03.600977+00:00",
-      "ambientSpeed": 632.2930324821897,
-      "cmeSpeed": 632.2930324821897,
+      "ambientSpeed": 632.2930324821898,
+      "cmeSpeed": 632.2930324821898,
       "phase": "reconstruction"
     },
     {
       "time": "2026-09-18T21:56:15.000977+00:00",
-      "ambientSpeed": 631.5227723558907,
-      "cmeSpeed": 631.5227723558907,
+      "ambientSpeed": 631.5227723558908,
+      "cmeSpeed": 631.5227723558908,
       "phase": "reconstruction"
     },
     {
       "time": "2026-09-18T22:19:26.400977+00:00",
-      "ambientSpeed": 630.7399869472853,
-      "cmeSpeed": 630.7399869472853,
+      "ambientSpeed": 630.7399869472854,
+      "cmeSpeed": 630.7399869472854,
       "phase": "reconstruction"
     },
     {
       "time": "2026-09-18T22:42:37.800977+00:00",
-      "ambientSpeed": 629.9451936364513,
-      "cmeSpeed": 629.9451936364513,
+      "ambientSpeed": 629.9451936364514,
+      "cmeSpeed": 629.9451936364514,
       "phase": "reconstruction"
     },
     {
@@ -109,56 +113,56 @@
     },
     {
       "time": "2026-09-18T23:29:00.600977+00:00",
-      "ambientSpeed": 628.3215697324526,
-      "cmeSpeed": 628.3215697324526,
+      "ambientSpeed": 628.3215697324528,
+      "cmeSpeed": 628.3215697324528,
       "phase": "reconstruction"
     },
     {
       "time": "2026-09-18T23:52:12.000977+00:00",
-      "ambientSpeed": 627.4936699043817,
-      "cmeSpeed": 627.4936699043817,
+      "ambientSpeed": 627.4936699043818,
+      "cmeSpeed": 627.4936699043818,
       "phase": "reconstruction"
     },
     {
       "time": "2026-09-19T00:15:23.400977+00:00",
-      "ambientSpeed": 626.655610371854,
-      "cmeSpeed": 626.655610371854,
+      "ambientSpeed": 626.6556103718541,
+      "cmeSpeed": 626.6556103718541,
       "phase": "reconstruction"
     },
     {
       "time": "2026-09-19T00:38:34.800977+00:00",
-      "ambientSpeed": 625.8077689236276,
-      "cmeSpeed": 625.8077689236276,
+      "ambientSpeed": 625.8077689236277,
+      "cmeSpeed": 625.8077689236277,
       "phase": "reconstruction"
     },
     {
       "time": "2026-09-19T01:01:46.200977+00:00",
-      "ambientSpeed": 624.9504801909201,
-      "cmeSpeed": 624.9504801909201,
+      "ambientSpeed": 624.9504801909202,
+      "cmeSpeed": 624.9504801909202,
       "phase": "reconstruction"
     },
     {
       "time": "2026-09-19T01:24:57.600977+00:00",
-      "ambientSpeed": 624.084032350716,
-      "cmeSpeed": 624.084032350716,
+      "ambientSpeed": 624.0840323507161,
+      "cmeSpeed": 624.0840323507161,
       "phase": "reconstruction"
     },
     {
       "time": "2026-09-19T01:48:09.000977+00:00",
-      "ambientSpeed": 623.2086657771293,
-      "cmeSpeed": 623.2086657771293,
+      "ambientSpeed": 623.2086657771295,
+      "cmeSpeed": 623.2086657771295,
       "phase": "reconstruction"
     },
     {
       "time": "2026-09-19T02:11:20.400977+00:00",
-      "ambientSpeed": 622.3245720912712,
-      "cmeSpeed": 622.3245720912712,
+      "ambientSpeed": 622.3245720912713,
+      "cmeSpeed": 622.3245720912713,
       "phase": "reconstruction"
     },
     {
       "time": "2026-09-19T02:34:31.800977+00:00",
-      "ambientSpeed": 621.431894107616,
-      "cmeSpeed": 621.431894107616,
+      "ambientSpeed": 621.4318941076161,
+      "cmeSpeed": 621.4318941076161,
       "phase": "reconstruction"
     },
     {
@@ -385,14 +389,14 @@
     },
     {
       "time": "2026-09-19T17:15:45.000977+00:00",
-      "ambientSpeed": 580.3888816735312,
-      "cmeSpeed": 580.3888816735312,
+      "ambientSpeed": 580.388881673531,
+      "cmeSpeed": 580.388881673531,
       "phase": "reconstruction"
     },
     {
       "time": "2026-09-19T17:38:56.400977+00:00",
-      "ambientSpeed": 579.1248834538379,
-      "cmeSpeed": 579.1248834538379,
+      "ambientSpeed": 579.1248834538378,
+      "cmeSpeed": 579.1248834538378,
       "phase": "reconstruction"
     },
     {
@@ -415,128 +419,128 @@
     },
     {
       "time": "2026-09-19T19:11:42.000977+00:00",
-      "ambientSpeed": 574.0154401775633,
-      "cmeSpeed": 574.0154401775633,
+      "ambientSpeed": 574.0154401775632,
+      "cmeSpeed": 574.0154401775632,
       "phase": "reconstruction"
     },
     {
       "time": "2026-09-19T19:34:53.400977+00:00",
-      "ambientSpeed": 572.727190314151,
-      "cmeSpeed": 572.727190314151,
+      "ambientSpeed": 572.7271903141509,
+      "cmeSpeed": 572.7271903141509,
       "phase": "reconstruction"
     },
     {
       "time": "2026-09-19T19:58:04.800977+00:00",
-      "ambientSpeed": 571.4355742624109,
-      "cmeSpeed": 571.4355742624109,
+      "ambientSpeed": 571.4355742624108,
+      "cmeSpeed": 571.4355742624108,
       "phase": "reconstruction"
     },
     {
       "time": "2026-09-19T20:21:16.200977+00:00",
-      "ambientSpeed": 570.1410809493057,
-      "cmeSpeed": 570.1410809493057,
+      "ambientSpeed": 570.1410809493055,
+      "cmeSpeed": 570.1410809493055,
       "phase": "reconstruction"
     },
     {
       "time": "2026-09-19T20:44:27.600977+00:00",
-      "ambientSpeed": 568.8441930605038,
-      "cmeSpeed": 568.8441930605038,
+      "ambientSpeed": 568.8441930605037,
+      "cmeSpeed": 568.8441930605037,
       "phase": "reconstruction"
     },
     {
       "time": "2026-09-19T21:07:39.000977+00:00",
-      "ambientSpeed": 567.5453854474397,
-      "cmeSpeed": 567.5453854474397,
-      "phase": "forecast"
+      "ambientSpeed": 567.5453854474396,
+      "cmeSpeed": 567.5453854474396,
+      "phase": "reconstruction"
     },
     {
       "time": "2026-09-19T21:30:50.400977+00:00",
-      "ambientSpeed": 566.2451236938897,
-      "cmeSpeed": 566.2451236938897,
-      "phase": "forecast"
+      "ambientSpeed": 566.2451236938896,
+      "cmeSpeed": 566.2451236938896,
+      "phase": "reconstruction"
     },
     {
       "time": "2026-09-19T21:54:01.800977+00:00",
-      "ambientSpeed": 564.9438628384561,
-      "cmeSpeed": 564.9438628384561,
+      "ambientSpeed": 564.943862838456,
+      "cmeSpeed": 564.943862838456,
       "phase": "forecast"
     },
     {
       "time": "2026-09-19T22:17:13.200977+00:00",
-      "ambientSpeed": 563.6420462464312,
-      "cmeSpeed": 563.6420462464312,
+      "ambientSpeed": 563.642046246431,
+      "cmeSpeed": 563.642046246431,
       "phase": "forecast"
     },
     {
       "time": "2026-09-19T22:40:24.600977+00:00",
-      "ambientSpeed": 562.3401046249851,
-      "cmeSpeed": 562.3401046249851,
+      "ambientSpeed": 562.340104624985,
+      "cmeSpeed": 562.340104624985,
       "phase": "forecast"
     },
     {
       "time": "2026-09-19T23:03:36.000977+00:00",
-      "ambientSpeed": 561.0384551724914,
-      "cmeSpeed": 561.0384551724914,
+      "ambientSpeed": 561.0384551724912,
+      "cmeSpeed": 561.0384551724912,
       "phase": "forecast"
     },
     {
       "time": "2026-09-19T23:26:47.400977+00:00",
-      "ambientSpeed": 559.7375008541799,
-      "cmeSpeed": 559.7375008541799,
+      "ambientSpeed": 559.7375008541798,
+      "cmeSpeed": 559.7375008541798,
       "phase": "forecast"
     },
     {
       "time": "2026-09-19T23:49:58.800977+00:00",
-      "ambientSpeed": 558.4376297940056,
-      "cmeSpeed": 558.4376297940056,
+      "ambientSpeed": 558.4376297940055,
+      "cmeSpeed": 558.4376297940055,
       "phase": "forecast"
     },
     {
       "time": "2026-09-20T00:13:10.200977+00:00",
-      "ambientSpeed": 557.1392134100446,
-      "cmeSpeed": 557.1392134100446,
+      "ambientSpeed": 557.1392134100445,
+      "cmeSpeed": 557.1392134100445,
       "phase": "forecast"
     },
     {
       "time": "2026-09-20T00:36:21.600977+00:00",
-      "ambientSpeed": 555.8426091628234,
-      "cmeSpeed": 555.8426091628234,
+      "ambientSpeed": 555.8426091628232,
+      "cmeSpeed": 555.8426091628232,
       "phase": "forecast"
     },
     {
       "time": "2026-09-20T00:59:33.000977+00:00",
-      "ambientSpeed": 554.548158964778,
-      "cmeSpeed": 554.548158964778,
+      "ambientSpeed": 554.5481589647779,
+      "cmeSpeed": 554.5481589647779,
       "phase": "forecast"
     },
     {
       "time": "2026-09-20T01:22:44.400977+00:00",
-      "ambientSpeed": 553.2561874966844,
-      "cmeSpeed": 553.2561874966844,
+      "ambientSpeed": 553.2561874966843,
+      "cmeSpeed": 553.2561874966843,
       "phase": "forecast"
     },
     {
       "time": "2026-09-20T01:45:55.800977+00:00",
-      "ambientSpeed": 551.9670029778878,
-      "cmeSpeed": 551.9670029778878,
+      "ambientSpeed": 551.9670029778877,
+      "cmeSpeed": 551.9670029778877,
       "phase": "forecast"
     },
     {
       "time": "2026-09-20T02:09:07.200977+00:00",
-      "ambientSpeed": 550.6808970638554,
-      "cmeSpeed": 550.6808970638554,
+      "ambientSpeed": 550.6808970638552,
+      "cmeSpeed": 550.6808970638552,
       "phase": "forecast"
     },
     {
       "time": "2026-09-20T02:32:18.600977+00:00",
-      "ambientSpeed": 549.3981447990949,
-      "cmeSpeed": 549.3981447990949,
+      "ambientSpeed": 549.3981447990948,
+      "cmeSpeed": 549.3981447990948,
       "phase": "forecast"
     },
     {
       "time": "2026-09-20T02:55:30.000977+00:00",
-      "ambientSpeed": 548.1190046175126,
-      "cmeSpeed": 548.1190046175126,
+      "ambientSpeed": 548.1190046175125,
+      "cmeSpeed": 548.1190046175125,
       "phase": "forecast"
     },
     {
@@ -1903,8 +1907,8 @@
     },
     {
       "time": "2026-09-23T19:02:49.200977+00:00",
-      "ambientSpeed": 355.5585232452346,
-      "cmeSpeed": 355.5585232452346,
+      "ambientSpeed": 355.55852324523465,
+      "cmeSpeed": 355.55852324523465,
       "phase": "forecast"
     },
     {
@@ -1915,182 +1919,182 @@
     },
     {
       "time": "2026-09-23T19:49:12.000977+00:00",
-      "ambientSpeed": 368.7569374651829,
-      "cmeSpeed": 368.7569374651829,
+      "ambientSpeed": 368.75693746518294,
+      "cmeSpeed": 368.75693746518294,
       "phase": "forecast"
     },
     {
       "time": "2026-09-23T20:12:23.400977+00:00",
-      "ambientSpeed": 376.43335915292465,
-      "cmeSpeed": 376.43335915292465,
+      "ambientSpeed": 376.4333591529247,
+      "cmeSpeed": 376.4333591529247,
       "phase": "forecast"
     },
     {
       "time": "2026-09-23T20:35:34.800977+00:00",
-      "ambientSpeed": 384.73072668696227,
-      "cmeSpeed": 384.73072668696227,
+      "ambientSpeed": 384.7307266869623,
+      "cmeSpeed": 384.7307266869623,
       "phase": "forecast"
     },
     {
       "time": "2026-09-23T20:58:46.200977+00:00",
-      "ambientSpeed": 393.52068342527195,
-      "cmeSpeed": 393.52068342527195,
+      "ambientSpeed": 393.52068342527207,
+      "cmeSpeed": 393.52068342527207,
       "phase": "forecast"
     },
     {
       "time": "2026-09-23T21:21:57.600977+00:00",
-      "ambientSpeed": 402.63516142791485,
-      "cmeSpeed": 402.63516142791485,
+      "ambientSpeed": 402.63516142791497,
+      "cmeSpeed": 402.63516142791497,
       "phase": "forecast"
     },
     {
       "time": "2026-09-23T21:45:09.000977+00:00",
-      "ambientSpeed": 411.8776948962295,
-      "cmeSpeed": 411.8776948962295,
+      "ambientSpeed": 411.8776948962296,
+      "cmeSpeed": 411.8776948962296,
       "phase": "forecast"
     },
     {
       "time": "2026-09-23T22:08:20.400977+00:00",
-      "ambientSpeed": 421.0398771643415,
-      "cmeSpeed": 421.0398771643415,
+      "ambientSpeed": 421.0398771643416,
+      "cmeSpeed": 421.0398771643416,
       "phase": "forecast"
     },
     {
       "time": "2026-09-23T22:31:31.800977+00:00",
-      "ambientSpeed": 429.92018779669155,
-      "cmeSpeed": 429.92018779669155,
+      "ambientSpeed": 429.92018779669166,
+      "cmeSpeed": 429.92018779669166,
       "phase": "forecast"
     },
     {
       "time": "2026-09-23T22:54:43.200977+00:00",
-      "ambientSpeed": 438.34165174147427,
-      "cmeSpeed": 438.34165174147427,
+      "ambientSpeed": 438.3416517414744,
+      "cmeSpeed": 438.3416517414744,
       "phase": "forecast"
     },
     {
       "time": "2026-09-23T23:17:54.600977+00:00",
-      "ambientSpeed": 446.1651099658067,
-      "cmeSpeed": 446.1651099658067,
+      "ambientSpeed": 446.16510996580683,
+      "cmeSpeed": 446.16510996580683,
       "phase": "forecast"
     },
     {
       "time": "2026-09-23T23:41:06.000977+00:00",
-      "ambientSpeed": 453.2961568408253,
-      "cmeSpeed": 453.2961568408253,
+      "ambientSpeed": 453.2961568408254,
+      "cmeSpeed": 453.2961568408254,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T00:04:17.400977+00:00",
-      "ambientSpeed": 459.6854998916767,
-      "cmeSpeed": 459.6854998916767,
+      "ambientSpeed": 459.6854998916769,
+      "cmeSpeed": 459.6854998916769,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T00:27:28.800977+00:00",
-      "ambientSpeed": 465.3239758627973,
-      "cmeSpeed": 465.3239758627973,
+      "ambientSpeed": 465.32397586279734,
+      "cmeSpeed": 465.32397586279734,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T00:50:40.200977+00:00",
-      "ambientSpeed": 470.2342747330177,
-      "cmeSpeed": 470.2342747330177,
+      "ambientSpeed": 470.23427473301774,
+      "cmeSpeed": 470.23427473301774,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T01:13:51.600977+00:00",
-      "ambientSpeed": 474.46149439743033,
-      "cmeSpeed": 474.46149439743033,
+      "ambientSpeed": 474.4614943974304,
+      "cmeSpeed": 474.4614943974304,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T01:37:03.000977+00:00",
-      "ambientSpeed": 478.06420624437135,
-      "cmeSpeed": 478.06420624437135,
+      "ambientSpeed": 478.0642062443714,
+      "cmeSpeed": 478.0642062443714,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T02:00:14.400977+00:00",
-      "ambientSpeed": 481.1070352104916,
-      "cmeSpeed": 481.1070352104916,
+      "ambientSpeed": 481.10703521049163,
+      "cmeSpeed": 481.10703521049163,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T02:23:25.800977+00:00",
-      "ambientSpeed": 483.655139793854,
-      "cmeSpeed": 483.655139793854,
+      "ambientSpeed": 483.65513979385406,
+      "cmeSpeed": 483.65513979385406,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T02:46:37.200977+00:00",
-      "ambientSpeed": 485.77053337991936,
-      "cmeSpeed": 485.77053337991936,
+      "ambientSpeed": 485.7705333799194,
+      "cmeSpeed": 485.7705333799194,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T03:09:48.600977+00:00",
-      "ambientSpeed": 487.50994605585083,
-      "cmeSpeed": 487.50994605585083,
+      "ambientSpeed": 487.5099460558509,
+      "cmeSpeed": 487.5099460558509,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T03:33:00.000977+00:00",
-      "ambientSpeed": 488.9238436368956,
-      "cmeSpeed": 488.9238436368956,
+      "ambientSpeed": 488.92384363689564,
+      "cmeSpeed": 488.92384363689564,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T03:56:11.400977+00:00",
-      "ambientSpeed": 490.05623783904474,
-      "cmeSpeed": 490.05623783904474,
+      "ambientSpeed": 490.0562378390448,
+      "cmeSpeed": 490.0562378390448,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T04:19:22.800977+00:00",
-      "ambientSpeed": 490.94498627904244,
-      "cmeSpeed": 490.94498627904244,
+      "ambientSpeed": 490.9449862790425,
+      "cmeSpeed": 490.9449862790425,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T04:42:34.200977+00:00",
-      "ambientSpeed": 491.62235817954866,
-      "cmeSpeed": 491.62235817954866,
+      "ambientSpeed": 491.6223581795487,
+      "cmeSpeed": 491.6223581795487,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T05:05:45.600977+00:00",
-      "ambientSpeed": 492.11571229529255,
-      "cmeSpeed": 492.11571229529255,
+      "ambientSpeed": 492.1157122952926,
+      "cmeSpeed": 492.1157122952926,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T05:28:57.000977+00:00",
-      "ambientSpeed": 492.4481900289845,
-      "cmeSpeed": 492.4481900289845,
+      "ambientSpeed": 492.4481900289846,
+      "cmeSpeed": 492.4481900289846,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T05:52:08.400977+00:00",
-      "ambientSpeed": 492.63936791887727,
-      "cmeSpeed": 492.63936791887727,
+      "ambientSpeed": 492.6393679188773,
+      "cmeSpeed": 492.6393679188773,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T06:15:19.800977+00:00",
-      "ambientSpeed": 492.70584169364145,
-      "cmeSpeed": 492.70584169364145,
+      "ambientSpeed": 492.7058416936415,
+      "cmeSpeed": 492.7058416936415,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T06:38:31.200977+00:00",
-      "ambientSpeed": 492.66173190798867,
-      "cmeSpeed": 492.66173190798867,
+      "ambientSpeed": 492.6617319079887,
+      "cmeSpeed": 492.6617319079887,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T07:01:42.600977+00:00",
-      "ambientSpeed": 492.5191117012873,
-      "cmeSpeed": 492.5191117012873,
+      "ambientSpeed": 492.51911170128733,
+      "cmeSpeed": 492.51911170128733,
       "phase": "forecast"
     },
     {
@@ -2107,14 +2111,14 @@
     },
     {
       "time": "2026-09-24T08:11:16.800977+00:00",
-      "ambientSpeed": 491.5972539087679,
-      "cmeSpeed": 491.5972539087679,
+      "ambientSpeed": 491.597253908768,
+      "cmeSpeed": 491.597253908768,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T08:34:28.200977+00:00",
-      "ambientSpeed": 491.1515781048685,
-      "cmeSpeed": 491.1515781048685,
+      "ambientSpeed": 491.1515781048686,
+      "cmeSpeed": 491.1515781048686,
       "phase": "forecast"
     },
     {
@@ -2137,170 +2141,170 @@
     },
     {
       "time": "2026-09-24T10:07:13.800977+00:00",
-      "ambientSpeed": 488.8357465296976,
-      "cmeSpeed": 488.8357465296976,
+      "ambientSpeed": 488.83574652969764,
+      "cmeSpeed": 488.83574652969764,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T10:30:25.200977+00:00",
-      "ambientSpeed": 488.1464280210272,
-      "cmeSpeed": 488.1464280210272,
+      "ambientSpeed": 488.1464280210273,
+      "cmeSpeed": 488.1464280210273,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T10:53:36.600977+00:00",
-      "ambientSpeed": 487.420591060484,
-      "cmeSpeed": 487.420591060484,
+      "ambientSpeed": 487.4205910604841,
+      "cmeSpeed": 487.4205910604841,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T11:16:48.000977+00:00",
-      "ambientSpeed": 486.6614389983101,
-      "cmeSpeed": 486.6614389983101,
+      "ambientSpeed": 486.6614389983102,
+      "cmeSpeed": 486.6614389983102,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T11:39:59.400977+00:00",
-      "ambientSpeed": 485.8718960097057,
-      "cmeSpeed": 485.8718960097057,
+      "ambientSpeed": 485.87189600970584,
+      "cmeSpeed": 485.87189600970584,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T12:03:10.800977+00:00",
-      "ambientSpeed": 485.0546398151827,
-      "cmeSpeed": 485.0546398151827,
+      "ambientSpeed": 485.0546398151828,
+      "cmeSpeed": 485.0546398151828,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T12:26:22.200977+00:00",
-      "ambientSpeed": 484.21212938491976,
-      "cmeSpeed": 484.21212938491976,
+      "ambientSpeed": 484.2121293849199,
+      "cmeSpeed": 484.2121293849199,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T12:49:33.600977+00:00",
-      "ambientSpeed": 483.34662781422253,
-      "cmeSpeed": 483.34662781422253,
+      "ambientSpeed": 483.34662781422264,
+      "cmeSpeed": 483.34662781422264,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T13:12:45.000977+00:00",
-      "ambientSpeed": 482.4602231356151,
-      "cmeSpeed": 482.4602231356151,
+      "ambientSpeed": 482.4602231356152,
+      "cmeSpeed": 482.4602231356152,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T13:35:56.400977+00:00",
-      "ambientSpeed": 481.55484547750285,
-      "cmeSpeed": 481.55484547750285,
+      "ambientSpeed": 481.55484547750297,
+      "cmeSpeed": 481.55484547750297,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T13:59:07.800977+00:00",
-      "ambientSpeed": 480.6322821975829,
-      "cmeSpeed": 480.6322821975829,
+      "ambientSpeed": 480.63228219758304,
+      "cmeSpeed": 480.63228219758304,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T14:22:19.200977+00:00",
-      "ambientSpeed": 479.69419113985185,
-      "cmeSpeed": 479.69419113985185,
+      "ambientSpeed": 479.69419113985197,
+      "cmeSpeed": 479.69419113985197,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T14:45:30.600977+00:00",
-      "ambientSpeed": 478.7421123205591,
-      "cmeSpeed": 478.7421123205591,
+      "ambientSpeed": 478.7421123205592,
+      "cmeSpeed": 478.7421123205592,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T15:08:42.000977+00:00",
-      "ambientSpeed": 477.77747829033797,
-      "cmeSpeed": 477.77747829033797,
+      "ambientSpeed": 477.7774782903381,
+      "cmeSpeed": 477.7774782903381,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T15:31:53.400977+00:00",
-      "ambientSpeed": 476.80162337133345,
-      "cmeSpeed": 476.80162337133345,
+      "ambientSpeed": 476.80162337133356,
+      "cmeSpeed": 476.80162337133356,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T15:55:04.800977+00:00",
-      "ambientSpeed": 475.81579193230215,
-      "cmeSpeed": 475.81579193230215,
+      "ambientSpeed": 475.81579193230226,
+      "cmeSpeed": 475.81579193230226,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T16:18:16.200977+00:00",
-      "ambientSpeed": 474.82114583570547,
-      "cmeSpeed": 474.82114583570547,
+      "ambientSpeed": 474.8211458357056,
+      "cmeSpeed": 474.8211458357056,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T16:41:27.600977+00:00",
-      "ambientSpeed": 473.81877116684706,
-      "cmeSpeed": 473.81877116684706,
+      "ambientSpeed": 473.81877116684717,
+      "cmeSpeed": 473.81877116684717,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T17:04:39.000977+00:00",
-      "ambientSpeed": 472.8096843385404,
-      "cmeSpeed": 472.8096843385404,
+      "ambientSpeed": 472.80968433854054,
+      "cmeSpeed": 472.80968433854054,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T17:27:50.400977+00:00",
-      "ambientSpeed": 471.7948376486291,
-      "cmeSpeed": 471.7948376486291,
+      "ambientSpeed": 471.7948376486292,
+      "cmeSpeed": 471.7948376486292,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T17:51:01.800977+00:00",
-      "ambientSpeed": 470.775124357082,
-      "cmeSpeed": 470.775124357082,
+      "ambientSpeed": 470.7751243570821,
+      "cmeSpeed": 470.7751243570821,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T18:14:13.200977+00:00",
-      "ambientSpeed": 469.75138334002213,
-      "cmeSpeed": 469.75138334002213,
+      "ambientSpeed": 469.75138334002224,
+      "cmeSpeed": 469.75138334002224,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T18:37:24.600977+00:00",
-      "ambientSpeed": 468.7244033693502,
-      "cmeSpeed": 468.7244033693502,
+      "ambientSpeed": 468.72440336935034,
+      "cmeSpeed": 468.72440336935034,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T19:00:36.000977+00:00",
-      "ambientSpeed": 467.69492706218097,
-      "cmeSpeed": 467.69492706218097,
+      "ambientSpeed": 467.6949270621811,
+      "cmeSpeed": 467.6949270621811,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T19:23:47.400977+00:00",
-      "ambientSpeed": 466.6636545372754,
-      "cmeSpeed": 466.6636545372754,
+      "ambientSpeed": 466.66365453727553,
+      "cmeSpeed": 466.66365453727553,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T19:46:58.800977+00:00",
-      "ambientSpeed": 465.6312468134916,
-      "cmeSpeed": 465.6312468134916,
+      "ambientSpeed": 465.6312468134917,
+      "cmeSpeed": 465.6312468134917,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T20:10:10.200977+00:00",
-      "ambientSpeed": 464.5983289800879,
-      "cmeSpeed": 464.5983289800879,
+      "ambientSpeed": 464.598328980088,
+      "cmeSpeed": 464.598328980088,
       "phase": "forecast"
     },
     {
       "time": "2026-09-24T20:33:21.600977+00:00",
-      "ambientSpeed": 463.56549316703024,
-      "cmeSpeed": 463.56549316703024,
+      "ambientSpeed": 463.56549316703035,
+      "cmeSpeed": 463.56549316703035,
       "phase": "forecast"
     }
   ],

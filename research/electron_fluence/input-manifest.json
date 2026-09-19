@@ -1,0 +1,758 @@
+[
+  {
+    "path": "particles-20250407-20250501.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CE2_0%2CsatelliteElectron%2CsatelliteProton&time.min=2025-04-07T00%3A00%3A00%2B00%3A00&time.max=2025-05-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "P10",
+      "E2_0",
+      "satelliteElectron",
+      "satelliteProton"
+    ],
+    "retrievedAt": "2026-09-19T19:53:51.663524+00:00",
+    "start": "2025-04-07T00:00:00+00:00",
+    "stopExclusive": "2025-05-01T00:00:00+00:00",
+    "sha256": "1e67d7f2e65a127b658ffa8ccb944ff3cd5c1a4d2be44ad2e4934a2743bc2737",
+    "bytes": 515492
+  },
+  {
+    "path": "plasma-20250407-20250501.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_plasma_P1M&parameters=ProtonDensity%2CBulkSpeed&time.min=2025-04-07T00%3A00%3A00%2B00%3A00&time.max=2025-05-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "ProtonDensity",
+      "BulkSpeed"
+    ],
+    "retrievedAt": "2026-09-19T19:53:52.295281+00:00",
+    "start": "2025-04-07T00:00:00+00:00",
+    "stopExclusive": "2025-05-01T00:00:00+00:00",
+    "sha256": "d0643721f2c353b14575a17d3539e8784bd9bfbc3e44de1a7476077558ca4cca",
+    "bytes": 1103402
+  },
+  {
+    "path": "mag-20250407-20250501.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_mag_P1M&parameters=B_y%2CB_z%2CB_t&time.min=2025-04-07T00%3A00%3A00%2B00%3A00&time.max=2025-05-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "B_y",
+      "B_z",
+      "B_t"
+    ],
+    "retrievedAt": "2026-09-19T19:53:52.441276+00:00",
+    "start": "2025-04-07T00:00:00+00:00",
+    "stopExclusive": "2025-05-01T00:00:00+00:00",
+    "sha256": "fa29132225c41402b8126286e042c436b6ec2cf5d900b981ea47b7858bec5b9d",
+    "bytes": 1277344
+  },
+  {
+    "path": "particles-20250501-20250601.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CE2_0%2CsatelliteElectron%2CsatelliteProton&time.min=2025-05-01T00%3A00%3A00%2B00%3A00&time.max=2025-06-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "P10",
+      "E2_0",
+      "satelliteElectron",
+      "satelliteProton"
+    ],
+    "retrievedAt": "2026-09-19T19:53:52.846432+00:00",
+    "start": "2025-05-01T00:00:00+00:00",
+    "stopExclusive": "2025-06-01T00:00:00+00:00",
+    "sha256": "9bcf5ef4aff94317044f582ae1f0df12317530654ed7aedc2aefb45433d146cc",
+    "bytes": 663298
+  },
+  {
+    "path": "plasma-20250501-20250601.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_plasma_P1M&parameters=ProtonDensity%2CBulkSpeed&time.min=2025-05-01T00%3A00%3A00%2B00%3A00&time.max=2025-06-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "ProtonDensity",
+      "BulkSpeed"
+    ],
+    "retrievedAt": "2026-09-19T19:53:54.247480+00:00",
+    "start": "2025-05-01T00:00:00+00:00",
+    "stopExclusive": "2025-06-01T00:00:00+00:00",
+    "sha256": "24ba1d45890ce7f9d283ddd73d2ebc7685f44bd2d303e37b315201ffdb5847a1",
+    "bytes": 1417766
+  },
+  {
+    "path": "mag-20250501-20250601.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_mag_P1M&parameters=B_y%2CB_z%2CB_t&time.min=2025-05-01T00%3A00%3A00%2B00%3A00&time.max=2025-06-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "B_y",
+      "B_z",
+      "B_t"
+    ],
+    "retrievedAt": "2026-09-19T19:53:54.538942+00:00",
+    "start": "2025-05-01T00:00:00+00:00",
+    "stopExclusive": "2025-06-01T00:00:00+00:00",
+    "sha256": "590ea443858f75b038b2752d0b3ffd358b5582350917c3cccdabf1decd75b987",
+    "bytes": 1656656
+  },
+  {
+    "path": "particles-20250601-20250701.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CE2_0%2CsatelliteElectron%2CsatelliteProton&time.min=2025-06-01T00%3A00%3A00%2B00%3A00&time.max=2025-07-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "P10",
+      "E2_0",
+      "satelliteElectron",
+      "satelliteProton"
+    ],
+    "retrievedAt": "2026-09-19T19:53:54.039290+00:00",
+    "start": "2025-06-01T00:00:00+00:00",
+    "stopExclusive": "2025-07-01T00:00:00+00:00",
+    "sha256": "13b86ac2fced0143d9fb310d7fecfaf315c47482a815921dcf8a7903581bfb31",
+    "bytes": 642763
+  },
+  {
+    "path": "plasma-20250601-20250701.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_plasma_P1M&parameters=ProtonDensity%2CBulkSpeed&time.min=2025-06-01T00%3A00%3A00%2B00%3A00&time.max=2025-07-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "ProtonDensity",
+      "BulkSpeed"
+    ],
+    "retrievedAt": "2026-09-19T19:53:55.924378+00:00",
+    "start": "2025-06-01T00:00:00+00:00",
+    "stopExclusive": "2025-07-01T00:00:00+00:00",
+    "sha256": "b2b387354ab90af171327fcd3f3869099e77ccd276c687e194e1e2a19560071e",
+    "bytes": 1375757
+  },
+  {
+    "path": "mag-20250601-20250701.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_mag_P1M&parameters=B_y%2CB_z%2CB_t&time.min=2025-06-01T00%3A00%3A00%2B00%3A00&time.max=2025-07-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "B_y",
+      "B_z",
+      "B_t"
+    ],
+    "retrievedAt": "2026-09-19T19:53:56.295568+00:00",
+    "start": "2025-06-01T00:00:00+00:00",
+    "stopExclusive": "2025-07-01T00:00:00+00:00",
+    "sha256": "8521a582277e4174f19016214d0fe5c92c097d5d7535671cdf62aff04faa3593",
+    "bytes": 1602242
+  },
+  {
+    "path": "particles-20250701-20250801.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CE2_0%2CsatelliteElectron%2CsatelliteProton&time.min=2025-07-01T00%3A00%3A00%2B00%3A00&time.max=2025-08-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "P10",
+      "E2_0",
+      "satelliteElectron",
+      "satelliteProton"
+    ],
+    "retrievedAt": "2026-09-19T19:53:55.753361+00:00",
+    "start": "2025-07-01T00:00:00+00:00",
+    "stopExclusive": "2025-08-01T00:00:00+00:00",
+    "sha256": "6ac72213c0b669f8c8eb6b738b235f45fd2663fc1b9468cf8905d0706646f685",
+    "bytes": 662982
+  },
+  {
+    "path": "plasma-20250701-20250801.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_plasma_P1M&parameters=ProtonDensity%2CBulkSpeed&time.min=2025-07-01T00%3A00%3A00%2B00%3A00&time.max=2025-08-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "ProtonDensity",
+      "BulkSpeed"
+    ],
+    "retrievedAt": "2026-09-19T19:53:57.638745+00:00",
+    "start": "2025-07-01T00:00:00+00:00",
+    "stopExclusive": "2025-08-01T00:00:00+00:00",
+    "sha256": "bba1dff1c5e8ff31567dadaee90402f2b25fff3590068f60b0cd6c973a5ab437",
+    "bytes": 1394917
+  },
+  {
+    "path": "mag-20250701-20250801.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_mag_P1M&parameters=B_y%2CB_z%2CB_t&time.min=2025-07-01T00%3A00%3A00%2B00%3A00&time.max=2025-08-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "B_y",
+      "B_z",
+      "B_t"
+    ],
+    "retrievedAt": "2026-09-19T19:53:57.931030+00:00",
+    "start": "2025-07-01T00:00:00+00:00",
+    "stopExclusive": "2025-08-01T00:00:00+00:00",
+    "sha256": "63733b5d73175c3e00af95f214408ce604b91023cd66943e75b3b75877a3e87b",
+    "bytes": 1579434
+  },
+  {
+    "path": "particles-20250801-20250901.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CE2_0%2CsatelliteElectron%2CsatelliteProton&time.min=2025-08-01T00%3A00%3A00%2B00%3A00&time.max=2025-09-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "P10",
+      "E2_0",
+      "satelliteElectron",
+      "satelliteProton"
+    ],
+    "retrievedAt": "2026-09-19T19:53:57.476841+00:00",
+    "start": "2025-08-01T00:00:00+00:00",
+    "stopExclusive": "2025-09-01T00:00:00+00:00",
+    "sha256": "bf9e5821d8b99d476dd1a738900f5ab5dd1e2999fe748898e93a80182eb17135",
+    "bytes": 662392
+  },
+  {
+    "path": "plasma-20250801-20250901.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_plasma_P1M&parameters=ProtonDensity%2CBulkSpeed&time.min=2025-08-01T00%3A00%3A00%2B00%3A00&time.max=2025-09-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "ProtonDensity",
+      "BulkSpeed"
+    ],
+    "retrievedAt": "2026-09-19T19:53:59.665946+00:00",
+    "start": "2025-08-01T00:00:00+00:00",
+    "stopExclusive": "2025-09-01T00:00:00+00:00",
+    "sha256": "a5468fdbeb8683d833c18d1cd39c9f55525a3d110c4d8df52b841eff664fd314",
+    "bytes": 1371012
+  },
+  {
+    "path": "mag-20250801-20250901.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_mag_P1M&parameters=B_y%2CB_z%2CB_t&time.min=2025-08-01T00%3A00%3A00%2B00%3A00&time.max=2025-09-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "B_y",
+      "B_z",
+      "B_t"
+    ],
+    "retrievedAt": "2026-09-19T19:53:59.599319+00:00",
+    "start": "2025-08-01T00:00:00+00:00",
+    "stopExclusive": "2025-09-01T00:00:00+00:00",
+    "sha256": "5359a3845b249a400aa0c4acff2c5723c05704ba04627ac62af840bf47c8abbf",
+    "bytes": 1502479
+  },
+  {
+    "path": "particles-20250901-20251001.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CE2_0%2CsatelliteElectron%2CsatelliteProton&time.min=2025-09-01T00%3A00%3A00%2B00%3A00&time.max=2025-10-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "P10",
+      "E2_0",
+      "satelliteElectron",
+      "satelliteProton"
+    ],
+    "retrievedAt": "2026-09-19T19:53:59.102743+00:00",
+    "start": "2025-09-01T00:00:00+00:00",
+    "stopExclusive": "2025-10-01T00:00:00+00:00",
+    "sha256": "7e5c6042a364002fe1ce2b2fab6e91cf6f2d87400196debb5c574abd728f7291",
+    "bytes": 643575
+  },
+  {
+    "path": "plasma-20250901-20251001.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_plasma_P1M&parameters=ProtonDensity%2CBulkSpeed&time.min=2025-09-01T00%3A00%3A00%2B00%3A00&time.max=2025-10-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "ProtonDensity",
+      "BulkSpeed"
+    ],
+    "retrievedAt": "2026-09-19T19:54:01.330715+00:00",
+    "start": "2025-09-01T00:00:00+00:00",
+    "stopExclusive": "2025-10-01T00:00:00+00:00",
+    "sha256": "4f5fc3d2d76bf826d750a37b593a81690e7e45c0d209c42b7906cdc50ea068bd",
+    "bytes": 1324647
+  },
+  {
+    "path": "mag-20250901-20251001.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_mag_P1M&parameters=B_y%2CB_z%2CB_t&time.min=2025-09-01T00%3A00%3A00%2B00%3A00&time.max=2025-10-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "B_y",
+      "B_z",
+      "B_t"
+    ],
+    "retrievedAt": "2026-09-19T19:54:01.567431+00:00",
+    "start": "2025-09-01T00:00:00+00:00",
+    "stopExclusive": "2025-10-01T00:00:00+00:00",
+    "sha256": "2ae348b3d0e9edead67e6671729e3949189064fa394ef58583937a4f382f6c7a",
+    "bytes": 1467773
+  },
+  {
+    "path": "particles-20251001-20251101.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CE2_0%2CsatelliteElectron%2CsatelliteProton&time.min=2025-10-01T00%3A00%3A00%2B00%3A00&time.max=2025-11-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "P10",
+      "E2_0",
+      "satelliteElectron",
+      "satelliteProton"
+    ],
+    "retrievedAt": "2026-09-19T19:54:00.856089+00:00",
+    "start": "2025-10-01T00:00:00+00:00",
+    "stopExclusive": "2025-11-01T00:00:00+00:00",
+    "sha256": "d792e8f0e172b0b559fb580e481214e153803c1e72cd616a3b68439ce5daa2f6",
+    "bytes": 661282
+  },
+  {
+    "path": "plasma-20251001-20251101.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_plasma_P1M&parameters=ProtonDensity%2CBulkSpeed&time.min=2025-10-01T00%3A00%3A00%2B00%3A00&time.max=2025-11-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "ProtonDensity",
+      "BulkSpeed"
+    ],
+    "retrievedAt": "2026-09-19T19:54:02.719927+00:00",
+    "start": "2025-10-01T00:00:00+00:00",
+    "stopExclusive": "2025-11-01T00:00:00+00:00",
+    "sha256": "4754938b88397b2e953ac4a89deaa83e67c9ca7383ff7de5f1935e7baf91b150",
+    "bytes": 1375450
+  },
+  {
+    "path": "mag-20251001-20251101.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_mag_P1M&parameters=B_y%2CB_z%2CB_t&time.min=2025-10-01T00%3A00%3A00%2B00%3A00&time.max=2025-11-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "B_y",
+      "B_z",
+      "B_t"
+    ],
+    "retrievedAt": "2026-09-19T19:54:03.325212+00:00",
+    "start": "2025-10-01T00:00:00+00:00",
+    "stopExclusive": "2025-11-01T00:00:00+00:00",
+    "sha256": "f8665afdcbf7535eaf02d8a138a4920597a6813528ce79707010085a3c8f09c1",
+    "bytes": 1506042
+  },
+  {
+    "path": "particles-20251101-20251201.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CE2_0%2CsatelliteElectron%2CsatelliteProton&time.min=2025-11-01T00%3A00%3A00%2B00%3A00&time.max=2025-12-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "P10",
+      "E2_0",
+      "satelliteElectron",
+      "satelliteProton"
+    ],
+    "retrievedAt": "2026-09-19T19:54:02.766667+00:00",
+    "start": "2025-11-01T00:00:00+00:00",
+    "stopExclusive": "2025-12-01T00:00:00+00:00",
+    "sha256": "202a43a74710cabb587e44368240ea3b9476f2ab4bbe52481c9c848fa0165f47",
+    "bytes": 639060
+  },
+  {
+    "path": "plasma-20251101-20251201.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_plasma_P1M&parameters=ProtonDensity%2CBulkSpeed&time.min=2025-11-01T00%3A00%3A00%2B00%3A00&time.max=2025-12-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "ProtonDensity",
+      "BulkSpeed"
+    ],
+    "retrievedAt": "2026-09-19T19:54:05.143191+00:00",
+    "start": "2025-11-01T00:00:00+00:00",
+    "stopExclusive": "2025-12-01T00:00:00+00:00",
+    "sha256": "5cecab71a762c6843fec33362ab2a4e13d560989297bedc4e1633273837b1632",
+    "bytes": 1330424
+  },
+  {
+    "path": "mag-20251101-20251201.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_mag_P1M&parameters=B_y%2CB_z%2CB_t&time.min=2025-11-01T00%3A00%3A00%2B00%3A00&time.max=2025-12-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "B_y",
+      "B_z",
+      "B_t"
+    ],
+    "retrievedAt": "2026-09-19T19:54:05.534916+00:00",
+    "start": "2025-11-01T00:00:00+00:00",
+    "stopExclusive": "2025-12-01T00:00:00+00:00",
+    "sha256": "3eeb475192bec15a44ff55c0a33159b814286ee5bb7c95e0ddda7fa52f99f099",
+    "bytes": 1477331
+  },
+  {
+    "path": "particles-20251201-20260101.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CE2_0%2CsatelliteElectron%2CsatelliteProton&time.min=2025-12-01T00%3A00%3A00%2B00%3A00&time.max=2026-01-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "P10",
+      "E2_0",
+      "satelliteElectron",
+      "satelliteProton"
+    ],
+    "retrievedAt": "2026-09-19T19:54:04.631669+00:00",
+    "start": "2025-12-01T00:00:00+00:00",
+    "stopExclusive": "2026-01-01T00:00:00+00:00",
+    "sha256": "492f48eabd949a047e10bbb7d06a041094ecc959e0def794edcd8bb42ac04900",
+    "bytes": 662991
+  },
+  {
+    "path": "plasma-20251201-20260101.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_plasma_P1M&parameters=ProtonDensity%2CBulkSpeed&time.min=2025-12-01T00%3A00%3A00%2B00%3A00&time.max=2026-01-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "ProtonDensity",
+      "BulkSpeed"
+    ],
+    "retrievedAt": "2026-09-19T19:54:06.488988+00:00",
+    "start": "2025-12-01T00:00:00+00:00",
+    "stopExclusive": "2026-01-01T00:00:00+00:00",
+    "sha256": "abd87e29c1da1154f5b7aca77ad99f919b6efd797309974e7f6dd141482ed96b",
+    "bytes": 1383583
+  },
+  {
+    "path": "mag-20251201-20260101.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_mag_P1M&parameters=B_y%2CB_z%2CB_t&time.min=2025-12-01T00%3A00%3A00%2B00%3A00&time.max=2026-01-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "B_y",
+      "B_z",
+      "B_t"
+    ],
+    "retrievedAt": "2026-09-19T19:54:07.171949+00:00",
+    "start": "2025-12-01T00:00:00+00:00",
+    "stopExclusive": "2026-01-01T00:00:00+00:00",
+    "sha256": "2087966cc3e9f2714b52afeba0d5a076434539ef4368f22b877bee63a71538ed",
+    "bytes": 1571049
+  },
+  {
+    "path": "particles-20260101-20260201.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CE2_0%2CsatelliteElectron%2CsatelliteProton&time.min=2026-01-01T00%3A00%3A00%2B00%3A00&time.max=2026-02-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "P10",
+      "E2_0",
+      "satelliteElectron",
+      "satelliteProton"
+    ],
+    "retrievedAt": "2026-09-19T19:54:06.727699+00:00",
+    "start": "2026-01-01T00:00:00+00:00",
+    "stopExclusive": "2026-02-01T00:00:00+00:00",
+    "sha256": "8121ee124056bb4fa0ec9e7ae4d8607830e9a270bed2cc8db3dda07c1e745cce",
+    "bytes": 658685
+  },
+  {
+    "path": "plasma-20260101-20260201.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_plasma_P1M&parameters=ProtonDensity%2CBulkSpeed&time.min=2026-01-01T00%3A00%3A00%2B00%3A00&time.max=2026-02-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "ProtonDensity",
+      "BulkSpeed"
+    ],
+    "retrievedAt": "2026-09-19T19:54:08.599992+00:00",
+    "start": "2026-01-01T00:00:00+00:00",
+    "stopExclusive": "2026-02-01T00:00:00+00:00",
+    "sha256": "0c7ca65f509d5dd0a31bb924a2af06f35af9f33ef5cdb0d61cae8ed550d6f920",
+    "bytes": 1381663
+  },
+  {
+    "path": "mag-20260101-20260201.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_mag_P1M&parameters=B_y%2CB_z%2CB_t&time.min=2026-01-01T00%3A00%3A00%2B00%3A00&time.max=2026-02-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "B_y",
+      "B_z",
+      "B_t"
+    ],
+    "retrievedAt": "2026-09-19T19:54:09.217848+00:00",
+    "start": "2026-01-01T00:00:00+00:00",
+    "stopExclusive": "2026-02-01T00:00:00+00:00",
+    "sha256": "b80dfc08cb7172e0b1f13223ee4f1d453282e7a99f3cd7a50f603bed9add30da",
+    "bytes": 1561871
+  },
+  {
+    "path": "particles-20260201-20260301.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CE2_0%2CsatelliteElectron%2CsatelliteProton&time.min=2026-02-01T00%3A00%3A00%2B00%3A00&time.max=2026-03-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "P10",
+      "E2_0",
+      "satelliteElectron",
+      "satelliteProton"
+    ],
+    "retrievedAt": "2026-09-19T19:54:08.332079+00:00",
+    "start": "2026-02-01T00:00:00+00:00",
+    "stopExclusive": "2026-03-01T00:00:00+00:00",
+    "sha256": "2fa94b5b55bfc2ce26d8779fca7715a43f2ff030f92f59937c0f1413ab45e5ad",
+    "bytes": 597935
+  },
+  {
+    "path": "plasma-20260201-20260301.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_plasma_P1M&parameters=ProtonDensity%2CBulkSpeed&time.min=2026-02-01T00%3A00%3A00%2B00%3A00&time.max=2026-03-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "ProtonDensity",
+      "BulkSpeed"
+    ],
+    "retrievedAt": "2026-09-19T19:54:10.052384+00:00",
+    "start": "2026-02-01T00:00:00+00:00",
+    "stopExclusive": "2026-03-01T00:00:00+00:00",
+    "sha256": "d5277c2ab7a2d670a966338beb41231db5a38f6a5d01b9f5f91202d0256ea8d5",
+    "bytes": 1239977
+  },
+  {
+    "path": "mag-20260201-20260301.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_mag_P1M&parameters=B_y%2CB_z%2CB_t&time.min=2026-02-01T00%3A00%3A00%2B00%3A00&time.max=2026-03-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "B_y",
+      "B_z",
+      "B_t"
+    ],
+    "retrievedAt": "2026-09-19T19:54:10.429231+00:00",
+    "start": "2026-02-01T00:00:00+00:00",
+    "stopExclusive": "2026-03-01T00:00:00+00:00",
+    "sha256": "4530d0d3b6732f67d20abe076b11c971302a71c615c757fb54623aa62dff129b",
+    "bytes": 1380678
+  },
+  {
+    "path": "particles-20260301-20260401.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CE2_0%2CsatelliteElectron%2CsatelliteProton&time.min=2026-03-01T00%3A00%3A00%2B00%3A00&time.max=2026-04-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "P10",
+      "E2_0",
+      "satelliteElectron",
+      "satelliteProton"
+    ],
+    "retrievedAt": "2026-09-19T19:54:10.516667+00:00",
+    "start": "2026-03-01T00:00:00+00:00",
+    "stopExclusive": "2026-04-01T00:00:00+00:00",
+    "sha256": "c72965e4fc180df8151f4273eaa72f57dac3e794584a1cd53d7a07785feddf85",
+    "bytes": 663335
+  },
+  {
+    "path": "plasma-20260301-20260401.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_plasma_P1M&parameters=ProtonDensity%2CBulkSpeed&time.min=2026-03-01T00%3A00%3A00%2B00%3A00&time.max=2026-04-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "ProtonDensity",
+      "BulkSpeed"
+    ],
+    "retrievedAt": "2026-09-19T19:54:12.162942+00:00",
+    "start": "2026-03-01T00:00:00+00:00",
+    "stopExclusive": "2026-04-01T00:00:00+00:00",
+    "sha256": "cb3f04283fce1c1c0eb3ed17ab39014638cd57d3a79c25ad3d0d946ad0cf8985",
+    "bytes": 1381395
+  },
+  {
+    "path": "mag-20260301-20260401.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_mag_P1M&parameters=B_y%2CB_z%2CB_t&time.min=2026-03-01T00%3A00%3A00%2B00%3A00&time.max=2026-04-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "B_y",
+      "B_z",
+      "B_t"
+    ],
+    "retrievedAt": "2026-09-19T19:54:12.478458+00:00",
+    "start": "2026-03-01T00:00:00+00:00",
+    "stopExclusive": "2026-04-01T00:00:00+00:00",
+    "sha256": "8f653e6f479660011619a06a2d24a58281de60888ac714e90e888ffd41aacb3e",
+    "bytes": 1595693
+  },
+  {
+    "path": "particles-20260401-20260501.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CE2_0%2CsatelliteElectron%2CsatelliteProton&time.min=2026-04-01T00%3A00%3A00%2B00%3A00&time.max=2026-05-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "P10",
+      "E2_0",
+      "satelliteElectron",
+      "satelliteProton"
+    ],
+    "retrievedAt": "2026-09-19T19:54:11.681257+00:00",
+    "start": "2026-04-01T00:00:00+00:00",
+    "stopExclusive": "2026-05-01T00:00:00+00:00",
+    "sha256": "6f2197f7f49eb46933d513313c31ef25269888dd405f5d531db4dc9a4dff34a9",
+    "bytes": 641383
+  },
+  {
+    "path": "plasma-20260401-20260501.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_plasma_P1M&parameters=ProtonDensity%2CBulkSpeed&time.min=2026-04-01T00%3A00%3A00%2B00%3A00&time.max=2026-05-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "ProtonDensity",
+      "BulkSpeed"
+    ],
+    "retrievedAt": "2026-09-19T19:54:13.580353+00:00",
+    "start": "2026-04-01T00:00:00+00:00",
+    "stopExclusive": "2026-05-01T00:00:00+00:00",
+    "sha256": "f262a7556dbfb157e5e2e436e4815768e3050a15792a360aa057444218e54a01",
+    "bytes": 1338422
+  },
+  {
+    "path": "mag-20260401-20260501.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_mag_P1M&parameters=B_y%2CB_z%2CB_t&time.min=2026-04-01T00%3A00%3A00%2B00%3A00&time.max=2026-05-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "B_y",
+      "B_z",
+      "B_t"
+    ],
+    "retrievedAt": "2026-09-19T19:54:14.291933+00:00",
+    "start": "2026-04-01T00:00:00+00:00",
+    "stopExclusive": "2026-05-01T00:00:00+00:00",
+    "sha256": "896e29c4ff0ad0df3503868da185620ff6c75e7fcb8732e8b5e2b0da7124369f",
+    "bytes": 1556780
+  },
+  {
+    "path": "particles-20260501-20260601.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CE2_0%2CsatelliteElectron%2CsatelliteProton&time.min=2026-05-01T00%3A00%3A00%2B00%3A00&time.max=2026-06-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "P10",
+      "E2_0",
+      "satelliteElectron",
+      "satelliteProton"
+    ],
+    "retrievedAt": "2026-09-19T19:54:13.683393+00:00",
+    "start": "2026-05-01T00:00:00+00:00",
+    "stopExclusive": "2026-06-01T00:00:00+00:00",
+    "sha256": "627cbbf33bc42536f77ef5ea25915b83bc798e4720d36b58abed5656010c32df",
+    "bytes": 665996
+  },
+  {
+    "path": "plasma-20260501-20260601.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_plasma_P1M&parameters=ProtonDensity%2CBulkSpeed&time.min=2026-05-01T00%3A00%3A00%2B00%3A00&time.max=2026-06-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "ProtonDensity",
+      "BulkSpeed"
+    ],
+    "retrievedAt": "2026-09-19T19:54:15.461495+00:00",
+    "start": "2026-05-01T00:00:00+00:00",
+    "stopExclusive": "2026-06-01T00:00:00+00:00",
+    "sha256": "a4199e8942d68af360936fd9e7f42a61fd878c488606b79da11732f951b7ad96",
+    "bytes": 1384278
+  },
+  {
+    "path": "mag-20260501-20260601.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_mag_P1M&parameters=B_y%2CB_z%2CB_t&time.min=2026-05-01T00%3A00%3A00%2B00%3A00&time.max=2026-06-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "B_y",
+      "B_z",
+      "B_t"
+    ],
+    "retrievedAt": "2026-09-19T19:54:15.715831+00:00",
+    "start": "2026-05-01T00:00:00+00:00",
+    "stopExclusive": "2026-06-01T00:00:00+00:00",
+    "sha256": "8be27f35632707b55b3bf02b4b74c75dd1277868fd1ad66b195b4c07c7a23375",
+    "bytes": 1592381
+  },
+  {
+    "path": "particles-20260601-20260701.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CE2_0%2CsatelliteElectron%2CsatelliteProton&time.min=2026-06-01T00%3A00%3A00%2B00%3A00&time.max=2026-07-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "P10",
+      "E2_0",
+      "satelliteElectron",
+      "satelliteProton"
+    ],
+    "retrievedAt": "2026-09-19T19:54:15.473195+00:00",
+    "start": "2026-06-01T00:00:00+00:00",
+    "stopExclusive": "2026-07-01T00:00:00+00:00",
+    "sha256": "fadc22016f1efe5305d371af400d1534d1ba4fce6b43e379e2af88ae0650f9e3",
+    "bytes": 644327
+  },
+  {
+    "path": "plasma-20260601-20260701.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_plasma_P1M&parameters=ProtonDensity%2CBulkSpeed&time.min=2026-06-01T00%3A00%3A00%2B00%3A00&time.max=2026-07-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "ProtonDensity",
+      "BulkSpeed"
+    ],
+    "retrievedAt": "2026-09-19T19:54:17.322294+00:00",
+    "start": "2026-06-01T00:00:00+00:00",
+    "stopExclusive": "2026-07-01T00:00:00+00:00",
+    "sha256": "240fa9c132c1b2ac36a5877a7ad68b66c38d1e263baa2fb86928bcc22c097654",
+    "bytes": 1338643
+  },
+  {
+    "path": "mag-20260601-20260701.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_mag_P1M&parameters=B_y%2CB_z%2CB_t&time.min=2026-06-01T00%3A00%3A00%2B00%3A00&time.max=2026-07-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "B_y",
+      "B_z",
+      "B_t"
+    ],
+    "retrievedAt": "2026-09-19T19:54:17.486744+00:00",
+    "start": "2026-06-01T00:00:00+00:00",
+    "stopExclusive": "2026-07-01T00:00:00+00:00",
+    "sha256": "54971199546b734aaebb2fbaccfc599d302b386dd6f0804fca6d6384b0a5b5ab",
+    "bytes": 1559977
+  },
+  {
+    "path": "particles-20260701-20260801.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CE2_0%2CsatelliteElectron%2CsatelliteProton&time.min=2026-07-01T00%3A00%3A00%2B00%3A00&time.max=2026-08-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "P10",
+      "E2_0",
+      "satelliteElectron",
+      "satelliteProton"
+    ],
+    "retrievedAt": "2026-09-19T19:54:16.903814+00:00",
+    "start": "2026-07-01T00:00:00+00:00",
+    "stopExclusive": "2026-08-01T00:00:00+00:00",
+    "sha256": "8673ff27ec46133bf0a7ee30196730d22343c21e92d50c61b46c2e97b094e730",
+    "bytes": 664866
+  },
+  {
+    "path": "plasma-20260701-20260801.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_plasma_P1M&parameters=ProtonDensity%2CBulkSpeed&time.min=2026-07-01T00%3A00%3A00%2B00%3A00&time.max=2026-08-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "ProtonDensity",
+      "BulkSpeed"
+    ],
+    "retrievedAt": "2026-09-19T19:54:18.827217+00:00",
+    "start": "2026-07-01T00:00:00+00:00",
+    "stopExclusive": "2026-08-01T00:00:00+00:00",
+    "sha256": "72ec7f8ec1eb33b18ea12355f6214fd3421657773ce22de5f2feffab56ad7c2e",
+    "bytes": 1388935
+  },
+  {
+    "path": "mag-20260701-20260801.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_mag_P1M&parameters=B_y%2CB_z%2CB_t&time.min=2026-07-01T00%3A00%3A00%2B00%3A00&time.max=2026-08-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "B_y",
+      "B_z",
+      "B_t"
+    ],
+    "retrievedAt": "2026-09-19T19:54:19.733438+00:00",
+    "start": "2026-07-01T00:00:00+00:00",
+    "stopExclusive": "2026-08-01T00:00:00+00:00",
+    "sha256": "b00b8959df0360f153c1d7a71e641803d1b9b8f4c10bf02c9dbe9f4de4741d14",
+    "bytes": 1623948
+  },
+  {
+    "path": "particles-20260801-20260901.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CE2_0%2CsatelliteElectron%2CsatelliteProton&time.min=2026-08-01T00%3A00%3A00%2B00%3A00&time.max=2026-09-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "P10",
+      "E2_0",
+      "satelliteElectron",
+      "satelliteProton"
+    ],
+    "retrievedAt": "2026-09-19T19:54:18.654380+00:00",
+    "start": "2026-08-01T00:00:00+00:00",
+    "stopExclusive": "2026-09-01T00:00:00+00:00",
+    "sha256": "0e13846b9bf6647d22ab2d12fc6ac021bce9a295ca60ec258dd30393c090284c",
+    "bytes": 664688
+  },
+  {
+    "path": "plasma-20260801-20260901.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_plasma_P1M&parameters=ProtonDensity%2CBulkSpeed&time.min=2026-08-01T00%3A00%3A00%2B00%3A00&time.max=2026-09-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "ProtonDensity",
+      "BulkSpeed"
+    ],
+    "retrievedAt": "2026-09-19T19:54:20.468742+00:00",
+    "start": "2026-08-01T00:00:00+00:00",
+    "stopExclusive": "2026-09-01T00:00:00+00:00",
+    "sha256": "72e8b55b83b16f901e7bb821ffa01a20590fe1eb7293fe476163f149f47a926a",
+    "bytes": 1336263
+  },
+  {
+    "path": "mag-20260801-20260901.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_mag_P1M&parameters=B_y%2CB_z%2CB_t&time.min=2026-08-01T00%3A00%3A00%2B00%3A00&time.max=2026-09-01T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "B_y",
+      "B_z",
+      "B_t"
+    ],
+    "retrievedAt": "2026-09-19T19:54:20.868209+00:00",
+    "start": "2026-08-01T00:00:00+00:00",
+    "stopExclusive": "2026-09-01T00:00:00+00:00",
+    "sha256": "f6ffccbacf0dfad07be2abdd64ad9c9744bf08120de2478c72eb5252c97deac6",
+    "bytes": 1631679
+  },
+  {
+    "path": "particles-20260901-20260920.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CE2_0%2CsatelliteElectron%2CsatelliteProton&time.min=2026-09-01T00%3A00%3A00%2B00%3A00&time.max=2026-09-20T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "P10",
+      "E2_0",
+      "satelliteElectron",
+      "satelliteProton"
+    ],
+    "retrievedAt": "2026-09-19T19:54:20.644127+00:00",
+    "start": "2026-09-01T00:00:00+00:00",
+    "stopExclusive": "2026-09-20T00:00:00+00:00",
+    "sha256": "62a60458fdda7f4beac7396227df496f399f5d290b7d587d805fbfaecea9ab27",
+    "bytes": 399880
+  },
+  {
+    "path": "plasma-20260901-20260920.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_plasma_P1M&parameters=ProtonDensity%2CBulkSpeed&time.min=2026-09-01T00%3A00%3A00%2B00%3A00&time.max=2026-09-20T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "ProtonDensity",
+      "BulkSpeed"
+    ],
+    "retrievedAt": "2026-09-19T19:54:21.966935+00:00",
+    "start": "2026-09-01T00:00:00+00:00",
+    "stopExclusive": "2026-09-20T00:00:00+00:00",
+    "sha256": "dbca256ff54a10117ab0cdef5994753b5dc6ba5b70cd2c63a67f697a4d7b9cef",
+    "bytes": 833527
+  },
+  {
+    "path": "mag-20260901-20260920.csv",
+    "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=swpc_rtsw_mag_P1M&parameters=B_y%2CB_z%2CB_t&time.min=2026-09-01T00%3A00%3A00%2B00%3A00&time.max=2026-09-20T00%3A00%3A00%2B00%3A00&format=csv",
+    "parameters": [
+      "B_y",
+      "B_z",
+      "B_t"
+    ],
+    "retrievedAt": "2026-09-19T19:54:22.129035+00:00",
+    "start": "2026-09-01T00:00:00+00:00",
+    "stopExclusive": "2026-09-20T00:00:00+00:00",
+    "sha256": "b9058870bea4ddb070fa6ca0350be055ae1724004ff6af4570da319fe3e68404",
+    "bytes": 978975
+  }
+]

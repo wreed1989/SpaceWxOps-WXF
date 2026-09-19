@@ -13,3 +13,6 @@ chhss-data/backfill/**/*.zip
 chhss-data/backfill/**/history/
 *.fits
 *.fits.gz
+
+.electron-cache/
+.electron-current/

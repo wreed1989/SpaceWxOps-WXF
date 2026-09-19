@@ -1,0 +1,196 @@
+{
+  "originCount": 456,
+  "distinctDates": 67,
+  "metrics": {
+    "WXF": {
+      "6": {
+        "mae": 3091600.8312348397,
+        "rmsle": 0.08025893611339648
+      },
+      "12": {
+        "mae": 7126196.9374319725,
+        "rmsle": 0.17020867155283864
+      },
+      "24": {
+        "mae": 16733639.113752045,
+        "rmsle": 0.38161826598617576
+      }
+    },
+    "diurnalPersistence": {
+      "6": {
+        "mae": 3271292.5172517537,
+        "rmsle": 0.0877726264740522
+      },
+      "12": {
+        "mae": 7430724.957917042,
+        "rmsle": 0.19720099506232658
+      },
+      "24": {
+        "mae": 18102280.705093756,
+        "rmsle": 0.45039902804052
+      }
+    },
+    "persistence": {
+      "6": {
+        "mae": 3789661.0739535405,
+        "rmsle": 0.10005460859011345
+      },
+      "12": {
+        "mae": 10322668.249212127,
+        "rmsle": 0.25060267234644606
+      },
+      "24": {
+        "mae": 20890058.62470081,
+        "rmsle": 0.5040846501753419
+      }
+    }
+  },
+  "nominalBand": 0.9,
+  "coverage": {
+    "6": 0.9122807017543859,
+    "12": 0.9166666666666666,
+    "24": 0.9473684210526315
+  },
+  "thresholds": {
+    "moderate": {
+      "value": 110000000.0,
+      "dailyOrigins": 67,
+      "exceedanceCount": 7,
+      "nonExceedanceCount": 60,
+      "brier": 0.04270507740100969,
+      "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+    },
+    "severe": {
+      "value": 480000000.0,
+      "dailyOrigins": 67,
+      "exceedanceCount": 0,
+      "nonExceedanceCount": 67,
+      "brier": 0.00011718366985772946,
+      "note": "Once-per-day sample; consecutive storm days remain correlated. Not failure probabilities."
+    }
+  },
+  "electronOnlyAblation": {
+    "6": {
+      "mae": 3240641.3518960495,
+      "rmsle": 0.08487121793196334
+    },
+    "12": {
+      "mae": 7703881.622403781,
+      "rmsle": 0.1882672910013495
+    },
+    "24": {
+      "mae": 17631782.462900575,
+      "rmsle": 0.4120540700871405
+    }
+  },
+  "schemaVersion": "WXF-EF-0.1",
+  "splits": {
+    "trainStart": "2025-04-14",
+    "trainStop": "2026-03-01",
+    "calibrationStart": "2026-03-01",
+    "calibrationStop": "2026-06-01",
+    "testStart": "2026-06-01",
+    "testStop": "2026-09-01"
+  },
+  "quality": {
+    "rawSamples": 152794,
+    "acceptedSamples": 149100,
+    "otherElectronSpacecraft": 1152,
+    "highProtonSamples": 2468,
+    "missingProtonSamples": 80,
+    "completeElectronHours": 12324,
+    "hourCount": 12740,
+    "firstHourEnd": "2025-04-07T01:00:00+00:00",
+    "lastHourEnd": "2026-09-19T20:00:00+00:00"
+  },
+  "partitionCounts": {
+    "train": 1395,
+    "calibration": 590,
+    "test": 456
+  },
+  "calibrationPaths": 79,
+  "rejections": {
+    "Incomplete target or proton-contaminated target": 358,
+    "Incomplete preceding 24 hours": 680,
+    "Solar-wind-history gap": 536,
+    "Electron-history gap": 31,
+    "Insufficient diurnal-profile coverage": 93
+  },
+  "featureNames": [
+    "level",
+    "level_1h",
+    "std_1h",
+    "level_3h",
+    "std_3h",
+    "level_6h",
+    "std_6h",
+    "level_12h",
+    "std_12h",
+    "level_24h",
+    "std_24h",
+    "level_48h",
+    "std_48h",
+    "level_72h",
+    "std_72h",
+    "change_3h",
+    "change_6h",
+    "change_12h",
+    "change_24h",
+    "change_48h",
+    "diurnal_0",
+    "diurnal_1",
+    "diurnal_2",
+    "diurnal_3",
+    "speed_3h",
+    "speed_12h",
+    "speed_24h",
+    "speed_48h",
+    "speed_72h",
+    "speed_change",
+    "density_3h",
+    "density_12h",
+    "density_24h",
+    "density_48h",
+    "density_72h",
+    "density_change",
+    "bt_3h",
+    "bt_12h",
+    "bt_24h",
+    "bt_48h",
+    "bt_72h",
+    "bt_change",
+    "bz_3h",
+    "bz_12h",
+    "bz_24h",
+    "bz_48h",
+    "bz_72h",
+    "bz_change",
+    "southward_3h",
+    "southward_12h",
+    "southward_24h",
+    "southward_48h",
+    "southward_72h",
+    "southward_change",
+    "pressure_3h",
+    "pressure_12h",
+    "pressure_24h",
+    "pressure_48h",
+    "pressure_72h",
+    "pressure_change",
+    "coupling_3h",
+    "coupling_12h",
+    "coupling_24h",
+    "coupling_48h",
+    "coupling_72h",
+    "coupling_change"
+  ],
+  "forecastHorizonHours": 24,
+  "thresholdsMeaning": "Office internal-charging exposure criteria; not satellite failure probabilities",
+  "verification": "Retrospective archive evaluation. Input receipt times and forecast revisions are not available. Forward shadow verification required.",
+  "releaseGate": {
+    "beatsDiurnalAt24hMAE": true,
+    "beatsDiurnalAt24hRMSLE": true,
+    "coverageWithinFivePoints": true,
+    "forwardVerified": false
+  }
+}

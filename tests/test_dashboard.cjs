@@ -233,3 +233,55 @@ assert.equal(north.customdata[90][90][0],90);
 assert.equal(south.customdata[90][90][0],-90);
 assert.equal(dose.valid({...fullGrid,unit:'µSv/h'}),false);
 console.log('Adaptive-card, raw proton and NAIRAS contracts passed');
+
+// Alert edits use the same live rule object for Monitor and model plots.
+const configured={proton:{yellow:10,red:40,purple:1000},proton50:{red:10},electron:{yellow:1.1e8,red:4.8e8}};
+const styleContext=vm.createContext({window:{},state:{rules:configured},isLightTheme:()=>false,readableThresholdColor:c=>c});
+for(const name of ['transparentize','alertLevelFromRule','particleThresholds','particleAlertColor','particleThresholdOverlay']){
+  vm.runInContext(html.match(new RegExp('      function '+name+'\\([^]*?\\n      \\}'))[0],styleContext);
+}
+products.window.SpaceWxAlertStyle={thresholds:styleContext.particleThresholds,color:styleContext.particleAlertColor,overlay:styleContext.particleThresholdOverlay};
+let styled=particles.protonChart({goesProtons:{payload:protonInput}},24,Date.parse('2026-09-19T06:00Z'));
+assert.ok(styled.layout.shapes.some(s=>s.yref==='y'&&s.y0===40&&s.type==='line'));
+assert.ok(styled.layout.shapes.some(s=>s.yref==='y2'&&s.y0===10&&s.type==='line'));
+assert.ok(!styled.layout.shapes.some(s=>s.yref==='y2'&&s.y0===40));
+configured.proton.yellow=25;configured.proton50.red=5;configured.electron.yellow=8e7;
+styled=particles.protonChart({goesProtons:{payload:protonInput}},24,Date.parse('2026-09-19T06:00Z'));
+assert.ok(styled.layout.shapes.some(s=>s.yref==='y'&&s.y0===25));
+assert.ok(styled.layout.shapes.some(s=>s.yref==='y2'&&s.y0===5));
+let refmChart=particles.refmChart(refm);
+assert.equal(refmChart.traces[1].marker.color[0],'#facc15');
+assert.equal(refmChart.traces[1].y[1],null);
+assert.ok(refmChart.layout.annotations.some(a=>a.y===Math.log10(8e7)));
+configured.electron.yellow=2e8;
+refmChart=particles.refmChart(refm);
+assert.equal(refmChart.traces[1].marker.color[0],'#38bdf8');
+assert.ok(refmChart.layout.shapes.some(s=>s.y0===2e8));
+assert.equal(styleContext.particleAlertColor('proton50',5),'#ef4444');
+configured.proton.red=20; // Existing settings allow arbitrary threshold ordering.
+assert.equal(styleContext.particleThresholdOverlay('proton',200).shapes.find(s=>s.type==='rect'&&s.y0===25).fillcolor,'rgba(239,68,68,0.065)');
+assert.doesNotMatch(desk,/Alternate Panel|"ALT"/);
+
+// Each independent catalog panel can render without activating the legacy tab.
+const renderCalls=[];
+const renderContext=vm.createContext({currentValues:()=>({live:true}),renderShiftSolarWind:v=>renderCalls.push(['wind',v.live])});
+for(const suffix of ['Xray','Proton','Epam','ElectronFlux','ElectronFluence','Ap','Timeline'])renderContext['renderShift'+suffix]=()=>renderCalls.push([suffix]);
+vm.runInContext(html.match(/      function renderCatalogObservations\(keys\) \{[\s\S]*?\n      \}/)[0],renderContext);
+renderContext.renderCatalogObservations(['brief.imf','brief.speed','brief.density','brief.xray','brief.proton','brief.epam','brief.electron-flux']);
+assert.deepEqual(renderCalls,[['wind',true],['Xray'],['Proton'],['Epam'],['ElectronFlux']]);
+
+// Wheel events over a plot move the page; modifier gestures remain untouched.
+const scrollArea={scrollTop:500,clientHeight:800};let prevented=0,stopped=0;
+const wheelContext=vm.createContext({stage:{closest:()=>scrollArea}});
+vm.runInContext(desk.match(/  function scrollMonitorPage\(event\) \{[\s\S]*?\n  \}/)[0],wheelContext);
+const wheel={target:{closest:()=>true},deltaY:-100,deltaMode:0,preventDefault:()=>prevented++,stopPropagation:()=>stopped++};
+wheelContext.scrollMonitorPage(wheel);assert.equal(scrollArea.scrollTop,400);
+wheelContext.scrollMonitorPage({...wheel,deltaY:2,deltaMode:1});assert.equal(scrollArea.scrollTop,432);
+wheelContext.scrollMonitorPage({...wheel,deltaY:1,deltaMode:2});assert.equal(scrollArea.scrollTop,1232);
+for(const modifier of ['ctrlKey','metaKey','shiftKey'])wheelContext.scrollMonitorPage({...wheel,[modifier]:true});
+wheelContext.scrollMonitorPage({...wheel,target:{closest:()=>false}});
+assert.equal(scrollArea.scrollTop,1232);assert.equal(prevented,3);assert.equal(stopped,3);
+vm.runInContext(scripts.find(([,a])=>a.includes('id="productFlow"'))[2],products);
+assert.equal(products.window.SpaceWxProductFlow.rowsForContent(54,600,30),54);
+assert.equal(products.window.SpaceWxProductFlow.rowsForContent(54,1400,30),120);
+console.log('Live alert rules, independent catalog rendering, wheel routing and disclosure layout passed');

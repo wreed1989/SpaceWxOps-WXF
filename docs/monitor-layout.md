@@ -29,3 +29,12 @@ to fill gaps. Different-height neighboring cards can therefore leave whitespace.
 records a named snapshot. The catalog and picker do not impose a twelve-card cap.
 Each product retains its own observation or forecast dates; Monitor has no shared
 forecast-time slider or model-run queue.
+
+Scroll up or down over any Monitor plot to move the page. Plot hover and drag
+interactions remain available. Expanding the notes or numerical details for SEP,
+electrons or radiation dose adds room below the chart and grows the page. Closing
+the details restores your chosen card height; the temporary expansion is not saved
+as a resize. The same disclosures flow below the charts in Model.
+
+All catalog observation panels render and refresh independently, including the
+panels formerly labelled Alternate Panel. Those labels and ALT badges are removed.

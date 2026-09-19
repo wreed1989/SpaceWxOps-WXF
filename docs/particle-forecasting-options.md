@@ -79,3 +79,20 @@ Archive forward-issued predictions with their original issue times before
 measuring skill. Assess event detection, false alarms, timing and flux/fluence
 errors by energy threshold and lead time. Avoid deriving confidence from the
 number of agreeing models or blending them without validation.
+
+## Shared alert styling
+
+Monitor and Model use the current **Alert Settings** for ≥10 MeV protons, ≥50 MeV
+protons and >2 MeV 24-hour electron fluence. Yellow, red and purple bands and
+labelled dashed threshold lines update immediately after editing or resetting the
+rules. Electron forecast markers and summary values also use the configured level;
+proton peak markers use their own energy-channel rule. Missing predictions remain
+missing. These visual classifications do not issue observed-event alarms.
+
+REFM uses daily fluence (electrons cm⁻² sr⁻¹ per 24 hours), so its thresholds come
+from **Electron Fluence**, not the instantaneous >2 MeV flux alert. Monitor uses
+a rolling 24-hour integration; REFM values cover UTC days. The
+[SWPC model description](https://www.spaceweather.gov/products/relativistic-electron-forecast-model)
+explains this distinction. UMASEP's provider-defined event threshold remains a
+separate dotted line over its published validity window; user settings do not
+change or reinterpret the provider's all-clear statement.

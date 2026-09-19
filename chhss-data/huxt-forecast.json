@@ -1,13 +1,13 @@
 {
   "schemaVersion": "wxf-huxt-1",
-  "issuedAt": "2026-09-19T21:33:41.927086+00:00",
+  "issuedAt": "2026-09-19T21:59:27.706064+00:00",
   "status": "experimental",
   "model": "HUXt 5.0.3",
   "upstreamCommit": "4d5b60bedb4b30ad140a8ea4972c4f5396c687ff",
   "source": {
     "url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/wsa_enlil/prod/wsa_enlil.20260919/wsa_enlil.mrid00000000.inputs.tar.gz",
     "sha256": "e4d483f5443c4db1c6971162df711694c939a98ccb2bc9f1ea56e44717cb4cb5",
-    "retrievedAt": "2026-09-19T21:33:42.670490+00:00",
+    "retrievedAt": "2026-09-19T21:59:28.106701+00:00",
     "path": "/home/runner/work/SpaceWxOps-WXF/SpaceWxOps-WXF/product/huxt-evidence/swpc-ambient-inputs.tar.gz"
   },
   "boundary": {
@@ -23,7 +23,7 @@
   "cmeSource": {
     "url": "https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/CMEAnalysis?startDate=2026-09-11&endDate=2026-09-19&mostAccurateOnly=true&catalog=M2M_CATALOG&feature=LE",
     "sha256": "e3e61c50eed440289582d57a4fd7c4c90fe1322a3a3d47386d674e8c20050f94",
-    "retrievedAt": "2026-09-19T21:33:43.168368+00:00"
+    "retrievedAt": "2026-09-19T21:59:28.357003+00:00"
   },
   "cmeInputs": [
     {
@@ -81,12 +81,6 @@
   "forecastHours": 120,
   "units": "km/s",
   "rows": [
-    {
-      "time": "2026-09-18T21:56:15.000977+00:00",
-      "ambientSpeed": 631.5227723558908,
-      "cmeSpeed": 631.5227723558908,
-      "phase": "reconstruction"
-    },
     {
       "time": "2026-09-18T22:19:26.400977+00:00",
       "ambientSpeed": 630.7399869472854,
@@ -457,7 +451,7 @@
       "time": "2026-09-19T21:54:01.800977+00:00",
       "ambientSpeed": 564.943862838456,
       "cmeSpeed": 564.943862838456,
-      "phase": "forecast"
+      "phase": "reconstruction"
     },
     {
       "time": "2026-09-19T22:17:13.200977+00:00",

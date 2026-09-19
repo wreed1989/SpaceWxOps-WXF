@@ -516,3 +516,28 @@ assert.equal(rulesContext.loadRules().electron.red,9e8);
 
 assert.equal(refmChart.layout.yaxis.tickformat,'.1e');
 assert.equal(styleContext.riskContributorThreshold('electron_fluence',4.8e8),4.8e8);
+{
+// Header health and NOAA badges must reflect evidence, including a genuine zero.
+const headerSource=fs.readFileSync('web/header-status.js','utf8');
+assert.equal(scripts.find(([,a])=>a.includes('id="headerStatus"'))[2].trim(),headerSource.trim());
+const headerContext=vm.createContext({window:{},document:{querySelector:()=>null,getElementById:()=>null}});
+vm.runInContext(headerSource,headerContext);const health=headerContext.window.SpaceWxHeaderStatus;
+const now=Date.parse('2026-09-19T22:00Z'), scale={'0':{DateStamp:'2026-09-19',TimeStamp:'21:59:00',R:{Scale:'0'},S:{Scale:null},G:{Scale:'1'}},'1':{R:{Scale:'5'}}};
+assert.equal(health.parseScales(scale,now).levels.R,0);assert.equal(health.parseScales(scale,now).levels.S,null);assert.equal(health.parseScales(scale,now).levels.G,1);
+assert.equal(health.parseScales(scale,now+3600000).levels.G,null);
+health.report('test','A <feed>',false,'HTTP 503');assert.equal(health.snapshot().issues[0].detail,'HTTP 503');health.report('test','A <feed>',true);assert.equal(health.snapshot().issues.length,0);
+health.setCore({},[{key:'flareGuidance',label:'WXF',ok:true,detail:'Loaded embedded fallback'}]);assert.equal(health.snapshot().issues.length,1);
+assert.doesNotMatch(html,/fdModelHealth|fdModelDot/);
+// Diagram axes must include the actual observed X-class frequency, not clip at 2%.
+const reliability=desk.match(/  function wxfReliabilityPlot\([\s\S]*?\n  \}/)[0];
+const rel=vm.createContext({esc:String,clamp:(v,a,b)=>Math.max(a,Math.min(b,v)),wxfCalibrationErrors:()=>({ece:0})});vm.runInContext(reliability,rel);
+assert.match(rel.wxfReliabilityPlot('X1+',{reliability:[{mean_forecast:.01,observed_frequency:.08,count:20}]}),/>10%<\/text>/);
+console.log('Live header and flare reliability display contracts passed');
+
+}
+{
+const mainScript=scripts.find(([,a,s])=>s.includes('function currentSwpcFlareProbabilities()'))[2];
+const swpcFunctions=['parse3DayForecast','currentSwpcFlareProbabilities'].map(name=>mainScript.match(new RegExp('      function '+name+'\\([^]*?\\n      \\}'))[0]).join('\n');
+const t=vm.createContext({state:{data:{forecast:':Prediction_dates: 2026 Sep 20 2026 Sep 21 2026 Sep 22\nClass_M 15 20 25\nClass_X 1 2 3\n'}},toNumber:v=>v==null?NaN:Number(v)});vm.runInContext(swpcFunctions,t);
+assert.equal(t.currentSwpcFlareProbabilities().validStart,'2026-09-20T00:00:00.000Z');assert.equal(t.currentSwpcFlareProbabilities().validEnd,'2026-09-21T00:00:00.000Z');
+}

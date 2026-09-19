@@ -27,7 +27,68 @@
     }
   </style>
   <!-- Heliospheric renderer revision 2.2.0; all assets inline. -->
-  <script id="spaceWxHeliosphereEngine">
+  <script id="headerStatus">
+(()=>{
+  'use strict';
+  const entries=new Map(), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const labels={R:'Radio blackouts',S:'Solar radiation storms',G:'Geomagnetic storms'};
+  let coreStarted=false,scales=null;
+  function parseScales(raw,now=Date.now()){
+    const row=raw?.['0'],time=Date.parse(`${row?.DateStamp}T${row?.TimeStamp}Z`);
+    const fresh=Number.isFinite(time)&&now-time<=15*60000&&time<=now+5*60000;
+    return {time,fresh,levels:Object.fromEntries(Object.keys(labels).map(k=>{
+      const v=row?.[k]?.Scale, n=v===null||v===undefined||v===''?NaN:Number(v);
+      return [k,fresh&&Number.isInteger(n)&&n>=0&&n<=5?n:null];
+    }))};
+  }
+  function report(key,label,ok,detail='',extra={}){
+    entries.set(key,{key,label,ok,detail,checkedAt:new Date().toISOString(),...extra});render();
+  }
+  function setCore(data,rows){
+    coreStarted=true;if(data?.noaaScales)scales=data.noaaScales;
+    for(const row of rows){
+      const paused=['radioBursts','detOutages'].includes(row.key)&&/paused/i.test(row.detail||'');
+      const degraded=/unavailable|not connected|fallback|preserving|retained|expired/i.test(row.detail||'');
+      entries.set(row.key,{key:row.key,label:row.label,ok:paused?'off':row.ok===undefined?'pending':row.ok&&!degraded,detail:row.detail||'Waiting for first response',checkedAt:row.time});
+    }
+    const flare=data?.flareGuidance;
+    if(flare){
+      const end=Date.parse(flare.valid_end),start=Date.parse(flare.valid_start),issued=Date.parse(flare.issued);
+      const expired=!Number.isFinite(end)||Date.now()>=end||!Number.isFinite(issued)||issued>Date.now()+300000;
+      if(expired||flare.generation_status?.used_previous_forecast)report('flareGuidance','WXF flare publication',false,expired?`Forecast expired or has invalid dates (valid through ${flare.valid_end||'unknown'}).`:flare.generation_status.detail);
+      else if(Number.isFinite(start)&&start>Date.now()+86400000)report('flareGuidance','WXF flare publication',false,'Forecast window is more than one day ahead; no current cycle received.');
+    }
+    render();
+  }
+  function snapshot(now=Date.now()){
+    const rows=[...entries.values()].map(r=>r.ok===true&&now-Date.parse(r.checkedAt)>35*60000?{...r,ok:false,detail:'No successful check in the last 35 minutes.'}:r);
+    if(scales){const s=parseScales(scales,now);if(!s.fresh||Object.values(s.levels).some(v=>v===null)){const i=rows.findIndex(r=>r.key==='noaaScales');const bad={key:'noaaScales',label:'NOAA R/S/G scales',ok:false,detail:'Reported scales are missing, invalid or older than 15 minutes.'};if(i<0)rows.push(bad);else rows[i]={...rows[i],...bad};}}
+    return {issues:rows.filter(r=>r.ok===false),pending:rows.filter(r=>r.ok==='pending'),off:rows.filter(r=>r.ok==='off'),checked:rows.filter(r=>r.ok===true).length,started:coreStarted};
+  }
+  function render(){
+    if(typeof document==='undefined')return;
+    const scale=parseScales(scales),s=snapshot();
+    for(const k of Object.keys(labels)){
+      const el=document.querySelector(`[data-noaa-scale="${k}"]`);if(!el)continue;
+      const n=scale.levels[k];el.querySelector('strong').textContent=n===null?'—':n;
+      el.dataset.state=n===null?'unknown':n>=3?'alert':n>0?'watch':'quiet';
+      el.title=`${labels[k]}: ${n===null?'current reading unavailable':n===0?'below NOAA storm threshold':'NOAA level '+n}`;
+    }
+    const scaleTime=document.getElementById('fdScaleTime');if(scaleTime)scaleTime.textContent=scale.fresh?'NOAA reported conditions · '+new Date(scale.time).toISOString().replace('T',' ').slice(0,16)+' UTC':'Current NOAA scales unavailable or older than 15 minutes.';
+    const box=document.getElementById('fdFeedDropdown'),label=document.getElementById('fdFeedHealth'),list=document.getElementById('fdFeedIssues');
+    if(!box||!label||!list)return;
+    label.textContent=s.issues.length?`Feeds: ${s.issues.length} issue${s.issues.length===1?'':'s'}`:s.pending.length||!s.started?'Feeds: Checking':'Feeds: Ok';
+    box.dataset.state=s.issues.length?'issue':s.pending.length||!s.started?'pending':'ok';
+    const rows=[...s.issues,...s.pending];
+    const markup=rows.map(r=>`<li><strong>${esc(r.label)}</strong><span>${esc(r.detail)}</span>${r.checkedAt?'<small>Checked '+esc(new Date(r.checkedAt).toISOString().replace('T',' ').slice(0,19))+' UTC</small>':''}</li>`).join('');
+    const text=`<p>${s.checked} responding feeds${s.off.length?' · '+s.off.length+' disabled authenticated feeds':''}. Status covers core feeds and products opened in this session.</p>`+(rows.length?'<ul>'+markup+'</ul>':'<p>No reported feed failures.</p>');
+    if(list.innerHTML!==text)list.innerHTML=text;
+  }
+  window.SpaceWxHeaderStatus={report,setCore,parseScales,snapshot,render};
+})();
+
+</script>
+<script id="spaceWxHeliosphereEngine">
 /* SpaceWxOps 2.2 — environment-aware heliospheric awareness scene.
    Original application, feeds and products remain authoritative.
    This is NOT an MHD solver, an aurora forecast, a CME detection system,
@@ -7960,6 +8021,14 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
 @media(max-width:760px){.hsv-toolbar{padding:5px 7px}.hsv-controls{gap:4px}.hsv-controls label{font-size:8px}.hsv-controls select{max-width:120px}.hsv-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}.hsv-metrics > div{padding:5px 7px}.hsv-metrics span{font-size:7px}.hsv-metrics b{font-size:12px}.hsv-metrics > div:nth-child(-n+3){border-bottom:1px solid #132937}.hsv-preview{font-size:7px;white-space:normal;width:max-content;max-width:92%}.hsv-scene{min-height:315px;}}
 
 </style>
+<style id="headerStatusStyle">
+.fd-scale-help,.fd-health-row{position:relative}.fd-scale-help>summary,.fd-health-row>summary{cursor:pointer;list-style:none}.fd-scale-help>summary::-webkit-details-marker,.fd-health-row>summary::-webkit-details-marker{display:none}
+.fd-health-row>summary{display:flex;align-items:center;gap:6px;font-size:10px}.fd-health-row[data-state="issue"] summary{color:#ffc376}.fd-health-row[data-state="issue"] i{background:#ffb05b}.fd-health-row[data-state="pending"] i{background:#7b91a3}
+.fd-header-popover{position:absolute;right:0;top:calc(100% + 10px);z-index:10000;width:min(380px,85vw);max-height:65vh;overflow:auto;padding:16px;border:1px solid #365267;border-radius:10px;background:#0e2030;color:#c6dce9;box-shadow:0 15px 45px #0009;font:12px/1.5 system-ui;text-align:left;text-transform:none;letter-spacing:normal}.fd-header-popover p{margin:8px 0}.fd-header-popover ul{list-style:none;padding:0;margin:0}.fd-header-popover li{padding:10px 0;border-top:1px solid #294052}.fd-header-popover li span,.fd-header-popover small{display:block;color:#9bb6c9;overflow-wrap:anywhere}.fd-header-popover a{color:#8fd6f1}.fd-hazard[data-state="unknown"]{opacity:.65}.fd-hazard[data-state="alert"]{color:#ff8991;background:#50232b;border-color:#ac515e}
+</style>
+<style id="flareVerificationStyle">
+.fd-verification-simple{padding-bottom:12px}.fd-verification-simple>p,.fd-verification-simple>small{margin:10px 16px;font-size:12px;line-height:1.6;color:#a9c1d0}.fd-verification-simple .fd-wxf-audit-head h4{font-size:17px}.fd-verification-simple .fd-wxf-audit-head p{font-size:12px;line-height:1.6}.fd-verification-simple>.fd-wxf-metric-table{width:calc(100% - 32px);margin:8px 16px;font-size:12px}.fd-verification-simple>.fd-wxf-metric-table th,.fd-verification-simple>.fd-wxf-metric-table td{padding:10px;text-align:left;font-size:12px}.fd-verification-info{margin:8px 16px;border-top:1px solid #294352;padding-top:9px;font-size:12px;line-height:1.6}.fd-verification-info>summary{cursor:pointer;color:#bce0f0;list-style:none}.fd-verification-info>summary::-webkit-details-marker{display:none}.fd-verification-info>summary:after{content:' +';float:right}.fd-verification-info[open]>summary:after{content:' −'}.fd-info-symbol{display:inline-grid;place-items:center;width:17px;height:17px;border:1px solid #709bb2;border-radius:50%;margin-right:6px;font-size:11px}.fd-verification-warning{color:#ffcc8a!important}.fd-verification-simple .fd-wxf-reliability-plot strong{font-size:12px}.fd-verification-simple .fd-wxf-reliability-plot small{font-size:10px}
+</style>
 </head>
 <body data-spacewxops-shell="custom-operations-wall">
   <main class="app">
@@ -8576,7 +8645,7 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
       </div>
       <div class="modal-body">
         <div class="flare-guidance-info-copy" id="flareGuidanceInfoDescription">
-          <p class="flare-guidance-info-lead">This is an <strong>experimental flare-probability ensemble and verification tool.</strong> It estimates the chance that each numbered active region—and the full visible disk—will produce at least one <strong>M1.0-or-greater</strong> or <strong>X1.0-or-greater</strong> flare during the next 24 hours.</p>
+          <p class="flare-guidance-info-lead">This is an <strong>experimental flare-probability ensemble and verification tool.</strong> It estimates the chance that each numbered active region—and the full visible disk—will produce at least one <strong>M1.0-or-greater</strong> or <strong>X1.0-or-greater</strong> flare in the displayed valid window. WXF targets the next UTC calendar day, 00–24 UTC, from its 21 UTC issue; other providers retain their own windows.</p>
           <p>“M1+” includes both M- and X-class flares. “X1+” includes only X1.0 or greater.</p>
           <div class="flare-guidance-info-table-wrap">
             <table class="flare-guidance-info-table">
@@ -10214,7 +10283,7 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
           if (!member || typeof member !== "object") return false;
           const m1 = Number(member.m1 ?? member.m ?? member.m1_plus);
           const x1 = Number(member.x1 ?? member.x ?? member.x1_plus);
-          return Number.isFinite(m1) || Number.isFinite(x1);
+          return (member.m1 ?? member.m ?? member.m1_plus) != null && Number.isFinite(m1) || (member.x1 ?? member.x ?? member.x1_plus) != null && Number.isFinite(x1);
         });
       }
 
@@ -11721,10 +11790,16 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
         els.healthText.textContent = "Feeds pending";
         els.healthDot.className = "health-dot pending";
         els.refreshButton.disabled = true;
+        window.SpaceWxHeaderStatus?.setCore(state.data,Object.keys(FEEDS).map(key=>({key,label:feedLabel(key),...state.health[key]})));
 
         const entries = Object.entries(FEEDS);
         const settled = await Promise.all(entries.map(async ([key, url]) => {
           const item = await fetchFeed(key, url);
+          window.SpaceWxHeaderStatus?.setCore({...state.data,[key]:item.data},Object.keys(FEEDS).map(k=>({key:k,label:feedLabel(k),...state.health[k]})));
+          if(!state.archive.active && ['flareGuidance','solarRegions','forecast','solarEvents'].includes(key)){
+            state.data[key]=stickyDataValue(key,item.data,state.data[key]);
+            try { renderFlareGuidance(); } catch(error) { console.warn('Flare partial refresh:',error); }
+          }
           // Satellite inputs become usable as soon as their own feeds arrive;
           // unrelated slow services must not hold the live illustration blank.
           if (!state.archive.active && ['kp', 'proton', 'electron'].includes(key)) {
@@ -12136,7 +12211,7 @@ body.fd-ch-desk.fd-inspector-collapsed { --fd-inspector: 48px; }
         const markAlternate = (key, detail) => {
           const health = state.health[key];
           if (!health || health.ok) return;
-          state.health[key] = { ...health, ok: true, time: health.time || now, detail };
+          state.health[key] = { ...health, time: health.time || now, detail: `${health.detail}; ${detail}` };
         };
         if (hasUsableSolarWindHistory(state.data.plasma, "plasma")) markAlternate("plasma", "Using NASA iSWA history bridged to current SWPC RTSW plasma data");
         if (hasUsableSolarWindHistory(state.data.mag, "mag")) markAlternate("mag", "Using NASA iSWA history bridged to current SWPC RTSW magnetic-field data");
@@ -15408,6 +15483,9 @@ function dedupeRadioBurstRows(rows) {
       }
 
       function flareGuidanceDefinitionStatus(payload, definition, member) {
+        const end = parseDate(member?.validEnd || payload?.validEnd);
+        const issued = parseDate(member?.issued || payload?.issued);
+        if(flareGuidanceMemberHasData(member) && (Number.isFinite(end.getTime()) && end.getTime() <= Date.now() || Number.isFinite(issued.getTime()) && issued.getTime() > Date.now()+300000))return {state:'stale',detail:'Expired or future-dated guidance; original valid window retained.'};
         if (definition.key === "sharpmag" && payload?.generationStatus?.used_previous_forecast) {
           return {
             state: "stale",
@@ -15416,7 +15494,7 @@ function dedupeRadioBurstRows(rows) {
         }
         if (flareGuidanceMemberHasData(member)) {
           return {
-            state: /stale|fallback/i.test(String(member?.quality?.level || member?.quality || "")) ? "stale" : "available",
+            state: /stale/i.test(String(member?.quality?.level || member?.quality || "")) ? "stale" : "available",
             detail: member?.note || (member?.issued ? `Issued ${formatAnyTime(member.issued)}` : "Current probability available")
           };
         }
@@ -15565,7 +15643,7 @@ function dedupeRadioBurstRows(rows) {
                   ].filter(Boolean).join("\n");
                   return `
                     <tr class="${rowClass}" title="${escapeHtml(rowTitle)}">
-                      <td><span class="flare-guidance-method-label">${escapeHtml(definition.label)}</span><span class="flare-guidance-source-dot ${status.state}" aria-label="${escapeHtml(status.state)}"></span></td>
+                      <td><span class="flare-guidance-method-label">${escapeHtml(definition.label)}${status.state==='stale'?' · EXPIRED / RETAINED':member?.method==='morphology_fallback'?' · FALLBACK':''}</span><span class="flare-guidance-source-dot ${status.state}" aria-label="${escapeHtml(status.state)}"></span></td>
                       ${flareGuidanceProbabilityCell(member?.m1, "m1", member, status.detail)}
                       ${flareGuidanceProbabilityCell(member?.x1, "x1", member, status.detail)}
                     </tr>
@@ -15900,6 +15978,7 @@ function dedupeRadioBurstRows(rows) {
           quality: normalizeFlareQuality(source.quality || source.status),
           source: String(source.source || source.name || "model"),
           note: String(source.note || source.detail || "").trim(),
+          method: source.method || null,
           datasetId: source.dataset_id || source.datasetId || null,
           drivers: normalizeFlareDrivers(source.drivers || source.top_drivers || source.explanation)
         };
@@ -15940,6 +16019,8 @@ function dedupeRadioBurstRows(rows) {
           m1: Number.isFinite(m1) && m1 >= 0 && m1 <= 100 ? m1 : null,
           x1: Number.isFinite(x1) && x1 >= 0 && x1 <= 100 ? x1 : null,
           source: "SWPC 3-day forecast",
+          validStart: parsed.validDates?.[0] || null,
+          validEnd: parsed.validDates?.[0] ? new Date(Date.parse(parsed.validDates[0])+86400000).toISOString() : null,
           validLabel: parsed.dates?.[0] ? `SWPC Day 1 · ${parsed.dates[0]}` : "SWPC Day 1"
         };
       }
@@ -15979,6 +16060,7 @@ function dedupeRadioBurstRows(rows) {
       }
 
       function flareGuidanceValidText(selected, payload, liveSwpc) {
+        if(selected?.id==='full-disk' && liveSwpc?.validStart)return `${liveSwpc.validLabel} · Other methods retain their own valid windows`;
         const start = selected?.validStart || payload.validStart;
         const end = selected?.validEnd || payload.validEnd;
         const startDate = parseDate(start);
@@ -19938,6 +20020,7 @@ function dedupeRadioBurstRows(rows) {
 
       function renderHealth() {
         const keys = Object.keys(FEEDS);
+        window.SpaceWxHeaderStatus?.setCore(state.archive.active?state.archive.liveData||state.data:state.data,keys.map(key=>({key,label:feedLabel(key),...(state.archive.active?state.archive.liveHealth?.[key]:state.health[key])})));
         const failed = keys.filter((key) => state.health[key] && !state.health[key].ok);
         const ok = keys.filter((key) => state.health[key] && state.health[key].ok);
         els.healthDot.className = `health-dot ${failed.length ? "fail" : "ok"}`;
@@ -22895,7 +22978,10 @@ function seonRadCode(text) {
           const match = text.match(new RegExp(`${escaped}\\s+([\\d\\s]+)`));
           values[label] = match ? match[1].trim().split(/\s+/).slice(0, 3).map(Number) : ["-", "-", "-"];
         }
-        return { dates, values };
+        const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        const validDates=[];
+        for(let i=0;i<parts.length;i+=3){const year=Number(parts[i]),month=months.indexOf(parts[i+1]),day=Number(parts[i+2]);validDates.push(year>=1900&&month>=0&&day>=1&&day<=31?new Date(Date.UTC(year,month,day)).toISOString():null);}
+        return { dates, values, validDates };
       }
 
       function parse27DayOutlook(text) {
@@ -29374,7 +29460,7 @@ window.CHHSSData = (() => {
     return feed;
   }
   let applied='';
-  function changed(){document.dispatchEvent(new CustomEvent('chhss-feed-updated'));paint();const p=current(),sig=p?p.maskId+'|'+p.observationTime:'withheld';if(sig!==applied&&window.SpaceWxChHss){applied=sig;setTimeout(()=>window.SpaceWxChHss?.refresh(true),600);}}
+  function changed(){window.SpaceWxHeaderStatus?.report('chhss','AIA / HMI coronal-hole publication',!state.error&&!!current(),state.error||(!current()?'No current accepted measurement':'Registered measurement received'));window.SpaceWxHeaderStatus?.report('omni','OMNI recurrence publication',!state.recurrenceError&&!!state.recurrence,state.recurrenceError||(!state.recurrence?'No recurrence publication received':'Recurrence series received'));document.dispatchEvent(new CustomEvent('chhss-feed-updated'));paint();const p=current(),sig=p?p.maskId+'|'+p.observationTime:'withheld';if(sig!==applied&&window.SpaceWxChHss){applied=sig;setTimeout(()=>window.SpaceWxChHss?.refresh(true),600);}}
   async function use(feed,source){await validate(feed);state.feed=feed;if(feed.recurrence)useRecurrence(feed.recurrence);state.source=source;state.lastSuccess=new Date().toISOString();state.error='';state.notice='';changed();return feed;}
   async function initialize(){
     const embed=q('#chhssBootstrap');if(embed){try{await use(JSON.parse(embed.textContent),'embedded snapshot');}catch(e){state.error='Snapshot rejected: '+e.message;}}
@@ -36094,6 +36180,7 @@ window.SpaceWxRecurrenceCompare = (function () {
         try{const r=await fetch(url,{signal:ctrl.signal,credentials:'omit',cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const raw=await r.json();parse(raw,kind);data[kind]=raw;data[kind+'At']=new Date().toISOString();}finally{clearTimeout(timer);}
       }));
       try{localStorage.setItem(CACHE,JSON.stringify(data));}catch{}
+      results.forEach((r,i)=>window.SpaceWxHeaderStatus?.report('solarCycle'+i,'Solar cycle · '+Object.keys(URLS)[i],r.status==='fulfilled',r.status==='rejected'?r.reason.message:'Monthly series received'));
       return results.map((r,i)=>r.status==='rejected'?Object.keys(URLS)[i]+': '+r.reason.message:null).filter(Boolean);
     })();
     try{return await loading;}finally{loading=null;}
@@ -36168,7 +36255,8 @@ window.SpaceWxRecurrenceCompare = (function () {
     if(inflight)return inflight;
     inflight=(async()=>{let last;for(const url of urls()){
       const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),15000);
-      try{const r=await fetch(url,{signal:ctrl.signal,credentials:'omit',cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const rows=await r.json();parse(rows);cached={rows,source:url,retrievedAt:new Date().toISOString()};try{localStorage.setItem(CACHE,JSON.stringify(cached));}catch{}return cached;}catch(e){last=e;}finally{clearTimeout(timer);}}
+      try{const r=await fetch(url,{signal:ctrl.signal,credentials:'omit',cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const rows=await r.json();parse(rows);cached={rows,source:url,retrievedAt:new Date().toISOString()};try{localStorage.setItem(CACHE,JSON.stringify(cached));}catch{}window.SpaceWxHeaderStatus?.report('scoreboard','NASA CME Scoreboard',true,'Current catalog received');return cached;}catch(e){last=e;}finally{clearTimeout(timer);}}
+      window.SpaceWxHeaderStatus?.report('scoreboard','NASA CME Scoreboard',false,last?.message||'No endpoint responded');
       throw last||Error('NASA Scoreboard unavailable');})();
     try{return await inflight;}finally{inflight=null;}
   }
@@ -36219,7 +36307,7 @@ window.SpaceWxRecurrenceCompare = (function () {
   }
   // Let Plotly finish before replacing or purging its target during a fast refresh.
   function paint(error=''){render=render.then(()=>draw(error)).catch(()=>{if(!stopped)root.innerHTML='<h3>WXF local HUXt</h3><p class="wx-status">Plot unavailable. Refresh products to retry.</p>';});return render;}
-  async function refresh(){ctrl?.abort();const request=ctrl=new AbortController();const timer=setTimeout(()=>request.abort(),15000);try{const r=await fetch(URL,{signal:request.signal,cache:'no-store',credentials:'omit'});if(!r.ok)throw Error('HTTP '+r.status);const d=await r.json();if(!valid(d))throw Error('Invalid numerical run');if(stopped||ctrl!==request)return;if(!saved||Date.parse(d.issuedAt)>=Date.parse(saved.issuedAt))saved=d;await paint();}catch(_){if(!stopped&&ctrl===request)await paint('Refresh unavailable; retaining dated run.');}finally{clearTimeout(timer);}}
+  async function refresh(){ctrl?.abort();const request=ctrl=new AbortController();const timer=setTimeout(()=>request.abort(),15000);try{const r=await fetch(URL,{signal:request.signal,cache:'no-store',credentials:'omit'});if(!r.ok)throw Error('HTTP '+r.status);const d=await r.json();if(!valid(d))throw Error('Invalid numerical run');if(stopped||ctrl!==request)return;if(!saved||Date.parse(d.issuedAt)>=Date.parse(saved.issuedAt))saved=d;window.SpaceWxHeaderStatus?.report('huxt','HUXt numerical publication',d.status==='experimental'&&Date.now()-Date.parse(d.issuedAt)<=3*3600000,d.reason||'Run issued '+utc(d.issuedAt));await paint();}catch(e){if(!stopped&&ctrl===request){window.SpaceWxHeaderStatus?.report('huxt','HUXt numerical publication',false,e.message);await paint('Refresh unavailable; retaining dated run.');}}finally{clearTimeout(timer);}}
   paint();return{refresh,stop(){stopped=true;ctrl?.abort();const plots=[...root.querySelectorAll('.js-plotly-plot')];render.then(()=>plots.forEach(p=>window.Plotly?.purge(p)));}};
  }
  window.SpaceWxLocalHUXt={mount,chart,valid};
@@ -36310,7 +36398,8 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
     return d.forecast.every((r,i)=>Date.parse(r.time)===Date.parse(d.dataAsOf)+(i+1)*3600000&&
       ['low','median','high','fluxLow','fluxMedian','fluxHigh'].every(k=>r[k]===null||num(r[k]))&&
       (r.low===null?r.median===null&&r.high===null:num(r.median)&&num(r.high)&&r.low<=r.median&&r.median<=r.high)&&
-      num(r.fluxLow)&&num(r.fluxMedian)&&num(r.fluxHigh)&&r.fluxLow<=r.fluxMedian&&r.fluxMedian<=r.fluxHigh);
+      num(r.fluxLow)&&num(r.fluxMedian)&&num(r.fluxHigh)&&r.fluxLow<=r.fluxMedian&&r.fluxMedian<=r.fluxHigh&&
+      ['', 'flux'].every(p=>{const k=n=>p?p+n[0].toUpperCase()+n.slice(1):n;return r[k('q25')]===undefined&&r[k('q75')]===undefined || (r[k('low')]===null?r[k('q25')]===null&&r[k('q75')]===null:num(r[k('q25')])&&num(r[k('q75')])&&r[k('low')]<=r[k('q25')]&&r[k('q25')]<=r[k('median')]&&r[k('median')]<=r[k('q75')]&&r[k('q75')]<=r[k('high')]);}));
   }
   function fresh(d,now=Date.now()){
     return valid(d)&&d.status==='experimental'&&now-Date.parse(d.dataAsOf)<=2*3600000&&Date.parse(d.issuedAt)<=now+5*60000;
@@ -36318,23 +36407,30 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
   let data=null;
   function accept(d){if(valid(d)&&(!data||Date.parse(d.issuedAt)>=Date.parse(data.issuedAt)))data=d;}
   try{accept(JSON.parse(document.getElementById('wxfElectronBootstrap')?.textContent||'null'));}catch(_){}
-  async function refresh(){const c=new AbortController(),timer=setTimeout(()=>c.abort(),15000);try{const r=await fetch(URL,{signal:c.signal,cache:'no-store',credentials:'omit'});if(!r.ok)throw Error('HTTP '+r.status);const d=await r.json();if(!valid(d))throw Error('Invalid WXF publication');accept(d);return '';}catch(_){return 'Live refresh unavailable; showing the dated snapshot.';}finally{clearTimeout(timer);}}
+  async function refresh(){const c=new AbortController(),timer=setTimeout(()=>c.abort(),15000);try{const r=await fetch(URL,{signal:c.signal,cache:'no-store',credentials:'omit'});if(!r.ok)throw Error('HTTP '+r.status);const d=await r.json();if(!valid(d))throw Error('Invalid WXF publication');accept(d);window.SpaceWxHeaderStatus?.report('wxfElectron','WXF electron publication',fresh(d),d.status==='withheld'?d.reason:fresh(d)?'Current validated publication':'Observation cutoff is stale');return '';}catch(e){window.SpaceWxHeaderStatus?.report('wxfElectron','WXF electron publication',false,e.message);return 'Live refresh unavailable; showing the dated snapshot.';}finally{clearTimeout(timer);}}
   function chart(d,view='fluence',thresholdScale=true){
     const flux=view==='flux',rows=d.forecast,x=rows.map(r=>r.time),prefix=flux?'flux':'';
     const values=key=>rows.map(r=>r[prefix?prefix+key[0].toUpperCase()+key.slice(1):key]);
-    const traces=[{name:'Empirical 90% range',x,y:values('high'),mode:'lines',type:'scatter',line:{width:0},hoverinfo:'skip',showlegend:false,connectgaps:false},
-      {name:'Empirical 90% range',x,y:values('low'),mode:'lines',type:'scatter',line:{width:0},fill:'tonexty',fillcolor:'rgba(83,167,222,.19)',hoverinfo:'skip',connectgaps:false},
-      {name:'WXF median',x,y:values('median'),mode:'lines+markers',type:'scatter',line:{color:'#ffbd7c',width:2.5},marker:{size:4},connectgaps:false,
-       customdata:rows.map((r,i)=>[values('low')[i],values('high')[i]]),hovertemplate:'%{x|%d %b %H:%M UTC}<br>Median %{y:.2e}<br>Range %{customdata[0]:.2e}–%{customdata[1]:.2e}<extra>WXF experimental</extra>'}];
+    const traces=[];
+    const plume=(lo,hi,name,color,edge)=>{
+      traces.push({name,x,y:values(hi),mode:'lines',type:'scatter',line:{width:1,color:edge},hoverinfo:'skip',showlegend:false,connectgaps:false,legendgroup:name});
+      traces.push({name,x,y:values(lo),mode:'lines',type:'scatter',line:{width:1,color:edge},fill:'tonexty',fillcolor:color,hoverinfo:'skip',connectgaps:false,legendgroup:name});
+    };
+    plume('low','high','90% prediction range','rgba(93,168,233,.13)','rgba(121,185,239,.27)');
+    const inner=values('q25').every((v,i)=>v===null?values('q75')[i]===null:num(v)&&num(values('q75')[i]));
+    if(inner)plume('q25','q75','50% prediction range','rgba(105,184,245,.29)','rgba(127,199,249,.46)');
+    traces.push({name:'WXF median',x,y:values('median'),mode:'lines+markers',type:'scatter',line:{color:'#ffca93',width:2.8},marker:{size:4},connectgaps:false,
+      customdata:rows.map((r,i)=>[values('low')[i],values('high')[i],values('q25')[i],values('q75')[i]]),
+      hovertemplate:'%{x|%d %b %H:%M UTC}<br><b>Median %{y:.2e}</b>'+(inner?'<br>50% range %{customdata[2]:.2e}–%{customdata[3]:.2e}':'')+'<br>90% range %{customdata[0]:.2e}–%{customdata[1]:.2e}<extra>WXF experimental</extra>'});
     if(flux)traces.unshift({name:'Observed hourly flux',x:d.history.map(r=>r.time),y:d.history.map(r=>r.flux),mode:'lines',type:'scatter',line:{color:'#62d5cf',width:2},connectgaps:false,hovertemplate:'%{x|%d %b %H:%M UTC}<br>%{y:.2e} e⁻ cm⁻² s⁻¹ sr⁻¹<extra>Hourly average</extra>'});
     else if(num(d.observedFluence))traces.unshift({name:'Observed rolling 24 h',x:[d.dataAsOf],y:[d.observedFluence],mode:'markers',type:'scatter',marker:{size:8,color:'#62d5cf'},hovertemplate:'%{x|%d %b %H:%M UTC}<br>%{y:.2e} e⁻ cm⁻² sr⁻¹<extra>Observed</extra>'});
     const style=window.SpaceWxAlertStyle,all=traces.flatMap(t=>t.y).filter(num);
     const max=Math.max(flux?15:2e8,...all.map(value=>value*1.25));
-    const layout={autosize:true,paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'#0c1c29',font:{color:'#b7cfdf',size:11},margin:{l:68,r:20,t:35,b:44},
-      legend:{orientation:'h',x:0,y:1.14},hovermode:'x unified',hoverlabel:{bgcolor:'#111e2b',bordercolor:'#617f98',font:{color:'#fff',size:12}},
+    const layout={autosize:true,paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'#0a1723',font:{color:'#b7cfdf',size:11},margin:{l:76,r:24,t:48,b:52},
+      legend:{orientation:'h',x:0,y:1.15,font:{size:10},traceorder:'normal',groupclick:'togglegroup'},hovermode:'x unified',hoverlabel:{bgcolor:'#111e2b',bordercolor:'#617f98',font:{color:'#fff',size:12}},
       xaxis:{type:'date',title:'UTC',tickformat:'%H:%M\n%d %b',gridcolor:'#233b4d'},
       yaxis:{title:{text:flux?'Flux · e⁻ cm⁻² s⁻¹ sr⁻¹':'Rolling 24 h · e⁻ cm⁻² sr⁻¹'},type:'linear',range:[0,max],minallowed:0,tickformat:'.1e',gridcolor:'#233b4d',automargin:true},
-      shapes:[],annotations:[]};
+      shapes:[{type:'line',xref:'x',x0:d.dataAsOf,x1:d.dataAsOf,yref:'paper',y0:0,y1:1,line:{color:'#7893a6',width:1,dash:'dot'}}],annotations:[{xref:'x',x:d.dataAsOf,yref:'paper',y:1.015,text:'Forecast →',showarrow:false,xanchor:'left',font:{color:'#9bb5c9',size:10}}]};
     if(!flux&&thresholdScale&&style){const o=style.overlay('electron',max);layout.shapes.push(...o.shapes);layout.annotations.push(...o.annotations);traces.find(t=>t.name==='WXF median').marker.color=values('median').map(v=>style.color('electron',v));}
     if(!flux&&thresholdScale&&!style)for(const [value,color]of [[1.1e8,'#f4cd62'],[4.8e8,'#ef4444']])if(value<=max){layout.shapes.push({type:'line',xref:'paper',x0:0,x1:1,y0:value,y1:value,line:{color,width:1,dash:'dash'}});layout.annotations.push({xref:'paper',x:.98,y:value,xanchor:'right',yanchor:'bottom',text:value.toExponential(1),showarrow:false,font:{color,size:10},bgcolor:'#102333'});}
     return {traces,layout};
@@ -36366,7 +36462,7 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
         ${candidate?'<p class="wx-particle-warning">Historical hindcasts are available. Added CME/HSS skill over measured drivers is not established; current WXF remains the default.</p>':''}
         <p class="wx-particle-status">${esc(d.guidanceMode||'Current WXF')} · ${upcoming.length} CME event${upcoming.length===1?'':'s'} with point-arrival forecasts in the next 24 h ${candidate?'· 27-day wind recurrence: '+rec:'· Arrival guidance is context for the current model.'}</p>
         <div class="wx-particle-plot" data-wxf-plot></div>
-        <p class="wx-particle-status">${missing?'Recent observations contain a gap. Rolling totals remain unavailable until that gap leaves the 24-hour window. ':''}${error?esc(error)+' ':''}${candidate?'CME timing and recurrent-wind guidance inform this candidate; they do not guarantee a dropout.':'Current WXF uses observed drivers. Select the candidate above to compare the new arrival-conditioned model.'} The shaded range describes forecast uncertainty. Thresholds follow Alert Settings → Electron Fluence; they do not predict spacecraft failure.</p>
+        <p class="wx-particle-status">${missing?'Recent observations contain a gap. Rolling totals remain unavailable until that gap leaves the 24-hour window. ':''}${error?esc(error)+' ':''}${candidate?'CME timing and recurrent-wind guidance inform this candidate; they do not guarantee a dropout.':'Current WXF uses observed drivers. Select the candidate above to compare the new arrival-conditioned model.'} The darker plume contains the central 50% of residual-based paths; the outer plume spans 90%. These are empirical prediction ranges, not guaranteed coverage or confidence intervals for a mean. Thresholds follow Alert Settings → Electron Fluence; they do not predict spacecraft failure.</p>
         <details ${open?'open':''}><summary>Method, verification &amp; forecast limits</summary>
         <p>${candidate?'This candidate learns hourly electron changes from observed flux and solar-wind history, predicted CME arrival timing and uncertainty, 27-day wind recurrence, time since reported IPS/HSS onsets and the electron response already observed after each event.':'Current WXF learns hourly electron changes from recent flux and lagged observed solar-wind drivers.'} Seven days estimate the local diurnal shape only. Whole 24-hour error sequences create the range; each flux path is integrated separately into the preceding rolling 24 hours.</p>
         <p>DONKI IPS and HSS reports are gated by each version’s submission time. The candidate learns event age, report delay, pre/post-event diurnal-adjusted electron response, and measured wind-rise/compression timing. A shock is called CME-associated only when its available catalog version links a CME. Later revisions cannot enter an earlier forecast.</p>
@@ -36375,10 +36471,10 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
         <p>In the candidate experiment, the larger dataset and measured drivers account for most of the improvement. Tests do not yet establish a reliable additional benefit from CME timing or recurrence alone. The model card includes chronological historical tests and paired block confidence intervals. Historical validation can establish statistical support when every training and calibration target precedes its test period. Live verification adds evidence about real feed delays and outages.</p>
         ${historicalMarkup(d)}
         <p>Office criteria: 1.1e8 and 4.8e8 e⁻ cm⁻² sr⁻¹ in the preceding rolling 24 hours. The original evaluation counted ${e.thresholds.moderate.exceedanceCount} lower-criterion exceedances among ${e.thresholds.moderate.dailyOrigins} daily samples. The broader historical test reports both criteria; adjacent days can belong to one event. No satellite-failure or threshold-exceedance probabilities are published. Editing Alert Settings changes plot styling, not historical validation counts.</p>
-        <p>Current CH/HSS geometry and SWPC bulletin are recorded for future calibration. The newly developed CH model lacks a consistent historical issue series. WXF now also runs numerical HUXt with SWPC’s processed inner boundary and DONKI cones. Its Earth wind-speed plot is under CME | Solar Wind. Those issued time series are being archived; historical paired HUXt runs are still needed before they change the electron forecast. An external-guidance outage leaves current WXF running and switches the candidate to the separately evaluated model with observed drivers and recurrence.</p>
+        <p>Current CH/HSS geometry is recorded for future calibration. The newly developed CH model lacks a consistent historical issue series. WXF now also runs numerical HUXt with SWPC’s processed inner boundary and DONKI cones. Its Earth wind-speed plot is under CME | Solar Wind. Those issued time series are being archived; historical paired HUXt runs are still needed before they change the electron forecast. An external-guidance outage leaves current WXF running and switches the candidate to the separately evaluated model with observed drivers and recurrence.</p>
         <p>Incomplete or proton-contaminated samples are excluded. Five-minute averages are integrated as boxcars; no gap filling. ${d.outOfTrainingRange?.length?'Some current predictors are outside their training ranges; extrapolation is especially uncertain. ':''}GEO measurements do not resolve LEO drag, surface charging, all satellite orbits, or material shielding.</p>
         <p><a href="https://github.com/wreed1989/SpaceWxOps-WXF/blob/main/research/electron_fluence/README.md" target="_blank" rel="noopener">WXF model card</a> · <a href="https://iswa.ccmc.gsfc.nasa.gov/hapi/info?id=goesp_part_flux_P5M" target="_blank" rel="noopener">Particle source</a> · <a href="${URL}" target="_blank" rel="noopener">Numerical forecast</a></p>
-        ${data.externalGuidance?.bulletin?'<p>SWPC external guidance · preserved as issued · not used as model input:</p><pre style="white-space:pre-wrap;font-size:11px">'+esc(data.externalGuidance.bulletin)+'</pre>':''}</details>`;
+        </details>`;
       wireModel();root.querySelector('[data-wxf-view]').value=view;
       const c=chart(d,view,full);window.Plotly?.react(root.querySelector('[data-wxf-plot]'),c.traces,c.layout,{responsive:true,displaylogo:false,scrollZoom:false,displayModeBar:false});
       root.querySelector('[data-wxf-view]').onchange=e=>{view=e.target.value;paint();};root.querySelector('[data-wxf-scale]').onchange=e=>{full=e.target.checked;paint();};
@@ -36463,6 +36559,8 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
       if(results[1].status==='fulfilled'){try{parseREFM(results[1].value);snapshot.sources.refm={payload:results[1].value,retrievedAt:new Date().toISOString(),sourceURL:REFM};}catch(_){errors.electron='SWPC returned an invalid REFM bulletin';}}else errors.electron='SWPC REFM refresh unavailable';
       if(results[2].status==='fulfilled'&&Array.isArray(results[2].value)){snapshot.sources.goesProtons={payload:results[2].value.filter(r=>['>=10 MeV','>=50 MeV'].includes(r.energy)),retrievedAt:new Date().toISOString(),sourceURL:GOES};}else errors.sep+=(errors.sep?' · ':'')+'GOES live refresh unavailable';
       try{localStorage.setItem(CACHE,JSON.stringify(snapshot));}catch(_){}
+      window.SpaceWxHeaderStatus?.report('sepPublication','SEP / proton sources',!errors.sep,errors.sep||'Numerical products received');
+      window.SpaceWxHeaderStatus?.report('refmPublication','SWPC REFM',!errors.electron,errors.electron||'Bulletin parsed');
       return errors;
     })().finally(()=>{pending=null;});return pending;
   }
@@ -36596,7 +36694,7 @@ body.fd-dock-collapsed .fd-app.fd-monitor-workspace .fd-product-button strong,bo
     }return {traces,layout};
   }
   async function refresh(){
-    if(pending)return pending;pending=(async()=>{const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),20000);try{const response=await fetch(RELAY,{signal:ctrl.signal,cache:'no-store',credentials:'omit'});if(!response.ok)throw Error('HTTP '+response.status);accept(await response.json());return '';}catch(_){return 'Refresh unavailable · retained dated grids.';}finally{clearTimeout(timer);pending=null;}})();return pending;
+    if(pending)return pending;pending=(async()=>{const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),20000);try{const response=await fetch(RELAY,{signal:ctrl.signal,cache:'no-store',credentials:'omit'});if(!response.ok)throw Error('HTTP '+response.status);const d=await response.json();if(d?.schemaVersion!=='nairas-effective-dose-1'||!valid(d.sources?.nowcast))throw Error('Invalid NAIRAS current grid');accept(d);window.SpaceWxHeaderStatus?.report('nairas','NAIRAS publication',!d.sources.nowcast.error,d.sources.nowcast.error||'Current grid parsed');return '';}catch(e){window.SpaceWxHeaderStatus?.report('nairas','NAIRAS publication',false,e.message);return 'Refresh unavailable · retained dated grids.';}finally{clearTimeout(timer);pending=null;}})();return pending;
   }
   function mount(root){
     root.classList.add('wx-particle','wx-nairas');let mode='nowcast',metric='rate',hours=1,error='',disposed=false,location={lat:60,lon:-100};
@@ -37208,37 +37306,37 @@ window.SpaceWxMonitorLayout=(()=>{
         "count": 147
       },
       {
-        "mean_forecast": 0.0004536289243020666,
+        "mean_forecast": 0.00045362892430206645,
         "observed_frequency": 0.0,
         "count": 147
       },
       {
-        "mean_forecast": 0.001182151478311817,
+        "mean_forecast": 0.0011821514783118172,
         "observed_frequency": 0.0,
         "count": 146
       },
       {
-        "mean_forecast": 0.0023867935751318513,
+        "mean_forecast": 0.002386793575131852,
         "observed_frequency": 0.0,
         "count": 147
       },
       {
         "mean_forecast": 0.004471921635851622,
         "observed_frequency": 0.0,
-        "count": 146
-      },
-      {
-        "mean_forecast": 0.008067365600929422,
-        "observed_frequency": 0.00684931506849315,
         "count": 147
       },
       {
-        "mean_forecast": 0.01425876540347323,
+        "mean_forecast": 0.008067365600929428,
+        "observed_frequency": 0.00684931506849315,
+        "count": 146
+      },
+      {
+        "mean_forecast": 0.014258765403473234,
         "observed_frequency": 0.006802721088435374,
         "count": 147
       },
       {
-        "mean_forecast": 0.024552659320832858,
+        "mean_forecast": 0.024552659320832844,
         "observed_frequency": 0.00684931506849315,
         "count": 146
       },
@@ -37248,7 +37346,7 @@ window.SpaceWxMonitorLayout=(()=>{
         "count": 147
       },
       {
-        "mean_forecast": 0.21683862679598623,
+        "mean_forecast": 0.21683862679598612,
         "observed_frequency": 0.2108843537414966,
         "count": 147
       }
@@ -37289,7 +37387,7 @@ window.SpaceWxMonitorLayout=(()=>{
         "count": 147
       },
       {
-        "mean_forecast": 0.0006103345520023047,
+        "mean_forecast": 0.000610334552002305,
         "observed_frequency": 0.0,
         "count": 146
       },
@@ -37301,30 +37399,30 @@ window.SpaceWxMonitorLayout=(()=>{
       {
         "mean_forecast": 0.001191373053290079,
         "observed_frequency": 0.0,
+        "count": 147
+      },
+      {
+        "mean_forecast": 0.001468171066694795,
+        "observed_frequency": 0.0,
         "count": 146
       },
       {
-        "mean_forecast": 0.0014681710666947952,
+        "mean_forecast": 0.0018265119893544307,
         "observed_frequency": 0.0,
         "count": 147
       },
       {
-        "mean_forecast": 0.001826511989354431,
-        "observed_frequency": 0.0,
-        "count": 147
-      },
-      {
-        "mean_forecast": 0.0023580878132969767,
+        "mean_forecast": 0.002358087813296976,
         "observed_frequency": 0.00684931506849315,
         "count": 146
       },
       {
-        "mean_forecast": 0.003187026577543161,
+        "mean_forecast": 0.0031870265775431617,
         "observed_frequency": 0.0,
         "count": 147
       },
       {
-        "mean_forecast": 0.013683499033060723,
+        "mean_forecast": 0.01368349903306073,
         "observed_frequency": 0.034013605442176874,
         "count": 147
       }
@@ -37437,7 +37535,23 @@ window.SpaceWxMonitorLayout=(()=>{
     "coefficients": "sharp_mag_coefficients.csv",
     "coefficients_sha256": "d9a9ca712d16c0f6aaf79409ad8990727d6bcb010da28ac17af7fad0200e9287"
   },
-  "validation_note": "M1+ scores use a chronologically later untouched holdout block. The production M1+ classifier is refit to all rows and calibrated from out-of-fold predictions grouped by NOAA active region. X1+ holdout probabilities use a separately fitted direct magnetic/history stage; the constant X/M ratio is retained only as a scored reference."
+  "validation_note": "M1+ scores use a chronologically later untouched holdout block. The production M1+ classifier is refit to all rows and calibrated from out-of-fold predictions grouped by NOAA active region. X1+ holdout probabilities use a separately fitted direct magnetic/history stage; the constant X/M ratio is retained only as a scored reference.",
+  "verification_audit": {
+    "checked_at": "2026-09-19T22:20:49Z",
+    "dataset_sha256": "12a0f1d5ba245d392c2eb3bcbed41a530b6205b4b20705d534319db1fd20f683",
+    "active_region_overlap": {
+      "trainCalibration": 0,
+      "trainTest": 0,
+      "calibrationTest": 0
+    },
+    "scores_reproduced": true,
+    "forecast_target": "Next UTC calendar day (00\u201324 UTC), issued at 21 UTC the preceding day",
+    "calibration_bins": "Quantile membership shared by means and counts; tied probabilities stay together",
+    "scope": "Regional SHARP recipe only. Excludes morphology fallbacks, full-disk independence aggregate, and browser consensus.",
+    "production_note": "Deployed estimators were refit to all rows; holdout scores describe the training recipe, not an untouched test of those final estimators.",
+    "selection_note": "The holdout has been inspected in model development; future changes need separate chronological evaluation.",
+    "script_sha256": "d26679803ecd734491c040165778ca63418a055d84fc84c995de8808f65c3f68"
+  }
 }
   );
 
@@ -37733,7 +37847,8 @@ window.SpaceWxMonitorLayout=(()=>{
   function wxfReliabilityPlot(label, metric, axisMaxOverride = null) {
     const rows = Array.isArray(metric?.reliability) ? metric.reliability : [];
     if (!rows.length) return `<div class="fd-wxf-reliability-plot"><strong>${esc(label)} reliability</strong><small>NOT PUBLISHED</small></div>`;
-    const axisMax = Number(axisMaxOverride) || (label === "M1+" ? 0.25 : 0.02);
+    const largest = Math.max(...rows.flatMap(r=>[Number(r.mean_forecast)||0,Number(r.observed_frequency)||0]));
+    const axisMax = Math.min(1,Math.max(Number(axisMaxOverride)||0,label === "M1+" ? 0.25 : 0.02,Math.ceil(largest*120)/100));
     const left = 27;
     const top = 10;
     const width = 182;
@@ -37744,7 +37859,7 @@ window.SpaceWxMonitorLayout=(()=>{
     };
     const dots = rows.map((row) => `<circle cx="${point(row.mean_forecast).toFixed(1)}" cy="${point(row.observed_frequency, true).toFixed(1)}" r="2.8"><title>Forecast ${(Number(row.mean_forecast) * 100).toFixed(3)}% · observed ${(Number(row.observed_frequency) * 100).toFixed(3)}% · n=${Number(row.count) || 0}</title></circle>`).join("");
     const errors = wxfCalibrationErrors(rows);
-    return `<div class="fd-wxf-reliability-plot"><strong>${esc(label)} reliability</strong><small>10 equal-count bins · ECE ${Number.isFinite(errors.ece) ? (errors.ece * 100).toFixed(2) + " pp" : "--"}</small><svg viewBox="0 0 225 128" role="img" aria-label="${esc(label)} forecast reliability diagram"><line x1="${left}" y1="${top + height}" x2="${left + width}" y2="${top + height}" stroke="#49616f"/><line x1="${left}" y1="${top}" x2="${left}" y2="${top + height}" stroke="#49616f"/><line x1="${left}" y1="${top + height}" x2="${left + width}" y2="${top}" stroke="#526a77" stroke-dasharray="3 3"/><g fill="#61d6ff" stroke="#061018" stroke-width="1">${dots}</g><text x="${left}" y="116" fill="#76909d" font-size="6">0%</text><text x="${left + width}" y="116" fill="#76909d" font-size="6" text-anchor="end">${(axisMax * 100).toFixed(0)}%</text><text x="${left + width / 2}" y="125" fill="#76909d" font-size="6" text-anchor="middle">FORECAST</text><text x="8" y="${top + height / 2}" fill="#76909d" font-size="6" text-anchor="middle" transform="rotate(-90 8 ${top + height / 2})">OBSERVED</text></svg></div>`;
+    return `<div class="fd-wxf-reliability-plot"><strong>${esc(label)} reliability</strong><small>${rows.length} probability bins · calibration gap ${Number.isFinite(errors.ece) ? (errors.ece * 100).toFixed(2) + " pp" : "--"}</small><svg viewBox="0 0 225 128" role="img" aria-label="${esc(label)} forecast reliability diagram"><line x1="${left}" y1="${top + height}" x2="${left + width}" y2="${top + height}" stroke="#49616f"/><line x1="${left}" y1="${top}" x2="${left}" y2="${top + height}" stroke="#49616f"/><line x1="${left}" y1="${top + height}" x2="${left + width}" y2="${top}" stroke="#526a77" stroke-dasharray="3 3"/><g fill="#61d6ff" stroke="#061018" stroke-width="1">${dots}</g><text x="${left}" y="116" fill="#76909d" font-size="6">0%</text><text x="${left + width}" y="116" fill="#76909d" font-size="6" text-anchor="end">${(axisMax * 100).toFixed(0)}%</text><text x="${left + width / 2}" y="125" fill="#76909d" font-size="6" text-anchor="middle">FORECAST</text><text x="8" y="${top + height / 2}" fill="#76909d" font-size="6" text-anchor="middle" transform="rotate(-90 8 ${top + height / 2})">OBSERVED</text></svg></div>`;
   }
 
   function renderWxfDatasetV2Evidence() {
@@ -37818,33 +37933,20 @@ window.SpaceWxMonitorLayout=(()=>{
 
   function renderWxfReliabilityAudit(model = {}) {
     const report = wxfTrainingReport || WXF_TRAINING_REPORT_FALLBACK;
-    const m = report["M1+"] || {};
-    const x = report["X1+"] || {};
-    const mErrors = wxfCalibrationErrors(m.reliability);
-    const xErrors = wxfCalibrationErrors(x.reliability);
-    const version = report.model_version || "NOT PUBLISHED";
-    const reportMatches = !model.version || model.version === version;
-    const date = (value) => value ? String(value).slice(0, 10) : "NOT PUBLISHED";
-    const featureCount = Array.isArray(report.features) ? report.features.length : null;
-    const featureMarkup = Array.isArray(report.features) && report.features.length
-      ? report.features.map((feature) => `<code>${esc(feature)}</code>`).join("")
-      : `<code>NOT PUBLISHED</code>`;
-    return `<section class="fd-wxf-audit">
-      <div class="fd-wxf-audit-head"><div><span class="fd-eyebrow">MODEL RELIABILITY + TRAINING AUDIT</span><h4>What WXF is—and what the evidence actually supports</h4><p>Reliability is measured after training on forecasts the model did not see. It is not inferred from a high ROC-AUC or from agreement with another forecast. The values below come from the versioned WXF training report; missing evidence stays visibly missing.</p></div><span class="fd-wxf-audit-gate">RESEARCH ONLY · NOT OPERATIONAL</span></div>
-      <div class="fd-wxf-definition-grid">
-        <div class="fd-wxf-definition"><b>TRAINED</b><strong>WXF REGIONAL</strong><p>A regularized, class-balanced model over 18 HMI SHARP scalar parameters, their 24-hour changes, longitude, latitude and strictly pre-issue flare history (${featureCount || 45} engineered inputs). M1+ and X1+ are independently fitted and calibrated; X1+ uses stronger regularization and is capped beneath M1+. Clearly labelled morphology/climatology values provide coverage when no trustworthy SHARP mapping exists.</p><details><summary>SHOW ALL ${featureCount || 45} MODEL INPUTS</summary><div class="fd-wxf-feature-cloud">${featureMarkup}</div></details></div>
-        <div class="fd-wxf-definition retrospective"><b>TRAINED · CYCLE-HELD-OUT</b><strong>WXF Cross-Era</strong><p>A daily 29-input baseline over 4.65 million merged SMARP–SHARP records and region-attributed GOES labels. It was developed on cycle 23, calibrated on cycle 24, and tested on cycle 25-to-date. M1+ shows positive grouped Brier skill; X1+ and cross-instrument transfer remain failed promotion gates.</p></div>
-        <div class="fd-wxf-definition retrospective"><b>TRAINED · RETROSPECTIVE</b><strong>WXF SDO Temporal</strong><p>A separately trained peak-flux model using four HMI/AIA frames, PIL proxies, continuum contrast, low-order Zernike morphology and 12-hour evolution. It publishes an active-region-safe holdout and case predictions, but is not connected to the live forecast because its archive ends in 2017.</p></div>
-        <div class="fd-wxf-definition unvalidated"><b>UNVALIDATED</b><strong>WXF Consensus <span style="color:var(--fd-faint)">(formerly “WXF Fusion”)</span></strong><p>A browser-side, availability-normalized log-odds blend with design weights of SHARP 50%, MCEVOL/history 30%, and MCSTAT 20%. Those weights were not learned, calibrated, or scored on a holdout. It is a comparison aid—not another trained model and not evidence of improved skill.</p></div>
-      </div>
-      <div class="fd-wxf-lineage"><div><span>MODEL</span><strong title="${esc(version)}">${esc(version)}</strong></div><div><span>DATASET</span><strong title="SHA-256 ${esc(report.dataset_sha256 || "not published")}">${Number(report.samples || 0).toLocaleString()} region-days</strong></div><div><span>COVERAGE</span><strong>${date(report.date_start)} → ${date(report.date_end)}</strong></div><div><span>TRAIN · M / X EVENTS</span><strong>${Number(m.train_samples || 0).toLocaleString()} · ${Number(m.train_positives || 0)} / ${Number(x.train_x1_positives || 0)}</strong></div><div><span>CALIBRATION · M / X</span><strong>${Number(m.calibration_samples || 0).toLocaleString()} · ${Number(m.calibration_positives || 0)} / ${Number(x.calibration_x1_positives || 0)}</strong></div><div><span>TEST · M / X EVENTS</span><strong>${Number(m.samples || 0).toLocaleString()} · ${Number(m.positives || 0)} / ${Number(x.positives || 0)}</strong></div><div><span>REPORT SOURCE</span><strong>${esc(wxfTrainingReportStatus)}${reportMatches ? "" : " · VERSION MISMATCH"}</strong></div></div>
-      <div class="fd-wxf-audit-body">
-        <div class="fd-wxf-audit-pane"><span class="fd-eyebrow">UNTOUCHED CHRONOLOGICAL HOLDOUT</span><h4 style="margin:3px 0 7px;font-size:9px">Probabilistic skill and calibration statistics</h4><table class="fd-wxf-metric-table"><thead><tr><th>Target</th><th>Events / n</th><th>Brier</th><th>Brier skill</th><th>Log loss</th><th>ROC-AUC</th><th>PR-AUC</th><th>ECE</th></tr></thead><tbody><tr><td><strong>M1+</strong></td><td>${Number(m.positives || 0)} / ${Number(m.samples || 0)}</td><td>${wxfDecimal(m.brier_score,4)}</td><td>${wxfPercent(m.brier_skill_vs_training_climatology,1)}</td><td>${wxfDecimal(m.log_loss,4)}</td><td>${wxfDecimal(m.roc_auc,3)}</td><td>${wxfDecimal(m.precision_recall_auc,3)}</td><td>${Number.isFinite(mErrors.ece) ? (mErrors.ece * 100).toFixed(2) + " pp" : "--"}</td></tr><tr><td><strong>X1+</strong></td><td class="warn">${Number(x.positives || x.test_x1_positives || 0)} / ${Number(x.samples || 0)}</td><td>${wxfDecimal(x.brier_score,4)}</td><td>${wxfPercent(x.brier_skill_vs_training_climatology,1)}</td><td>${wxfDecimal(x.log_loss,4)}</td><td>${wxfDecimal(x.roc_auc,3)}</td><td>${wxfDecimal(x.precision_recall_auc,3)}</td><td>${Number.isFinite(xErrors.ece) ? (xErrors.ece * 100).toFixed(2) + " pp" : "--"}</td></tr></tbody></table><div class="fd-wxf-audit-note"><strong>M1+ reading:</strong> ${wxfPercent(m.brier_skill_vs_training_climatology,1)} Brier skill over training climatology; ranking and reliability remain visible rather than being summarized as accuracy.</div><div class="fd-wxf-audit-note"><strong>X1+ reading:</strong> the holdout contains ${Number(x.positives || x.test_x1_positives || 0)} positive region-days. X severity now changes with magnetic structure and evolution. Improvement over the old constant-severity reference is ${wxfPercent(x.brier_improvement_vs_constant_severity,1)} by Brier score; the model remains research guidance until prospective verification.</div><div class="fd-wxf-audit-note"><strong>Why “accuracy” is absent:</strong> rare-event accuracy is dominated by quiet cases. Brier skill, PR-AUC, calibration, event grouping and comparison with the frozen constant-severity reference are the meaningful tests.</div></div>
-        <div class="fd-wxf-audit-pane"><span class="fd-eyebrow">RELIABILITY DIAGRAMS</span><h4 style="margin:3px 0 7px;font-size:9px">Forecast probability vs observed frequency</h4><div class="fd-wxf-reliability-plots">${wxfReliabilityPlot("M1+", m)}${wxfReliabilityPlot("X1+", x)}</div><div class="fd-wxf-audit-checks"><div class="fd-wxf-audit-check"><b>PASS</b><span>Chronological train/calibration/test split with seven-day purge gaps; test begins ${date(m.test_start)}.</span></div><div class="fd-wxf-audit-check"><b>PASS</b><span>M1+ and direct X1+ probability maps are independently calibrated outside the chronological holdout, with X1+ constrained beneath M1+.</span></div><div class="fd-wxf-audit-check"><b>PASS</b><span>The compact SHARP training table, model artifacts, manifests and reproducible builders are published with checksums.</span></div><div class="fd-wxf-audit-check warn"><b>LIMITED</b><span>X1+ remains a rare clustered target; repeated flares from one region-day are one forecast case.</span></div><div class="fd-wxf-audit-check warn"><b>OPEN</b><span>Matched archived SWPC/MCSTAT/MCEVOL scoring and prospective shadow verification are still required.</span></div><div class="fd-wxf-audit-check fail"><b>UNSCORED</b><span>WXF Consensus weights have no training or holdout evidence. It remains isolated from operational status.</span></div></div></div>
-      </div>
-      <div class="fd-wxf-audit-note danger" style="margin:0 10px 10px"><strong>Operational status:</strong> the live regional model and its compact training table are versioned and reproducible, while the cycle-23 cross-era and SDO image branches remain separate evidence lanes. None establishes SWPC parity. Promotion still requires prospective shadow verification and matched SWPC/MCSTAT/MCEVOL scoring.</div>
-      ${renderWxfCrossEraExpansion()}
-      ${renderWxfDatasetV2Evidence()}
+    const version=report.model_version||'Unavailable', matches=!model.version||model.version===version;
+    const date=v=>v?String(v).slice(0,10):'Unavailable';
+    const rows=['M1+','X1+'].map(key=>{
+      const m=report[key]||{},ci=m.active_region_bootstrap_brier_skill_95;
+      return `<tr><th>${key}</th><td>${Number.isFinite(m.positives)?m.positives:'—'} / ${Number.isFinite(m.samples)?m.samples:'—'}</td><td>${wxfPercent(m.brier_skill_vs_training_climatology,1)}</td><td>${ci?wxfPercent(ci.lower,1)+' to '+wxfPercent(ci.upper,1):'Unavailable'}</td></tr>`;
+    }).join('');
+    return `<section class="fd-wxf-audit fd-verification-simple">
+      <div class="fd-wxf-audit-head"><div><span class="fd-eyebrow">HISTORICAL VERIFICATION</span><h4>WXF regional flare forecast</h4><p>M1+ shows improvement over training climatology in this historical sample. X1+ skill remains uncertain: only ${report['X1+']?.positives??'—'} positive region-days, and its interval includes no improvement.</p></div><span class="fd-wxf-audit-gate">EXPERIMENTAL</span></div>
+      ${matches?'':'<p class="fd-verification-warning">Report version differs from the displayed model. These scores must not be attributed to its current probabilities.</p>'}
+      <table class="fd-wxf-metric-table"><thead><tr><th>Target</th><th>Flare days / region-days</th><th>Skill vs baseline</th><th>95% interval</th></tr></thead><tbody>${rows}</tbody></table>
+      <p>Test period: ${date(report['M1+']?.test_start)}–${date(report['M1+']?.test_end)}. Target: next UTC day, 00–24 UTC, issued at 21 UTC the preceding day. These scores cover regional magnetic forecasts; fallback estimates and the combined full-disk value have not been verified by this test.</p>
+      <details class="fd-verification-info"><summary><span class="fd-info-symbol">i</span> What do these numbers mean?</summary><p><b>Skill vs baseline</b> is the reduction in Brier probability error relative to the training-set flare frequency. Positive is better; 0 is equal; negative is worse. It is not the percentage of forecasts that were correct.</p><p><b>95% interval</b> resamples whole active regions, keeping their repeated days together. If it crosses zero, improved skill is uncertain in this sample. Solar-cycle changes and shared activity can still affect transfer.</p><p><b>Reliability</b> compares predicted probability with observed flare frequency. Points on the dashed line agree; points above it mean underforecasting. Bins are exploratory summaries, especially with few X events.</p><div class="fd-wxf-reliability-plots">${wxfReliabilityPlot('M1+',report['M1+'])}${wxfReliabilityPlot('X1+',report['X1+'])}</div></details>
+      <details class="fd-verification-info"><summary><span class="fd-info-symbol">i</span> Inputs, coverage and scientific limits</summary><p>The regional recipe uses HMI magnetic measurements, their 24-hour change, disk location and pre-issue flare history. M1+ and X1+ have separately calibrated classifiers, with X1+ capped beneath M1+.</p><p>Historical training, calibration and test periods have seven-day gaps. The September 2026 audit reproduced both Brier scores and found zero NOAA-region overlap across these splits. The deployed models were then refit on all rows; these scores evaluate the recipe, not an independent test of those final fitted models. The test has already informed development, so a further upgrade needs separate chronological evaluation.</p><p>The full-disk calculation counts each shared HARP once, but assumes independent components and includes clearly identified morphology/climatology fallbacks. It excludes unnumbered and farside sources. Its probability calibration and parity with SWPC are not established.</p><p>WXF Consensus uses design weights, not trained weights, and remains unverified. Cross-Era and SDO Temporal are separate historical research branches and do not alter the live forecast.</p><small>Model: ${esc(version)} · ${Number(report.samples||0).toLocaleString()} region-days · ${esc(wxfTrainingReportStatus)}</small><details><summary>All ${report.features?.length||0} model inputs</summary><div class="fd-wxf-feature-cloud">${(report.features||[]).map(f=>'<code>'+esc(f)+'</code>').join('')}</div></details></details>
+      <details class="fd-verification-info"><summary>Separate research experiments</summary>${renderWxfCrossEraExpansion()}${renderWxfDatasetV2Evidence()}</details>
     </section>`;
   }
 
@@ -38003,13 +38105,11 @@ window.SpaceWxMonitorLayout=(()=>{
           </div>
         </div>
         <div class="fd-status-cluster">
-          <div class="fd-hazards">
-            <div class="fd-hazard" data-state="watch"><span>R</span><strong>1</strong></div>
-            <div class="fd-hazard"><span>S</span><strong>0</strong></div>
-            <div class="fd-hazard" data-state="watch"><span>G</span><strong>1</strong></div>
-          </div>
+          <details class="fd-scale-help"><summary class="fd-hazards" aria-label="NOAA space weather scales and explanation">
+            ${['R','S','G'].map(k=>`<div class="fd-hazard" data-noaa-scale="${k}" data-state="unknown"><span>${k}</span><strong>—</strong></div>`).join('')}
+          </summary><div class="fd-header-popover"><strong>NOAA space weather scales</strong><p>R: Radio blackouts from solar X-rays.<br>S: Solar radiation storms from energetic protons.<br>G: Geomagnetic storms based on planetary Kp.</p><p>1 = Minor · 2 = Moderate · 3 = Strong · 4 = Severe · 5 = Extreme. 0 means below the scale; — means unavailable. Orange marks levels 1–2; red marks 3–5. These are NOAA reported conditions, independent of local alert settings.</p><small id="fdScaleTime">Waiting for NOAA</small><p><a href="https://www.swpc.noaa.gov/noaa-scales-explanation" target="_blank" rel="noopener">NOAA definitions ↗</a></p></div></details>
           <div class="fd-utc"><span>UTC</span><strong id="fdUtc">--:--:--</strong></div>
-          <div class="fd-health-row"><span><i></i> feeds <b id="fdFeedHealth">nominal</b></span><span><i id="fdModelDot"></i> models <b id="fdModelHealth">ready</b></span></div>
+          <details id="fdFeedDropdown" class="fd-health-row" data-state="pending"><summary><i></i><b id="fdFeedHealth">Feeds: Checking</b><span>⌄</span></summary><div class="fd-header-popover" id="fdFeedIssues" role="status"></div></details>
         </div>
       </header>`;
   }
@@ -39314,7 +39414,7 @@ window.SpaceWxMonitorLayout=(()=>{
         <div class="fd-panel-heading"><div><span class="fd-eyebrow">OPERATIONAL GUIDANCE · NO RUN REQUIRED</span><h2>${esc(pipeline.name)}</h2><small>SWPC is always the first benchmark. Numbered-region selection drives the forecast, morphology, HMI evolution, event history, and dataset provenance below.</small></div><div class="fd-button-row"><button type="button" class="fd-button primary" data-fd-region-analysis>OPEN REGION WORKBENCH</button></div></div>
         <div class="fd-flare-workspace">
           <section class="fd-flare-primary">
-            <div class="fd-flare-brief"><div><span class="fd-eyebrow">NEXT 24 HOURS</span><h3>Probability of at least one M1+ or X1+ flare</h3><p>Official SWPC guidance is the fixed reference row; experimental and statistical methods follow beneath it for comparison.</p></div><div class="fd-flare-live-state"><span>GUIDANCE SURFACE</span><strong>AVAILABLE NOW</strong></div></div>
+            <div class="fd-flare-brief"><div><span class="fd-eyebrow">PROVIDER VALID WINDOWS</span><h3>Probability of at least one M1+ or X1+ flare</h3><p>Official SWPC guidance is the fixed reference row; experimental and statistical methods follow beneath it for comparison.</p></div><div class="fd-flare-live-state"><span>GUIDANCE SURFACE</span><strong>AVAILABLE NOW</strong></div></div>
             <div class="fd-flare-guidance-slot" id="fdFlareGuidanceSlot"></div>
             <section class="fd-sunspot-browser" id="fdSunspotBrowser"><div class="fd-sunspot-empty">Loading current NOAA/SWPC numbered regions…</div></section>
             <section class="fd-flare-analysis" id="fdFlareAnalysis"><div class="fd-analysis-empty">Select a numbered active region to load its forecast workbench.</div></section>
@@ -39621,8 +39721,6 @@ window.SpaceWxMonitorLayout=(()=>{
     $("#fdRunStatus", app).textContent = run.id ? `${run.status.toUpperCase()} · ${run.id}` : "READY TO QUEUE";
     $("#fdRunProgress", app).style.setProperty("--progress", `${run.progress}%`);
     $("#fdRunProgress", app).style.width = `${run.progress}%`;
-    $("#fdModelHealth", app).textContent = run.status === "running" ? "running" : run.status === "failed" ? "degraded" : "ready";
-    $("#fdModelDot", app).classList.toggle("warn", run.status === "failed");
     $("#fdGlobalTime", app).value = String(state.globalHour);
     $("#fdLeadTime", app).textContent = `T+${String(state.globalHour).padStart(3, "0")} h`;
     const valid = new Date(Date.UTC(2026, 7, 25, Number(state.cycle)) + state.globalHour * 3600000);
@@ -39930,6 +40028,7 @@ window.SpaceWxMonitorLayout=(()=>{
 
   function updateUtc() {
     if (!app) return;
+    window.SpaceWxHeaderStatus?.render();
     $("#fdUtc", app).textContent = new Date().toLocaleTimeString("en-GB", { hour12: false, timeZone: "UTC" });
   }
 

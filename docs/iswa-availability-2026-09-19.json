@@ -1,0 +1,252 @@
+{
+  "checkedAt": "2026-09-19T23:30:16.634360+00:00",
+  "purpose": "Availability audit, not a model-skill study or observation archive",
+  "entries": [
+    {
+      "id": "RBSP_A_ECTHOPE_e_FLUX_P1M",
+      "metadataURL": "https://iswa.ccmc.gsfc.nasa.gov/hapi/info?id=RBSP_A_ECTHOPE_e_FLUX_P1M",
+      "start": "2013-01-15T09:49:19Z",
+      "stop": "2016-12-23T03:44:45Z"
+    },
+    {
+      "id": "SWMF2023_RT_GMlog_P1M",
+      "metadataURL": "https://iswa.ccmc.gsfc.nasa.gov/hapi/info?id=SWMF2023_RT_GMlog_P1M",
+      "start": "2023-12-27T17:05:11Z",
+      "stop": "2025-12-16T13:04:01Z"
+    },
+    {
+      "id": "ace_epam_P5M",
+      "metadataURL": "https://iswa.ccmc.gsfc.nasa.gov/hapi/info?id=ace_epam_P5M",
+      "start": "2010-03-15T00:00:00Z",
+      "stop": "2026-09-19T23:00:00Z",
+      "recentNumericSample": {
+        "id": "ace_epam_P5M",
+        "rows": 28,
+        "last": [
+          "2026-09-19T23:15:00Z",
+          2215.3562,
+          12.755102,
+          4220.3716,
+          8.9789734,
+          1.0769329,
+          0.4024373,
+          0.11183893
+        ],
+        "status": {
+          "code": 1200,
+          "message": "OK"
+        }
+      }
+    },
+    {
+      "id": "dst_quicklook",
+      "metadataURL": "https://iswa.ccmc.gsfc.nasa.gov/hapi/info?id=dst_quicklook",
+      "start": "2022-01-01T00:00:00Z",
+      "stop": "2026-09-19T22:00:00Z",
+      "recentNumericSample": {
+        "id": "dst_quicklook",
+        "rows": 2,
+        "last": [
+          "2026-09-19T22:00:00Z",
+          -5
+        ],
+        "status": {
+          "code": 1200,
+          "message": "OK"
+        }
+      }
+    },
+    {
+      "id": "goesp_mag_p1m",
+      "metadataURL": "https://iswa.ccmc.gsfc.nasa.gov/hapi/info?id=goesp_mag_p1m",
+      "start": "2010-04-14T00:00:00Z",
+      "stop": "2026-09-19T23:15:00Z",
+      "recentNumericSample": {
+        "id": "goesp_mag_p1m",
+        "rows": 142,
+        "last": [
+          "2026-09-19T23:21:00Z",
+          87.09465026855469,
+          39.43939971923828,
+          -4.406610488891602,
+          95.70980072021484,
+          "GOES-19"
+        ],
+        "status": {
+          "code": 1200,
+          "message": "OK"
+        }
+      }
+    },
+    {
+      "id": "goesp_part_flux_P5M",
+      "metadataURL": "https://iswa.ccmc.gsfc.nasa.gov/hapi/info?id=goesp_part_flux_P5M",
+      "start": "2010-04-14T00:00:00Z",
+      "stop": "2026-09-19T23:05:00Z",
+      "recentNumericSample": {
+        "id": "goesp_part_flux_P5M",
+        "rows": 28,
+        "last": [
+          "2026-09-19T23:15:00Z",
+          4.120509147644043,
+          0.22274641692638397,
+          0.2125939279794693,
+          0.20558589696884155,
+          0.20457805693149567,
+          0.20304051041603088,
+          -100000,
+          261.3367919921875,
+          -100000,
+          0.20418547093868256,
+          0.17601169645786285,
+          "GOES-19",
+          "GOES-18"
+        ],
+        "status": {
+          "code": 1200,
+          "message": "OK"
+        }
+      }
+    },
+    {
+      "name": "SEPSTER Parker",
+      "dataID": 1241,
+      "timestamp": "2026-09-19T21:31:00Z",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/iswa_data_tree/model/heliosphere/sep_scoreboard/SEPSTER/Parker/2026/09/sepster_20260919_1848_0321_Parker_Spiral_iss_20260919_2131.json",
+      "issue_time": "2026-09-19T21:31:12Z",
+      "mode": "forecast",
+      "forecasts": [
+        {
+          "energy_channel": {
+            "min": 14,
+            "max": 24,
+            "units": "MeV^-1*s^-1*cm^-2*sr^-1"
+          },
+          "window": {
+            "start_time": "2026-09-19T18:48:00Z",
+            "end_time": "2026-09-20T21:09:00Z"
+          }
+        },
+        {
+          "energy_channel": {
+            "min": 10,
+            "max": -1,
+            "units": "MeV"
+          },
+          "window": {
+            "start_time": "2026-09-19T18:48:00Z",
+            "end_time": "2026-09-20T21:09:00Z"
+          }
+        },
+        {
+          "energy_channel": {
+            "min": 30,
+            "max": -1,
+            "units": "MeV"
+          },
+          "window": {
+            "start_time": "2026-09-19T18:48:00Z",
+            "end_time": "2026-09-20T21:09:00Z"
+          }
+        },
+        {
+          "energy_channel": {
+            "min": 50,
+            "max": -1,
+            "units": "MeV"
+          },
+          "window": {
+            "start_time": "2026-09-19T18:48:00Z",
+            "end_time": "2026-09-20T21:09:00Z"
+          }
+        },
+        {
+          "energy_channel": {
+            "min": 100,
+            "max": -1,
+            "units": "MeV"
+          },
+          "window": {
+            "start_time": "2026-09-19T18:48:00Z",
+            "end_time": "2026-09-20T21:09:00Z"
+          }
+        }
+      ]
+    },
+    {
+      "name": "MAG4 SHARP FE",
+      "dataID": 1380,
+      "timestamp": "2026-06-03T11:58:00Z",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/iswa_data_tree/model/heliosphere/sep_scoreboard/mag4_2019/V-HMI-NRT-JSON/2026/06/MAG4_SHARP_FE.20260603T1159.20260603T1158.20260603T1308.json",
+      "issue_time": "2026-06-03T13:08Z",
+      "mode": "forecast",
+      "forecasts": [
+        {
+          "energy_channel": {
+            "min": 10,
+            "max": -1,
+            "units": "MeV"
+          },
+          "window": {
+            "start_time": "2026-06-03T11:58Z",
+            "end_time": "2026-06-04T11:58Z"
+          }
+        }
+      ]
+    },
+    {
+      "name": "iPATH",
+      "dataID": 2577,
+      "timestamp": "2026-09-14T17:24:00Z",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/iswa_data_tree/model/heliosphere/sep_scoreboard/iPATH/2.X/CME/ZEUS/JSON/2026/09/ZEUS+iPATH_CME.2026-09-14T172400Z.2026-09-15T000656Z.json",
+      "issue_time": "2026-09-15T00:06:56Z",
+      "mode": "nowcast",
+      "forecasts": [
+        {
+          "energy_channel": {
+            "min": 10.0,
+            "max": -1.0,
+            "units": "MeV"
+          },
+          "window": {
+            "start_time": "2026-09-14T17:24:00Z",
+            "end_time": "2026-09-17T20:11:40Z"
+          }
+        },
+        {
+          "energy_channel": {
+            "min": 100.0,
+            "max": -1.0,
+            "units": "MeV"
+          },
+          "window": {
+            "start_time": "2026-09-14T17:24:00Z",
+            "end_time": "2026-09-17T20:11:40Z"
+          }
+        },
+        {
+          "energy_channel": {
+            "min": 30.0,
+            "max": -1.0,
+            "units": "MeV"
+          },
+          "window": {
+            "start_time": "2026-09-14T17:24:00Z",
+            "end_time": "2026-09-17T20:11:40Z"
+          }
+        },
+        {
+          "energy_channel": {
+            "min": 50.0,
+            "max": -1.0,
+            "units": "MeV"
+          },
+          "window": {
+            "start_time": "2026-09-14T17:24:00Z",
+            "end_time": "2026-09-17T20:11:40Z"
+          }
+        }
+      ]
+    }
+  ]
+}

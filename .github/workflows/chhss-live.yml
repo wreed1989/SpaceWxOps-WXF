@@ -1,5 +1,7 @@
 name: Coronal Hole HSS Outlook data
 on:
+  schedule:
+    - cron: '23 * * * *'
   push:
     branches: [main]
     paths: ['.github/workflows/chhss-live.yml']

@@ -91,12 +91,18 @@ if __name__ == '__main__':
     from .nairas import publish as publish_nairas
     publish_particles(root)
     publish_nairas(root)
+    from research.electron_fluence.huxt_run import run as run_huxt
+    try:
+        run_huxt(Path('../product/huxt-evidence'),root/'huxt-forecast.json')
+    except Exception as exc:
+        write(root/'huxt-forecast.json',{'schemaVersion':'wxf-huxt-1','issuedAt':datetime.now(timezone.utc).isoformat(),
+            'status':'withheld','reason':'HUXt inputs/run unavailable: '+str(exc)[:200],'rows':[]})
     from research.electron_fluence.refresh import refresh as refresh_electrons, append_ledger
     try:
         refresh_electrons(Path('.electron-current'), root / 'electron-fluence.json', Path('../product/electron-evidence'))
         append_ledger(root / 'electron-fluence.json', root / 'electron-forecast-history.jsonl')
     except Exception as exc:
-        write(root / 'electron-fluence.json', {'schemaVersion':'WXF-EF-0.1',
+        write(root / 'electron-fluence.json', {'schemaVersion':'WXF-EF-0.2',
               'issuedAt':datetime.now(timezone.utc).isoformat(), 'status':'withheld',
               'reason':'Experimental model unavailable: '+str(exc)[:200], 'forecast':[]})
     build(root)

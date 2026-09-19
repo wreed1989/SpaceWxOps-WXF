@@ -1,4 +1,4 @@
-"""WXF-EF v0.1: causal 24-hour GEO electron paths and rolling fluence.
+"""WXF-EF v0.2: causal 24-hour GEO electron paths and rolling fluence.
 
 Seven days estimate only local diurnal shape. A multivariate regression forest
 learns future changes from electron state and lagged observed solar-wind drivers.
@@ -11,10 +11,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-VERSION = 'WXF-EF-0.1'
-THRESHOLDS = {'moderate': 1.1e8, 'severe': 4.8e8}
+VERSION = 'WXF-EF-0.2'
+THRESHOLDS = {'moderate': 1.1e8}
 HORIZON = 24
-SPLITS = {'trainStart': '2025-04-14', 'trainStop': '2026-03-01',
+SPLITS = {'trainStart': '2020-02-01', 'trainStop': '2026-03-01',
           'calibrationStart': '2026-03-01', 'calibrationStop': '2026-06-01',
           'testStart': '2026-06-01', 'testStop': '2026-09-01'}
 
@@ -35,12 +35,15 @@ def prepare(cache):
     # NOAA five-minute averages are labelled at the START of their interval.
     # One sample is one boxcar, never a point for trapezoidal interpolation.
     p[['p10', 'flux']] = p[['p10', 'flux']].apply(pd.to_numeric, errors='coerce')
-    valid = ((p.satellite == 'GOES-19') & p.flux.ge(0) & p.p10.ge(0) & p.p10.lt(10))
+    valid = (p.satellite.isin(['GOES-16','GOES-19']) & p.flux.ge(0) & p.p10.ge(0) & p.p10.lt(10))
     p['accepted'] = valid
     p['flux'] = p.flux.where(valid)
     h = p[['flux']].resample('1h').mean()
     h['coverage'] = p.flux.resample('1h').count() / 12
-    h['flux'] = h.flux.where(h.coverage == 1)
+    h['satellite'] = p.satellite.resample('1h').first()
+    single = p.satellite.resample('1h').nunique() == 1
+    h['flux'] = h.flux.where((h.coverage == 1) & single)
+    h['satellite'] = h.satellite.where(single)
     h.index += pd.Timedelta(hours=1)  # hourly interval END, when all samples exist
     # One extra hour of latency for L1 driver feeds. No bow-shock-shifted OMNI.
     raw_drivers = []
@@ -66,10 +69,11 @@ def prepare(cache):
     proxies.index += pd.Timedelta(hours=2)
     h = h.join(proxies)
     quality = {'rawSamples': len(p), 'acceptedSamples': int(valid.sum()),
-               'otherElectronSpacecraft': int((p.satellite != 'GOES-19').sum()),
+               'otherElectronSpacecraft': int((~p.satellite.isin(['GOES-16','GOES-19'])).sum()),
                'highProtonSamples': int(p.p10.ge(10).sum()),
                'missingProtonSamples': int((~p.p10.ge(0)).sum()),
                'completeElectronHours': int(h.flux.notna().sum()),
+               'spacecraftHours': {str(k):int(v) for k,v in h.loc[h.flux.notna(),'satellite'].value_counts().items()},
                'hourCount': len(h), 'firstHourEnd': h.index[0].isoformat(),
                'lastHourEnd': h.index[-1].isoformat()}
     return h, quality
@@ -104,10 +108,12 @@ def diurnal_profile(history):
     return beta[:4]
 
 
-def features_at(data, i):
+def features_at(data, i, arrivals=None, extended=True, impacts=None):
     past = data.iloc[i-167:i+1]
     if len(past) != 168 or past.flux.iloc[-24:].notna().sum() < 23 or not past.flux.iloc[-3:].notna().all():
         raise ValueError('Insufficient recent electron coverage')
+    if 'satellite' in past and (past.loc[past.flux.notna(),'satellite'].nunique() != 1):
+        raise ValueError('Spacecraft handoff in seven-day profile')
     beta = diurnal_profile(past.flux)
     logflux = np.log1p(past.flux.to_numpy())
     residual = logflux - harmonics(past.index) @ beta
@@ -135,16 +141,64 @@ def features_at(data, i):
                 raise ValueError('Solar-wind-history gap')
             features[f'{column}_{hours}h'] = float(np.nanmean(values))
         features[f'{column}_change'] = features[f'{column}_3h'] - features[f'{column}_24h']
+    if extended:
+        features['spacecraft_goes19'] = float('satellite' not in past or past.satellite.iloc[-1] == 'GOES-19')
+        # Long-memory forcing and compression variability are measured predictors.
+        # Coverage flags accompany optional lags; imputation uses only recent data.
+        long = data.iloc[max(0,i-335):i+1]
+        for column in ['speed','pressure','coupling','southward']:
+            for lag,stop in [(72,168),(168,336)]:
+                values = long[column].iloc[max(0,len(long)-stop):max(0,len(long)-lag)].to_numpy()
+                good = np.isfinite(values)
+                coverage = good.sum()/(stop-lag)
+                features[f'{column}_lag{lag}_{stop}h_coverage'] = float(coverage)
+                features[f'{column}_lag{lag}_{stop}h'] = float(np.mean(values[good])) if coverage >= .75 else features[f'{column}_72h']
+            values = past[column].iloc[-24:].to_numpy()
+            features[f'{column}_max24h'] = float(np.nanmax(values))
+            features[f'{column}_std24h'] = float(np.nanstd(values))
+        features['fast_wind_fraction72h'] = float(np.mean(past.speed.iloc[-72:].dropna().to_numpy() >= 500))
+        # 27-day recurrence uses only the earlier rotation, never future wind.
+        origin = data.index[i]
+        for lead in [0,24,48,72]:
+            stop = origin + pd.Timedelta(hours=lead-27*24)
+            analog = data.loc[(data.index > stop-pd.Timedelta(hours=24)) & (data.index <= stop),'speed']
+            coverage = analog.notna().sum()/24
+            features[f'recurrence_{lead}h_coverage'] = float(coverage)
+            features[f'recurrence_{lead}h_speed'] = float(analog.mean()) if coverage >= .75 else features['speed_24h']
+        features['recurrence_rise24h'] = features['recurrence_24h_speed']-features['recurrence_0h_speed']
+        if arrivals is None:
+            if __package__:
+                from .arrivals import ArrivalArchive
+            else:
+                from arrivals import ArrivalArchive
+            arrivals = ArrivalArchive([],available=False)
+        features.update(arrivals.features(origin))
+        if impacts is not None:
+            features.update(impacts.features(origin,pd.Series(residual,index=past.index)))
+            # Measured high-speed/compression timing, without waiting for a report.
+            recent=data.iloc[max(0,i-191):i+1]
+            speed3=recent.speed.rolling(3,min_periods=3).mean()
+            speed24=recent.speed.shift(3).rolling(24,min_periods=18).mean()
+            pressure3=recent.pressure.rolling(3,min_periods=3).mean()
+            pressure24=recent.pressure.shift(3).rolling(24,min_periods=18).mean()
+            for label,condition in [('fast_wind', (speed3>=500)&(speed3-speed24>=75)),
+                                    ('compression', (pressure3/pressure24>=2)&(speed3-speed24>=50))]:
+                valid=condition & speed24.notna() & pressure24.notna()
+                times=recent.index[valid]
+                features[label+'_last_hours']=min(192.,(origin-times[-1]).total_seconds()/3600) if len(times) else 192.
+                features[label+'_duration72h']=float(valid.iloc[-72:].sum())
     return np.array(list(features.values())), base, list(features), electron_count
 
 
-def build_examples(data, stride=3):
+def build_examples(data, stride=3, arrivals=None, impacts=None):
     records, rejected = [], {}
     for i in range(167, len(data)-24, stride):
         try:
             if not data.flux.iloc[i-23:i+1].notna().all():
                 raise ValueError('Incomplete preceding 24 hours')
-            x, base, names, ne = features_at(data, i)
+            x, base, names, ne = features_at(data, i, arrivals, impacts=impacts)
+            if 'satellite' in data and data.iloc[i-167:i+25].loc[lambda q:q.flux.notna(),'satellite'].nunique() != 1:
+                raise ValueError('Spacecraft handoff in target')
             future = data.flux.iloc[i+1:i+25].to_numpy()
             if not np.isfinite(future).all():
                 raise ValueError('Incomplete target or proton-contaminated target')
@@ -237,58 +291,7 @@ def score(data, examples, mask, log_prediction, residuals):
     return result
 
 
-def fit(data, quality, out):
-    out = Path(out); out.mkdir(parents=True, exist_ok=True)
-    examples = build_examples(data)
-    masks = {s: split_mask(examples['times'], SPLITS[s+'Start'], SPLITS[s+'Stop']) for s in ['train','calibration','test']}
-    if any(int(mask.sum()) < 40 for mask in masks.values()):
-        raise ValueError('Insufficient data in a prespecified partition')
-    x = examples['x']; y = np.log1p(examples['future']) - examples['base']
-    estimator = forest().fit(x[masks['train']], y[masks['train']])
-    # Each residual vector is an entire 24-hour path. Keep its temporal dependence.
-    # Once-daily calibration origins reduce overlapping target windows.
-    cal = np.flatnonzero(masks['calibration'])
-    selected, last = [], None
-    for idx in cal:
-        t = examples['times'][idx]
-        if last is None or t-last >= pd.Timedelta(hours=24):
-            selected.append(idx); last=t
-    residuals = y[selected] - estimator.predict(x[selected])
-    logtest = examples['base'][masks['test']] + estimator.predict(x[masks['test']])
-    report = score(data, examples, masks['test'], logtest, residuals)
-    # Prespecified ablation: does wind improve the same estimator over electrons only?
-    ne = examples['electronFeatureCount']
-    electron_only = forest().fit(x[masks['train'],:ne], y[masks['train']])
-    eresidual = y[selected] - electron_only.predict(x[selected,:ne])
-    elog = examples['base'][masks['test']] + electron_only.predict(x[masks['test'],:ne])
-    report['electronOnlyAblation'] = score(data, examples, masks['test'], elog, eresidual)['metrics']['WXF']
-    report.update({'schemaVersion': VERSION, 'splits': SPLITS, 'quality': quality,
-                   'partitionCounts': {s:int(m.sum()) for s,m in masks.items()},
-                   'calibrationPaths': len(residuals), 'rejections': examples['rejected'],
-                   'featureNames': examples['names'],
-                   'forecastHorizonHours': 24, 'thresholdsMeaning': 'Office internal-charging exposure criteria; not satellite failure probabilities',
-                   'verification': 'Retrospective archive evaluation. Input receipt times and forecast revisions are not available. Forward shadow verification required.'})
-    reference = report['metrics']['diurnalPersistence']['24']
-    wxf = report['metrics']['WXF']['24']
-    report['releaseGate'] = {'beatsDiurnalAt24hMAE': wxf['mae'] < reference['mae'],
-                             'beatsDiurnalAt24hRMSLE': wxf['rmsle'] < reference['rmsle'],
-                             'coverageWithinFivePoints': abs(report['coverage']['24']-.9) <= .05,
-                             'forwardVerified': False}
-    artifact = {'version': VERSION, 'estimator': estimator, 'residuals': residuals,
-                'featureNames': examples['names'], 'report': report,
-                'trainingFeatureMin': x[masks['train']].min(axis=0),
-                'trainingFeatureMax': x[masks['train']].max(axis=0)}
-    if __package__:
-        from .frozen import export_model
-    else:
-        from frozen import export_model
-    export_model(artifact, out/'model.npz')
-    (out/'evaluation.json').write_text(json.dumps(report, indent=2, allow_nan=False)+'\n')
-    print(json.dumps({k:report[k] for k in ['partitionCounts','calibrationPaths','metrics','coverage','electronOnlyAblation','releaseGate']},indent=2),flush=True)
-    return artifact
-
-
-def predict(data, artifact, issued_at=None):
+def predict(data, artifact, issued_at=None, arrivals=None, impacts=None):
     issued_at = pd.Timestamp.now(tz='UTC') if issued_at is None else pd.Timestamp(issued_at)
     if issued_at.tzinfo is None:
         raise ValueError('UTC issue time required')
@@ -298,17 +301,21 @@ def predict(data, artifact, issued_at=None):
     result = {'schemaVersion': VERSION, 'issuedAt': issued_at.isoformat(), 'horizonHours':24,
               'units':'electrons cm^-2 sr^-1', 'fluxUnits':'electrons cm^-2 s^-1 sr^-1',
               'window':'preceding rolling 24 hours', 'thresholds':THRESHOLDS,
-              'status':'experimental', 'evaluation':artifact['report'],
-              'limitations':['GEO GOES-19 local measurement; not a belt-wide or orbit-specific dose forecast.',
+              'status':'experimental', 'modelVersion':artifact['version'], 'evaluation':artifact['report'],
+              'limitations':['GEO local measurement; not a belt-wide or orbit-specific dose forecast.',
                   'The range is an empirical residual ensemble, not a guaranteed 90% confidence interval.',
-                  'New CME/HSS arrivals absent from recent measurements are not explicitly forecast.',
+                  ('CME arrival guidance and 27-day wind recurrence are uncertain predictors; future Bz and new coronal-hole evolution are not known.' if artifact['version']!='WXF-EF-0.1' else 'Current model uses observed drivers; the separate CME/HSS candidate has not passed its promotion gate.'),
                   'REFM UTC-day totals are a separate product, not rolling fluence.']}
     try:
         if pos < 167 or issued_at-eligible.index[-1] > pd.Timedelta(hours=2):
             raise ValueError('Electron/solar-wind data are stale')
-        x, base, names, _ = features_at(eligible, pos)
-        if names != artifact['featureNames']:
+        if artifact['version']=='WXF-EF-0.1' and 'satellite' in eligible and eligible.satellite.iloc[-1]!='GOES-19':
+            raise ValueError('Current model requires GOES-19; spacecraft transfer has not been approved')
+        x, base, names, _ = features_at(eligible, pos, arrivals, impacts=impacts)
+        if any(n not in names for n in artifact['featureNames']):
             raise ValueError('Model/input feature mismatch')
+        indices = [names.index(n) for n in artifact['featureNames']]
+        x = x[indices]; names = artifact['featureNames']
         logpoint = base + artifact['estimator'].predict(x[None,:])[0]
         paths = flux_from_log(logpoint + artifact['residuals'])
         past = eligible.flux.iloc[-24:].to_numpy()
@@ -322,6 +329,10 @@ def predict(data, artifact, issued_at=None):
             'forecast':[{'time':t.isoformat(),'low':number(fq[0,k]),'median':number(fq[1,k]),'high':number(fq[2,k]),
                          'fluxLow':float(xq[0,k]),'fluxMedian':float(xq[1,k]),'fluxHigh':float(xq[2,k])} for k,t in enumerate(times)],
             'history':[{'time':t.isoformat(),'flux':number(v)} for t,v in eligible.flux.iloc[-24:].items()],
+            'predictorValues':dict(zip(names,map(float,x))),
+            'arrivalGuidance':{**arrivals.context(eligible.index[-1]), 'usedAsModelInput':any(n.startswith('cme_') for n in names)} if arrivals is not None else None,
+            'impactGuidance':impacts.context(eligible.index[-1]) if impacts is not None else None,
+            'spacecraft':str(eligible.satellite.iloc[-1]) if 'satellite' in eligible else 'GOES-19',
             'drivers':{c:float(eligible[c].iloc[-3:].mean()) for c in ['speed','bz','pressure','coupling']},
             'outOfTrainingRange':[names[i] for i,v in enumerate(x) if v < artifact['trainingFeatureMin'][i] or v > artifact['trainingFeatureMax'][i]]})
     except ValueError as exc:
@@ -333,13 +344,15 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--cache', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--fit', action='store_true')
+    parser.add_argument('--arrivals',type=Path)
     args = parser.parse_args()
     data, quality = prepare(args.cache)
     args.output.mkdir(parents=True,exist_ok=True)
     data.to_csv(args.output/'hourly.csv')
     from frozen import load_model
-    artifact = fit(data,quality,args.output) if args.fit else load_model(args.output/'model.npz')
-    forecast = predict(data,artifact)
+    from arrivals import load_archive
+    arrivals = load_archive(args.arrivals) if args.arrivals else None
+    artifact = load_model(args.output/'model.npz')
+    forecast = predict(data,artifact,arrivals=arrivals)
     (args.output/'forecast.json').write_text(json.dumps(forecast,indent=2,allow_nan=False)+'\n')
     print('Forecast status:',forecast['status'],forecast.get('reason',''),flush=True)

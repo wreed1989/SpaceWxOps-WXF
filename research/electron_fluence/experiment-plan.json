@@ -1,0 +1,16 @@
+{
+  "createdBeforeEvaluation": true,
+  "version": "WXF-EF-0.2",
+  "training": ["2020-02-01", "2026-03-01"],
+  "calibration": ["2026-03-01", "2026-06-01"],
+  "developmentEvaluation": ["2026-06-01", "2026-09-01"],
+  "additionalEvaluation": ["2026-09-01", "2026-09-19"],
+  "embargo": "Every origin target must finish strictly before partition end",
+  "fixedEstimator": {"trees": 192, "minLeaf": 12, "maxDepth": 14, "maxFeatures": 0.8, "seed": 1989},
+  "variants": ["longHistoryObserved", "longHistoryRecurrence", "longHistoryArrivals", "fullGuidance"],
+  "comparison": "Same eligible origins, compare frozen v0.1, diurnal and constant flux",
+  "promotion": "Full guidance remains experimental. June-August +24h MAE and RMSLE must beat diurnal persistence; 90% range coverage within 5 points; MAE must beat v0.1 on same cohort. Otherwise keep v0.1 operational and publish candidate research evidence. September is reporting only, no model selection or tuning. Report ablations even if inputs do not help.",
+  "uncertainty": "Paired 7-calendar-day block bootstrap of daily mean absolute errors; storms remain correlated; not independent origins",
+  "threshold": 110000000,
+  "caveat": "Development interval already inspected for v0.1. Historical source receipt times and complete provider revision history unavailable. Prospective verification pending."
+}

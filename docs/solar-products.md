@@ -93,6 +93,8 @@ the issue and valid times printed on the plot. These are independent provider
 forecasts, not a local ensemble execution or an automatically blended forecast.
 Image failures leave an explicit unavailable message and provider link.
 
+A separate **WXF local HUXt** panel now plots numerical Earth wind-speed output. The pinned HUXt core runs against SWPC’s processed ambient inner boundary and available DONKI CME analyses. The ambient and CME-inclusive solutions retain their original issue and boundary times; past output is labelled reconstruction. These runs and next-day time series are archived beside the electron forecast. HUXt does not infer Bz or electron fluence. See the [model card](../research/electron_fluence/README.md) for coordinate handling, assumptions, event-phase predictors and validation limits.
+
 PyCAT is a visibly unconnected placeholder for coronagraph-based CME geometry
 analysis; see the [SWPC/Met Office development overview](https://cpaess.ucar.edu/abstract-sww-2025/next-generation-noaaswpc-cme-analysis-tool-pycat).
 It has no fabricated measurements, controls or output. OSPREI has been removed

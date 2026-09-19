@@ -10,3 +10,8 @@ scikit-image==0.26.0
 
 # Shared hourly WXF electron forecast data preparation.
 pandas==3.0.6
+
+# Pinned numerical HUXt runtime; upstream core and Earth ephemeris are vendored.
+numba==0.67.0
+h5py==3.16.0
+appdirs==1.4.4

@@ -28,7 +28,7 @@ triggers, not universal spacecraft susceptibility limits:
 |---|---|---|
 | Three-hour planetary ap | 32 / 56 / 111 | Local activity triggers. Three-hour ap and daily Ap differ. NOAA G categories use Kp and must not be inferred from custom ap thresholds. |
 | ≥10 MeV solar protons | 10 / 40 / 1,000 PFU | Local exposure triggers. NOAA S1/S2/S3 start at 10 / 100 / 1,000 PFU; **40 PFU is not S2**. |
-| >2 MeV electrons, 24-hour fluence | 1.1×10⁸ / 4.8×10⁸ e⁻ cm⁻² sr⁻¹ | Local accumulated-exposure triggers. No authoritative universal damage criterion was established for these two values in this review. |
+| >2 MeV electrons, 24-hour fluence | 1.1×10⁸ e⁻ cm⁻² sr⁻¹ | Office rolling 24-hour accumulated-exposure trigger. This is not a universal damage criterion. The former severe criterion was removed at the user’s request. |
 
 NOAA's 1,000 e⁻ cm⁻² s⁻¹ electron **flux** alert criterion is not a 24-hour
 **fluence** threshold. The units differ by time. An official NOAA alert also has

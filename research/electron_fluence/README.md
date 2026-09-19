@@ -151,3 +151,7 @@ The initial arrival experiment uses the [prespecified plan](experiment-plan.json
 - [HUXt examples supplied by the user](https://github.com/University-of-Reading-Space-Science/HUXt/blob/master/huxt/notebooks/HUXt_examples.ipynb), [HUXt scientific description](https://doi.org/10.3389/fphy.2022.1005621), [NOAA operational inputs](https://nomads.ncep.noaa.gov/pub/data/nccf/com/wsa_enlil/prod/) and [DONKI API documentation](https://ccmc.gsfc.nasa.gov/tools/DONKI/).
 
 - [Hyndman and Athanasopoulos, time-series cross-validation](https://otexts.com/fpp3/tscv.html): rolling-origin evaluation trains on observations preceding each test target.
+
+### Nested prediction plumes
+
+The publication additionally reports `q25`/`q75` and `fluxQ25`/`fluxQ75` from the same whole residual paths used for the existing 5th/50th/95th percentiles. The chart shows central 50% and 90% prediction ranges. These are empirical pointwise ranges, not simultaneous 24-hour coverage guarantees or confidence intervals for a mean. The nominal 50% band's empirical coverage has not been separately scored. Older publications without inner quantiles retain their outer plume; no inner range is manufactured. Median forecasts, trained parameters and residual samples are unchanged. The SWPC bulletin remains archived as evidence but is removed from the user-facing disclosure.

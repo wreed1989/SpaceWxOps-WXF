@@ -13,6 +13,13 @@ SLOT='<!-- CHHSS_BOOTSTRAP_SLOT -->'
 
 def build(output, feed=None, solar_cycle=None, cme_scoreboard=None, particle_forecasts=None, nairas=None, electron_forecast=None):
     html=(ROOT/'SpaceWxOps_Coronal_Hole_HSS_Outlook.html').read_text()
+    # Keep the disconnected fallback on the same dated published flare cycle.
+    marker = 'window.FLARE_GUIDANCE_PAYLOAD = '
+    start = html.index(marker) + len(marker)
+    while html[start].isspace(): start += 1
+    _, length = json.JSONDecoder().raw_decode(html[start:])
+    flare = json.loads((ROOT/'flare_guidance.json').read_text())
+    html = html[:start] + json.dumps(flare,indent=2).replace('<','\\u003c') + html[start+length:]
     payload=json.loads(Path(feed or ROOT/'chhss-data/feed.json').read_text())
     if payload.get('schemaVersion')!='chhss-feed-1':
         raise ValueError('Expected a measured chhss-feed-1 publication')

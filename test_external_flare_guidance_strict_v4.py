@@ -54,6 +54,35 @@ class StrictGuidanceCompatibilityTests(unittest.TestCase):
         self.assertEqual(payload["wxf_full_disk"]["components"], 2)
         self.assertEqual(payload["wxf_full_disk"]["method"], "union_of_unique_region_components")
 
+class SwpcRecoveryTests(unittest.TestCase):
+    def test_swpc_refreshed_when_magnetic_benchmark_missing(self):
+        import datetime as dt
+        from unittest.mock import patch, Mock
+        import swpc_flare
+        text = ':Issued: 2026 Sep 19 2200 UTC\n:Prediction_dates: 2026 Sep 20 2026 Sep 21 2026 Sep 22\nClass_M 15 20 25\nClass_X 1 2 3\n'
+        p={'valid_start':'2026-09-20T00:00:00Z','regions':[{'id':'full-disk','members':{'sharpmag':{'m1':10,'x1':1}}}]}
+        with patch('swpc_flare.requests.get',return_value=Mock(text=text)):
+            swpc_flare.refresh_benchmark(p)
+        self.assertEqual(p['regions'][0]['members']['swpc']['m1'],15)
+        self.assertTrue(p['external_sources']['swpc']['ok'])
+        with self.assertRaises(ValueError):swpc_flare.parse(text.replace('Class_X 1 2 3','Class_X 16 2 3'),dt.date(2026,9,20))
+        with patch('swpc_flare.requests.get',side_effect=swpc_flare.requests.Timeout('Timed out')):
+            swpc_flare.refresh_benchmark(p)
+        self.assertIsNone(p['regions'][0]['members']['swpc']['m1'])
+        self.assertFalse(p['external_sources']['swpc']['ok'])
+
+    def test_retained_wxf_does_not_acquire_new_valid_window(self):
+        import swpc_flare
+        p={'issued':'2026-09-19T21:00:00Z','generation_status':{'used_previous_forecast':True,'previous_issued':'2026-09-16T21:00:00Z'},'regions':[{'id':'AR12345','members':{'sharpmag':{'m1':10,'x1':1}}},{'id':'full-disk','members':{'sharpmag':{'m1':10,'x1':1}}}]}
+        swpc_flare.preserve_stale_windows(p)
+        guidance._restore_wxf_full_disk_union(p)
+        swpc_flare.preserve_stale_windows(p)
+        p['generation_status']['previous_issued']='2026-09-19T21:00:00Z'
+        swpc_flare.preserve_stale_windows(p)
+        for r in p['regions']:
+            self.assertEqual(r['members']['sharpmag']['valid_end'],'2026-09-18T00:00:00+00:00')
+            self.assertEqual(r['members']['sharpmag']['quality'],'stale-fallback')
+
 
 if __name__ == "__main__":
     unittest.main()

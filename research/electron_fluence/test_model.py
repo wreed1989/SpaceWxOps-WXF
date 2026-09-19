@@ -223,7 +223,8 @@ class ScienceTests(unittest.TestCase):
         result=predict(data,artifact,issued)
         self.assertEqual(result['status'],'experimental')
         self.assertEqual(len(result['forecast']),24)
-        self.assertTrue(all(r['fluxLow']>=0 for r in result['forecast']))
+        self.assertTrue(all(0<=r['low']<=r['q25']<=r['median']<=r['q75']<=r['high'] for r in result['forecast']))
+        self.assertTrue(all(0<=r['fluxLow']<=r['fluxQ25']<=r['fluxMedian']<=r['fluxQ75']<=r['fluxHigh'] for r in result['forecast']))
         self.assertFalse(artifact['report']['releaseGate']['forwardVerified'])
         data.iloc[-5,data.columns.get_loc('flux')]=np.nan
         result=predict(data,artifact,issued)

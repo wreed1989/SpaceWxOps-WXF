@@ -38,5 +38,13 @@
     "report": "hindcast-evaluation.json",
     "codeSHA256": "18fad380efa284b4f1c95d71a20497f60e3d407ec01848d268cb139f58f7b796",
     "reportSHA256": "2c7d00f91b56632e9e2fc0172a93f10573497e7e26830282a4065937ac4ab377"
-  }
+  },
+  "inferenceCodeSHA256": "44fc2867bb009b7f03c773e5dd7078de904e8e694e4401047bb1b3042a362149",
+  "predictionRangeQuantiles": [
+    0.05,
+    0.25,
+    0.5,
+    0.75,
+    0.95
+  ]
 }

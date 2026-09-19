@@ -50,7 +50,6 @@ try:
     import pandas as pd
     import requests
     from sklearn.base import clone
-    from sklearn.calibration import calibration_curve
     from sklearn.impute import SimpleImputer
     from sklearn.linear_model import LogisticRegression
     from sklearn.metrics import (
@@ -1531,19 +1530,19 @@ def reliability_bins(labels: np.ndarray, probabilities: np.ndarray, bins: int = 
     probabilities = np.asarray(probabilities, dtype=float)
     if len(labels) == 0:
         return []
-    try:
-        observed, predicted = calibration_curve(labels, probabilities, n_bins=bins, strategy="quantile")
-    except ValueError:
-        return []
+    # Assign each case once, using identical membership for means and counts.
+    # Recomputing edges after empty/tied bins were dropped misweighted ECE.
+    edges = np.quantile(probabilities, np.linspace(0, 1, bins + 1))
+    membership = np.searchsorted(edges[1:-1], probabilities, side="left")
     result: list[dict[str, Any]] = []
-    quantile_edges = np.quantile(probabilities, np.linspace(0, 1, len(predicted) + 1))
-    for index, (p_mean, o_mean) in enumerate(zip(predicted, observed)):
-        if index == len(predicted) - 1:
-            count = int(((probabilities >= quantile_edges[index]) & (probabilities <= quantile_edges[index + 1])).sum())
-        else:
-            count = int(((probabilities >= quantile_edges[index]) & (probabilities < quantile_edges[index + 1])).sum())
+    for index in range(bins):
+        selected = membership == index
+        count = int(selected.sum())
+        if not count:
+            continue
         result.append(
-            {"mean_forecast": float(p_mean), "observed_frequency": float(o_mean), "count": count}
+            {"mean_forecast": float(probabilities[selected].mean()),
+             "observed_frequency": float(labels[selected].mean()), "count": count}
         )
     return result
 
@@ -2571,46 +2570,16 @@ def fetch_swpc_flare_history() -> tuple[pd.DataFrame, dict[str, Any]]:
 
 def fetch_swpc_full_disk(valid_date: dt.date) -> tuple[dict[str, Any] | None, dict[str, Any]]:
     """Read the official SWPC whole-disk M/X probability for one forecast day."""
-    session = request_session()
+    from swpc_flare import parse
     try:
-        response = session.get(SWPC_THREE_DAY_URL, timeout=30)
+        response = request_session().get(SWPC_THREE_DAY_URL, timeout=30)
         response.raise_for_status()
-        text = response.text
-    except requests.RequestException as exc:
-        LOGGER.warning("SWPC three-day flare forecast unavailable: %s", exc)
+        member = parse(response.text, valid_date)
+        return member, {"available": True, "source": SWPC_THREE_DAY_URL,
+                        "issued": member["issued"], "valid_date": str(valid_date)}
+    except (requests.RequestException, ValueError) as exc:
+        LOGGER.warning("SWPC three-day flare benchmark unavailable: %s", exc)
         return None, {"available": False, "message": str(exc)}
-    dates_match = re.search(r"^:Prediction_dates:\s+(.+)$", text, re.MULTILINE)
-    m_match = re.search(r"^Class_M\s+([\d\s]+)$", text, re.MULTILINE)
-    x_match = re.search(r"^Class_X\s+([\d\s]+)$", text, re.MULTILINE)
-    issued_match = re.search(r"^:Issued:\s+(.+?)\s*$", text, re.MULTILINE)
-    if not (dates_match and m_match and x_match):
-        return None, {"available": False, "message": "required SWPC fields were not parsed"}
-    date_tokens = re.findall(r"\d{4}\s+[A-Z][a-z]{2}\s+\d{1,2}", dates_match.group(1))
-    dates = [dt.datetime.strptime(token, "%Y %b %d").date() for token in date_tokens]
-    m_values = [float(value) for value in m_match.group(1).split()]
-    x_values = [float(value) for value in x_match.group(1).split()]
-    if valid_date not in dates:
-        return None, {
-            "available": False,
-            "message": f"SWPC product does not cover {valid_date}",
-            "covered_dates": [str(value) for value in dates],
-        }
-    index = dates.index(valid_date)
-    if index >= len(m_values) or index >= len(x_values):
-        return None, {"available": False, "message": "SWPC probability columns are incomplete"}
-    member = {
-        "m1": m_values[index],
-        "x1": min(x_values[index], m_values[index]),
-        "source": "NOAA/SWPC 3-day whole-disk flare forecast",
-        "quality": "official-operational",
-        "method": "official_swpc",
-    }
-    return member, {
-        "available": True,
-        "source": SWPC_THREE_DAY_URL,
-        "issued": issued_match.group(1) if issued_match else None,
-        "valid_date": str(valid_date),
-    }
 
 
 def swpc_region_member(metadata: Mapping[str, Any]) -> dict[str, Any] | None:
@@ -2967,7 +2936,7 @@ def create_forecast_payload(
             "unnumbered_or_farside_residual": False,
             "note": (
                 "Coverage aggregate, not a separately trained full-disk classifier. "
-                "Shared HARP probabilities are included once."
+                "Shared HARP probabilities are included once. The product formula assumes independent components and is not a validated full-disk calibration."
             ),
         },
         "wxf_region_components": [

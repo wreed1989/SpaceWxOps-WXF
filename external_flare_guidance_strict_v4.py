@@ -237,11 +237,13 @@ def _restore_wxf_full_disk_union(payload: dict[str, Any]) -> None:
         return
     if m1 is not None and x1 is not None:
         x1 = min(x1, m1)
+    previous = dict(full.get("members", {}).get("sharpmag") or {})
     full.setdefault("members", {})["sharpmag"] = {
+        **previous,
         "m1": m1,
         "x1": x1,
         "source": f"WXF {payload.get('model_version', 'unknown')} regional combination",
-        "quality": "operational" if payload.get("operational") else "research",
+        "quality": previous.get("quality") if payload.get("generation_status", {}).get("used_previous_forecast") else "operational" if payload.get("operational") else "research",
         "method": "regional_union_with_explicit_fallbacks",
     }
     shared_values = sum(count for count in component_counts.values() if count > 1)
@@ -256,7 +258,7 @@ def _restore_wxf_full_disk_union(payload: dict[str, Any]) -> None:
         "unnumbered_or_farside_residual": False,
         "note": (
             "Coverage aggregate, not a separately trained full-disk classifier. "
-            "Shared HARP probabilities are included once."
+            "Shared HARP probabilities are included once. The product formula assumes independent components and is not a validated full-disk calibration."
         ),
     }
 
@@ -278,9 +280,13 @@ def main(argv: list[str] | None = None) -> int:
         if not isinstance(payload, dict):
             raise ValueError("payload root must be an object")
 
+        from swpc_flare import preserve_stale_windows, refresh_benchmark
+        preserve_stale_windows(payload)
         payload = legacy.enrich(payload)
         _prune_unverified_members(payload)
         _restore_wxf_full_disk_union(payload)
+        preserve_stale_windows(payload)
+        refresh_benchmark(payload)
 
         external = payload.setdefault("external_sources", {})
         external["strict_parser_version"] = SCRIPT_VERSION

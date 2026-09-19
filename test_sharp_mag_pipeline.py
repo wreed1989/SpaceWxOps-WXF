@@ -81,6 +81,16 @@ class SharpMagPipelineTests(unittest.TestCase):
             self.assertFalse(np.isclose(x_probability[0], x_probability[1]))
             self.assertTrue(np.all(x_probability <= m1))
 
+class ReliabilityMembershipTests(unittest.TestCase):
+    def test_tied_probabilities_have_consistent_bin_counts(self):
+        p=np.array([0.]*8+[.1]*2+[.5]*3+[1.]*2)
+        y=np.array([0]*8+[1]*2+[0]*3+[1]*2)
+        rows=smp.reliability_bins(y,p)
+        self.assertEqual(sum(r['count'] for r in rows),len(p))
+        self.assertAlmostEqual(sum(r['count']*r['mean_forecast'] for r in rows),p.sum())
+        self.assertAlmostEqual(sum(r['count']*r['observed_frequency'] for r in rows),y.sum())
+        self.assertEqual(smp.reliability_bins(np.array([0,1,0]),np.zeros(3)),[{'mean_forecast':0.,'observed_frequency':1/3,'count':3}])
+
 
 if __name__ == "__main__":
     unittest.main()

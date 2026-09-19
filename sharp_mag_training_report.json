@@ -73,37 +73,37 @@
         "count": 147
       },
       {
-        "mean_forecast": 0.0004536289243020666,
+        "mean_forecast": 0.00045362892430206645,
         "observed_frequency": 0.0,
         "count": 147
       },
       {
-        "mean_forecast": 0.001182151478311817,
+        "mean_forecast": 0.0011821514783118172,
         "observed_frequency": 0.0,
         "count": 146
       },
       {
-        "mean_forecast": 0.0023867935751318513,
+        "mean_forecast": 0.002386793575131852,
         "observed_frequency": 0.0,
         "count": 147
       },
       {
         "mean_forecast": 0.004471921635851622,
         "observed_frequency": 0.0,
-        "count": 146
-      },
-      {
-        "mean_forecast": 0.008067365600929422,
-        "observed_frequency": 0.00684931506849315,
         "count": 147
       },
       {
-        "mean_forecast": 0.01425876540347323,
+        "mean_forecast": 0.008067365600929428,
+        "observed_frequency": 0.00684931506849315,
+        "count": 146
+      },
+      {
+        "mean_forecast": 0.014258765403473234,
         "observed_frequency": 0.006802721088435374,
         "count": 147
       },
       {
-        "mean_forecast": 0.024552659320832858,
+        "mean_forecast": 0.024552659320832844,
         "observed_frequency": 0.00684931506849315,
         "count": 146
       },
@@ -113,7 +113,7 @@
         "count": 147
       },
       {
-        "mean_forecast": 0.21683862679598623,
+        "mean_forecast": 0.21683862679598612,
         "observed_frequency": 0.2108843537414966,
         "count": 147
       }
@@ -154,7 +154,7 @@
         "count": 147
       },
       {
-        "mean_forecast": 0.0006103345520023047,
+        "mean_forecast": 0.000610334552002305,
         "observed_frequency": 0.0,
         "count": 146
       },
@@ -166,30 +166,30 @@
       {
         "mean_forecast": 0.001191373053290079,
         "observed_frequency": 0.0,
+        "count": 147
+      },
+      {
+        "mean_forecast": 0.001468171066694795,
+        "observed_frequency": 0.0,
         "count": 146
       },
       {
-        "mean_forecast": 0.0014681710666947952,
+        "mean_forecast": 0.0018265119893544307,
         "observed_frequency": 0.0,
         "count": 147
       },
       {
-        "mean_forecast": 0.001826511989354431,
-        "observed_frequency": 0.0,
-        "count": 147
-      },
-      {
-        "mean_forecast": 0.0023580878132969767,
+        "mean_forecast": 0.002358087813296976,
         "observed_frequency": 0.00684931506849315,
         "count": 146
       },
       {
-        "mean_forecast": 0.003187026577543161,
+        "mean_forecast": 0.0031870265775431617,
         "observed_frequency": 0.0,
         "count": 147
       },
       {
-        "mean_forecast": 0.013683499033060723,
+        "mean_forecast": 0.01368349903306073,
         "observed_frequency": 0.034013605442176874,
         "count": 147
       }
@@ -302,5 +302,21 @@
     "coefficients": "sharp_mag_coefficients.csv",
     "coefficients_sha256": "d9a9ca712d16c0f6aaf79409ad8990727d6bcb010da28ac17af7fad0200e9287"
   },
-  "validation_note": "M1+ scores use a chronologically later untouched holdout block. The production M1+ classifier is refit to all rows and calibrated from out-of-fold predictions grouped by NOAA active region. X1+ holdout probabilities use a separately fitted direct magnetic/history stage; the constant X/M ratio is retained only as a scored reference."
+  "validation_note": "M1+ scores use a chronologically later untouched holdout block. The production M1+ classifier is refit to all rows and calibrated from out-of-fold predictions grouped by NOAA active region. X1+ holdout probabilities use a separately fitted direct magnetic/history stage; the constant X/M ratio is retained only as a scored reference.",
+  "verification_audit": {
+    "checked_at": "2026-09-19T22:20:49Z",
+    "dataset_sha256": "12a0f1d5ba245d392c2eb3bcbed41a530b6205b4b20705d534319db1fd20f683",
+    "active_region_overlap": {
+      "trainCalibration": 0,
+      "trainTest": 0,
+      "calibrationTest": 0
+    },
+    "scores_reproduced": true,
+    "forecast_target": "Next UTC calendar day (00\u201324 UTC), issued at 21 UTC the preceding day",
+    "calibration_bins": "Quantile membership shared by means and counts; tied probabilities stay together",
+    "scope": "Regional SHARP recipe only. Excludes morphology fallbacks, full-disk independence aggregate, and browser consensus.",
+    "production_note": "Deployed estimators were refit to all rows; holdout scores describe the training recipe, not an untouched test of those final estimators.",
+    "selection_note": "The holdout has been inspected in model development; future changes need separate chronological evaluation.",
+    "script_sha256": "d26679803ecd734491c040165778ca63418a055d84fc84c995de8808f65c3f68"
+  }
 }

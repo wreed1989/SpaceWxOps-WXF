@@ -320,14 +320,16 @@ def predict(data, artifact, issued_at=None, arrivals=None, impacts=None):
         paths = flux_from_log(logpoint + artifact['residuals'])
         past = eligible.flux.iloc[-24:].to_numpy()
         fluence = rolling_paths(past, paths, allow_observed_gaps=True)
-        fq = np.quantile(fluence,[.05,.5,.95],axis=0)
-        xq = np.quantile(paths,[.05,.5,.95],axis=0)
+        # Nested prediction plumes come from the same whole residual paths;
+        # inner bands must not be interpolated from the outer endpoints.
+        fq = np.quantile(fluence,[.05,.25,.5,.75,.95],axis=0)
+        xq = np.quantile(paths,[.05,.25,.5,.75,.95],axis=0)
         times = pd.date_range(eligible.index[-1]+pd.Timedelta(hours=1),periods=24,freq='1h')
         number = lambda value: float(value) if np.isfinite(value) else None
         result.update({'dataAsOf':eligible.index[-1].isoformat(), 'observedFluence':number(past.sum()*3600),
             'completeObservedHours':int(np.isfinite(past).sum()),
-            'forecast':[{'time':t.isoformat(),'low':number(fq[0,k]),'median':number(fq[1,k]),'high':number(fq[2,k]),
-                         'fluxLow':float(xq[0,k]),'fluxMedian':float(xq[1,k]),'fluxHigh':float(xq[2,k])} for k,t in enumerate(times)],
+            'forecast':[{'time':t.isoformat(),'low':number(fq[0,k]),'q25':number(fq[1,k]),'median':number(fq[2,k]),'q75':number(fq[3,k]),'high':number(fq[4,k]),
+                         'fluxLow':float(xq[0,k]),'fluxQ25':float(xq[1,k]),'fluxMedian':float(xq[2,k]),'fluxQ75':float(xq[3,k]),'fluxHigh':float(xq[4,k])} for k,t in enumerate(times)],
             'history':[{'time':t.isoformat(),'flux':number(v)} for t,v in eligible.flux.iloc[-24:].items()],
             'predictorValues':dict(zip(names,map(float,x))),
             'arrivalGuidance':{**arrivals.context(eligible.index[-1]), 'usedAsModelInput':any(n.startswith('cme_') for n in names)} if arrivals is not None else None,

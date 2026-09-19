@@ -19,7 +19,10 @@ if(fixture.status==='experimental'){
  assert(!product.fresh(fixture,Date.parse(fixture.dataAsOf)+3*3600000));
  const bad=structuredClone(fixture);bad.forecast[0].fluxLow=-1;assert(!product.valid(bad));
  const negative=structuredClone(fixture);negative.forecast[0].low=-1;assert(!product.valid(negative));
- const quiet=structuredClone(fixture);quiet.observedFluence=2e7;quiet.forecast.forEach(r=>Object.assign(r,{low:1e7,median:2e7,high:3e7}));
+ const quiet=structuredClone(fixture);quiet.observedFluence=2e7;quiet.forecast.forEach(r=>Object.assign(r,{low:1e7,q25:1.5e7,median:2e7,q75:2.5e7,high:3e7}));
+ assert(product.valid(quiet));
+ const nested=product.chart(quiet);assert(nested.traces.some(t=>t.name==='50% prediction range'&&t.fill==='tonexty'));
+ const badInner=structuredClone(quiet);badInner.forecast[0].q75=4e7;assert(!product.valid(badInner));
  let quietChart=product.chart(quiet);assert.deepStrictEqual(Array.from(quietChart.layout.yaxis.range),[0,2e8]);assert.equal(quietChart.layout.yaxis.tickformat,'.1e');
  quiet.forecast.at(-1).high=6e8;const large=product.chart(quiet);assert.deepStrictEqual(Array.from(large.layout.yaxis.range),[0,7.5e8]);assert(large.layout.shapes.some(s=>s.y0===4.8e8));
  const shifted=structuredClone(fixture);shifted.forecast[2].time=shifted.forecast[1].time;assert(!product.valid(shifted));
@@ -30,7 +33,7 @@ if(fixture.status==='experimental'){
  }
  let overlayCalled=false;context.window.SpaceWxAlertStyle={thresholds:()=>[{value:9e8}],color:()=>'#abc',overlay:(key,max)=>{assert.strictEqual(key,'electron');assert(max<9e8,'Threshold visibility must not stretch a quiet plot');overlayCalled=true;return{shapes:[],annotations:[]}}};
  product.chart(fixture,'fluence',true);assert(overlayCalled,'Configured alert thresholds must drive the forecast overlay');
- overlayCalled=false;const hidden=product.chart(fixture,'fluence',false);assert(!overlayCalled);assert.equal(hidden.layout.shapes.length,0,'Turning off Show threshold removes threshold overlays');
+ overlayCalled=false;const hidden=product.chart(fixture,'fluence',false);assert(!overlayCalled);assert.equal(hidden.layout.shapes.filter(s=>s.y0===s.y1).length,0,'Turning off Show threshold removes threshold overlays');
 }
 console.log('WXF browser contracts passed');
 

@@ -74,6 +74,13 @@ for (const id of ['chHssScienceCore', 'chhssDataClient', 'fdChHssEngine']) {
   await data.refresh(true);
   assert.ok(data.current());
   const retained=data.current().observationTime;
+  const older=structuredClone(before);
+  older.generatedAt=new Clock(Clock.now()-60000).toISOString();
+  context.fetch=async()=>({ok:true,headers:{get(){return null;}},text:async()=>JSON.stringify(older)});
+  await data.refresh(true);
+  assert.equal(data.getState().feed.generatedAt,before.generatedAt);
+  assert.equal(data.getState().error,'');
+  assert.match(data.getState().notice,/retaining newer snapshot/);
   context.fetch=async()=>{throw Error('offline');};
   await data.refresh(true);
   assert.equal(data.current().observationTime,retained);

@@ -29160,7 +29160,7 @@ window.CHHSSData = (() => {
   const KEY='spaceWx.chhss.feed.v1';
   let url=DEFAULT;try{url=localStorage.getItem(KEY)||DEFAULT;}catch{}
   const CLIENT_VERSION='2026-09-18.3';
-  let state={feed:null,recurrence:null,recurrenceError:'',loading:false,source:'none',error:'',lastAttempt:null,lastSuccess:null},inflight=null,recurrenceFlight=null,lastTry=0,dbPromise=null;
+  let state={feed:null,recurrence:null,recurrenceError:'',loading:false,source:'none',error:'',notice:'',lastAttempt:null,lastSuccess:null},inflight=null,recurrenceFlight=null,lastTry=0,dbPromise=null;
   const q=x=>document.querySelector(x),num=x=>typeof x==='number'&&Number.isFinite(x),date=x=>Number.isFinite(Date.parse(x))?Date.parse(x):null;
   const fmt=x=>num(x)?x.toFixed(1):'—';
   function publicURL(input){
@@ -29238,7 +29238,7 @@ window.CHHSSData = (() => {
   }
   let applied='';
   function changed(){document.dispatchEvent(new CustomEvent('chhss-feed-updated'));paint();const p=current(),sig=p?p.maskId+'|'+p.observationTime:'withheld';if(sig!==applied&&window.SpaceWxChHss){applied=sig;setTimeout(()=>window.SpaceWxChHss?.refresh(true),600);}}
-  async function use(feed,source){await validate(feed);state.feed=feed;if(feed.recurrence)useRecurrence(feed.recurrence);state.source=source;state.lastSuccess=new Date().toISOString();state.error='';changed();return feed;}
+  async function use(feed,source){await validate(feed);state.feed=feed;if(feed.recurrence)useRecurrence(feed.recurrence);state.source=source;state.lastSuccess=new Date().toISOString();state.error='';state.notice='';changed();return feed;}
   async function initialize(){
     const embed=q('#chhssBootstrap');if(embed){try{await use(JSON.parse(embed.textContent),'embedded snapshot');}catch(e){state.error='Snapshot rejected: '+e.message;}}
     if(!state.feed){const c=await cached();if(c)try{await use(c,'browser cache');}catch{}}
@@ -29258,7 +29258,10 @@ window.CHHSSData = (() => {
         if(Number(response.headers.get('Content-Length'))>40*1024*1024)throw new Error('Feed exceeds 40 MB.');
         const body=await response.text();if(body.length>40*1024*1024)throw new Error('Feed exceeds 40 MB.');
         const feed=JSON.parse(body);await validate(feed);
-        if(state.feed&&date(feed.generatedAt)<date(state.feed.generatedAt))throw new Error('Older publication returned; last-good feed retained.');
+        if(state.feed&&date(feed.generatedAt)<date(state.feed.generatedAt)){
+          state.error='';state.notice=`Public feed returned ${feed.generatedAt}; retaining newer snapshot ${state.feed.generatedAt}. Observation age checks still apply.`;
+          return state.feed;
+        }
         await use(feed,'published feed');await cached(feed);
       }catch(e){
         state.error=(e.name==='AbortError'?'Feed request timed out.':e.message)+' Last-good observations retain their original age.';
@@ -29299,7 +29302,7 @@ window.CHHSSData = (() => {
     set('signs',['E','M','W'].map(k=>{const v=tested?.sector?.[k]?.polarity;return v===1?'+ outward':v===-1?'− inward':'unknown';}).join(' / '));
     set('history',b&&num(b.requestedDays)?`${b.completedDays??0} / ${b.requestedDays??0} days · ${b.failedDays??0} failed`:'Awaiting worker');
     set('n',r?String(r.coverage?.scoredPairs??0):'—');
-    set('error',[state.error,f?.status?.current?.error,state.recurrenceError||f?.status?.current?.recurrenceError].filter(Boolean).join(' '));
+    set('error',[state.error||state.notice,f?.status?.current?.error,state.recurrenceError||f?.status?.current?.recurrenceError].filter(Boolean).join(' '));
     set('source',`Client ${CLIENT_VERSION} · ${state.source} · publication ${f?.generatedAt||'unavailable'} · recipe ${f?.recipe||'not received'} · OMNI ${persistenceRows().length} valid hours; last ${state.recurrence?.coverage?.lastValidHour||persistenceRows().at(-1)?.time_tag||'unavailable'}. OMNI archive lag is separate from T−27d coverage.`);
     const anchor=p?.observationTime?new Date(p.observationTime):new Date(),missing=[];
     for(let i=0;i<7;i++){const t=new Date(Date.UTC(anchor.getUTCFullYear(),anchor.getUTCMonth(),anchor.getUTCDate()+i));if(dailySpeed(t)===null)missing.push(t.toISOString().slice(0,10));}

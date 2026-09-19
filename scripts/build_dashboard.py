@@ -11,7 +11,7 @@ ROOT=Path(__file__).resolve().parents[1]
 SLOT='<!-- CHHSS_BOOTSTRAP_SLOT -->'
 
 
-def build(output, feed=None, solar_cycle=None, cme_scoreboard=None, particle_forecasts=None):
+def build(output, feed=None, solar_cycle=None, cme_scoreboard=None, particle_forecasts=None, nairas=None):
     html=(ROOT/'SpaceWxOps_Coronal_Hole_HSS_Outlook.html').read_text()
     payload=json.loads(Path(feed or ROOT/'chhss-data/feed.json').read_text())
     if payload.get('schemaVersion')!='chhss-feed-1':
@@ -47,6 +47,15 @@ def build(output, feed=None, solar_cycle=None, cme_scoreboard=None, particle_for
         if html.count(slot)!=1:raise ValueError('Canonical HTML must contain one particle slot')
         encoded=json.dumps(snapshot,separators=(',',':'),allow_nan=False).replace('<','\\u003c')
         html=html.replace(slot,slot+'\n<script type="application/json" id="particleForecastBootstrap">'+encoded+'</script>')
+    radiation=Path(nairas or ROOT/'chhss-data/nairas.json')
+    if radiation.exists():
+        snapshot=json.loads(radiation.read_text())
+        if snapshot.get('schemaVersion')!='nairas-effective-dose-1':
+            raise ValueError('Invalid NAIRAS snapshot')
+        slot='<!-- NAIRAS_BOOTSTRAP_SLOT -->'
+        if html.count(slot)!=1:raise ValueError('Canonical HTML must contain one NAIRAS slot')
+        encoded=json.dumps(snapshot,separators=(',',':'),allow_nan=False).replace('<','\\u003c')
+        html=html.replace(slot,slot+'\n<script type="application/json" id="nairasBootstrap">'+encoded+'</script>')
     output=Path(output)
     output.parent.mkdir(parents=True,exist_ok=True)
     output.write_text(html)
@@ -60,5 +69,6 @@ if __name__=='__main__':
     parser.add_argument('--solar-cycle',type=Path,help='Full observed/predicted NOAA snapshot with original retrieval time')
     parser.add_argument('--cme-scoreboard',type=Path,help='Dated current NASA CME Scoreboard response')
     parser.add_argument('--particle-forecasts',type=Path,help='Dated published particle-model snapshot')
+    parser.add_argument('--nairas',type=Path,help='Full global 20 km effective-dose-rate grids with original product epochs')
     args=parser.parse_args()
-    print(build(args.output,args.feed,args.solar_cycle,args.cme_scoreboard,args.particle_forecasts))
+    print(build(args.output,args.feed,args.solar_cycle,args.cme_scoreboard,args.particle_forecasts,args.nairas))

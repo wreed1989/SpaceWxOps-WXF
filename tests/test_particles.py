@@ -34,4 +34,15 @@ class ParticleTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Unexpected source'):
             retrieve('refm', SOURCES['refm'], lambda *a, **k: response)
 
+    def test_integral_channels_do_not_mix_with_other_energies(self):
+        response = Response()
+        response.json = lambda: [{'energy': e, 'flux': .25, 'time_tag': '2026-09-19T06:00Z'}
+                                 for e in ('>=10 MeV', '>=50 MeV', '>=100 MeV')]
+        result = retrieve('goesProtons', SOURCES['goesProtons'], lambda *a, **k: response)
+        self.assertEqual([r['energy'] for r in result['payload']], ['>=10 MeV', '>=50 MeV'])
+        self.assertEqual(SOURCES['umasep50'].split('=')[-1], '1655')
+        response.json = lambda: [{'energy': '>=10 MeV'}]
+        with self.assertRaisesRegex(ValueError, '10 or 50'):
+            retrieve('goesProtons', SOURCES['goesProtons'], lambda *a, **k: response)
+
 if __name__ == '__main__': unittest.main()

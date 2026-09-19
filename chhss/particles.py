@@ -1,8 +1,7 @@
 """Relay public particle forecasts without changing provider issue/valid times.
 
-ISWA does not grant browser CORS access. The existing hourly publication job
-retrieves its numerical products; browser image panels use ISWA's latest-file
-redirect directly, independently of this hourly numerical snapshot.
+ISWA does not grant browser CORS access. The hourly publication job retrieves
+numerical forecasts and a GOES observation snapshot for downloaded dashboards.
 """
 import json
 from concurrent.futures import ThreadPoolExecutor
@@ -12,7 +11,8 @@ import requests
 
 ISWA = 'https://iswa.ccmc.gsfc.nasa.gov/api/redirect?dataID='
 REFM = 'https://services.swpc.noaa.gov/text/relativistic-electron-fluence-tabular.txt'
-SOURCES = {'umasep10': ISWA+'1653', 'umasep100': ISWA+'1656',
+GOES = 'https://services.swpc.noaa.gov/json/goes/primary/integral-protons-3-day.json'
+SOURCES = {'umasep10': ISWA+'1653', 'umasep50': ISWA+'1655', 'goesProtons': GOES,
            'release30': ISWA+'1218', 'release60': ISWA+'1219',
            'release90': ISWA+'1220', 'refm': REFM}
 
@@ -26,6 +26,13 @@ def retrieve(key, url, get=requests.get):
     if key == 'refm':
         if ':Created:' not in payload or '# UTC Date' not in payload:
             raise ValueError('Invalid REFM bulletin')
+    elif key == 'goesProtons':
+        if not isinstance(payload, list):
+            raise ValueError('Invalid GOES proton observations')
+        payload = [r for r in payload if r.get('energy') in ('>=10 MeV', '>=50 MeV')]
+        if not payload or not all(any(r['energy'] == energy for r in payload)
+                                  for energy in ('>=10 MeV', '>=50 MeV')):
+            raise ValueError('Missing GOES 10 or 50 MeV observations')
     else:
         submission = payload.get('sep_forecast_submission', {})
         if not submission.get('issue_time') or not submission.get('forecasts'):

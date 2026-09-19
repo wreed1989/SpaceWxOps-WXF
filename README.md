@@ -100,3 +100,6 @@ This remains research/shadow guidance. M1+ has positive grouped holdout skill; X
 The [Monitor layout guide](docs/monitor-layout.md) explains selection, removal,
 resizing and saved views. [Particle products and future options](docs/particle-forecasting-options.md)
 describes the connected UMASEP, HESPERIA REleASE and SWPC REFM feeds.
+[NAIRAS radiation dose](docs/radiation-dose.md) documents the NH/SH 20 km maps,
+effective dose rate in mSv/h, constant-exposure dose estimates in mSv, and dated
+SEP event forecasts.

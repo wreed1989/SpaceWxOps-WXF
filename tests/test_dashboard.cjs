@@ -44,18 +44,18 @@ assert.match(scoreboard.urls(new Date('2026-10-01'))[0],/ccmc\.gsfc\.nasa\.gov\/
 assert.equal(scoreboard.parse([]).length,0);
 assert.throws(()=>scoreboard.parse({error:'unavailable'}),/Invalid NASA/);
 // Monitor migration must preserve intentional emptiness, order and chosen sizes.
-for(const id of ['monitorLayoutPolicy','particleForecastProduct'])vm.runInContext(scripts.find(([,a])=>a.includes(`id="${id}"`))[2],products);
+for(const id of ['monitorLayoutPolicy','particleForecastProduct','nairasProduct'])vm.runInContext(scripts.find(([,a])=>a.includes(`id="${id}"`))[2],products);
 const monitor=products.window.SpaceWxMonitorLayout;
 assert.equal(monitor.normalize([],()=>true).length,0);
 const layoutRows=monitor.normalize([{key:'solar.cycle',cols:6,rows:8},{key:'realtime.imf',cols:8,rows:8},{key:'solar.cycle'},{key:'invalid'}],(_,k)=>k!=='invalid');
 assert.deepEqual(Array.from(layoutRows,r=>r.key),['solar.cycle','realtime.imf']);
 assert.equal(layoutRows[0].cols,24);
-assert.equal(layoutRows[0].rows,29);
+assert.equal(layoutRows[0].rows,60);
 assert.equal(layoutRows[1].cols,24);
 assert.equal(monitor.normalize([{kind:'visual',key:'helio',cols:8,rows:12,layoutVersion:2}],()=>true)[0].cols,8);
 assert.equal(monitor.resize({cols:12,rows:10},504,72,1000).cols,24);
-assert.equal(monitor.resize({cols:12,rows:10},504,72,1000).rows,12);
-assert.equal(monitor.dimensions(0,100).rows,42);
+assert.equal(monitor.resize({cols:12,rows:30},504,72,1000).rows,36);
+assert.equal(monitor.dimensions(0,999).rows,180);
 const particles=products.window.SpaceWxParticles;
 const bulletin=':Created: 2026 Sep 19 0014 UTC\n2026 09 17 -9.9e+04 -999 3.7e7 7.6e8 5.3e8\n2026 09 18 3.8e7 412 1.0e8 -9.9e+04 2.2e8';
 const refm=particles.parseREFM(bulletin);
@@ -197,3 +197,39 @@ for (const id of ['chHssScienceCore', 'chhssDataClient', 'fdChHssEngine']) {
   assert.throws(()=>data.validateRecurrence(duplicate),/duplicate/);
   console.log(`All ${scripts.length} scripts parse; registered AIA/HMI, independent OMNI, daily coverage, checksum, quality, stale and last-good gates pass.`);
 })().catch(error => {console.error(error); process.exitCode=1;});
+
+// Resizing one edge locks the other dimension; saved v2 heights are unchanged.
+assert.equal(monitor.normalize([{kind:'visual',key:'helio',cols:8,rows:12,layoutVersion:2}],()=>true)[0].rows,36);
+assert.equal(monitor.resize({cols:12,rows:30},504,72,1000,'height').cols,12);
+assert.equal(monitor.resize({cols:12,rows:30},504,72,1000,'width').rows,30);
+assert.equal(monitor.resize({cols:24,rows:30},0,-12,1000,'height').rows,29);
+const protonInput=[{time_tag:'2026-09-19T05:00:00Z',energy:'>=10 MeV',flux:2},{time_tag:'2026-09-19T05:20:00Z',energy:'>=10 MeV',flux:-999},{time_tag:'2026-09-19T05:00:00Z',energy:'>=50 MeV',flux:.1},{time_tag:'invalid',energy:'>=50 MeV',flux:100}];
+const proton10=particles.parseProtons(protonInput,10);
+assert.equal(proton10.length,3); // Insert a real gap across an observation outage.
+assert.equal(proton10[1].flux,null);
+assert.equal(proton10[2].flux,null);
+assert.equal(particles.parseProtons(protonInput,50)[0].flux,.1);
+const protonChart=particles.protonChart({goesProtons:{payload:protonInput}},24,Date.parse('2026-09-19T06:00Z'));
+assert.equal(protonChart.traces.length,2);
+assert.equal(protonChart.traces[1].name,'GOES ≥50 MeV');
+assert.equal(protonChart.traces[0].x.length,3); // No fabricated forecast samples.
+const dose=products.window.SpaceWxNAIRAS;
+const fullGrid={altitudeKm:20,unit:'mSv/h',sourceTime:'2026-09-19T04:00:00Z',latitudes:Array.from({length:181},(_,i)=>i-90),longitudes:Array.from({length:360},(_,i)=>i),values:Array(65160).fill(.01)};
+fullGrid.values[0]=.02;fullGrid.values[180*360]=.03;
+assert.equal(dose.valid(fullGrid),true);
+assert.equal(dose.point(fullGrid,-90,0).rate,.02);
+assert.equal(dose.point(fullGrid,90,360).rate,.03);
+assert.equal(dose.point(fullGrid,60,-100).longitude,-100);
+assert.equal(dose.point(fullGrid,91,0),null);
+assert.equal(dose.status({...fullGrid,sourceTime:'2026-09-06T20:15:00Z'},'forecast',Date.parse('2026-09-19T06:00Z')).warning,true);
+assert.match(dose.status(fullGrid,'forecast',Date.parse('2026-09-19T06:00Z')).text,/validity interval not supplied/);
+assert.equal(dose.status(fullGrid,'nowcast',Date.parse('2026-09-19T06:00Z')).warning,false);
+assert.equal(dose.status(fullGrid,'nowcast',Date.parse('2026-09-19T08:00Z')).warning,true);
+const north=dose.polarGrid(fullGrid,1,2),south=dose.polarGrid(fullGrid,-1,2);
+assert.equal(north.z[90][90],.06); // 2 h at .03 mSv/h
+assert.equal(south.z[90][90],.04); // 2 h at .02 mSv/h
+assert.equal(north.z[0][0],null); // Outside hemisphere, never fake zero.
+assert.equal(north.customdata[90][90][0],90);
+assert.equal(south.customdata[90][90][0],-90);
+assert.equal(dose.valid({...fullGrid,unit:'µSv/h'}),false);
+console.log('Adaptive-card, raw proton and NAIRAS contracts passed');

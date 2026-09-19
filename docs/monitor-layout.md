@@ -5,8 +5,17 @@ it again removes it. No related products are inserted. The × at the upper-left
 removes any card, including the heliospheric view, orbit view and alert summary.
 An empty workspace remains empty after reload.
 
-Use **Size** to choose one-third, half, two-thirds or full width and adjust height
-in 36-pixel grid steps. Drag a card's lower-right handle to snap both dimensions.
+Drag the **bottom edge** to change height, the **right edge** to change width, or
+the lower-right corner to change both. Height snaps in 12-pixel steps; width snaps
+to one-third, half, two-thirds or full width. Focus an edge and use arrow keys
+for keyboard control (Shift + up/down moves five height steps). **Size** retains
+width presets and **Recommended size**, without a pixel/row input.
+
+The whole card adapts: heading text, summary-box values, padding and spacing become
+more compact in shorter cards, while the plots fill the remaining space. Narrow
+cards wrap summaries into fewer columns. At the smallest sizes, content can scroll
+inside the card rather than disappear. Existing saved card heights migrate to the
+finer grid without changing their physical height.
 The dotted header handle reorders cards; up/down buttons provide the same action
 without dragging. Order and dimensions save automatically in this browser.
 

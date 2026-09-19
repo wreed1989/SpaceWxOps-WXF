@@ -19,3 +19,9 @@ Both CH/HSS workflows now execute the triggering checkout. Branch runs upload te
 The old setup guide described a different, unused embedded worker. It is replaced by instructions matching the active implementation, including the actual 18-hour daily-truth gate and the absence of staged JSOC exports. No scientific improvement or operational qualification is inferred from consolidation.
 
 Large binaries are removed only from the current tree. Commit history, older source pins and branches are preserved; reducing stored Git history would be a separate migration. Live ledger files are bounded to 90 days. Temporary source caches, raw FITS, full observation directories and backfill ZIPs are ignored; the publisher stages an explicit compact allowlist after release verification.
+
+## September 2026 acceptance
+
+- [Live run 35416523726](https://github.com/wreed1989/SpaceWxOps-WXF/actions/runs/35416523726) succeeded with actual source time `2026-09-19T01:48:04Z` (September 18 in US Central time). HMI is explicitly degraded by `NOCOSMICRAY`; temporal agreement supports positive E/M signs, with W unknown.
+- [September 1–7 run 35416524934](https://github.com/wreed1989/SpaceWxOps-WXF/actions/runs/35416524934) acquired all seven requested days. Five targets had paired daily truth, two lacked adequate target/baseline coverage. MAE is **116.8 km/s**, versus **86.3 km/s** for recurrence. This small recent test does not establish representative skill and does not qualify the model for operational promotion.
+- All seven retained mask hashes/case reconstructions and the saved metrics were verified locally against the retained hourly truth. [Complete recent run evidence](https://github.com/wreed1989/SpaceWxOps-WXF/releases/tag/chhss-2026-09-01-2026-09-08-35416524934-1) was downloaded again and byte-compared after release upload. The compact manifest is in `chhss-data/backfill/2026-09-01_2026-09-08/archive.json`.

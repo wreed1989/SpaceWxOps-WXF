@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "chhss-archive-1",
+  "url": "https://github.com/wreed1989/SpaceWxOps-WXF/releases/download/chhss-2026-09-01-2026-09-08-35416524934-1/chhss-2026-09-01-2026-09-08.zip",
+  "asset": "chhss-2026-09-01-2026-09-08.zip",
+  "bytes": 2000214,
+  "sha256": "9e0e33ef6c256c5e958206605db88bd5c597d1dfd68e03c620ad22ad66131e7d",
+  "sourceCommit": "a98fe444d3725c8895202f45d5829d2f5c07ea68",
+  "start": "2026-09-01T00:00:00Z",
+  "endExclusive": "2026-09-08T00:00:00Z",
+  "attempted": 7,
+  "succeeded": 7,
+  "failed": 0,
+  "members": {
+    "acquisition-manifests.tar.gz": {
+      "bytes": 3182,
+      "sha256": "0dd7f6d08548589ed14d61ea0aef8fbe6f41fe9202dd4611e17b573c41b86bfc"
+    },
+    "backfill-progress.json": {
+      "bytes": 1217,
+      "sha256": "3328e7290c275fc266fb2d04989bcc4c27d88a30696ec47028c1764411299478"
+    },
+    "cases.json": {
+      "bytes": 4490,
+      "sha256": "cd0414989b1f29807570c338c16dbc49d744e46779c138059e0ea43cba038afb"
+    },
+    "cases.jsonl.gz": {
+      "bytes": 994,
+      "sha256": "6eb67158863d0de0f1bc64efca8feebffaaa54a29a935ed27203b919432bfce2"
+    },
+    "environment.txt": {
+      "bytes": 1171,
+      "sha256": "864b0bb59333fb244d07c671ca0323d5d6af78fe0de843d270b2c3f61da8f68d"
+    },
+    "history/20260901.json": {
+      "bytes": 580807,
+      "sha256": "68842cd457ae7a6730131933597f01c657612e5848ef44c5fb6a4f27a9a57cc2"
+    },
+    "history/20260902.json": {
+      "bytes": 480799,
+      "sha256": "10feb47ca6dfa0a297ec50c98be4369ee886c48e8f073293d673093e08af7d85"
+    },
+    "history/20260903.json": {
+      "bytes": 503152,
+      "sha256": "a75b3273e159acdb7fa4c70ed4477b5b9d11230c5e5aba4622c322223d1c219f"
+    },
+    "history/20260904.json": {
+      "bytes": 579437,
+      "sha256": "45eebeb01563caead456cf868736d07581abecced6cf771ebf9e5db3743e0a14"
+    },
+    "history/20260905.json": {
+      "bytes": 472932,
+      "sha256": "5e4bdf128665ba93f9ba3dd188754a78ed9ba53728c01b4051a5846ebc56724d"
+    },
+    "history/20260906.json": {
+      "bytes": 537365,
+      "sha256": "590eb00e819bc79631ac843abfd9928442b8f2bcb05ce321cadb027997475956"
+    },
+    "history/20260907.json": {
+      "bytes": 539255,
+      "sha256": "ce6f1d0ef32869d9b4d36de60e28108c50d184e55ed278926258d283fce5f2f9"
+    },
+    "omni-manifest.json": {
+      "bytes": 408,
+      "sha256": "2d52d9bba81badd8d35588ee35767167bd24e8f2e2bab29d9205085c55f2dabb"
+    },
+    "omni_hourly.jsonl.gz": {
+      "bytes": 15165,
+      "sha256": "129cf57bc9549a887e19d5026349fdf1a44d121e114a665e03ebd3867b37192a"
+    },
+    "source/__init__.py": {
+      "bytes": 75,
+      "sha256": "a015ae0dd1dc1c3b65c1cd1d603937405b360ed5d886c82babcedabb07c95b86"
+    },
+    "source/aia_quality.py": {
+      "bytes": 725,
+      "sha256": "6ffc2896558534c2a0f417cd50cd47ef16fab0814f00d4007a5be57ef45601c9"
+    },
+    "source/core.py": {
+      "bytes": 9796,
+      "sha256": "6d828162f6553510fb7a7757ee06bad269c046a4d2fe115578736785eca65c36"
+    },
+    "source/live.py": {
+      "bytes": 2588,
+      "sha256": "8ac4e6f8af7033e519cc7713b450e5795b23ca8bbfd0b4373486d2ab9847ee38"
+    },
+    "source/pipeline.py": {
+      "bytes": 21488,
+      "sha256": "57f7522167f7a174ee28a1efdc07a269b12603a94a3689d49b15fd0b062ef22e"
+    },
+    "source/publish.py": {
+      "bytes": 4334,
+      "sha256": "2d57d2d627ecdf8643f0f511c16d0e2cc40d9719c5eeb244244c62970a90ec39"
+    },
+    "source/requirements-chhss.txt": {
+      "bytes": 210,
+      "sha256": "6b6879118820896199b94325decf66c0f16181ab28956420d74f0bcf19e4e265"
+    },
+    "source-commit.txt": {
+      "bytes": 41,
+      "sha256": "cf730bc55c017b20d93412e246688d56d78e94a5330e78a1e9f253b88b60577b"
+    },
+    "validation.json": {
+      "bytes": 5921,
+      "sha256": "92615be0b543c6a952cc98f06401934780d73ae2c6a6893c41b5d3ba94d7f990"
+    }
+  }
+}

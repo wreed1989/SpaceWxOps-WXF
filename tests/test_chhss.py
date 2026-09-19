@@ -11,6 +11,7 @@ import numpy as np
 
 from chhss import core, pipeline, publish, aia_quality
 from scripts.archive_backfill import package
+from scripts.build_dashboard import build as build_dashboard
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -101,6 +102,17 @@ class ScienceTests(unittest.TestCase):
 
 
 class PublicationTests(unittest.TestCase):
+    def test_download_embeds_original_timestamps_and_escapes_script_content(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            feed=publish.read(ROOT/'chhss-data/feed.json')
+            feed['note']='</script><script>bad()</script>\u2028'
+            publish.write(root/'feed.json',feed)
+            html=build_dashboard(root/'dashboard.html',root/'feed.json').read_text()
+            payload=html.split('<script type="application/json" id="chhssBootstrap">',1)[1].split('</script>',1)[0]
+            self.assertEqual(json.loads(payload),feed)
+            self.assertNotIn('<script>bad()',html)
+
     def test_failure_keeps_original_observation_age_and_no_old_scores(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -131,10 +143,42 @@ class PublicationTests(unittest.TestCase):
     def test_live_failure_does_not_write_a_fresh_measurement(self):
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory)
-            with patch('chhss.pipeline.make_pack', side_effect=ValueError('No quality data')), patch('builtins.print'):
+            with patch('chhss.pipeline.make_pack', side_effect=ValueError('No quality data')), patch('chhss.pipeline.get_truth', side_effect=ValueError('OMNI unavailable')), patch('builtins.print'):
                 self.assertFalse(pipeline.live(None, output))
             self.assertFalse((output / 'current.json').exists())
             self.assertFalse(publish.read(output / 'status.json')['ok'])
+
+    def test_omni_refresh_survives_imagery_failure(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            day = (datetime.now(timezone.utc)-timedelta(days=27)).replace(hour=0, minute=0, second=0, microsecond=0)
+            rows = [{'time_tag': core.iso(day+timedelta(hours=i)), 'speed': 450 if i<18 else None} for i in range(24)]
+            def truth(acq, start, end, root):
+                publish.write(root/'omni-manifest.json', {'sources': [{'url':'fixture'}]})
+                return rows
+            with patch('chhss.pipeline.get_truth', side_effect=truth), patch('chhss.pipeline.make_pack', side_effect=ValueError('AIA unavailable')), patch('builtins.print'):
+                self.assertFalse(pipeline.live(None, output))
+            status=publish.read(output/'status.json')
+            self.assertFalse(status['measurement']['ok'])
+            self.assertTrue(status['recurrence']['ok'])
+            recurrence=publish.read(output/'recurrence.json')
+            self.assertEqual(recurrence['rows'], rows)
+            self.assertEqual(recurrence['coverage']['forecastDays'][0]['speed'], 450)
+            self.assertEqual(recurrence['coverage']['forecastDays'][1]['speed'], None)
+            self.assertEqual(recurrence['coverage']['validSpeedHours'], 18)
+
+    def test_imagery_refresh_survives_omni_failure(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output=Path(directory)
+            pack=publish.read(ROOT/'chhss-data/current.json')
+            old={'generatedAt':'2026-09-01T00:00:00Z','rows':[]}
+            publish.write(output/'recurrence.json',old)
+            with patch('chhss.pipeline.get_truth', side_effect=ValueError('OMNI unavailable')), patch('chhss.pipeline.make_pack', return_value=pack), patch('builtins.print'):
+                self.assertFalse(pipeline.live(None, output))
+            self.assertEqual(publish.read(output/'current.json'),pack)
+            self.assertEqual(publish.read(output/'recurrence.json'),old)
+            self.assertTrue(publish.read(output/'status.json')['measurement']['ok'])
+            self.assertFalse(publish.read(output/'status.json')['recurrence']['ok'])
 
     def test_archive_requires_full_evidence_and_records_all_member_hashes(self):
         with tempfile.TemporaryDirectory() as directory:

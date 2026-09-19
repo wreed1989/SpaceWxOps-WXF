@@ -219,18 +219,40 @@ def backfill(acq,start,end,output,max_days=None):
     return report
 
 def live(acq,output):
-    status={'startedAt':iso(datetime.now(UTC)),'product':'Coronal Hole / HSS Outlook','methodVersion':VERSION}
+    now=datetime.now(UTC)
+    status={'startedAt':iso(now),'product':'Coronal Hole / HSS Outlook','methodVersion':VERSION,
+            'measurement':{'ok':False,'state':'pending'},'recurrence':{'ok':False,'state':'pending'}}
+    dump(output/'status.json',status)
+    # Recurrence has its own source and failure boundary. An AIA/HMI outage must
+    # not prevent the rolling OMNI window from refreshing (or vice versa).
+    try:
+        recent=output/'recurrence-source';recent.mkdir(parents=True,exist_ok=True)
+        rows=get_truth(acq,now-timedelta(days=75),now,recent)
+        valid=[r for r in rows if r.get('speed') is not None and 0<r['speed']<5000]
+        if not valid:raise ValueError('OMNI window contains no valid speed hours')
+        daily=daily_truth(rows)
+        coverage=[]
+        for offset in range(7):
+            target=now.date()+timedelta(days=offset);analog=target-timedelta(days=27)
+            day=daily.get(str(analog),{})
+            coverage.append({'validDate':str(target),'analogDate':str(analog),
+                             'validHours':day.get('hours',0),'speed':day.get('speed')})
+        health={'ok':True,'state':'complete','generatedAt':iso(now),'rows':len(rows),
+                'validSpeedHours':len(valid),'firstValidHour':valid[0]['time_tag'],
+                'lastValidHour':valid[-1]['time_tag'],'minimumDailyHours':18,'forecastDays':coverage}
+        manifest=json.loads((recent/'omni-manifest.json').read_text())
+        dump(output/'recurrence.json',{'schemaVersion':'chhss-recurrence-1','generatedAt':iso(now),
+             'source':'NASA OMNI2 retrospective hourly','coverage':health,'provenance':manifest,'rows':rows})
+        status.update(recurrence=health,recurrenceRows=len(rows))
+    except Exception as e:
+        status.update(recurrence={'ok':False,'state':'failed','error':str(e)},recurrenceError=str(e))
+    dump(output/'status.json',status)
     try:
         pack=make_pack(acq);dump(output/'current.json',pack);stamp=pack['observationTime'].replace(':','').replace('-','')
         dump(output/'live-ledger'/f'{stamp}.json',{'observationTime':pack['observationTime'],'availableAt':pack['availableAt'],'maskId':pack['maskId'],'windows':pack['measured']['window'],'polarity':pack['polarity']['sector'],'methodVersion':VERSION,'kind':'forward-collected measurement, not an issued human forecast'})
-        status.update(ok=True,observationTime=pack['observationTime'],maskId=pack['maskId'],degraded=pack['polarity']['degraded'],qualityFlags=pack['polarity']['qualityFlags'],perCore={k:v['polarity'] for k,v in pack['polarity']['sector'].items()})
-        try:
-            recent=output/'recurrence-source';recent.mkdir(parents=True,exist_ok=True)
-            rows=get_truth(acq,datetime.now(UTC)-timedelta(days=75),datetime.now(UTC),recent)
-            dump(output/'recurrence.json',{'schemaVersion':'chhss-recurrence-1','generatedAt':iso(datetime.now(UTC)),'source':'NASA OMNI2 retrospective hourly','rows':rows})
-            status['recurrenceRows']=len(rows)
-        except Exception as e:status['recurrenceError']=str(e)
-    except Exception as e:status.update(ok=False,error=str(e),trace=traceback.format_exc())
+        status.update(measurement={'ok':True,'state':'complete'},observationTime=pack['observationTime'],maskId=pack['maskId'],degraded=pack['polarity']['degraded'],qualityFlags=pack['polarity']['qualityFlags'],perCore={k:v['polarity'] for k,v in pack['polarity']['sector'].items()})
+    except Exception as e:status.update(measurement={'ok':False,'state':'failed','error':str(e)},error=str(e),trace=traceback.format_exc())
+    status['ok']=status['measurement']['ok'] and status['recurrence']['ok']
     status['finishedAt']=iso(datetime.now(UTC));dump(output/'status.json',status);print(json.dumps(status),flush=True);return status['ok']
 
 def main():

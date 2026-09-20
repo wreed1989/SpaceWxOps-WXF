@@ -125,9 +125,9 @@
           "x1": 0.0,
           "source": "SIDC 24-hour Global Flare Forecast",
           "quality": "published-comparison",
-          "issued": "2026-09-19T08:37:47Z",
-          "valid_start": "2026-09-19T08:37:47Z",
-          "valid_end": "2026-09-20T08:37:47Z",
+          "issued": "2026-09-20T09:32:44Z",
+          "valid_start": "2026-09-20T09:32:44Z",
+          "valid_end": "2026-09-21T09:32:44Z",
           "note": "Human-operator-moderated global forecast published by SIDC."
         },
         "ccmc_assa24": {
@@ -300,12 +300,12 @@
     "detail": "JSOC/SHARP retrieval failed after three attempts. The prior WXF magnetic probability was retained transparently while all independent forecast sources were refreshed."
   },
   "external_sources": {
-    "generated_at": "2026-09-20T04:56:59Z",
+    "generated_at": "2026-09-20T16:10:14Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
       "url": "https://www.sidc.be/WMO/FlareForecast.php",
-      "issued": "2026-09-19T08:37:47Z",
+      "issued": "2026-09-20T09:32:44Z",
       "m1": 0.0,
       "x1": 0.0
     },
@@ -354,7 +354,7 @@
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 4,
+      "records": 5,
       "issued": "2026-09-19T12:30:08Z",
       "valid_start": "2026-09-19T12:30:00Z",
       "valid_end": "2026-09-20T12:30:00Z",
@@ -560,7 +560,7 @@
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 44,
+      "records": 56,
       "issued": "2026-09-20T04:00:00Z",
       "valid_start": "2026-09-20T04:00:00Z",
       "valid_end": "2026-09-21T04:00:00Z",
@@ -637,7 +637,7 @@
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 44,
+      "records": 56,
       "issued": "2026-09-20T04:00:00Z",
       "valid_start": "2026-09-20T04:00:00Z",
       "valid_end": "2026-09-20T16:00:00Z",
@@ -886,7 +886,7 @@
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 98,
+      "records": 109,
       "issued": "2026-09-20T03:01:56Z",
       "valid_start": "2026-09-20T00:00:00Z",
       "valid_end": "2026-09-21T00:00:00Z",

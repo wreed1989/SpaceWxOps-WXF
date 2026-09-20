@@ -113,5 +113,5 @@ for(const test of historical.cases){
  const run=sep.run(sep.draftFor(test.event,test.data),test.data,Date.parse(test.validEnd)+60000);
  for(const ch of ['P10','P50'])assert.equal(run.episodeContext[ch].status,test.episodeContext[ch].status);
 }
-assert.ok(html.includes('Show preceding 24 hours'));assert.ok(html.includes('Plot begins at the flare peak'));
+assert.ok(html.includes('Show Preceding 24 Hours'));assert.ok(html.includes('Plot begins at the flare peak'));
 console.log('Recent-episode context, renewed-crossing eligibility and optional pre-flare history passed');

@@ -112,3 +112,9 @@ The default plot starts at the selected flare peak and ends 24 hours after the f
 The 20% value is an illustrative **probability scoring cutoff**, not a particle-flux threshold, model coefficient, operational warning recommendation or required PROTONS setting. Probability forecasts and Brier scores do not depend on it. The interface leads with Brier skill and its uncertainty; an expandable verification table supports 5%, 10%, 20%, 30% and 50% cutoffs to show detection/false-alarm sensitivity. This control changes only the verification table, never Alert Settings or forecast probabilities. No optimal cutoff is selected using the inspected test years.
 
 Event setup uses one aligned selector/run row, two rows of core inputs and compact analyst/source disclosures. Its CSS is maintained in `dashboard.css` and embedded in the standalone HTML.
+
+## Interface Labels And Event Layout
+
+Use Title Case for every title, field label, option label and action. Scientific unit/acronym case is preserved (for example mSv/h, nT, MeV, pfu, HUXt and PyCAT). The shared `scripts/dashboard_labels.js` presentation layer covers semantic labels and dynamic content; custom label elements can use `data-ui-label`. Descriptive paragraphs, editable values and raw provider records retain their original text. Native option display/accessible labels change without changing option values.
+
+Coordinates explicitly show both hemispheres: **Latitude: N(+) S(-)** and **Longitude: W(+) E(-)**. Core fields are grouped into Flare Observations and Source & Energy. Analyst controls remain directly below them, with one disclosure open at a time. Selecting a historical case hides the redundant reported-flare selector. Automatic numeric fields display five significant figures while retaining their original precision for inference; analyst-entered values are preserved verbatim.

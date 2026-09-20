@@ -274,19 +274,42 @@ vm.runInContext(html.match(/      function renderCatalogObservations\(keys\) \{[
 renderContext.renderCatalogObservations(['brief.imf','brief.speed','brief.density','brief.xray','brief.proton','brief.epam','brief.electron-flux']);
 assert.deepEqual(renderCalls,[['wind',true],['Xray'],['Proton'],['Epam'],['ElectronFlux']]);
 
-// Wheel events over a plot move the page; modifier gestures remain untouched.
-const scrollArea={scrollTop:500,clientHeight:800};let prevented=0,stopped=0;
-const wheelContext=vm.createContext({stage:{closest:()=>scrollArea}});
+// Vertical wheel/trackpad motion consumes inner-card capacity before the workspace.
+const scrollArea={scrollTop:500,clientHeight:800,scrollHeight:4000,overflowY:'auto',parentElement:null};
+let prevented=0,stopped=0;
+const wheelContext=vm.createContext({getComputedStyle:node=>({overflowY:node.overflowY||'visible'})});
 vm.runInContext(desk.match(/  function scrollWorkspacePage\(event\) \{[\s\S]*?\n  \}/)[0],wheelContext);
-const wheel={target:{closest:()=>true},deltaY:-100,deltaMode:0,preventDefault:()=>prevented++,stopPropagation:()=>stopped++};
+const plotTarget={parentElement:scrollArea,closest:()=>scrollArea};
+const wheel={target:plotTarget,deltaY:-100,deltaMode:0,preventDefault:()=>prevented++,stopPropagation:()=>stopped++};
 wheelContext.scrollWorkspacePage(wheel);assert.equal(scrollArea.scrollTop,400);
 wheelContext.scrollWorkspacePage({...wheel,deltaY:2,deltaMode:1});assert.equal(scrollArea.scrollTop,432);
 wheelContext.scrollWorkspacePage({...wheel,deltaY:1,deltaMode:2});assert.equal(scrollArea.scrollTop,1232);
 for(const modifier of ['ctrlKey','metaKey','shiftKey'])wheelContext.scrollWorkspacePage({...wheel,[modifier]:true});
-wheelContext.scrollWorkspacePage({...wheel,target:{closest:()=>false}});
+wheelContext.scrollWorkspacePage({...wheel,target:{closest:()=>null}});
+wheelContext.scrollWorkspacePage({...wheel,deltaX:150});
+wheelContext.scrollWorkspacePage({...wheel,deltaY:NaN});
 assert.equal(scrollArea.scrollTop,1232);assert.equal(prevented,3);assert.equal(stopped,3);
-wheelContext.scrollWorkspacePage({...wheel,target:{closest:selector=>selector.includes('.fd-model-workspace .fd-stage')}});
-assert.equal(scrollArea.scrollTop,1132);assert.equal(prevented,4);assert.equal(stopped,4);
+const card={parentElement:scrollArea,scrollTop:100,clientHeight:200,scrollHeight:600,overflowY:'auto'};
+plotTarget.parentElement=card;
+wheelContext.scrollWorkspacePage({...wheel,deltaY:50});assert.equal(card.scrollTop,150);assert.equal(scrollArea.scrollTop,1232);
+card.scrollTop=390;
+wheelContext.scrollWorkspacePage({...wheel,deltaY:30});assert.equal(card.scrollTop,400);assert.equal(scrollArea.scrollTop,1252);
+wheelContext.scrollWorkspacePage({...wheel,deltaY:30});assert.equal(scrollArea.scrollTop,1282);
+card.scrollTop=10;
+wheelContext.scrollWorkspacePage({...wheel,deltaY:-30});assert.equal(card.scrollTop,0);assert.equal(scrollArea.scrollTop,1262);
+wheelContext.scrollWorkspacePage({...wheel,deltaY:-30});assert.equal(scrollArea.scrollTop,1232);
+wheelContext.scrollWorkspacePage({...wheel,deltaY:1,deltaMode:2});assert.equal(card.scrollTop,200);assert.equal(scrollArea.scrollTop,1232);
+wheelContext.scrollWorkspacePage({...wheel,deltaY:.5});assert.equal(card.scrollTop,200.5);
+// An overflow-hidden Plotly wrapper is not a user-scrollable card; nested scroll areas still chain.
+const hidden={parentElement:card,scrollTop:0,clientHeight:100,scrollHeight:500,overflowY:'hidden'};
+const inner={parentElement:hidden,scrollTop:90,clientHeight:100,scrollHeight:200,overflowY:'scroll'};
+plotTarget.parentElement=inner;card.scrollTop=390;
+wheelContext.scrollWorkspacePage({...wheel,deltaY:50});
+assert.equal(inner.scrollTop,100);assert.equal(hidden.scrollTop,0);assert.equal(card.scrollTop,400);assert.equal(scrollArea.scrollTop,1262);
+// Text-node targets and fully exhausted scroll chains cannot zoom a plot or leak negative positions.
+scrollArea.scrollTop=0;card.scrollTop=0;inner.scrollTop=0;
+wheelContext.scrollWorkspacePage({...wheel,target:{parentElement:plotTarget},deltaY:-100});
+assert.equal(scrollArea.scrollTop,0);assert.equal(card.scrollTop,0);assert.equal(inner.scrollTop,0);
 vm.runInContext(scripts.find(([,a])=>a.includes('id="productFlow"'))[2],products);
 assert.equal(products.window.SpaceWxProductFlow.rowsForContent(54,600,30),54);
 assert.equal(products.window.SpaceWxProductFlow.rowsForContent(54,1400,30),120);

@@ -1,13 +1,13 @@
 {
   "schemaVersion": "wxf-huxt-1",
-  "issuedAt": "2026-09-20T00:13:08.604909+00:00",
+  "issuedAt": "2026-09-20T00:31:16.982408+00:00",
   "status": "experimental",
   "model": "HUXt 5.0.3",
   "upstreamCommit": "4d5b60bedb4b30ad140a8ea4972c4f5396c687ff",
   "source": {
     "url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/wsa_enlil/prod/wsa_enlil.20260919/wsa_enlil.mrid00000000.inputs.tar.gz",
     "sha256": "e4d483f5443c4db1c6971162df711694c939a98ccb2bc9f1ea56e44717cb4cb5",
-    "retrievedAt": "2026-09-20T00:13:09.351333+00:00",
+    "retrievedAt": "2026-09-20T00:31:17.725016+00:00",
     "path": "/home/runner/work/SpaceWxOps-WXF/SpaceWxOps-WXF/product/huxt-evidence/swpc-ambient-inputs.tar.gz"
   },
   "boundary": {
@@ -22,8 +22,8 @@
   },
   "cmeSource": {
     "url": "https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/CMEAnalysis?startDate=2026-09-12&endDate=2026-09-20&mostAccurateOnly=true&catalog=M2M_CATALOG&feature=LE",
-    "sha256": "64f762cca3ac8588c17b64baf96e1c3039e345ec2d3278c7f17487ac660bdf97",
-    "retrievedAt": "2026-09-20T00:13:09.728969+00:00"
+    "sha256": "2b4329d8f40990ce8016fbc3a33029e318504593c1a86f2cc0c31f184b6e9da3",
+    "retrievedAt": "2026-09-20T00:31:18.136213+00:00"
   },
   "cmeInputs": [
     {
@@ -65,6 +65,16 @@
       "latitude": 39.0,
       "longitude": 115.0,
       "source": "https://kauai.ccmc.gsfc.nasa.gov/DONKI/view/CMEAnalysis/48714/-1"
+    },
+    {
+      "id": "2026-09-19T16:38:00-CME-001",
+      "submittedAt": "2026-09-20T00:29:00+00:00",
+      "launchAt21_5": "2026-09-19T21:18:00+00:00",
+      "speed": 729.0,
+      "halfAngle": 10.0,
+      "latitude": -24.0,
+      "longitude": 142.0,
+      "source": "https://kauai.ccmc.gsfc.nasa.gov/DONKI/view/CMEAnalysis/48736/-1"
     },
     {
       "id": "2026-09-19T18:48:00-CME-001",
@@ -457,7 +467,7 @@
       "time": "2026-09-20T00:30:50.400954+00:00",
       "ambientSpeed": 556.0320652605715,
       "cmeSpeed": 556.0320652605715,
-      "phase": "forecast"
+      "phase": "reconstruction"
     },
     {
       "time": "2026-09-20T00:54:01.800954+00:00",

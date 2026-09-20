@@ -6,9 +6,9 @@ from pathlib import Path
 from .database import HERE, clean, stamp, digest, epoch
 
 CASES=[
- ('2025-05-31T15:49:00Z','Threshold crossing · M2.9 · 31 May 2025','A sustained 10 MeV crossing followed this window’s start, with no sustained crossing in the preceding 24 hours. This is a window outcome, not proof that this flare caused the event.'),
- ('2026-04-24T01:07:00Z','No crossing · X2.4 · 24 Apr 2026','No target was crossed within the window despite an X-class flare. There was no sustained crossing in the preceding 24 hours.'),
- ('2025-02-25T11:59:00Z','Recent event · M3.6 · 25 Feb 2025','The 10 MeV channel exceeded 10 pfu before this flare and last reached that level at 11:10 UTC. Flux then declined below the threshold. No sustained crossing occurred in the forecast window, although pre-flare flux was elevated. This is a declining-event example; its whole-window probability can be scored without implying that a new event occurred.')]
+ ('2025-05-31T15:49:00Z','Threshold Crossing · M2.9 · 31 May 2025','A sustained 10 MeV crossing followed this window’s start, with no sustained crossing in the preceding 24 hours. This is a window outcome, not proof that this flare caused the event.'),
+ ('2026-04-24T01:07:00Z','No Crossing · X2.4 · 24 Apr 2026','No target was crossed within the window despite an X-class flare. There was no sustained crossing in the preceding 24 hours.'),
+ ('2025-02-25T11:59:00Z','Recent Event · M3.6 · 25 Feb 2025','The 10 MeV channel exceeded 10 pfu before this flare and last reached that level at 11:10 UTC. Flux then declined below the threshold. No sustained crossing occurred in the forecast window, although pre-flare flux was elevated. This is a declining-event example; its whole-window probability can be scored without implying that a new event occurred.')]
 
 
 

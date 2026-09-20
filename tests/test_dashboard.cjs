@@ -599,3 +599,5 @@ require('./test_radiation_alert.cjs');
 console.log('Shared model navigation and interactive radiation-map projections passed');
 
 require("./test_desk_feeds.cjs");
+
+require("./test_labels.cjs");

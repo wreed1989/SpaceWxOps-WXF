@@ -6,9 +6,10 @@ from pathlib import Path
 from .database import HERE, clean, stamp, digest, epoch
 
 CASES=[
- ('2025-11-11T08:09:00Z','Threshold crossing · M1.4 · 11 Nov 2025','All three thresholds were crossed within this forecast window. At 20%, the baseline catches the first target and misses the other two. A window outcome does not prove this flare caused the proton event.'),
- ('2026-04-24T01:07:00Z','No crossing · X2.4 · 24 Apr 2026','No target was crossed within the window despite an X-class flare. A large flare alone does not guarantee a proton event.'),
- ('2025-02-25T11:59:00Z','False alarm · M3.6 · 25 Feb 2025','At the fixed 20% cutoff, the first target is a false alarm. None of the three thresholds was crossed within the window.')]
+ ('2025-05-31T15:49:00Z','Threshold crossing · M2.9 · 31 May 2025','A sustained 10 MeV crossing followed this window’s start, with no sustained crossing in the preceding 24 hours. This is a window outcome, not proof that this flare caused the event.'),
+ ('2026-04-24T01:07:00Z','No crossing · X2.4 · 24 Apr 2026','No target was crossed within the window despite an X-class flare. There was no sustained crossing in the preceding 24 hours.'),
+ ('2025-02-25T11:59:00Z','Recent event · M3.6 · 25 Feb 2025','The 10 MeV channel exceeded 10 pfu before this flare and last reached that level at 11:10 UTC. Flux then declined below the threshold. No sustained crossing occurred in the forecast window, although pre-flare flux was elevated. This is a declining-event example; its whole-window probability can be scored without implying that a new event occurred.')]
+
 
 
 def export_cases(database, model_path=HERE/'model.json'):
@@ -32,8 +33,10 @@ def export_cases(database, model_path=HERE/'model.json'):
             record=json.loads(row['record_json']);raw_flares.append({'max_time':stamp(row['peak_time']),'max_xrlong':record['xrsb_irrad']})
         raw_flares=list({r['max_time']:r for r in raw_flares}.values())
         outcomes={r['target']:dict(r) for r in db.execute('SELECT target,label,exclusion,truth_coverage,observed_peak_pfu,crossing_confirmed_utc FROM outcomes WHERE case_id=?',(identity,))}
+        context={r['channel']:dict(status=r['status'],lastAbove=r['last_above'],coverage=r['coverage'],maxGapMinutes=r['max_gap_minutes']) for r in db.execute('SELECT * FROM episode_context WHERE case_id=? AND policy=?',(identity,'WXF-preflare-24h-v1'))}
+        if set(context)!={'P10','P50'}:raise ValueError('Run the episode audit before exporting cases')
         expected={r['target']:r['probability'] for r in db.execute('SELECT target,probability FROM predictions WHERE case_id=? AND model_id=?',(identity,model_id))}
-        cases.append(dict(id=identity,title=title,description=description,event=clean(event),partition='test',modelSHA256=model_id,validStart=stamp(case['valid_start']),validEnd=stamp(case['valid_end']),outcomes=outcomes,expectedProbabilities=expected,
+        cases.append(dict(id=identity,title=title,description=description,event=clean(event),partition='test',modelSHA256=model_id,validStart=stamp(case['valid_start']),validEnd=stamp(case['valid_end']),outcomes=outcomes,episodeContext=context,expectedProbabilities=expected,
             data=dict(generatedAt=stamp(case['valid_end']),events=[clean(event)],observations=observations,rawFlares=raw_flares,flareHistoryStart=stamp(case['peak_time']-86400)),sources=sources))
     db.close();return {'schemaVersion':'WXF-SEP-TESTS-1','note':'Illustrative examples selected from the existing test partition. They are counted once in the full verification database, never added as new samples.','cases':cases}
 

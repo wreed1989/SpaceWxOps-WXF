@@ -7,6 +7,8 @@ import numpy as np
 import pandas as pd
 from research.proton_forecast.database import truth, partitions, score_database, build_database
 from research.proton_forecast.verification import metrics, block_intervals
+from research.proton_forecast.episode import channel_context
+from research.proton_forecast.audit import audit_database
 
 class VerificationMetrics(unittest.TestCase):
     def test_counts_ties_and_undefined_ratios(self):
@@ -52,8 +54,8 @@ class VerificationMetrics(unittest.TestCase):
             path=Path(folder)/'test.sqlite';db=sqlite3.connect(path)
             db.executescript('''
               CREATE TABLE metadata(key TEXT,value TEXT);
-              CREATE TABLE observations(time INTEGER);
-              CREATE TABLE forecast_cases(case_id TEXT,features_json TEXT,partition TEXT,valid_start INTEGER,input_eligible INTEGER);
+              CREATE TABLE observations(time INTEGER,P10 REAL,P50 REAL);
+              CREATE TABLE forecast_cases(case_id TEXT,features_json TEXT,partition TEXT,valid_start INTEGER,input_eligible INTEGER,peak_time INTEGER);
               CREATE TABLE outcomes(case_id TEXT,target TEXT,label INTEGER,exclusion TEXT);
               CREATE TABLE models(model_id TEXT PRIMARY KEY,version TEXT,model_json TEXT,imported_at TEXT);
               CREATE TABLE predictions(model_id TEXT,case_id TEXT,target TEXT,probability REAL,PRIMARY KEY(model_id,case_id,target));
@@ -62,8 +64,10 @@ class VerificationMetrics(unittest.TestCase):
             db.execute('INSERT INTO metadata VALUES(?,?)',('schemaVersion',json.dumps('WXF-SEP-DB-1')))
             fixture=json.loads(Path('research/proton_forecast/inference-fixture.json').read_text())
             for i in range(4):
-                db.execute('INSERT INTO forecast_cases VALUES(?,?,?,?,?)',(str(i),json.dumps(fixture['features']),'test',1672531200+i*86400,1))
+                db.execute('INSERT INTO forecast_cases VALUES(?,?,?,?,?,?)',(str(i),json.dumps(fixture['features']),'test',1672531200+i*86400,1,1672531200+i*86400-600))
                 for key in ['p10_10','p10_40','p50_10']:db.execute('INSERT INTO outcomes VALUES(?,?,?,?)',(str(i),key,i%2,None))
+            for t in range(1672531200-90000,1672531200+4*86400,300):
+                db.execute('INSERT INTO observations VALUES(?,?,?)',(t,30 if 1672531200-43200<=t<1672531200-42300 else 1,.1))
             db.commit();db.close()
             a=score_database(path);model=json.loads(Path('research/proton_forecast/model.json').read_text());model['models']['p10_10']['intercept']+=.1
             candidate=Path(folder)/'candidate.json';candidate.write_text(json.dumps(model));b=score_database(path,candidate)
@@ -72,6 +76,28 @@ class VerificationMetrics(unittest.TestCase):
                 self.assertEqual(db.execute('SELECT count(*) FROM models').fetchone()[0],2)
                 self.assertEqual(db.execute('SELECT count(*) FROM evaluations').fetchone()[0],2)
                 self.assertEqual(db.execute('SELECT count(*) FROM outcomes').fetchone()[0],12)
+            audited=audit_database(path,a)
+            self.assertEqual(audited['contextAudit']['targets']['p10_10']['excludedRecent'],1)
+            self.assertEqual(audited['contextAudit']['targets']['p50_10']['excludedRecent'],0)
+            self.assertEqual(audited['targets']['p10_10']['n'],4)
+            self.assertEqual(audited['contextAudit']['targets']['p10_10']['statistics']['n'],3)
+            with sqlite3.connect(path) as db:
+                self.assertEqual(db.execute('SELECT count(*) FROM outcomes').fetchone()[0],12)
             with self.assertRaises(FileNotFoundError):score_database(Path(folder)/'missing.sqlite')
+
+class PreflareContext(unittest.TestCase):
+    def test_recent_crossing_is_distinct_from_current_background(self):
+        rows=[{'time':str(i),'P10':1.,'P50':.1} for i in range(288)]
+        self.assertEqual(channel_context(rows,'P10')['status'],'clear')
+        for i in range(10,13):rows[i]['P10']=10.
+        context=channel_context(rows,'P10')
+        self.assertEqual(context['status'],'recent');self.assertEqual(context['lastAbove'],'12')
+        self.assertEqual(channel_context(rows,'P50')['status'],'clear')
+    def test_gaps_cannot_claim_quiet_history(self):
+        rows=[{'time':str(i),'P10':1.} for i in range(288)]
+        for i in range(7):rows[i]['P10']=None
+        self.assertEqual(channel_context(rows,'P10')['status'],'unknown')
+        for i in range(20,23):rows[i]['P10']=10.
+        self.assertEqual(channel_context(rows,'P10')['status'],'recent')
 
 if __name__=='__main__':unittest.main()

@@ -89,7 +89,7 @@ for(const test of historical.cases){
  }
  assert.ok(test.data.observations.every(r=>Date.parse(r.time)<Date.parse(test.validEnd)));
 }
-assert.equal(historical.cases[0].outcomes.p50_10.label,1);
+assert.equal(historical.cases[0].outcomes.p10_10.label,1);
 assert.equal(historical.cases[1].outcomes.p10_10.label,0);
 assert.ok(historical.cases[2].expectedProbabilities.p10_10>=.2);
 assert.equal(historical.cases[2].outcomes.p10_10.label,0);
@@ -99,3 +99,19 @@ for(const key in verification.targets){
  assert.equal(a.hits+a.misses,a.events);assert.equal(a.hits+a.falseAlarms+a.misses+a.correctNegatives,a.n);
 }
 console.log('Archived test cases reproduce database forecasts; recomputed verification matches the frozen baseline');
+
+// Earlier activity is context, not a veto of a renewed crossing forecast.
+const recentHistory={...history,observations:history.observations.map((r,i)=>i>=10&&i<20?{...r,P10:30}:r)};
+const recent=sep.run({...scenario,background:'auto'},recentHistory,runAt);
+assert.equal(recent.episodeContext.P10.status,'recent');assert.equal(recent.episodeContext.P50.status,'clear');
+assert.equal(recent.eligible.p10_10,true);
+assert.equal(sep.run({...scenario,background:'auto'},changedFuture,runAt).episodeContext.P10.status,'clear');
+const recovery=historical.cases[2],recoveryRun=sep.run(sep.draftFor(recovery.event,recovery.data),recovery.data,Date.parse(recovery.validEnd)+60000);
+assert.equal(recoveryRun.episodeContext.P10.status,'recent');assert.equal(recoveryRun.episodeContext.P10.lastAbove,'2025-02-25T11:10:00Z');
+assert.equal(recoveryRun.eligible.p10_10,true);assert.equal(recovery.outcomes.p10_10.label,0);
+for(const test of historical.cases){
+ const run=sep.run(sep.draftFor(test.event,test.data),test.data,Date.parse(test.validEnd)+60000);
+ for(const ch of ['P10','P50'])assert.equal(run.episodeContext[ch].status,test.episodeContext[ch].status);
+}
+assert.ok(html.includes('Show preceding 24 hours'));assert.ok(html.includes('Plot begins at the flare peak'));
+console.log('Recent-episode context, renewed-crossing eligibility and optional pre-flare history passed');

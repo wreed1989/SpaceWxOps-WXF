@@ -5,6 +5,7 @@ from datetime import datetime,timedelta,timezone
 from concurrent.futures import ThreadPoolExecutor
 import requests
 from .model import VERSION,FEATURES,TARGETS,feature_values,predict,exceeds
+from .episode import channel_context, POLICY
 from .inputs import event_inputs, solar_demon_rows, SOLAR_DEMON
 FLARES='https://services.swpc.noaa.gov/json/goes/primary/xray-flares-7-day.json'
 PROTONS='https://services.swpc.noaa.gov/json/goes/primary/integral-protons-3-day.json'
@@ -38,8 +39,9 @@ def forecast(event,raw_flares,obs,model,now=None):
     before=[r for r in obs if start-timedelta(minutes=15)<=date(r['time'])<start]
     active={key:(all(exceeds(r.get(ch),key) for r in before) if len(before)>=3 and all(r.get(ch) is not None for r in before) else None) for key,(ch,threshold) in TARGETS.items()}
     eligible={key:None if active[key] is None else not active[key] for key in TARGETS}
+    context={ch:channel_context(prior,ch) for ch in ('P10','P50')}
     eligible['p10_40']=eligible['p10_10']
-    return {'eligible':eligible,'event':event,'createdAt':stamp(now),'validStart':stamp(start),'validEnd':stamp(end),'latencyMinutes':(now-start).total_seconds()/60,'probabilities':probabilities,'alreadyActive':active,'features':{k:v if math.isfinite(v) else None for k,v in zip(FEATURES,values)},'missingFeatures':[k for k,v in zip(FEATURES,values) if not math.isfinite(v)]}
+    return {'eligible':eligible,'episodeContext':context,'contextPolicy':POLICY,'event':event,'createdAt':stamp(now),'validStart':stamp(start),'validEnd':stamp(end),'latencyMinutes':(now-start).total_seconds()/60,'probabilities':probabilities,'alreadyActive':active,'features':{k:v if math.isfinite(v) else None for k,v in zip(FEATURES,values)},'missingFeatures':[k for k,v in zip(FEATURES,values) if not math.isfinite(v)]}
 
 def collect(now=None,get=requests.get):
     now=now or datetime.now(timezone.utc);warnings=[]

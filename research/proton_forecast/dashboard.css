@@ -1,0 +1,42 @@
+/* Event setup follows the desk's compact controls; content determines card height. */
+.wx-particle .wx-sep-inputs{flex:none;min-height:0;height:auto;border:1px solid #294858;background:transparent;padding:12px;margin:8px 0 12px}
+.wx-sep-setup-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px}
+.wx-particle .wx-sep-setup-head h3{margin:0;font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:#86bbcd}
+.wx-sep-setup-head [data-sep-draft]{font-size:11px;color:#99b7c5;text-align:right}
+.wx-sep-control-row{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) auto;gap:10px;align-items:end}
+.wx-sep-control-row label,.wx-sep-input-grid label{display:flex;flex-direction:column;gap:5px;font-size:11px;color:#9fbac9;min-width:0}
+.wx-particle .wx-sep-inputs input,.wx-particle .wx-sep-inputs select{box-sizing:border-box;width:100%;min-width:0;max-width:100%;height:35px;background:#091b26;color:#d8eaf2;border:1px solid #315568;border-radius:2px;padding:6px 8px;font-size:12px;color-scheme:dark}
+.wx-particle .wx-sep-inputs input:focus,.wx-particle .wx-sep-inputs select:focus{outline:1px solid #51c3df;outline-offset:1px}
+.wx-particle .wx-sep-inputs button[data-sep-apply]{height:35px;padding:6px 15px;margin:0;background:#51c3df;border:1px solid #51c3df;border-radius:2px;color:#061922;font-size:11px;font-weight:700;white-space:nowrap}
+.wx-sep-input-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 14px;margin:12px 0}
+.wx-particle .wx-sep-inputs>details{margin:0;border-top:1px solid #233f4f;padding:8px 0;flex:none}
+.wx-particle .wx-sep-inputs summary{font-size:11px;color:#abc4d1;cursor:pointer}
+.wx-sep-setup-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid #233f4f;padding-top:8px;font-size:10px;color:#85a9bc}
+.wx-sep-setup-footer>div{display:flex;gap:7px;flex-shrink:0}
+.wx-particle .wx-sep-setup-footer button{padding:4px 7px;font-size:10px;border-color:#294858;background:transparent}
+.wx-particle .wx-sep-inputs [data-sep-error]{min-height:0;color:#ffbf81;font-size:12px;margin:8px 0 0}
+.wx-particle .wx-sep-inputs [data-sep-error]:empty{display:none}
+.wx-sep-auto-status{font-size:11px;color:#a8c4d3;line-height:1.5;margin:8px 0}
+.wx-sep-test-note{border-left:2px solid #c8aa67;background:#1d2526;padding:6px 9px;font-size:10px;color:#d9c89f;margin:10px 0}
+.wx-sep-test-outcomes{padding:10px 0;border-block:1px solid #294858;margin:10px 0;font-size:11px;color:#b7cedb}
+.wx-sep-test-outcomes p{margin:6px 0;line-height:1.5}
+.wx-sep-test-outcomes small{color:#8eaebf;font-size:10px}
+.wx-sep-test-outcomes table{width:100%;text-align:left}
+.wx-sep-test-outcomes th,.wx-sep-test-outcomes td{padding:7px 10px 7px 0;border-bottom:1px solid #1f3948;font-size:11px}
+.wx-sep-test-outcomes th{color:#86aabb;font-size:10px;font-weight:600}
+.wx-sep-results{flex:none;min-width:0}
+.wx-sep-results .wx-proton-summary{grid-template-columns:repeat(auto-fit,minmax(195px,1fr))}
+.wx-sep-results .wx-proton-summary>div{display:flex;flex-direction:column;gap:5px}
+.wx-sep-results .wx-proton-summary span{font-size:20px;font-weight:700}
+.wx-sep-probabilities{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;border-block:1px solid #2d495d;padding:10px 0;margin:8px 0;flex:none}
+.wx-sep-probabilities>div{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.wx-sep-probabilities strong{font-size:11px}
+.wx-sep-probabilities span{font-size:20px;font-weight:700;white-space:nowrap}
+.wx-sep-run-note{border-left:2px solid #51bdd5;padding:6px 10px;margin:10px 0;color:#a9c4d3;font-size:11px;line-height:1.5}
+.wx-sep-score-details{padding:8px;border:1px solid #294858;margin:10px 0}
+@media(max-width:850px){.wx-sep-control-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.wx-sep-control-row button{grid-column:1/-1;justify-self:end}.wx-sep-probabilities{grid-template-columns:1fr}.wx-sep-probabilities>div{justify-content:space-between}}
+@media(max-width:550px){.wx-sep-control-row,.wx-sep-input-grid{grid-template-columns:minmax(0,1fr)}.wx-sep-setup-head,.wx-sep-setup-footer{align-items:flex-start;flex-direction:column}.wx-sep-setup-head [data-sep-draft]{text-align:left}}
+.wx-sep-chart-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0 4px;font-size:11px;color:#a6c3d2;flex:none}
+.wx-sep-chart-head strong{font-weight:600;color:#d1e4ed}
+.wx-sep-chart-head label{display:flex;align-items:center;gap:6px}
+.wx-sep-chart-head input{accent-color:#51c3df}

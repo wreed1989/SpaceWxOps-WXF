@@ -1,0 +1,22 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const html=fs.readFileSync('SpaceWxOps_Coronal_Hole_HSS_Outlook.html','utf8');
+const extract=id=>html.match(new RegExp('<script id="'+id+'">([^]*?)<\\/script>'))[1];
+const model=JSON.parse(fs.readFileSync('research/proton_forecast/model.json'));
+const context=vm.createContext({window:{},document:{getElementById:id=>({textContent:id==='wxfProtonModel'?JSON.stringify(model):'null'})},Date,AbortSignal});
+vm.runInContext(extract('suprathermalProduct'),context);
+const now=Date.parse('2026-09-20T00:00Z'),data={schemaVersion:'wxf-suprathermal-1',rows:[{time_tag:'2026-09-19T23:00Z',p1:1,quality:0}]};
+assert.equal(context.window.SpaceWxSuprathermal.usable(data,now),true);
+for(const bad of [{...data,error:'timeout'},{...data,rows:[{...data.rows[0],quality:1}]},{...data,rows:[{...data.rows[0],p1:null}]},{...data,rows:[{...data.rows[0],time_tag:'2026-09-20T00:01Z'}]}])assert.equal(context.window.SpaceWxSuprathermal.usable(bad,now),false);
+assert.equal(context.window.SpaceWxSuprathermal.usable(data,now+31*60000),false);
+vm.runInContext(extract('wxfProtonDashboard'),context);
+const fixture=JSON.parse(fs.readFileSync('research/proton_forecast/inference-fixture.json'));
+const prediction=context.window.SpaceWxProtonExperiment.predict(fixture.features);
+for(const key in fixture.probabilities)assert.ok(Math.abs(prediction[key]-fixture.probabilities[key])<1e-12,key);
+assert.equal(extract('wxfProtonDashboard').trim(),fs.readFileSync('research/proton_forecast/dashboard.js','utf8').trim());
+assert.deepEqual(JSON.parse(html.match(/<script type="application\/json" id="wxfProtonModel">([^]*?)<\/script>/)[1]),model);
+console.log('STIS freshness/quality and browser/Python proton inference parity passed');
+// Particle floors must never clip signed magnetic measurements such as Bz/Dst.
+const plotContext=vm.createContext({Date,Number,Array,String,timeOf:r=>r.time,toNumber:Number,coverageGapThresholdMs:()=>600000,coverageGapIntervals:()=>[],escapeHtml:String,formatTraceValue:String,formatIssuedZulu:String,transparentize:x=>x,hoverLabelStyle:()=>({})});
+vm.runInContext(html.match(/      function lineTrace\([^]*?\n      \}/)[0],plotContext);
+assert.equal(plotContext.lineTrace([{time:'2026-09-20T00:00Z',bz:-15}],'bz','Bz','#fff').y[0],-15);
+console.log('Signed geomagnetic measurements remain negative where measured');

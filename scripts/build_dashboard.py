@@ -82,6 +82,27 @@ def build(output, feed=None, solar_cycle=None, cme_scoreboard=None, particle_for
         if html.count(slot)!=1:raise ValueError('Expected one local HUXt bootstrap slot')
         encoded=json.dumps(snapshot,separators=(',',':'),allow_nan=False).replace('<','\\u003c')
         html=html.replace(slot,slot+'\n<script type="application/json" id="huxtBootstrap">'+encoded+'</script>')
+    geomag=ROOT/'chhss-data/hourly-geomag.json'
+    if geomag.exists():
+        snapshot=json.loads(geomag.read_text())
+        if snapshot.get('schemaVersion')!='gfz-hourly-1':raise ValueError('Invalid GFZ hourly snapshot')
+        slot='<!-- HOURLY_GEOMAG_BOOTSTRAP_SLOT -->'
+        encoded=json.dumps(snapshot,separators=(',',':'),allow_nan=False).replace('<','\\u003c')
+        html=html.replace(slot,slot+'\n<script type="application/json" id="hourlyGeomagBootstrap">'+encoded+'</script>')
+    suprathermal=ROOT/'chhss-data/suprathermal.json'
+    if suprathermal.exists():
+        snapshot=json.loads(suprathermal.read_text())
+        if snapshot.get('schemaVersion')!='wxf-suprathermal-1':raise ValueError('Invalid STIS snapshot')
+        slot='<!-- SUPRATHERMAL_BOOTSTRAP_SLOT -->'
+        encoded=json.dumps(snapshot,separators=(',',':'),allow_nan=False).replace('<','\\u003c')
+        html=html.replace(slot,slot+'\n<script type="application/json" id="suprathermalBootstrap">'+encoded+'</script>')
+    protons=ROOT/'chhss-data/proton-forecast.json'
+    if protons.exists():
+        snapshot=json.loads(protons.read_text())
+        if snapshot.get('schemaVersion')!='WXF-SEP-0.1':raise ValueError('Invalid WXF proton snapshot')
+        slot='<!-- WXF_PROTON_BOOTSTRAP_SLOT -->'
+        encoded=json.dumps(snapshot,separators=(',',':'),allow_nan=False).replace('<','\\u003c')
+        html=html.replace(slot,slot+'\n<script type="application/json" id="wxfProtonBootstrap">'+encoded+'</script>')
     output=Path(output)
     output.parent.mkdir(parents=True,exist_ok=True)
     output.write_text(html)

@@ -89,6 +89,12 @@ if __name__ == '__main__':
     root = parser.parse_args().root
     from .particles import publish as publish_particles
     from .nairas import publish as publish_nairas
+    from .geomag import publish as publish_geomag
+    publish_geomag(root)
+    from .suprathermal import publish as publish_suprathermal
+    publish_suprathermal(root)
+    from research.proton_forecast.refresh import publish as publish_protons
+    publish_protons(root)
     publish_particles(root)
     publish_nairas(root)
     from research.electron_fluence.huxt_run import run as run_huxt

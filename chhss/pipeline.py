@@ -22,6 +22,12 @@ def session():
     s=requests.Session();s.headers['User-Agent']='WXF-CHHSS-research/20260919 repository: wreed1989/SpaceWxOps-WXF'
     retry=Retry(total=2,backoff_factor=1,status_forcelist=[429,500,502,503,504])
     for scheme in ['https://','http://']:s.mount(scheme,HTTPAdapter(max_retries=retry))
+    # Public JSOC metadata/FITS occasionally refuses a connection. Retry only
+    # idempotent reads, within the existing acquisition timeout; never substitute
+    # an old magnetogram or relax the observation-quality gates.
+    jsoc_retry=Retry(total=4,connect=4,read=1,status=2,backoff_factor=2,
+                     status_forcelist=[429,500,502,503,504],allowed_methods=['GET','HEAD'])
+    s.mount(JSOC+'/',HTTPAdapter(max_retries=jsoc_retry))
     return s
 class Acquire:
     def __init__(self,cache):self.cache=Path(cache);self.cache.mkdir(parents=True,exist_ok=True);self.http=session()

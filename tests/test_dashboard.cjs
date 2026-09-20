@@ -5,7 +5,7 @@ const vm = require('node:vm');
 const {webcrypto} = require('node:crypto');
 const html = fs.readFileSync('SpaceWxOps_Coronal_Hole_HSS_Outlook.html', 'utf8');
 const scripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)];
-for (const [, , code] of scripts) new vm.Script(code);
+for (const [, attrs, code] of scripts) { if (/type="application\/json"/.test(attrs)) JSON.parse(code); else new vm.Script(code); }
 // Product contracts use the actual inline implementation. Dates, missing
 // observations and independent ENLIL runs must survive source ingestion.
 const products=vm.createContext({window:{},document:{getElementById(){return null;}},localStorage:{getItem(){return null;}},Date,Map,Set,URL,URLSearchParams});
@@ -574,3 +574,5 @@ assert.equal(navContext.productAvailable('model.nairas'),false);
 assert.equal((desk.match(/\$\{modelNavigation\(\)\}/g)||[]).length,4);
 require('./test_radiation_alert.cjs');
 console.log('Shared model navigation and interactive radiation-map projections passed');
+
+require("./test_desk_feeds.cjs");

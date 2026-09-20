@@ -1,0 +1,1496 @@
+{
+  "sources": [
+    {
+      "file": "particles-201005.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2010-05-01T00%3A00%3A00%2B00%3A00&time.max=2010-06-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:01.508983+00:00",
+      "sha256": "528aebc2364e6aae3909daf474fb548881e507e06717e7c554d1af4c5e6cb0b6",
+      "bytes": 369479
+    },
+    {
+      "file": "particles-201006.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2010-06-01T00%3A00%3A00%2B00%3A00&time.max=2010-07-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:01.509789+00:00",
+      "sha256": "97faf7e899afa9dfe7261891f5fbfff34e8c4aa400d80307edc6894391af4268",
+      "bytes": 358859
+    },
+    {
+      "file": "particles-201007.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2010-07-01T00%3A00%3A00%2B00%3A00&time.max=2010-08-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:01.738948+00:00",
+      "sha256": "8317dcac1b878ce67cf8273d97b922bd86bf73c5e771f1c840e08b5381c3dc46",
+      "bytes": 370747
+    },
+    {
+      "file": "particles-201008.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2010-08-01T00%3A00%3A00%2B00%3A00&time.max=2010-09-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:01.510697+00:00",
+      "sha256": "b93f7fa5ee20ddcc3f2723ed2d89b5390158bd34217be83bac44142a5a11ec22",
+      "bytes": 370386
+    },
+    {
+      "file": "particles-201009.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2010-09-01T00%3A00%3A00%2B00%3A00&time.max=2010-10-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:02.750005+00:00",
+      "sha256": "9ebab3cb53673c3c6c4d6636e63c9fa041c13e08438eb8c0c699e6820f1166a2",
+      "bytes": 359569
+    },
+    {
+      "file": "particles-201010.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2010-10-01T00%3A00%3A00%2B00%3A00&time.max=2010-11-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:02.603747+00:00",
+      "sha256": "6f4337f5e78fdd3b03b3255b134ebc10382d7e6161e8e2e5734b4c4cde1e41c3",
+      "bytes": 371319
+    },
+    {
+      "file": "particles-201011.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2010-11-01T00%3A00%3A00%2B00%3A00&time.max=2010-12-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:02.592960+00:00",
+      "sha256": "e26c8e667f956310ffda1c3e193e6cb754c1296a6f0597a9a010d282f0caafdf",
+      "bytes": 359037
+    },
+    {
+      "file": "particles-201012.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2010-12-01T00%3A00%3A00%2B00%3A00&time.max=2011-01-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:02.819226+00:00",
+      "sha256": "a1d0dffe0be0ece82acb2ec0b4a473a2d5c65256f7ca4e25590d623b06605c37",
+      "bytes": 371316
+    },
+    {
+      "file": "particles-201101.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2011-01-01T00%3A00%3A00%2B00%3A00&time.max=2011-02-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:03.690168+00:00",
+      "sha256": "5b7ac566a3ca06354967c0d880d278346818d71dec2890bfef65ea84db790be4",
+      "bytes": 371429
+    },
+    {
+      "file": "particles-201102.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2011-02-01T00%3A00%3A00%2B00%3A00&time.max=2011-03-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:03.639395+00:00",
+      "sha256": "59fc2bfd0f4533fb281ac2ebdcc0fb7d39d316ad8633573574abce5852c0e073",
+      "bytes": 335251
+    },
+    {
+      "file": "particles-201103.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2011-03-01T00%3A00%3A00%2B00%3A00&time.max=2011-04-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:03.902549+00:00",
+      "sha256": "d14dbef202a5bec30ba877a8114bd53dfbf96c747da7dda7ea5ab918bf858bef",
+      "bytes": 369601
+    },
+    {
+      "file": "particles-201104.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2011-04-01T00%3A00%3A00%2B00%3A00&time.max=2011-05-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:03.895580+00:00",
+      "sha256": "6f65fe6d2dcb6d26ee2220405f2c61b42edb22ebdccc512c9b0549428d3f926c",
+      "bytes": 360757
+    },
+    {
+      "file": "particles-201105.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2011-05-01T00%3A00%3A00%2B00%3A00&time.max=2011-06-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:04.656427+00:00",
+      "sha256": "052ff2526ed0f935b58fdbf09c5b2e8db510d0bef1a82eecd048bf614e5b873a",
+      "bytes": 372317
+    },
+    {
+      "file": "particles-201106.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2011-06-01T00%3A00%3A00%2B00%3A00&time.max=2011-07-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:04.722173+00:00",
+      "sha256": "9b63c352f76265e35fd9dd6aaeb67f05e55d5b7b7519d7fca72b0f484da4a87e",
+      "bytes": 356172
+    },
+    {
+      "file": "particles-201107.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2011-07-01T00%3A00%3A00%2B00%3A00&time.max=2011-08-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:04.989682+00:00",
+      "sha256": "f9226523ab303363e983068fe6d3c07f06a1bd427965ef4abeeae9fdedb6e5ae",
+      "bytes": 373635
+    },
+    {
+      "file": "particles-201108.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2011-08-01T00%3A00%3A00%2B00%3A00&time.max=2011-09-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:04.989297+00:00",
+      "sha256": "64b4d4cac5fbe2d20b81fe1cbe57f676a087a961e73ce178a2a03804cdd2b20a",
+      "bytes": 370454
+    },
+    {
+      "file": "particles-201109.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2011-09-01T00%3A00%3A00%2B00%3A00&time.max=2011-10-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:06.574761+00:00",
+      "sha256": "33f203e9704ebc384cbf5cbc8123cce9528082308b86aeb1c03b0e7253aa5f72",
+      "bytes": 356557
+    },
+    {
+      "file": "particles-201110.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2011-10-01T00%3A00%3A00%2B00%3A00&time.max=2011-11-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:06.882998+00:00",
+      "sha256": "80883ee0994e3a56ecb181cee17e063214f1c8ba57a8f6e70ff288065645f24e",
+      "bytes": 372739
+    },
+    {
+      "file": "particles-201111.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2011-11-01T00%3A00%3A00%2B00%3A00&time.max=2011-12-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:06.774230+00:00",
+      "sha256": "aee2a7ba32c97ddf112d1a8dc1f03789cd25acc62408c1ab4a9451ab2fb39e6d",
+      "bytes": 358193
+    },
+    {
+      "file": "particles-201112.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2011-12-01T00%3A00%3A00%2B00%3A00&time.max=2012-01-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:06.817764+00:00",
+      "sha256": "082101fe6a106c56fa645cd012979e866f826f18423c1adb626f88550d9b1b3f",
+      "bytes": 372451
+    },
+    {
+      "file": "particles-201201.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2012-01-01T00%3A00%3A00%2B00%3A00&time.max=2012-02-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:07.621198+00:00",
+      "sha256": "e28d3974881a62bcb8f453a5b3bf2b30bd91060f29baec7bf8c76d868d5e1311",
+      "bytes": 352994
+    },
+    {
+      "file": "particles-201202.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2012-02-01T00%3A00%3A00%2B00%3A00&time.max=2012-03-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:07.821051+00:00",
+      "sha256": "7f01ad3bc7ab094a4423a81036cfce5478061485ac13a0248d035119085fb36b",
+      "bytes": 347837
+    },
+    {
+      "file": "particles-201203.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2012-03-01T00%3A00%3A00%2B00%3A00&time.max=2012-04-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:07.839903+00:00",
+      "sha256": "48a3af2eed8c14161665cd648a2b706d7b31cab6c45b732732a0670261b424b4",
+      "bytes": 364588
+    },
+    {
+      "file": "particles-201204.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2012-04-01T00%3A00%3A00%2B00%3A00&time.max=2012-05-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:07.899178+00:00",
+      "sha256": "51b1d6e28a234a9a93947725895626f4dd02021475441ffd5057f1cb8440f818",
+      "bytes": 361777
+    },
+    {
+      "file": "particles-201205.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2012-05-01T00%3A00%3A00%2B00%3A00&time.max=2012-06-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:08.681153+00:00",
+      "sha256": "0adf1ba25ae3a279fab476f4e36e248f93cbb2fd72a2594417dd995b97dc959e",
+      "bytes": 371073
+    },
+    {
+      "file": "particles-201206.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2012-06-01T00%3A00%3A00%2B00%3A00&time.max=2012-07-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:08.844750+00:00",
+      "sha256": "d32dc624d97591e261da8555b28cd5a02458f3b7b88191d423429bd5f6add6c3",
+      "bytes": 361797
+    },
+    {
+      "file": "particles-201207.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2012-07-01T00%3A00%3A00%2B00%3A00&time.max=2012-08-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:08.920604+00:00",
+      "sha256": "958a25f06560d189ebedf414edaa70b16f08dc439ccac422196c54961b828f0a",
+      "bytes": 362553
+    },
+    {
+      "file": "particles-201208.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2012-08-01T00%3A00%3A00%2B00%3A00&time.max=2012-09-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:08.969529+00:00",
+      "sha256": "1ff6d4dfd9e23f1d0df4339deecbb7bfbcbf4c93695680c8039d61144d2fb65f",
+      "bytes": 374668
+    },
+    {
+      "file": "particles-201209.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2012-09-01T00%3A00%3A00%2B00%3A00&time.max=2012-10-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:09.704760+00:00",
+      "sha256": "a52e61c576b9186eea950a8cfd73fff88a35ffb4bab3d42f1ad1b648d85fd402",
+      "bytes": 358819
+    },
+    {
+      "file": "particles-201210.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2012-10-01T00%3A00%3A00%2B00%3A00&time.max=2012-11-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:09.943276+00:00",
+      "sha256": "0ef1cde9bd08df91b03ad5bbe1209260950585cfe5f8613b01a873c678491be2",
+      "bytes": 374731
+    },
+    {
+      "file": "particles-201211.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2012-11-01T00%3A00%3A00%2B00%3A00&time.max=2012-12-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:09.953780+00:00",
+      "sha256": "b23402cf7e5d6154726109b2947d96d7cac329b3482c9c2aafe397141deffaf8",
+      "bytes": 361690
+    },
+    {
+      "file": "particles-201212.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2012-12-01T00%3A00%3A00%2B00%3A00&time.max=2013-01-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:10.129670+00:00",
+      "sha256": "4d75d7aae30f46b2aa8d2018ffe85865a32aabf5e06795e25ebf9d354683c97b",
+      "bytes": 374416
+    },
+    {
+      "file": "particles-201301.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2013-01-01T00%3A00%3A00%2B00%3A00&time.max=2013-02-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:11.624289+00:00",
+      "sha256": "cbf51c61947987ddabbfae9b79a67af05fe215d4c18ff076af0492480e9fdce0",
+      "bytes": 374576
+    },
+    {
+      "file": "particles-201302.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2013-02-01T00%3A00%3A00%2B00%3A00&time.max=2013-03-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:11.829455+00:00",
+      "sha256": "9c16053380886ecacaeaa35def958f97deb657ee5f8ca2d13403113763e57d67",
+      "bytes": 338124
+    },
+    {
+      "file": "particles-201303.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2013-03-01T00%3A00%3A00%2B00%3A00&time.max=2013-04-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:11.617434+00:00",
+      "sha256": "140d9ea27cb1a89dfe4dcceb49b47f0af3f49ab69d67390f71e182bedce145f2",
+      "bytes": 372932
+    },
+    {
+      "file": "particles-201304.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2013-04-01T00%3A00%3A00%2B00%3A00&time.max=2013-05-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:11.883018+00:00",
+      "sha256": "512730e39aec12f14b786cbb7aa90c379f4b4710c9332475b1c7c0b3d2cf6eca",
+      "bytes": 359238
+    },
+    {
+      "file": "particles-201305.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2013-05-01T00%3A00%3A00%2B00%3A00&time.max=2013-06-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:12.660138+00:00",
+      "sha256": "069d031e9d0a73da954cfd3d83d436513efe650fd41aeafdc270c7fc2035513d",
+      "bytes": 369838
+    },
+    {
+      "file": "particles-201306.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2013-06-01T00%3A00%3A00%2B00%3A00&time.max=2013-07-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:12.753892+00:00",
+      "sha256": "51e73fde88cf409a5bf86b5bcae3de438eca42f203b58bc25307262d2a34ee5a",
+      "bytes": 362140
+    },
+    {
+      "file": "particles-201307.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2013-07-01T00%3A00%3A00%2B00%3A00&time.max=2013-08-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:12.900630+00:00",
+      "sha256": "4f99a051ed53bb2c111d65b37d962b59a0f2fc994dd00ab6a02bf14c7aa3a0ef",
+      "bytes": 375679
+    },
+    {
+      "file": "particles-201308.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2013-08-01T00%3A00%3A00%2B00%3A00&time.max=2013-09-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:12.973473+00:00",
+      "sha256": "384deab5414acfefd452f036b98eed5266953e9d9e9ab9f3c3e5b2f201ff0fdd",
+      "bytes": 374881
+    },
+    {
+      "file": "particles-201309.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2013-09-01T00%3A00%3A00%2B00%3A00&time.max=2013-10-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:13.694837+00:00",
+      "sha256": "8132b05c68f761262d0cf111a137c12e9985259725691566dd31c801cf5ff0f8",
+      "bytes": 362907
+    },
+    {
+      "file": "particles-201310.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2013-10-01T00%3A00%3A00%2B00%3A00&time.max=2013-11-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:13.801291+00:00",
+      "sha256": "0dd2445cfccc07957d1e7c6387a8b5fda12a845ea04f4eb130c9233b26268225",
+      "bytes": 370773
+    },
+    {
+      "file": "particles-201311.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2013-11-01T00%3A00%3A00%2B00%3A00&time.max=2013-12-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:13.909233+00:00",
+      "sha256": "072aa678d3d40379a4eb851edcd65ac5289e0d165a71405d16d28e7c4297ad6d",
+      "bytes": 361037
+    },
+    {
+      "file": "particles-201312.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2013-12-01T00%3A00%3A00%2B00%3A00&time.max=2014-01-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:14.016110+00:00",
+      "sha256": "d7ec612f50f10ac2b5a2567f0b0b4c7ec75c5bf8f6b53f83c19eb9f00a568d99",
+      "bytes": 374178
+    },
+    {
+      "file": "particles-201401.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2014-01-01T00%3A00%3A00%2B00%3A00&time.max=2014-02-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:14.725795+00:00",
+      "sha256": "2ef11f92f0b720bcd5b170e2f67cb1d39dc6980ef418d79c9718a1665a580f1b",
+      "bytes": 364356
+    },
+    {
+      "file": "particles-201402.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2014-02-01T00%3A00%3A00%2B00%3A00&time.max=2014-03-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:14.834082+00:00",
+      "sha256": "cf3f820c1d2f575f489dcf79dbeac1cb7a57b47f69e4f34dbb911eaf5b38f5f2",
+      "bytes": 335379
+    },
+    {
+      "file": "particles-201403.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2014-03-01T00%3A00%3A00%2B00%3A00&time.max=2014-04-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:15.010268+00:00",
+      "sha256": "6c9c061bf79e1362cd8496630f653ce968b51ae37e837cc1240080a0e425e0b1",
+      "bytes": 372452
+    },
+    {
+      "file": "particles-201404.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2014-04-01T00%3A00%3A00%2B00%3A00&time.max=2014-05-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:15.163386+00:00",
+      "sha256": "7864d2fee63a1c10cdb6691879ef8a46269247436346d76fdca8e1103f1ea16f",
+      "bytes": 361196
+    },
+    {
+      "file": "particles-201405.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2014-05-01T00%3A00%3A00%2B00%3A00&time.max=2014-06-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:16.888826+00:00",
+      "sha256": "0f21202a4741ac930c7bc361f83b26d8b3bd4545c0026f1cfd79d23e9b7d983c",
+      "bytes": 375386
+    },
+    {
+      "file": "particles-201406.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2014-06-01T00%3A00%3A00%2B00%3A00&time.max=2014-07-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:16.962742+00:00",
+      "sha256": "b1964e99fc76ce8fc4fd4a69242ae28eac5ac99296f544335de3cb5b25fcbe06",
+      "bytes": 364203
+    },
+    {
+      "file": "particles-201407.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2014-07-01T00%3A00%3A00%2B00%3A00&time.max=2014-08-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:17.177036+00:00",
+      "sha256": "f29c3d372779c1c4a914e18345f704eeefda2a45ef00245bde0ba5d00b6b1a2c",
+      "bytes": 375827
+    },
+    {
+      "file": "particles-201408.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2014-08-01T00%3A00%3A00%2B00%3A00&time.max=2014-09-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:17.343192+00:00",
+      "sha256": "2dc970626e700672d50b61c9448a43fe1cd32aa4cded23673aa31572dacaf955",
+      "bytes": 374804
+    },
+    {
+      "file": "particles-201409.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2014-09-01T00%3A00%3A00%2B00%3A00&time.max=2014-10-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:17.928975+00:00",
+      "sha256": "59d3528b7b77a1714319fd55d4cf807107f290f430720f0ede7c2fa2c8f62150",
+      "bytes": 354094
+    },
+    {
+      "file": "particles-201410.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2014-10-01T00%3A00%3A00%2B00%3A00&time.max=2014-11-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:18.054733+00:00",
+      "sha256": "181cac1ee45ac7f4d3d0c401a95f5d3f4770c7de25d5d6404a6d8e174aa45556",
+      "bytes": 374886
+    },
+    {
+      "file": "particles-201411.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2014-11-01T00%3A00%3A00%2B00%3A00&time.max=2014-12-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:18.202591+00:00",
+      "sha256": "8ecda0433cd565324a2df864631478196f64ee5b072d82a09dd12880d0ca9367",
+      "bytes": 361745
+    },
+    {
+      "file": "particles-201412.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2014-12-01T00%3A00%3A00%2B00%3A00&time.max=2015-01-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:18.404540+00:00",
+      "sha256": "e271786550c46f98826629b970e94ef48817aed6f6dd4a5bced0e31e7f13d7d8",
+      "bytes": 367104
+    },
+    {
+      "file": "particles-201501.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2015-01-01T00%3A00%3A00%2B00%3A00&time.max=2015-02-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:18.988627+00:00",
+      "sha256": "b75c1cd1c557775df36c110fb7a5e4508a3a5f28f6b56d1627baf5037081e97a",
+      "bytes": 374509
+    },
+    {
+      "file": "particles-201502.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2015-02-01T00%3A00%3A00%2B00%3A00&time.max=2015-03-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:19.046970+00:00",
+      "sha256": "383558c4b2c67d8c91f1676afb2fd732a4aee501374db34c1687f032302d9fd4",
+      "bytes": 338705
+    },
+    {
+      "file": "particles-201503.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2015-03-01T00%3A00%3A00%2B00%3A00&time.max=2015-04-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:19.242461+00:00",
+      "sha256": "c56ed4af5b298e8867b891b120be69a95d7c17660865fb81db31957e21ce8342",
+      "bytes": 375078
+    },
+    {
+      "file": "particles-201504.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2015-04-01T00%3A00%3A00%2B00%3A00&time.max=2015-05-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:19.397717+00:00",
+      "sha256": "5ce82448002ee2c039174194ff9718196c0db6f324a07a2565fdd7439ef0fe38",
+      "bytes": 363327
+    },
+    {
+      "file": "particles-201505.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2015-05-01T00%3A00%3A00%2B00%3A00&time.max=2015-06-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:20.061360+00:00",
+      "sha256": "d975ce98dcd4a25de4c36392d39749daeec69b60f51fe80f6e946dcfcac82a12",
+      "bytes": 375142
+    },
+    {
+      "file": "particles-201506.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2015-06-01T00%3A00%3A00%2B00%3A00&time.max=2015-07-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:20.194812+00:00",
+      "sha256": "67859f6961f95d8e04a6e3a3b3b895c1f879b304b4f67682f5f6832aa224f0cb",
+      "bytes": 358429
+    },
+    {
+      "file": "particles-201507.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2015-07-01T00%3A00%3A00%2B00%3A00&time.max=2015-08-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:20.519968+00:00",
+      "sha256": "89c55b2072041972173f2b5a44fae6eeafa762cf68d2ad517929bf2e76f04d85",
+      "bytes": 374872
+    },
+    {
+      "file": "particles-201508.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2015-08-01T00%3A00%3A00%2B00%3A00&time.max=2015-09-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:20.639591+00:00",
+      "sha256": "c6684f2db51af9fca9fecc9a245652a6f11ece5b29319de7006fa4891b13cd70",
+      "bytes": 375149
+    },
+    {
+      "file": "particles-201509.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2015-09-01T00%3A00%3A00%2B00%3A00&time.max=2015-10-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:21.104955+00:00",
+      "sha256": "dbb1c4a52e14b754a9224cd6681f5ea05f01c8a802a60c2bd6615137ce9ba15c",
+      "bytes": 363104
+    },
+    {
+      "file": "particles-201510.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2015-10-01T00%3A00%3A00%2B00%3A00&time.max=2015-11-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:21.230858+00:00",
+      "sha256": "326868f6c7d058ed4a3f8844b2ea0ea8dcc0924cc180f005eb5fce501a98390a",
+      "bytes": 373639
+    },
+    {
+      "file": "particles-201511.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2015-11-01T00%3A00%3A00%2B00%3A00&time.max=2015-12-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:21.519622+00:00",
+      "sha256": "a197ded60d408a2d0e164f2be3287356ad31fb565f15c2e28fc7636c39cf1f37",
+      "bytes": 361668
+    },
+    {
+      "file": "particles-201512.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2015-12-01T00%3A00%3A00%2B00%3A00&time.max=2016-01-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:21.682467+00:00",
+      "sha256": "e33ded7ea24bd24fd1f8441185fd821fbcbc955e2e82afa863850d85ec7fd2d6",
+      "bytes": 374208
+    },
+    {
+      "file": "particles-201601.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2016-01-01T00%3A00%3A00%2B00%3A00&time.max=2016-02-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:22.152436+00:00",
+      "sha256": "e780dc807ccec5701adbcc9d0032e72d29d72db88309f758d016b34c4607d835",
+      "bytes": 373315
+    },
+    {
+      "file": "particles-201602.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2016-02-01T00%3A00%3A00%2B00%3A00&time.max=2016-03-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:22.232003+00:00",
+      "sha256": "d99f1fe65593c08e8264de5a006e118b1ae0c1b31a370c7b53ef4811ae2eb7d2",
+      "bytes": 349350
+    },
+    {
+      "file": "particles-201603.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2016-03-01T00%3A00%3A00%2B00%3A00&time.max=2016-04-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:22.675784+00:00",
+      "sha256": "a8e163fe2b0fd1b446fb13a4c2fb823f7e7fb56bbe843a4a5c5377cbaed111a5",
+      "bytes": 373778
+    },
+    {
+      "file": "particles-201604.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2016-04-01T00%3A00%3A00%2B00%3A00&time.max=2016-05-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:22.707142+00:00",
+      "sha256": "e6b388f351d1e6675cb13fc7d890033a1a666886c82094232c7d770b39008982",
+      "bytes": 361576
+    },
+    {
+      "file": "particles-201605.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2016-05-01T00%3A00%3A00%2B00%3A00&time.max=2016-06-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:23.223786+00:00",
+      "sha256": "4874fdaf87881ad65f1420f0b957e5eefd9a98a28ff5bac4494f472f640e117b",
+      "bytes": 372189
+    },
+    {
+      "file": "particles-201606.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2016-06-01T00%3A00%3A00%2B00%3A00&time.max=2016-07-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:23.350840+00:00",
+      "sha256": "b9dd62c1d451dd468a5ee122357498e5d10f4d4a7d1003943bd0e7e96e8102c2",
+      "bytes": 360701
+    },
+    {
+      "file": "particles-201607.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2016-07-01T00%3A00%3A00%2B00%3A00&time.max=2016-08-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:23.756029+00:00",
+      "sha256": "691d1070aba4ed25932dee85d1ad24d9e350f2b30e65dee97636aa0bb84a5c74",
+      "bytes": 372292
+    },
+    {
+      "file": "particles-201608.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2016-08-01T00%3A00%3A00%2B00%3A00&time.max=2016-09-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:23.737745+00:00",
+      "sha256": "cb0de7a7df484c4903717b021f7e333c6681d4f6d01d07f9b7fd17d802b70a8f",
+      "bytes": 372100
+    },
+    {
+      "file": "particles-201609.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2016-09-01T00%3A00%3A00%2B00%3A00&time.max=2016-10-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:24.247805+00:00",
+      "sha256": "53e8ea0d09ed37ce26b5d477926f4347742c1846a76cd5400321a22e1fc08530",
+      "bytes": 360180
+    },
+    {
+      "file": "particles-201610.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2016-10-01T00%3A00%3A00%2B00%3A00&time.max=2016-11-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:24.395813+00:00",
+      "sha256": "2d6c9086c6713be8683d1bf34e78ac6a85c3aca6e33743a3d11583442aba8197",
+      "bytes": 372054
+    },
+    {
+      "file": "particles-201611.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2016-11-01T00%3A00%3A00%2B00%3A00&time.max=2016-12-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:24.763714+00:00",
+      "sha256": "30f3fb089503f022d324d2a9076791e5bb0fecf56e568b04ee2252d0830947f5",
+      "bytes": 359674
+    },
+    {
+      "file": "particles-201612.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2016-12-01T00%3A00%3A00%2B00%3A00&time.max=2017-01-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:24.786202+00:00",
+      "sha256": "c271f3b30cbba73c35bd4da52a3a347bc1718377e28285774bb274e035173818",
+      "bytes": 371603
+    },
+    {
+      "file": "particles-201701.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2017-01-01T00%3A00%3A00%2B00%3A00&time.max=2017-02-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:25.856122+00:00",
+      "sha256": "2ea980987be7a58210d29cd10d62afd1f613babd4ca0faf423eaeeb42d90bfe3",
+      "bytes": 371496
+    },
+    {
+      "file": "particles-201702.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2017-02-01T00%3A00%3A00%2B00%3A00&time.max=2017-03-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:25.960046+00:00",
+      "sha256": "f153051015069fcbdd651a2d7ec66108119ed67af07a34fa5e96de2944869cfc",
+      "bytes": 335475
+    },
+    {
+      "file": "particles-201703.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2017-03-01T00%3A00%3A00%2B00%3A00&time.max=2017-04-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:26.966752+00:00",
+      "sha256": "615fd3b6224dc66416f6883497a22454bebcaaa2c3d076876815f238ca2abe80",
+      "bytes": 371399
+    },
+    {
+      "file": "particles-201704.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2017-04-01T00%3A00%3A00%2B00%3A00&time.max=2017-05-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:26.438392+00:00",
+      "sha256": "52554a08d3a513517214beafd92b7903ba564279f8fadf2400bba4e9d90f25ee",
+      "bytes": 359771
+    },
+    {
+      "file": "particles-201705.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2017-05-01T00%3A00%3A00%2B00%3A00&time.max=2017-06-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:26.985697+00:00",
+      "sha256": "b2b429ac634817789e720f4039eafba5bad12fc8743631731476f9e160ae803b",
+      "bytes": 371656
+    },
+    {
+      "file": "particles-201706.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2017-06-01T00%3A00%3A00%2B00%3A00&time.max=2017-07-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:26.978383+00:00",
+      "sha256": "67c3bfc93f516925d3b0df269b26ab23fcb9a2ab1f9d3fb6063fde97b26417fd",
+      "bytes": 359479
+    },
+    {
+      "file": "particles-201707.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2017-07-01T00%3A00%3A00%2B00%3A00&time.max=2017-08-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:27.548491+00:00",
+      "sha256": "69a20c22be0800d4c31c6aad63aec7402f5ba4e97fcf1e8c758af2cea04edc64",
+      "bytes": 370230
+    },
+    {
+      "file": "particles-201708.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2017-08-01T00%3A00%3A00%2B00%3A00&time.max=2017-09-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:28.069668+00:00",
+      "sha256": "fa90043a9d753f45d10105e92bdd094458d1480044692efa96d636b49cfd3e42",
+      "bytes": 371502
+    },
+    {
+      "file": "particles-201709.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2017-09-01T00%3A00%3A00%2B00%3A00&time.max=2017-10-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:27.986393+00:00",
+      "sha256": "fea04d409d07722b93e0ee9e613702fb60aa9066e608f52335c1a0dbea24ccb6",
+      "bytes": 352243
+    },
+    {
+      "file": "particles-201710.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2017-10-01T00%3A00%3A00%2B00%3A00&time.max=2017-11-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:28.043126+00:00",
+      "sha256": "1dac5383116a454e0dafa7123d5ceda1766b92eff1f41d3e8b07b85c3d0bc451",
+      "bytes": 371746
+    },
+    {
+      "file": "particles-201711.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2017-11-01T00%3A00%3A00%2B00%3A00&time.max=2017-12-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:28.801070+00:00",
+      "sha256": "80dbfea1e6c298dc3b8e2f55bcd13e1cfa62d4c8706f3cc5143c2986a99e3797",
+      "bytes": 359685
+    },
+    {
+      "file": "particles-201712.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2017-12-01T00%3A00%3A00%2B00%3A00&time.max=2018-01-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:29.068243+00:00",
+      "sha256": "a8ff71f872b01df1f4be02b6bb098f1a8cca1a604ba0a4cef932f2508114b311",
+      "bytes": 371460
+    },
+    {
+      "file": "particles-201801.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2018-01-01T00%3A00%3A00%2B00%3A00&time.max=2018-02-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:29.129101+00:00",
+      "sha256": "f5848dadd1f0f3b8c48597d3ff8b98c86645fb6c5a525215d86ada0cb3fa8dc3",
+      "bytes": 371405
+    },
+    {
+      "file": "particles-201802.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2018-02-01T00%3A00%3A00%2B00%3A00&time.max=2018-03-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:29.085195+00:00",
+      "sha256": "f90d5b7ceec5204e8681919f1c450af01e7c1fe782996b0d4ff6a35389f31f55",
+      "bytes": 335787
+    },
+    {
+      "file": "particles-201803.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2018-03-01T00%3A00%3A00%2B00%3A00&time.max=2018-04-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:29.879413+00:00",
+      "sha256": "06c910456fad20a68eb2f923506388041c72ff40e225c0341c72fe8097e01326",
+      "bytes": 371680
+    },
+    {
+      "file": "particles-201804.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2018-04-01T00%3A00%3A00%2B00%3A00&time.max=2018-05-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:30.549220+00:00",
+      "sha256": "5bf3bafcd0900334f8e960a36a47e644a53df042d030f041712b779ad9cd0f1c",
+      "bytes": 359452
+    },
+    {
+      "file": "particles-201805.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2018-05-01T00%3A00%3A00%2B00%3A00&time.max=2018-06-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:30.634046+00:00",
+      "sha256": "62519751919afaaa115e077f07b3c9cfc7525d7c30c1c0587dd99fd46f4af4e5",
+      "bytes": 371358
+    },
+    {
+      "file": "particles-201806.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2018-06-01T00%3A00%3A00%2B00%3A00&time.max=2018-07-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:30.322080+00:00",
+      "sha256": "30a60e4e2a7cf84a9cdba2d9e653c36fa087899cff334674637a993d41215aa6",
+      "bytes": 359248
+    },
+    {
+      "file": "particles-201807.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2018-07-01T00%3A00%3A00%2B00%3A00&time.max=2018-08-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:31.718635+00:00",
+      "sha256": "cbf96506d6e49e9cb58b4390cc549baa6bc0bd6901d2f820c91a1351110994bc",
+      "bytes": 370915
+    },
+    {
+      "file": "particles-201808.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2018-08-01T00%3A00%3A00%2B00%3A00&time.max=2018-09-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:31.431579+00:00",
+      "sha256": "d93dd3a8e29540321cdd457209de5c31e6fdbc19bdc9598ad9830d4939948645",
+      "bytes": 371533
+    },
+    {
+      "file": "particles-201809.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2018-09-01T00%3A00%3A00%2B00%3A00&time.max=2018-10-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:31.581080+00:00",
+      "sha256": "861942f535b8005dd519d4cd0ec4460951f9cb8c63d708f25a14e05c817e4e36",
+      "bytes": 359050
+    },
+    {
+      "file": "particles-201810.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2018-10-01T00%3A00%3A00%2B00%3A00&time.max=2018-11-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:31.699686+00:00",
+      "sha256": "26b899092680303486f027f9e765d3a5006b654ccf3f20ecad92f93e32feb56c",
+      "bytes": 371659
+    },
+    {
+      "file": "particles-201811.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2018-11-01T00%3A00%3A00%2B00%3A00&time.max=2018-12-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:32.480969+00:00",
+      "sha256": "dd791bdfeb31ac69e8bfddf24a1e44b4577ad6e5cc932e2128779cae15baa376",
+      "bytes": 359188
+    },
+    {
+      "file": "particles-201812.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2018-12-01T00%3A00%3A00%2B00%3A00&time.max=2019-01-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:32.674341+00:00",
+      "sha256": "ab72f8d3357ad7057b64cf1bfbd2f79f4486015efd06a7597f47af36ddc89996",
+      "bytes": 371131
+    },
+    {
+      "file": "particles-201901.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2019-01-01T00%3A00%3A00%2B00%3A00&time.max=2019-02-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:32.761771+00:00",
+      "sha256": "87806e2a3ff32f87f2a0251f40fa60f9104b343f86ef248356a9ae0af32fd2f0",
+      "bytes": 371028
+    },
+    {
+      "file": "particles-201902.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2019-02-01T00%3A00%3A00%2B00%3A00&time.max=2019-03-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:32.730663+00:00",
+      "sha256": "55be680ccf3ebf303856768018fa5b3d028510961847c0421e88f6f27889e9ae",
+      "bytes": 335391
+    },
+    {
+      "file": "particles-201903.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2019-03-01T00%3A00%3A00%2B00%3A00&time.max=2019-04-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:33.545410+00:00",
+      "sha256": "71ef4e9beb2660816f6a19cfea44fffdc8ffb8f8d33e48c393f6d93b1135d4c7",
+      "bytes": 371719
+    },
+    {
+      "file": "particles-201904.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2019-04-01T00%3A00%3A00%2B00%3A00&time.max=2019-05-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:33.689914+00:00",
+      "sha256": "00f7ed8bfc86207d9ed8a0e34d871ee413426324bc9f5c12efebbd529c2b4a07",
+      "bytes": 359070
+    },
+    {
+      "file": "particles-201905.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2019-05-01T00%3A00%3A00%2B00%3A00&time.max=2019-06-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:33.855364+00:00",
+      "sha256": "7bf054a18a5744938edafcfb241281b78e627b5e1e2a6f79906ac0968fb69d1d",
+      "bytes": 371042
+    },
+    {
+      "file": "particles-201906.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2019-06-01T00%3A00%3A00%2B00%3A00&time.max=2019-07-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:33.811895+00:00",
+      "sha256": "363352a3b5839a0a87263e42a0c4dacaad7477258962ba12481cdd14e4749bb6",
+      "bytes": 355764
+    },
+    {
+      "file": "particles-201907.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2019-07-01T00%3A00%3A00%2B00%3A00&time.max=2019-08-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:34.630814+00:00",
+      "sha256": "9e79207d863d0e2fb78266bcf95b56f8bca33e8d834dd278f3022f6a84b633ab",
+      "bytes": 370690
+    },
+    {
+      "file": "particles-201908.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2019-08-01T00%3A00%3A00%2B00%3A00&time.max=2019-09-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:34.752486+00:00",
+      "sha256": "680abe28c5b33ec6f82a9270c5faa0769483b7cf421721686cae0fc72ede6b89",
+      "bytes": 370749
+    },
+    {
+      "file": "particles-201909.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2019-09-01T00%3A00%3A00%2B00%3A00&time.max=2019-10-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:34.839007+00:00",
+      "sha256": "b974c5b3d183f63b0d3de622e0a685d8297efef0c682bdff79a53337776fc404",
+      "bytes": 358879
+    },
+    {
+      "file": "particles-201910.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2019-10-01T00%3A00%3A00%2B00%3A00&time.max=2019-11-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:34.926478+00:00",
+      "sha256": "009d101f3c83f724046b9c36dfdeb3153d06e3ef20022dc0c10cf553ce6b1105",
+      "bytes": 370558
+    },
+    {
+      "file": "particles-201911.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2019-11-01T00%3A00%3A00%2B00%3A00&time.max=2019-12-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:36.508879+00:00",
+      "sha256": "58c856646b243cbd5bd7de1c6814dbd4e4d25bfc34b89acb93c43e1d1617fc88",
+      "bytes": 358771
+    },
+    {
+      "file": "particles-201912.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2019-12-01T00%3A00%3A00%2B00%3A00&time.max=2020-01-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:36.837838+00:00",
+      "sha256": "1b6c8c96f396414ac29f4681fb73536a489f1815fb7975fa39de62c3932cdb93",
+      "bytes": 370655
+    },
+    {
+      "file": "particles-202001.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2020-01-01T00%3A00%3A00%2B00%3A00&time.max=2020-02-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:36.763608+00:00",
+      "sha256": "506b60ae4b710e31f6dec38d854f0f489c1d6e351b9ac5a0214132a65deabe5f",
+      "bytes": 371873
+    },
+    {
+      "file": "particles-202002.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2020-02-01T00%3A00%3A00%2B00%3A00&time.max=2020-03-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:36.826470+00:00",
+      "sha256": "3b5b3c5c982d934fa9a1aa86d92d620a8f6a71ea7f7f7b2c060736c3cd56fdd1",
+      "bytes": 346649
+    },
+    {
+      "file": "particles-202003.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2020-03-01T00%3A00%3A00%2B00%3A00&time.max=2020-04-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:37.644870+00:00",
+      "sha256": "d65a68ca4d55e51e32c17d3738004001b48121d6be559a68cbac77404f90e979",
+      "bytes": 410506
+    },
+    {
+      "file": "particles-202004.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2020-04-01T00%3A00%3A00%2B00%3A00&time.max=2020-05-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:38.084371+00:00",
+      "sha256": "7a963e7f886f9145509bd472308baa3df93d70a10fcb6436af88cf42c961e6a0",
+      "bytes": 538762
+    },
+    {
+      "file": "particles-202005.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2020-05-01T00%3A00%3A00%2B00%3A00&time.max=2020-06-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:38.109319+00:00",
+      "sha256": "789823062e9e88605b91b851461cf9fea99751b6c37e555d14371cf3aef66392",
+      "bytes": 547610
+    },
+    {
+      "file": "particles-202006.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2020-06-01T00%3A00%3A00%2B00%3A00&time.max=2020-07-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:38.190647+00:00",
+      "sha256": "5dbe15fc03c7ae80b85cf0b0123bb1a0020bb65d980567da7baf3f60964047c3",
+      "bytes": 580898
+    },
+    {
+      "file": "particles-202007.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2020-07-01T00%3A00%3A00%2B00%3A00&time.max=2020-08-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:39.040786+00:00",
+      "sha256": "78bccb6d06cbdeffe954e1dff9082bc3a3fe2a13b4ac59b9c59dfabf3c90a516",
+      "bytes": 600627
+    },
+    {
+      "file": "particles-202008.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2020-08-01T00%3A00%3A00%2B00%3A00&time.max=2020-09-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:39.481161+00:00",
+      "sha256": "0782f2d6cab34bd96d2f38826a8956f0711e5aeddf98b04d62caab830614a832",
+      "bytes": 600671
+    },
+    {
+      "file": "particles-202009.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2020-09-01T00%3A00%3A00%2B00%3A00&time.max=2020-10-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:39.461767+00:00",
+      "sha256": "3a42d8d6d3a9df06ee182a8ef54e19f52c7cc043e332ccc0391d15d89e65eb25",
+      "bytes": 581544
+    },
+    {
+      "file": "particles-202010.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2020-10-01T00%3A00%3A00%2B00%3A00&time.max=2020-11-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:39.602884+00:00",
+      "sha256": "c9184d7791db79c49eb3fafc1310f84a79ac81a2441f938ae6936430879878f0",
+      "bytes": 591772
+    },
+    {
+      "file": "particles-202011.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2020-11-01T00%3A00%3A00%2B00%3A00&time.max=2020-12-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:41.665593+00:00",
+      "sha256": "9c61229c293c281c7e27d11bf2f1c8e3d2957f74d55e66547ef037a9e2f057a9",
+      "bytes": 579187
+    },
+    {
+      "file": "particles-202012.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2020-12-01T00%3A00%3A00%2B00%3A00&time.max=2021-01-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:42.069925+00:00",
+      "sha256": "81f8084b970c42215741f057c1f27e5d329a6095baf9bb78158d20739443af3c",
+      "bytes": 600258
+    },
+    {
+      "file": "particles-202101.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2021-01-01T00%3A00%3A00%2B00%3A00&time.max=2021-02-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:41.836780+00:00",
+      "sha256": "c0b31002016fb9d722ddfbdb43d3a2d99c6328d7d09ae7200253b068d04c441f",
+      "bytes": 600507
+    },
+    {
+      "file": "particles-202102.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2021-02-01T00%3A00%3A00%2B00%3A00&time.max=2021-03-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:41.703129+00:00",
+      "sha256": "784ffe6fb0ad7a2172e4c82643e1701aaa3b4a8dbff4ff8f5def38cb49f44738",
+      "bytes": 542440
+    },
+    {
+      "file": "particles-202103.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2021-03-01T00%3A00%3A00%2B00%3A00&time.max=2021-04-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:43.032470+00:00",
+      "sha256": "a2d9eb028a07b4128d6881a176d42b0357ce8e46f567008e7656853357708cca",
+      "bytes": 601121
+    },
+    {
+      "file": "particles-202104.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2021-04-01T00%3A00%3A00%2B00%3A00&time.max=2021-05-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:43.035791+00:00",
+      "sha256": "21fa8aace35028ca18a030d45d4062dbeb06971916cae74e0ad12cee22e08756",
+      "bytes": 583154
+    },
+    {
+      "file": "particles-202105.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2021-05-01T00%3A00%3A00%2B00%3A00&time.max=2021-06-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:43.224762+00:00",
+      "sha256": "2b67cb7be0928cd81456e39aab2b2cdb7bd45c29d8495309232fdefee7d3272f",
+      "bytes": 600778
+    },
+    {
+      "file": "particles-202106.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2021-06-01T00%3A00%3A00%2B00%3A00&time.max=2021-07-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:43.408356+00:00",
+      "sha256": "486654506e345273413fb0fe15c2c25a31ab792c19668fd7df43e43572e5c56e",
+      "bytes": 579904
+    },
+    {
+      "file": "particles-202107.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2021-07-01T00%3A00%3A00%2B00%3A00&time.max=2021-08-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:44.393941+00:00",
+      "sha256": "fdd008d5f8144a5d982465d4e3e6aa492b42d8906cb07c5dad0a7e71e304cf43",
+      "bytes": 599621
+    },
+    {
+      "file": "particles-202108.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2021-08-01T00%3A00%3A00%2B00%3A00&time.max=2021-09-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:44.412234+00:00",
+      "sha256": "d13ac61aa6e435d0ae20312489b591b34957e5ad57ce1a34c7bf437e46076a29",
+      "bytes": 599157
+    },
+    {
+      "file": "particles-202109.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2021-09-01T00%3A00%3A00%2B00%3A00&time.max=2021-10-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:44.553764+00:00",
+      "sha256": "bb121173de2cc7a4ef5a403515295dec3866751d2994c4d72ff75a4eb62abd16",
+      "bytes": 581278
+    },
+    {
+      "file": "particles-202110.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2021-10-01T00%3A00%3A00%2B00%3A00&time.max=2021-11-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:45.124616+00:00",
+      "sha256": "9edf4e8bd8c67aa67f1673d8d1a0f5ed4a413db76a5466321852b97729da8d02",
+      "bytes": 600338
+    },
+    {
+      "file": "particles-202111.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2021-11-01T00%3A00%3A00%2B00%3A00&time.max=2021-12-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:47.044589+00:00",
+      "sha256": "0f22451e345de705aa74406af41254b883c3c732ca5cc2d636f7b44f32c8accb",
+      "bytes": 578437
+    },
+    {
+      "file": "particles-202112.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2021-12-01T00%3A00%3A00%2B00%3A00&time.max=2022-01-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:46.739619+00:00",
+      "sha256": "6e4a3977f6b233347124feea440488341d68da8695d61b85cf7a5568e73ade4e",
+      "bytes": 602044
+    },
+    {
+      "file": "particles-202201.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2022-01-01T00%3A00%3A00%2B00%3A00&time.max=2022-02-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:46.954047+00:00",
+      "sha256": "7ab7c86323a38c344f29db0f21101bfe7d71f02a3f056d8d08f1344ff1fe5afe",
+      "bytes": 601588
+    },
+    {
+      "file": "particles-202202.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2022-02-01T00%3A00%3A00%2B00%3A00&time.max=2022-03-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:46.850547+00:00",
+      "sha256": "639d429d60c47cdcb7c5d3683971d43ba133f0a3d72d20b5967f9abeab856b11",
+      "bytes": 543483
+    },
+    {
+      "file": "particles-202203.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2022-03-01T00%3A00%3A00%2B00%3A00&time.max=2022-04-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:48.142064+00:00",
+      "sha256": "45cadb59bec80cf00d41d1b93127726c5eb68a2051b80b047371c31768dc477a",
+      "bytes": 601248
+    },
+    {
+      "file": "particles-202204.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2022-04-01T00%3A00%3A00%2B00%3A00&time.max=2022-05-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:48.205262+00:00",
+      "sha256": "bc27fcccb8511cc62b429dc672fd7ad8cda68cf25747e7be8d32a3cc99a6970a",
+      "bytes": 580500
+    },
+    {
+      "file": "particles-202205.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2022-05-01T00%3A00%3A00%2B00%3A00&time.max=2022-06-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:48.462637+00:00",
+      "sha256": "5a48a69d1a0bfd2004034d9bd4a7c892d7e92982761389609235609d65ed3727",
+      "bytes": 603505
+    },
+    {
+      "file": "particles-202206.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2022-06-01T00%3A00%3A00%2B00%3A00&time.max=2022-07-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:48.384948+00:00",
+      "sha256": "721102ef038ec5d3abcf7eabf1205d1f7f2871485b061d0143275b515e363e29",
+      "bytes": 584953
+    },
+    {
+      "file": "particles-202207.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2022-07-01T00%3A00%3A00%2B00%3A00&time.max=2022-08-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:49.563260+00:00",
+      "sha256": "3cf6af505e8801a46c4d16b4e48e03cf7397e57f53a49cbb2dbbb82333e4dee5",
+      "bytes": 604432
+    },
+    {
+      "file": "particles-202208.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2022-08-01T00%3A00%3A00%2B00%3A00&time.max=2022-09-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:49.657035+00:00",
+      "sha256": "57d4d774a8516634549aab5e69f6e9190a8d5957dd8308d13a4da46b053a55f4",
+      "bytes": 604077
+    },
+    {
+      "file": "particles-202209.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2022-09-01T00%3A00%3A00%2B00%3A00&time.max=2022-10-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:49.820996+00:00",
+      "sha256": "75ac2461e112ba6f7c9fa2a586a091c8856b172905022e8ab7a2b97f5b0f794b",
+      "bytes": 582725
+    },
+    {
+      "file": "particles-202210.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2022-10-01T00%3A00%3A00%2B00%3A00&time.max=2022-11-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:49.861453+00:00",
+      "sha256": "3da429e367d26909e56154dc7709b925c64637d9b6c6c1878d503f633c99f151",
+      "bytes": 604904
+    },
+    {
+      "file": "particles-202211.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2022-11-01T00%3A00%3A00%2B00%3A00&time.max=2022-12-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:52.020216+00:00",
+      "sha256": "11aac4885495a633576384c78d86a604b59c592edeed989e9638bc52bf273fc9",
+      "bytes": 584314
+    },
+    {
+      "file": "particles-202212.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2022-12-01T00%3A00%3A00%2B00%3A00&time.max=2023-01-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:52.090922+00:00",
+      "sha256": "e04973ca94383d9d4ee0c47cb0292ce8be112380fedfd1ffea6c99406b227766",
+      "bytes": 604664
+    },
+    {
+      "file": "particles-202301.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2023-01-01T00%3A00%3A00%2B00%3A00&time.max=2023-02-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:52.489450+00:00",
+      "sha256": "db596e6c868db847f0b21673918f857587c7f61e0a7190857e9f532252b0de75",
+      "bytes": 605529
+    },
+    {
+      "file": "particles-202302.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2023-02-01T00%3A00%3A00%2B00%3A00&time.max=2023-03-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:51.934354+00:00",
+      "sha256": "23822320eb98fbcd1e780dd6f729674b960c6dce3f18675044bd62d03f81ca81",
+      "bytes": 546949
+    },
+    {
+      "file": "particles-202303.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2023-03-01T00%3A00%3A00%2B00%3A00&time.max=2023-04-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:53.284708+00:00",
+      "sha256": "f47775c163eee9d1b63dd200ceee7f0e4890699338cf973ab84098eb99a6965e",
+      "bytes": 601744
+    },
+    {
+      "file": "particles-202304.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2023-04-01T00%3A00%3A00%2B00%3A00&time.max=2023-05-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:53.349383+00:00",
+      "sha256": "6d86ba3468585f3c9d7ff9c09fe5423786bd6b7b1da30c9c02dc0c830a652ac8",
+      "bytes": 576676
+    },
+    {
+      "file": "particles-202305.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2023-05-01T00%3A00%3A00%2B00%3A00&time.max=2023-06-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:53.460185+00:00",
+      "sha256": "403d5b84e417d23230454b46e854b2c951ee6221ed08e1b8fec30f7a2b52631c",
+      "bytes": 606701
+    },
+    {
+      "file": "particles-202306.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2023-06-01T00%3A00%3A00%2B00%3A00&time.max=2023-07-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:53.980343+00:00",
+      "sha256": "4137da79e8fef6599bb865cd421620cb5d280327e307071bd0a010fcef5b50da",
+      "bytes": 589018
+    },
+    {
+      "file": "particles-202307.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2023-07-01T00%3A00%3A00%2B00%3A00&time.max=2023-08-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:54.866988+00:00",
+      "sha256": "effc59eafeaed8318edd0b1db2549715a1f4542a6690cff076c1e998a369af51",
+      "bytes": 605434
+    },
+    {
+      "file": "particles-202308.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2023-08-01T00%3A00%3A00%2B00%3A00&time.max=2023-09-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:54.756076+00:00",
+      "sha256": "d5d7f85d579a80b243e43e9cb655113e4c8af7a1d03ce8fcd796374d093c44fa",
+      "bytes": 607375
+    },
+    {
+      "file": "particles-202309.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2023-09-01T00%3A00%3A00%2B00%3A00&time.max=2023-10-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:54.839952+00:00",
+      "sha256": "b6da58694747c9678b2ccd1a7d2b80fe40c5604932563eb48fb2100fed1557f3",
+      "bytes": 589372
+    },
+    {
+      "file": "particles-202310.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2023-10-01T00%3A00%3A00%2B00%3A00&time.max=2023-11-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:56.279388+00:00",
+      "sha256": "8e48ce03822bc9c9671bd1e094badcb670bfc697818bb134b3601f6410a635bd",
+      "bytes": 610040
+    },
+    {
+      "file": "particles-202311.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2023-11-01T00%3A00%3A00%2B00%3A00&time.max=2023-12-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:56.672451+00:00",
+      "sha256": "1f0cfb7db02fb16fb02d48bb00ca33f8b776cf1742b3c598e20452aea22dfdf2",
+      "bytes": 590235
+    },
+    {
+      "file": "particles-202312.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2023-12-01T00%3A00%3A00%2B00%3A00&time.max=2024-01-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:57.465832+00:00",
+      "sha256": "e259550fc2b9cd2ce12cf8bc76f00ade5e4ef0cca918267d65b8fb902ab39a37",
+      "bytes": 609390
+    },
+    {
+      "file": "particles-202401.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2024-01-01T00%3A00%3A00%2B00%3A00&time.max=2024-02-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:57.329712+00:00",
+      "sha256": "0cd8857c25d13169122e21c45ad83544aca678cacc84b56ebb8ea4f769b86eec",
+      "bytes": 606108
+    },
+    {
+      "file": "particles-202402.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2024-02-01T00%3A00%3A00%2B00%3A00&time.max=2024-03-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:57.607539+00:00",
+      "sha256": "04fb0646492449751cc11e101bf221a2087e9e2b0ec1138dff63ab93927f71d6",
+      "bytes": 564062
+    },
+    {
+      "file": "particles-202403.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2024-03-01T00%3A00%3A00%2B00%3A00&time.max=2024-04-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:58.169489+00:00",
+      "sha256": "db99c7cd44f1779896c1b976691806f27af3c39ac7654e3ec84710eafb061836",
+      "bytes": 605977
+    },
+    {
+      "file": "particles-202404.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2024-04-01T00%3A00%3A00%2B00%3A00&time.max=2024-05-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:58.660664+00:00",
+      "sha256": "bebbc1b16212df05137c053251ae8b4a92b7b0482431cca712debdf1d204b13b",
+      "bytes": 588810
+    },
+    {
+      "file": "particles-202405.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2024-05-01T00%3A00%3A00%2B00%3A00&time.max=2024-06-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:58.830525+00:00",
+      "sha256": "05ee2bc9a9926bffe4c1a6411dd03087be3550b5c1515f0b41a69ee79591fd34",
+      "bytes": 605166
+    },
+    {
+      "file": "particles-202406.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2024-06-01T00%3A00%3A00%2B00%3A00&time.max=2024-07-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:59.036044+00:00",
+      "sha256": "2d5b62e1fbbff3506d73a118e0a02425d12020d4a55f433da5e11926da5a3f45",
+      "bytes": 568114
+    },
+    {
+      "file": "particles-202407.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2024-07-01T00%3A00%3A00%2B00%3A00&time.max=2024-08-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:56:59.567263+00:00",
+      "sha256": "62f272a7577149426907dcd0e4f33525becc1bf441d21e8faf2141471e1dab3a",
+      "bytes": 609192
+    },
+    {
+      "file": "particles-202408.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2024-08-01T00%3A00%3A00%2B00%3A00&time.max=2024-09-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:00.219111+00:00",
+      "sha256": "ea29253aa01c2190696422e67e1063a6e7865ca202d0269ad23e4802c357d59a",
+      "bytes": 610162
+    },
+    {
+      "file": "particles-202409.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2024-09-01T00%3A00%3A00%2B00%3A00&time.max=2024-10-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:00.499937+00:00",
+      "sha256": "25a8bb7bb05a691055cbbbe6795ac5bf48d66b2a51dd95c17e6a1d7defe46949",
+      "bytes": 585125
+    },
+    {
+      "file": "particles-202410.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2024-10-01T00%3A00%3A00%2B00%3A00&time.max=2024-11-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:00.911554+00:00",
+      "sha256": "aafefbd95324ba029d1245f2cf892c3061c9a81aba30fa63e5bf427a397e5780",
+      "bytes": 604675
+    },
+    {
+      "file": "particles-202411.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2024-11-01T00%3A00%3A00%2B00%3A00&time.max=2024-12-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:02.200987+00:00",
+      "sha256": "8ad302c8e90be49e82bb5bd0ce49e40fa0f9e29cba95a90ec5d5ebe8e8afd263",
+      "bytes": 588604
+    },
+    {
+      "file": "particles-202412.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2024-12-01T00%3A00%3A00%2B00%3A00&time.max=2025-01-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:02.621327+00:00",
+      "sha256": "d33f97346f8ebcf93540533f7a073ffd75c57d8b36f5c0a42305b62f0e63a844",
+      "bytes": 606635
+    },
+    {
+      "file": "particles-202501.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2025-01-01T00%3A00%3A00%2B00%3A00&time.max=2025-02-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:01.932108+00:00",
+      "sha256": "ed124727fe45524c1021e5bdf9a68fc9a34ecd5f51b0d2932154b89f439abbf5",
+      "bytes": 606481
+    },
+    {
+      "file": "particles-202502.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2025-02-01T00%3A00%3A00%2B00%3A00&time.max=2025-03-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:02.181545+00:00",
+      "sha256": "17c73f5c7ecfc26ad025d8c609e44992b41fbc4fa79947b127ad87068cab7a71",
+      "bytes": 550035
+    },
+    {
+      "file": "particles-202503.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2025-03-01T00%3A00%3A00%2B00%3A00&time.max=2025-04-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:03.334617+00:00",
+      "sha256": "e0e58e3eb5dce85be52797bde9923ec9d56b500c204213cf109ecd3b65165d74",
+      "bytes": 609554
+    },
+    {
+      "file": "particles-202504.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2025-04-01T00%3A00%3A00%2B00%3A00&time.max=2025-05-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:03.590765+00:00",
+      "sha256": "8110b7ea22d3aff2dcb97c863b8564abd5743b25f23e8cc3e371b00be2f4a70c",
+      "bytes": 589477
+    },
+    {
+      "file": "particles-202505.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2025-05-01T00%3A00%3A00%2B00%3A00&time.max=2025-06-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:03.586401+00:00",
+      "sha256": "eadd9e352beb50e58682d3a7a47e81f28bdb2165361f181581bdfc73538da491",
+      "bytes": 609576
+    },
+    {
+      "file": "particles-202506.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2025-06-01T00%3A00%3A00%2B00%3A00&time.max=2025-07-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:03.985557+00:00",
+      "sha256": "2270b1ea99776cfadf21eee9c219b71ff0e608341d583ffc45e708814e188146",
+      "bytes": 589164
+    },
+    {
+      "file": "particles-202507.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2025-07-01T00%3A00%3A00%2B00%3A00&time.max=2025-08-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:04.732111+00:00",
+      "sha256": "83e66a3297bad73f8417dd3b149b12961e531d9efb69d7215b15499700934a50",
+      "bytes": 609972
+    },
+    {
+      "file": "particles-202508.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2025-08-01T00%3A00%3A00%2B00%3A00&time.max=2025-09-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:05.534203+00:00",
+      "sha256": "d7fe9d502ea6fcf51d093b845f7433b696d93f4d213902df4e45d267ff8d3f11",
+      "bytes": 606769
+    },
+    {
+      "file": "particles-202509.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2025-09-01T00%3A00%3A00%2B00%3A00&time.max=2025-10-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:04.935818+00:00",
+      "sha256": "da9d8cedb6851ca34e47edfefa89f07a7d53d1ef019d10128866552adab6ddf4",
+      "bytes": 589892
+    },
+    {
+      "file": "particles-202510.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2025-10-01T00%3A00%3A00%2B00%3A00&time.max=2025-11-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:05.949686+00:00",
+      "sha256": "611e0d9d7059b31a01024470f7f675d14ee244d45ffe7919c1b2b6a09917f685",
+      "bytes": 608105
+    },
+    {
+      "file": "particles-202511.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2025-11-01T00%3A00%3A00%2B00%3A00&time.max=2025-12-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:07.015860+00:00",
+      "sha256": "af1796982908340b29bc72120bcb97c2e66985f829403b281c6924d615dad809",
+      "bytes": 586663
+    },
+    {
+      "file": "particles-202512.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2025-12-01T00%3A00%3A00%2B00%3A00&time.max=2026-01-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:07.501032+00:00",
+      "sha256": "5192b581ed65ffa88aefd8c0568e85ee8f1f2a57676bb6a29d7c8fe4b7ba518e",
+      "bytes": 610135
+    },
+    {
+      "file": "particles-202601.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2026-01-01T00%3A00%3A00%2B00%3A00&time.max=2026-02-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:07.003690+00:00",
+      "sha256": "94061ab03248082356da1ae108907ba7a4a4c68b4a474a2a8315dbc9e107e5e8",
+      "bytes": 606917
+    },
+    {
+      "file": "particles-202602.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2026-02-01T00%3A00%3A00%2B00%3A00&time.max=2026-03-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:07.440366+00:00",
+      "sha256": "f108e4383b7730af4b07e2144a152618b227c5c1f2d868ebff687b9cf51e5131",
+      "bytes": 551195
+    },
+    {
+      "file": "particles-202603.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2026-03-01T00%3A00%3A00%2B00%3A00&time.max=2026-04-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:08.426041+00:00",
+      "sha256": "2eba5e6cdc8ef2ab24fa41812ee3305ebca365c5aad7154d1b104e8416bbbb64",
+      "bytes": 610344
+    },
+    {
+      "file": "particles-202604.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2026-04-01T00%3A00%3A00%2B00%3A00&time.max=2026-05-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:08.357050+00:00",
+      "sha256": "079369ec543fd50ddbe724510d8065cc9e5a52662ee5da2e566b01f92b85d618",
+      "bytes": 589184
+    },
+    {
+      "file": "particles-202605.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2026-05-01T00%3A00%3A00%2B00%3A00&time.max=2026-06-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:08.846904+00:00",
+      "sha256": "fe93d198ddc81b8ccba821f8d4b4fdf29a47860197525003c5d29715d102e0ed",
+      "bytes": 609383
+    },
+    {
+      "file": "particles-202606.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2026-06-01T00%3A00%3A00%2B00%3A00&time.max=2026-07-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:08.846371+00:00",
+      "sha256": "50a347ca2ad25eba8f493c2f147394962268302c49d799fc54e499d51c3a3594",
+      "bytes": 589770
+    },
+    {
+      "file": "particles-202607.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2026-07-01T00%3A00%3A00%2B00%3A00&time.max=2026-08-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:09.753131+00:00",
+      "sha256": "fa4a924157b4ccbb68b956bc33d4abf8923434a1d64b4658c9a5b3d8c1078fb5",
+      "bytes": 608997
+    },
+    {
+      "file": "particles-202608.csv",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CP50%2CsatelliteProton&time.min=2026-08-01T00%3A00%3A00%2B00%3A00&time.max=2026-09-01T00%3A00%3A00%2B00%3A00&format=csv",
+      "retrievedAt": "2026-09-19T23:57:09.829359+00:00",
+      "sha256": "c4552beda0cd1d7e37b85de01221c68c5e35bacc4d74eecd6150fef70b46a1bf",
+      "bytes": 607368
+    },
+    {
+      "file": "flares-2010.csv",
+      "url": "https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/multi/l2/data/xrsf-l2-flrpt_science/csv/sci_xrsf-l2-flrpt_geo_y2010_v1-0-1.csv",
+      "retrievedAt": "2026-09-19T23:57:09.142835+00:00",
+      "sha256": "b460bacc09159fe5945b86843dcd223fdfe6eabc97153871d8948fcd889ce1cf",
+      "bytes": 313115
+    },
+    {
+      "file": "flares-2011.csv",
+      "url": "https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/multi/l2/data/xrsf-l2-flrpt_science/csv/sci_xrsf-l2-flrpt_geo_y2011_v1-0-1.csv",
+      "retrievedAt": "2026-09-19T23:57:09.171562+00:00",
+      "sha256": "e094cf9f5325fcf4474c330219bb2d01490ca8586ec94c0e60644d3ed58bd519",
+      "bytes": 488029
+    },
+    {
+      "file": "flares-2012.csv",
+      "url": "https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/multi/l2/data/xrsf-l2-flrpt_science/csv/sci_xrsf-l2-flrpt_geo_y2012_v1-0-1.csv",
+      "retrievedAt": "2026-09-19T23:57:09.401415+00:00",
+      "sha256": "4469dc5b9c588cd93d3c0bf369303e88c16ce397e02bc4ea8550936d21b72fa0",
+      "bytes": 477182
+    },
+    {
+      "file": "flares-2013.csv",
+      "url": "https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/multi/l2/data/xrsf-l2-flrpt_science/csv/sci_xrsf-l2-flrpt_geo_y2013_v1-0-1.csv",
+      "retrievedAt": "2026-09-19T23:57:09.426603+00:00",
+      "sha256": "113008d522abee1439ec61ba14caa3acaa3c1a91c86284331f2ff83f1bea5b6a",
+      "bytes": 465944
+    },
+    {
+      "file": "flares-2014.csv",
+      "url": "https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/multi/l2/data/xrsf-l2-flrpt_science/csv/sci_xrsf-l2-flrpt_geo_y2014_v1-0-1.csv",
+      "retrievedAt": "2026-09-19T23:57:09.659046+00:00",
+      "sha256": "bf0827d87ced965ebb4834927bcc5165bb995640d4dc4a9385917552c789c057",
+      "bytes": 521773
+    },
+    {
+      "file": "flares-2015.csv",
+      "url": "https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/multi/l2/data/xrsf-l2-flrpt_science/csv/sci_xrsf-l2-flrpt_geo_y2015_v1-0-1.csv",
+      "retrievedAt": "2026-09-19T23:57:09.669589+00:00",
+      "sha256": "ebf46bdbefc60b4a9637289c9b7bd39714f98546ffd5ca3685de6434e2c34040",
+      "bytes": 484646
+    },
+    {
+      "file": "flares-2016.csv",
+      "url": "https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/multi/l2/data/xrsf-l2-flrpt_science/csv/sci_xrsf-l2-flrpt_geo_y2016_v1-0-1.csv",
+      "retrievedAt": "2026-09-19T23:57:09.881991+00:00",
+      "sha256": "72034c0e8115aeaf1a484479abf96834f2a82991138c88e693b87aa1ba6e8a9b",
+      "bytes": 400660
+    },
+    {
+      "file": "flares-2017.csv",
+      "url": "https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/multi/l2/data/xrsf-l2-flrpt_science/csv/sci_xrsf-l2-flrpt_geo_y2017_v1-0-1.csv",
+      "retrievedAt": "2026-09-19T23:57:09.892389+00:00",
+      "sha256": "c710e5da5990b38f8ec1c9d2e860141f36cc4591e9dcd0722ae1af027b8dc9c7",
+      "bytes": 329879
+    },
+    {
+      "file": "flares-2018.csv",
+      "url": "https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/multi/l2/data/xrsf-l2-flrpt_science/csv/sci_xrsf-l2-flrpt_geo_y2018_v1-0-1.csv",
+      "retrievedAt": "2026-09-19T23:57:09.921243+00:00",
+      "sha256": "37b1f52afdbe3e5955976b91078933a61c120d2d953743eb54fafeaa6a924a55",
+      "bytes": 82441
+    },
+    {
+      "file": "flares-2019.csv",
+      "url": "https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/multi/l2/data/xrsf-l2-flrpt_science/csv/sci_xrsf-l2-flrpt_geo_y2019_v1-0-1.csv",
+      "retrievedAt": "2026-09-19T23:57:10.001776+00:00",
+      "sha256": "1b5ca02a379c064cd3078eb8ae7c8bf83f730737d6c5f0e81f99236678aeea26",
+      "bytes": 65345
+    },
+    {
+      "file": "flares-2020.csv",
+      "url": "https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/multi/l2/data/xrsf-l2-flrpt_science/csv/sci_xrsf-l2-flrpt_geo_y2020_v1-0-1.csv",
+      "retrievedAt": "2026-09-19T23:57:10.046851+00:00",
+      "sha256": "02dff4063724c465a3c007a2970993bcf5b936712a02d0490842f252b61cf3a2",
+      "bytes": 90090
+    },
+    {
+      "file": "flares-2021.csv",
+      "url": "https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/multi/l2/data/xrsf-l2-flrpt_science/csv/sci_xrsf-l2-flrpt_geo_y2021_v1-0-1.csv",
+      "retrievedAt": "2026-09-19T23:57:10.118057+00:00",
+      "sha256": "d4395bef95eea8fdcf3dcba7ed202840a0b2c0ccedfd0c54fd68b673692af542",
+      "bytes": 339510
+    },
+    {
+      "file": "flares-2022.csv",
+      "url": "https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/multi/l2/data/xrsf-l2-flrpt_science/csv/sci_xrsf-l2-flrpt_geo_y2022_v1-0-1.csv",
+      "retrievedAt": "2026-09-19T23:57:10.185877+00:00",
+      "sha256": "1a7978e87410a64db53e1459bd125727c114eb5d6f19dbb15e1fad3ef09991e9",
+      "bytes": 598803
+    },
+    {
+      "file": "flares-2023.csv",
+      "url": "https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/multi/l2/data/xrsf-l2-flrpt_science/csv/sci_xrsf-l2-flrpt_geo_y2023_v1-0-1.csv",
+      "retrievedAt": "2026-09-19T23:57:10.303419+00:00",
+      "sha256": "23902fe462a5eafc500ea15d897d59e57480526d83dda448b9047ead4a89dbe5",
+      "bytes": 646363
+    },
+    {
+      "file": "flares-2024.csv",
+      "url": "https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/multi/l2/data/xrsf-l2-flrpt_science/csv/sci_xrsf-l2-flrpt_geo_y2024_v1-0-1.csv",
+      "retrievedAt": "2026-09-19T23:57:10.350729+00:00",
+      "sha256": "74f23ea854f8f1f39b7b6521a08d7cf280a46e46f06ac6924b308d1ae070b4cd",
+      "bytes": 746060
+    },
+    {
+      "file": "flares-2025.csv",
+      "url": "https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/multi/l2/data/xrsf-l2-flrpt_science/csv/sci_xrsf-l2-flrpt_geo_y2025_v1-0-1.csv",
+      "retrievedAt": "2026-09-19T23:57:10.393706+00:00",
+      "sha256": "287c9ee0961e221368f3580c6e159e8dc17ef7607d02442dabf3ab48fa8c6c88",
+      "bytes": 626081
+    },
+    {
+      "file": "flares-2026.csv",
+      "url": "https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/multi/l2/data/xrsf-l2-flrpt_science/csv/sci_xrsf-l2-flrpt_geo_y2026_v1-0-1.csv",
+      "retrievedAt": "2026-09-19T23:57:10.436408+00:00",
+      "sha256": "3b197005f7639c2beabd6846fa06f891aef8700b57430d57422c1b71546bd519",
+      "bytes": 402692
+    }
+  ],
+  "featureSHA256": "e73d9ce9d738d0fa3bd575692cf64d138f4fff4ad4d93f2ca04cd19f6a9009c9"
+}

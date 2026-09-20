@@ -1,0 +1,76 @@
+name: Proton v2 extended sources
+on:
+  push:
+    branches: [research/proton-forecast-v2]
+    paths: [.github/workflows/proton-v2-extension.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  extension:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'requests==2.32.5' 'pandas==2.2.3'
+      - name: Acquire extended source records
+        run: |
+          python - <<'PY'
+          from concurrent.futures import ThreadPoolExecutor
+          from pathlib import Path
+          import requests, json, hashlib, datetime, calendar, io
+          import pandas as pd
+          out=Path('extension');out.mkdir(exist_ok=True)
+          manifest=[]
+          def get(name,url,params=None):
+              try:
+                  r=requests.get(url,params=params,timeout=(12,60));r.raise_for_status()
+                  if not r.content: raise ValueError('empty response')
+                  (out/name).write_bytes(r.content)
+                  item={'file':name,'url':r.url,'sha256':hashlib.sha256(r.content).hexdigest(),'bytes':len(r.content),'retrievedAt':datetime.datetime.now(datetime.timezone.utc).isoformat()}
+              except Exception as e:item={'file':name,'url':url,'error':str(e)}
+              manifest.append(item); print(name,item.get('bytes',item.get('error')),flush=True)
+              return item
+          # Only completed days are requested; these observations are not inferred.
+          get('particles-202609.csv','https://iswa.ccmc.gsfc.nasa.gov/hapi/data',{'id':'goesp_part_flux_P5M','parameters':'P10,P50,satelliteProton','time.min':'2026-09-01T00:00:00Z','time.max':'2026-09-19T00:00:00Z','format':'csv'})
+          # Test the older corrected integral archive before scheduling a backfill.
+          root='https://www.ncei.noaa.gov/data/goes-space-environment-monitor/access/avg/'
+          item=get('legacy-probe.csv',root+'2003/10/goes10/csv/g10_eps_5m_20031001_20031031.csv')
+          legacy_ok=False
+          if not item.get('error'):
+              text=(out/'legacy-probe.csv').read_text();lines=text.splitlines()
+              header=next((i for i,l in enumerate(lines) if l.startswith('time_tag,')),None)
+              if header is not None:
+                  cols=pd.read_csv(io.StringIO('\n'.join(lines[header:])),nrows=2).columns.tolist()
+                  (out/'legacy-columns.json').write_text(json.dumps(cols))
+                  legacy_ok=any(k in cols for k in ['p3_flux_ic','p10_flux_ic']) and any(k in cols for k in ['p5_flux_ic','p50_flux_ic'])
+                  print('LEGACY COLUMNS',cols,flush=True)
+          jobs=[]
+          if legacy_ok:
+              for d in pd.date_range('1995-01-01','2010-04-01',freq='MS'):
+                  sat='08' if d<pd.Timestamp('2003-05-01') else '10' if d<pd.Timestamp('2006-07-01') else '11'
+                  end=calendar.monthrange(d.year,d.month)[1]
+                  url=root+f'{d:%Y/%m}/goes{sat}/csv/g{sat}_eps_5m_{d:%Y%m}01_{d:%Y%m}{end:02d}.csv'
+                  jobs.append((f'legacy-{d:%Y%m}.csv',url))
+              base='https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/multi/l2/data/xrsf-l2-flrpt_science/csv/'
+              jobs += [(f'flares-{y}.csv',base+f'sci_xrsf-l2-flrpt_geo_y{y}_v1-0-1.csv') for y in range(1995,2010)]
+          # DONKI analyses carry publication timestamps; retain the originals for as-of filtering.
+          for year in range(2010,2027):
+              end=f'{year}-12-31' if year<2026 else '2026-09-18'
+              for kind in ['CME','FLR']:
+                  jobs.append((f'donki-{kind.lower()}-{year}.json',f'https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/{kind}?startDate={year}-01-01&endDate={end}'))
+          with ThreadPoolExecutor(max_workers=4) as pool:list(pool.map(lambda job:get(*job),jobs))
+          (out/'manifest.json').write_text(json.dumps(manifest,indent=2))
+          print('EXTENSION',sum('error' not in x for x in manifest),'of',len(manifest),'sources',flush=True)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: proton-v2-extended-sources
+          path: extension/
+          retention-days: 30
+          compression-level: 6
+          if-no-files-found: error

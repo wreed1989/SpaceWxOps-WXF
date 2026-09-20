@@ -1,0 +1,50 @@
+name: Proton v2 research archive
+on:
+  push:
+    branches: [research/proton-forecast-v2]
+    paths: [.github/workflows/proton-v2-research.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: proton-v2-research-archive
+  cancel-in-progress: false
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'numpy==2.2.6' 'pandas==2.2.3' 'requests==2.32.4'
+      - name: Download complete overlap and provenance
+        run: |
+          python - <<'PY'
+          from research.proton_forecast.acquire import acquire
+          from pathlib import Path
+          import json
+          root=Path('work/proton-history')
+          manifest=acquire(root)
+          failures=[x for x in manifest if x.get('error')]
+          print('Acquisition summary:',len(manifest),'sources;',len(failures),'failures',flush=True)
+          (root/'acquisition-summary.json').write_text(json.dumps({'sources':len(manifest),'failures':failures},indent=2))
+          # Include metadata and source code to reproduce the data contracts.
+          import requests, hashlib, datetime
+          base='https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/multi/l2/data/xrsf-l2-flrpt_science/csv/'
+          r=requests.get(base+'sci_xrsf-l2-flrpt_geo_metadata.json',timeout=60)
+          if r.ok: (root/'flare-metadata.json').write_bytes(r.content)
+          if failures: print(json.dumps(failures,indent=2),flush=True)
+          PY
+      - name: Archive raw data outside Git history
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: proton-v2-training-archive
+          path: |
+            work/proton-history/
+            research/proton_forecast/
+          retention-days: 30
+          compression-level: 6
+          if-no-files-found: error

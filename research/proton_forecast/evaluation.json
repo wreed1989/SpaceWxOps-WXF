@@ -1,0 +1,164 @@
+{
+  "version": "WXF-SEP-0.1",
+  "split": "2010\u20132014 training; 2015\u20132021 calibration; 2022\u20132026 untouched test; 28-day boundary embargo and crossing-region purge",
+  "targets": {
+    "p10_10": {
+      "n": 13745,
+      "events": 450,
+      "brier": 0.029491358800462632,
+      "brierSkill": 0.06985996621632728,
+      "auc": 0.738832643851072,
+      "averagePrecision": 0.17556708405502566,
+      "decisionProbability": 0.2,
+      "POD": 0.10222222222222223,
+      "FAR": 0.640625,
+      "hits": 46,
+      "falseAlarms": 82,
+      "misses": 404,
+      "reliability": [
+        {
+          "min": 0,
+          "max": 0.01,
+          "n": 1183,
+          "meanProbability": 0.00821865161324525,
+          "observedFraction": 0.014370245139475908
+        },
+        {
+          "min": 0.01,
+          "max": 0.03,
+          "n": 8354,
+          "meanProbability": 0.018632754626297345,
+          "observedFraction": 0.016997845343548
+        },
+        {
+          "min": 0.03,
+          "max": 0.1,
+          "n": 3637,
+          "meanProbability": 0.048993406297959695,
+          "observedFraction": 0.04234259004674182
+        },
+        {
+          "min": 0.1,
+          "max": 0.3,
+          "n": 540,
+          "meanProbability": 0.15275409021504716,
+          "observedFraction": 0.22777777777777777
+        },
+        {
+          "min": 0.3,
+          "max": 0.6,
+          "n": 30,
+          "meanProbability": 0.38997808910838255,
+          "observedFraction": 0.43333333333333335
+        },
+        {
+          "min": 0.6,
+          "max": 1,
+          "n": 1,
+          "meanProbability": 0.6363129761195055,
+          "observedFraction": 1.0
+        }
+      ],
+      "brierSkill95": [
+        0.034353431995254084,
+        0.10425099129785712
+      ]
+    },
+    "p10_40": {
+      "n": 13745,
+      "events": 207,
+      "brier": 0.014329751198860124,
+      "brierSkill": 0.033968495796512066,
+      "auc": 0.7335219596583744,
+      "averagePrecision": 0.12414883941659383,
+      "decisionProbability": 0.2,
+      "POD": 0.014492753623188406,
+      "FAR": 0.25,
+      "hits": 3,
+      "falseAlarms": 1,
+      "misses": 204,
+      "reliability": [
+        {
+          "min": 0,
+          "max": 0.01,
+          "n": 8639,
+          "meanProbability": 0.005413313377980576,
+          "observedFraction": 0.007292510707257785
+        },
+        {
+          "min": 0.01,
+          "max": 0.03,
+          "n": 4336,
+          "meanProbability": 0.01610428880612159,
+          "observedFraction": 0.01683579335793358
+        },
+        {
+          "min": 0.03,
+          "max": 0.1,
+          "n": 732,
+          "meanProbability": 0.04421703956391184,
+          "observedFraction": 0.07923497267759563
+        },
+        {
+          "min": 0.1,
+          "max": 0.3,
+          "n": 38,
+          "meanProbability": 0.1371608871488499,
+          "observedFraction": 0.34210526315789475
+        }
+      ],
+      "brierSkill95": [
+        0.014713204369982177,
+        0.05470224582384104
+      ]
+    },
+    "p50_10": {
+      "n": 14189,
+      "events": 67,
+      "brier": 0.004560561160797062,
+      "brierSkill": 0.035106759657026476,
+      "auc": 0.7809398694109118,
+      "averagePrecision": 0.10457822312824205,
+      "decisionProbability": 0.2,
+      "POD": 0.0,
+      "FAR": null,
+      "hits": 0,
+      "falseAlarms": 0,
+      "misses": 67,
+      "reliability": [
+        {
+          "min": 0,
+          "max": 0.01,
+          "n": 11038,
+          "meanProbability": 0.006509406759327093,
+          "observedFraction": 0.001993114694691067
+        },
+        {
+          "min": 0.01,
+          "max": 0.03,
+          "n": 2852,
+          "meanProbability": 0.01426502571141047,
+          "observedFraction": 0.0035063113604488078
+        },
+        {
+          "min": 0.03,
+          "max": 0.1,
+          "n": 296,
+          "meanProbability": 0.046189013149728855,
+          "observedFraction": 0.11148648648648649
+        },
+        {
+          "min": 0.1,
+          "max": 0.3,
+          "n": 3,
+          "meanProbability": 0.10788866033355164,
+          "observedFraction": 0.6666666666666666
+        }
+      ],
+      "brierSkill95": [
+        -0.017048858697324643,
+        0.05698750763788345
+      ]
+    }
+  }
+}

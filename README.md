@@ -17,6 +17,16 @@ The current model is `sharp-mag-20260903-xstruct-history-v3`. X1+ is no longer a
 
 See [MODEL_CARD.md](MODEL_CARD.md) for architecture, validation, uncertainty, and limitations, and [DATASETS.md](DATASETS.md) for the complete data inventory.
 
+## Experimental proton outlook and current data relays
+
+The Models → SEP / Proton selection now includes [WXF SEP 0.1](research/proton_forecast/README.md), a calibrated flare-triggered empirical baseline with a chronological 2010–2026 hindcast. It estimates fixed-window probabilities for the requested P10 ≥10 / >40 pfu and P50 ≥10 pfu events. Its low detection rate and inconclusive P50 skill are shown in the interface; it is not an operationally validated replacement for published guidance. UMASEP / REleASE remains selectable.
+
+The existing hourly science publication also provides dated [SOLAR-1 STIS](https://www.swpc.noaa.gov/products/solar-wind) ion measurements and [GFZ Hp60/ap60](https://kp.gfz.de/en/hp30-hp60/data). STIS is primary when its operational quality is accepted and the last valid measurement is no older than 90 minutes; otherwise the dashboard uses ACE EPAM and labels the fallback. STIS measurements have one-minute cadence but this relay publishes hourly. The observation time remains visible. GFZ one-hour ap60 bars are labelled separately from the three-hour Ap fallback.
+
+The standalone build embeds these dated snapshots, then refreshes the published relays. Solar imagery indices/playback refresh every 15 minutes. High Flyer shows Northern/Southern Hemisphere NAIRAS maxima at 20 km in mSv/h; stale readings cannot trigger alerts. The Product Catalog consolidates duplicate observation/timeline/recurrence entries while migrating old saved selections. SWPC has a full-width timeline without its former Context inspector.
+
+The September 19 Actions review found a Stanford connection timeout and an expired flare base in an external refresh. JSOC GET retries are now bounded but more tolerant; the external-refresh script can recover a newer, still-valid publication before enrichment. If no trustworthy current data exists, the workflow still fails visibly and retains dated last-good data. Failure notification preferences are unchanged.
+
 ## Daily automation
 
 `.github/workflows/wxf-daily.yml` requests the formal 21Z issue at 21:20 UTC and retries at 22:20, 23:20, and 00:20 UTC. The lightweight external-guidance workflow refreshes comparison providers separately. Publication locking prevents simultaneous jobs from overwriting each other.

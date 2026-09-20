@@ -84,5 +84,26 @@ class SwpcRecoveryTests(unittest.TestCase):
             self.assertEqual(r['members']['sharpmag']['quality'],'stale-fallback')
 
 
+class ScheduledBaseRecoveryTests(unittest.TestCase):
+    def test_only_newer_current_published_base_is_accepted(self):
+        import datetime as dt
+        from unittest.mock import patch, Mock
+        stale={'issued':'2026-09-16T21:00:00Z','valid_start':'2026-09-17T00:00:00Z','valid_end':'2026-09-18T00:00:00Z'}
+        current={'issued':'2026-09-19T21:00:00Z','valid_start':'2026-09-20T00:00:00Z','valid_end':'2026-09-21T00:00:00Z','regions':[{'id':'full-disk','members':{'sharpmag':{'m1':10,'x1':1}}}]}
+        now=dt.datetime(2026,9,19,22,tzinfo=dt.timezone.utc)
+        get=Mock(return_value=Mock(json=lambda:current))
+        with patch.dict('os.environ',{'GITHUB_WORKFLOW':'Refresh current external flare guidance'}):
+            self.assertIs(guidance.recover_current_publication(stale,now=now,get=get),current)
+            get.reset_mock()
+            self.assertIs(guidance.recover_current_publication(current,now=now,get=get),current)
+            get.assert_not_called()
+            get.return_value=Mock(json=lambda:stale)
+            self.assertIs(guidance.recover_current_publication(stale,now=now,get=get),stale)
+        with patch.dict('os.environ',{'GITHUB_WORKFLOW':'WXF daily'}):
+            get.reset_mock()
+            self.assertIs(guidance.recover_current_publication(stale,now=now,get=get),stale)
+            get.assert_not_called()
+
+
 if __name__ == "__main__":
     unittest.main()

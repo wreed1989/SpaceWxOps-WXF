@@ -17,6 +17,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import datetime as dt
+import requests
 from pathlib import Path
 from typing import Any
 
@@ -263,6 +266,41 @@ def _restore_wxf_full_disk_union(payload: dict[str, Any]) -> None:
     }
 
 
+PUBLISHED_GUIDANCE_URL = "https://raw.githubusercontent.com/wreed1989/SpaceWxOps-WXF/main/flare_guidance.json"
+
+
+def recover_current_publication(payload, *, now=None, get=None):
+    """Recover a stale scheduled checkout without inventing a new issue time.
+
+    Only the external-refresh workflow may select a newer published base. Local
+    and daily model generation must continue to use their explicitly supplied file.
+    Subsequent workflow validation still rejects an unavailable/expired product.
+    """
+    if os.environ.get("GITHUB_WORKFLOW") != "Refresh current external flare guidance":
+        return payload
+    now = now or dt.datetime.now(dt.timezone.utc)
+    def times(p):
+        return tuple(dt.datetime.fromisoformat(p[k].replace("Z", "+00:00"))
+                     for k in ("issued", "valid_start", "valid_end"))
+    try:
+        issued, start, end = times(payload)
+        if issued <= now <= end and now-issued <= dt.timedelta(hours=27):
+            return payload
+        response = (get or requests.get)(PUBLISHED_GUIDANCE_URL, timeout=(8,20))
+        response.raise_for_status()
+        candidate = response.json()
+        ci, cs, ce = times(candidate)
+        full = next(row for row in candidate["regions"] if row.get("id") == "full-disk")
+        if (issued < ci <= cs < ce and ci <= now <= ce
+                and now-ci <= dt.timedelta(hours=27)
+                and isinstance(full.get("members",{}).get("sharpmag"),dict)):
+            print("Recovered newer published flare guidance:", candidate["issued"])
+            return candidate
+    except (KeyError, ValueError, TypeError, StopIteration, requests.RequestException) as exc:
+        print("Published-base recovery unavailable:", str(exc)[:180])
+    return payload
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=(
@@ -280,6 +318,7 @@ def main(argv: list[str] | None = None) -> int:
         if not isinstance(payload, dict):
             raise ValueError("payload root must be an object")
 
+        payload = recover_current_publication(payload)
         from swpc_flare import preserve_stale_windows, refresh_benchmark
         preserve_stale_windows(payload)
         payload = legacy.enrich(payload)

@@ -151,6 +151,7 @@ def score_database(database, model_path=HERE/'model.json', decision=.2):
           WHERE c.partition='test' AND o.target=? AND p.model_id=? ORDER BY c.valid_start''',(target,identity)).fetchall()
         scored=[r for r in rows if r['label'] is not None];y=np.array([r['label'] for r in scored]);p=np.array([r['probability'] for r in scored]);times=[stamp(r['valid_start']) for r in scored]
         result=metrics(y,p,m['baseRate'],decision);result.update(block_intervals(times,y,p,m['baseRate'],decision))
+        result['decisionSweep']=[metrics(y,p,m['baseRate'],t) for t in [.05,.1,.2,.3,.5]]
         result['withheld']=len(rows)-len(scored);result['excludedReasons']={str(k):int(v) for k,v in pd.Series([r['exclusion'] for r in rows if r['label'] is None]).value_counts().items()}
         current=[r for r in scored if r['input_eligible']]
         result['liveCoverageSubset']=metrics([r['label'] for r in current],[r['probability'] for r in current],m['baseRate'],decision) if current else None
@@ -175,7 +176,7 @@ def write_report(report, path):
     for key,v in report['targets'].items():
         interval=' to '.join(pct(x) for x in v['brierSkill95']);lines.append(f"| {key} | {v['n']:,} / {v['events']:,} | {pct(v['brierSkill'])} ({interval}) | {pct(v['POD'])} | {pct(v['FAR'])} | {v['hits']} / {v['falseAlarms']} / {v['misses']} / {v['correctNegatives']} |")
     lines+=['','p10_10: ≥10 MeV ≥10 pfu; p10_40: ≥10 MeV >40 pfu; p50_10: ≥50 MeV ≥10 pfu. An event requires three consecutive five-minute threshold crossings within the fixed 24-hour window beginning ten minutes after the flare peak.','',
-        '**Interpretation:** this baseline has low detection at 20%. The 50 MeV model issues no positive decisions at that cutoff, so its false-alarm ratio is undefined—not zero. Its Brier-skill interval crosses zero. These results do not establish skill parity with PROTONS.','',
+        '**Interpretation:** this baseline has low detection at the illustrative 20% probability cutoff (a WXF scoring choice, not a PROTONS requirement). The 50 MeV model issues no positive decisions at that cutoff, so its false-alarm ratio is undefined—not zero. Its Brier-skill interval crosses zero. These results do not establish skill parity with PROTONS.','',
         '## What is stored','',
         'SQLite tables: `source_files`, `observations`, `flares`, `forecast_cases`, `outcomes`, `models`, `predictions`, `evaluations`, and `metadata`. Raw flare records retain their additional fields for future model development. Forecast cases retain the original train/calibration/test assignment. Outcomes record exclusions, truth coverage, maximum gap, observed window maximum and threshold-confirmation time. Models and evaluations are keyed by SHA-256 so additional versions can be compared without replacing the reference model.','',
         '## Limits','']+['- '+x for x in report['limitations']]+['','## Metric definitions','',
@@ -184,6 +185,12 @@ def write_report(report, path):
         'From the repository, run:', '', '```sh', 'python -m research.proton_forecast.database --database /path/to/WXF_Proton_Verification.sqlite --output /path/to/report-directory', '```','',
         'Add `--cache /path/to/proton-history` only when creating a new database. The build requires the exact source and feature checksums in the committed input manifest. `--model /path/to/candidate.json` can add a compatible frozen model for comparison; no training happens during verification.','',
         f"Model SHA-256: `{report['modelSHA256']}`", f"Feature SHA-256: `{d['featureSHA256']}`",'']
+    if report.get('contextAudit'):
+        a=report['contextAudit'];lines+=['## Pre-flare episode audit','',a['description'],'','The original scores above are retained for reproducibility. The following subset additionally requires no sustained pre-flare crossing and sufficient input coverage. It is a retrospective diagnostic of the same weights, not evidence of improved model skill.','','| Target | Scored / positive | Recent-event exclusions | Brier skill |','|---|---:|---:|---:|']
+        for key,r in a['targets'].items():
+            v=r['statistics']
+            if v:lines.append(f"| {key} | {v['n']:,} / {v['events']:,} | {r['excludedRecent']:,} | {pct(v['brierSkill'])} |")
+        lines+=['','The 20% probability cutoff is an illustrative WXF verification setting, not a pfu threshold or a PROTONS requirement. Probability scores do not require this cutoff. The JSON audit includes decision cutoffs of 5%, 10%, 20%, 30% and 50% to make the sensitivity visible.','']
     Path(path).write_text('\n'.join(lines))
 
 
@@ -191,7 +198,8 @@ def main():
     parser=argparse.ArgumentParser();parser.add_argument('--cache',type=Path);parser.add_argument('--database',type=Path,required=True);parser.add_argument('--model',type=Path,default=HERE/'model.json');parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
     if args.cache:build_database(args.cache,args.database)
-    report=score_database(args.database,args.model);args.output.mkdir(parents=True,exist_ok=True)
+    from .audit import audit_database
+    report=audit_database(args.database,score_database(args.database,args.model));args.output.mkdir(parents=True,exist_ok=True)
     (args.output/'verification.json').write_text(json.dumps(report,indent=2,allow_nan=False)+'\n');write_report(report,args.output/'WXF_Proton_Verification.md')
     print(encoded({k:{n:v[n] for n in ['n','events','brierSkill','POD','FAR']} for k,v in report['targets'].items()}))
 if __name__=='__main__':main()

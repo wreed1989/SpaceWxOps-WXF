@@ -72,3 +72,30 @@ assert.equal(sep.run(prepared,missingBaseline,runAt).eligible.p10_10,null);
 const frozen=sep.run(prepared,history,runAt);prepared.inputSources.location='changed';assert.notEqual(frozen.input.inputSources.location,'changed');
 assert.ok(!extract('wxfProtonDashboard').includes('data-wxf-sep-prob'));
 console.log('Automatic flare inputs, measured peak precision, missing-location handling and compact probabilities passed');
+
+// Historical demonstrations must reconstruct the saved holdout probabilities without live inputs.
+const historical=JSON.parse(fs.readFileSync('research/proton_forecast/test-cases.json'));
+const verification=JSON.parse(fs.readFileSync('research/proton_forecast/verification.json'));
+const crypto=require('node:crypto');
+assert.equal(verification.modelSHA256,crypto.createHash('sha256').update(fs.readFileSync('research/proton_forecast/model.json')).digest('hex'));
+for(const [id,expected] of [['wxfProtonTests',historical],['wxfProtonVerification',verification]])assert.deepEqual(JSON.parse(html.match(new RegExp('<script type="application/json" id="'+id+'">([^]*?)<\\/script>'))[1]),expected);
+assert.equal(historical.cases.length,3);
+for(const test of historical.cases){
+ const draft=sep.draftFor(test.event,test.data),result=sep.run(draft,test.data,Date.parse(test.validEnd)+60000);
+ assert.equal(draft.inputError,undefined,test.title);assert.equal(result.validStart, new Date(test.validStart).toISOString());
+ for(const key of Object.keys(test.expectedProbabilities)){
+  assert.ok(Math.abs(result.probabilities[key]-test.expectedProbabilities[key])<1e-10,`${test.title}: ${key}`);
+  assert.equal(result.eligible[key],true);
+ }
+ assert.ok(test.data.observations.every(r=>Date.parse(r.time)<Date.parse(test.validEnd)));
+}
+assert.equal(historical.cases[0].outcomes.p50_10.label,1);
+assert.equal(historical.cases[1].outcomes.p10_10.label,0);
+assert.ok(historical.cases[2].expectedProbabilities.p10_10>=.2);
+assert.equal(historical.cases[2].outcomes.p10_10.label,0);
+for(const key in verification.targets){
+ const a=verification.targets[key],b=model.models[key].verification;
+ for(const stat of ['n','events','brier','brierSkill','POD','FAR','auc','averagePrecision'])assert.ok(a[stat]===b[stat]||Math.abs(a[stat]-b[stat])<1e-10,`${key}: ${stat}`);
+ assert.equal(a.hits+a.misses,a.events);assert.equal(a.hits+a.falseAlarms+a.misses+a.correctNegatives,a.n);
+}
+console.log('Archived test cases reproduce database forecasts; recomputed verification matches the frozen baseline');

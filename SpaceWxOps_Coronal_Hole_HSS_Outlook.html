@@ -13222,7 +13222,7 @@ function alertTileReadingHtml(item) {
         <strong>${escapeHtml(row.value || "")}</strong>
       </div>
     `).join("");
-    return `<div class="alert-reading alert-reading-rows">${rows}</div>`;
+    return `<div class="alert-reading alert-reading-rows">${rows}${item.status?`<small class="alert-reading-status">${escapeHtml(item.status)}</small>`:""}</div>`;
   }
   return `<div class="alert-reading">${escapeHtml(item?.reading || "")}</div>`;
 }
@@ -13764,12 +13764,14 @@ function activeRadioBurstRows(minutes = 30) {
         const configured = ["yellow", "red", "purple"].some(key => Number.isFinite(state.rules.radiation[key]));
         const level = data.fresh && configured ? alertLevelFromRule("radiation", data.rate) : "unknown";
         const displayGrid = Number.isFinite(data.ageHours) && data.ageHours >= 0;
-        return { key: "radiation", name: `High Flyer · mSv/h${!data.fresh && displayGrid && Number.isFinite(data.north?.rate) ? " · Stale" : ""}`, level,
+        return { key: "radiation", name: "HIGH FLYER", level,
+          status: displayGrid && !data.fresh ? "Stale · last available" : "",
           readingRows: [
-            { label: "N Hemi:", value: displayGrid ? radiationRate(data.north?.rate).replace(" mSv/h", "") : "Unavailable" },
-            { label: "S Hemi:", value: displayGrid ? radiationRate(data.south?.rate).replace(" mSv/h", "") : "Unavailable" }
+            { label: "N Hemi:", value: displayGrid ? radiationRate(data.north?.rate) : "Unavailable" },
+            { label: "S Hemi:", value: displayGrid ? radiationRate(data.south?.rate) : "Unavailable" }
           ] };
       }
+
 
       function radiationAlertEvent() {
         const data = radiationReading();
@@ -14385,19 +14387,7 @@ function dedupeRadioBurstRows(rows) {
 
       window.addEventListener("spacewx:geomag-updated",()=>renderAp());
       function renderAp() {
-        const hourly=state.archive.active ? null : window.SpaceWxHourlyGeomag;
-        const ap60=(hourly?.history||[]).filter(r=>Number.isFinite(r.ap60)&&r.ap60>=0&&Date.parse(r.start)<=Date.now()).map(r=>({...r,time_tag:r.start}));
-        const recentHourly=filterRange(ap60);
-        if(recentHourly.length){
-          const age=Date.now()-Date.parse(recentHourly.at(-1).start),stale=age>3*3600000||!!hourly.error;
-          setText("apProductTitle","GFZ hourly ap60");
-          setText("apHeader",`ap60 ${recentHourly.at(-1).ap60}${stale?' · stale':''}`);
-          plot("apPlot",[{type:"bar",name:"GFZ ap60",x:recentHourly.map(r=>new Date(Date.parse(r.start)+1800000).toISOString()),y:recentHourly.map(r=>r.ap60),width:3200000,marker:{color:recentHourly.map(r=>apColor(r.ap60))},customdata:recentHourly.map(r=>r.start),hovertemplate:"%{customdata}<br>ap60 %{y}<br>1-hour interval (UTC)<extra>GFZ</extra>"}],{
-            xaxis:{...axis(""),tickformat:"%b %d %HZ"},yaxis:{...axis("ap60"),range:[0,apAxisMax(recentHourly.map(r=>r.ap60))]},annotations:stale?[annotation("GFZ ap60 stale · last observation shown")]:[],minimumInitialHours:24
-          });
-          return;
-        }
-        setText("apProductTitle","3-hour Ap · fallback");
+        setText("apProductTitle","3-hour Ap");
         const rows = filterRange(currentApRows());
         if (!rows.length) {
           plot("apPlot", [], { annotations: [annotation("3-hour Ap unavailable")] });
@@ -36906,6 +36896,10 @@ const percent=p=>Number.isFinite(p)?(p*100).toFixed(1)+'%':'Unavailable';
 const targets=[['p10_10','≥10 MeV · ≥10 pfu','#5dccdf'],['p10_40','≥10 MeV · >40 pfu','#ffb66d'],['p50_10','≥50 MeV · ≥10 pfu','#b797fa']];
 const read=id=>{try{return JSON.parse(document.getElementById(id)?.textContent||'null');}catch(_){return null;}};
 const model=read('wxfProtonModel');let snapshot=read('wxfProtonBootstrap'),pending=null;
+// Draft and last run survive feed refreshes and navigation. Edits never trigger inference.
+let session=null;
+const number=v=>v===null||v===undefined||String(v).trim()===''?null:Number(v);
+const median=a=>{const v=a.filter(Number.isFinite).sort((a,b)=>a-b),n=v.length;return n?(v[(n-1)>>1]+v[n>>1])/2:null;};
 function predict(values){
  if(!model)throw Error('Trained WXF model unavailable');
  const missing=values.map(v=>!Number.isFinite(v)),filled=values.map((v,i)=>missing[i]?model.median[i]:v);
@@ -36916,55 +36910,104 @@ function predict(values){
  }
  out.p10_40=Math.min(out.p10_40,out.p10_10);return out;
 }
+function automaticBackground(peak,data){
+ const by=new Map((data?.observations||[]).map(r=>[Date.parse(r.time),r]));
+ let last=Math.floor(peak/300000)*300000;if(last===peak)last-=300000;
+ const prior=Array.from({length:288},(_,i)=>by.get(last-(287-i)*300000)||{});
+ const valid=v=>Number.isFinite(v)&&v>=0;
+ if(!prior.slice(-3).some(r=>valid(r.P10)&&valid(r.P50))||['P10','P50'].some(ch=>prior.filter(r=>valid(r[ch])).length<240))throw Error('Automatic inputs need at least 20 hours of valid pre-flare GOES data and a recent paired sample. Choose analyst-supplied inputs for a documented historical scenario.');
+ const out={};
+ for(const ch of ['P10','P50']){
+  out[ch]=median(prior.slice(-12).map(r=>valid(r[ch])?r[ch]:null));
+  out[ch+'Earlier']=median(prior.slice(-72,-12).map(r=>valid(r[ch])?r[ch]:null));
+ }
+ if(!Array.isArray(data?.rawFlares))throw Error('Recent flare history is unavailable; refresh or provide analyst inputs.');
+ out.priorFlares=data.rawFlares.filter(r=>Date.parse(r.max_time)>=peak-86400000&&Date.parse(r.max_time)<peak&&r.max_xrlong>=1e-6).length;
+ const start=peak+600000,before=Array.from(by.entries()).filter(([t])=>t>=start-900000&&t<start).sort((a,b)=>a[0]-b[0]);
+ for(const ch of ['P10','P50']){
+  const complete=before.length>=3&&before.every(([,r])=>valid(r[ch]));
+  out[ch+'Active']=complete?(before.every(([,r])=>r[ch]>=10)?'yes':'no'):'unknown';
+ }
+ return out;
+}
+function legacyEstimates(input,peakFlux,longitude,peak){
+ const integral=number(input.integral),previous=number(input.previousIntegral),inDomain=peakFlux>=2.4e-6;
+ const priorKnown=input.previous==='no'||(input.previous==='yes'&&Number.isFinite(previous)&&previous>=0);
+ const alpha=input.previous==='yes'&&previous>.08?Math.pow(previous/.167,1.146):1;
+ const peakP10=inDomain&&Number.isFinite(integral)&&integral>0&&priorKnown?10*alpha*Math.pow(integral/.00987,.82):null;
+ const peakDelayHours=inDomain&&Number.isFinite(longitude)?9.4+Math.pow((longitude-78)/18.1,2):null;
+ return {peakP10,peakDelayHours,peakTime:Number.isFinite(peakDelayHours)?new Date(peak+peakDelayHours*3600000).toISOString():null};
+}
+function run(input,data=snapshot,now=Date.now()){
+ const match=String(input.flareClass||'').trim().toUpperCase().match(/^([CMX])(\d+(?:\.\d+)?)$/);
+ const flux=match?({C:1e-6,M:1e-5,X:1e-4}[match[1]]*+match[2]):NaN;
+ const peak=Date.parse(String(input.peakTime||'').replace(/Z$/,'')+'Z'),rise=number(input.riseMinutes),lon=number(input.longitude),lat=number(input.latitude);
+ if(!(flux>=1e-6&&flux<=.01))throw Error('Enter a peak class from C1 through X100.');
+ if(!Number.isFinite(peak)||peak>now-600000)throw Error('Enter the observed flare peak in UTC, at least 10 minutes before this run.');
+ if(!Number.isFinite(rise)||rise<0||rise>1440)throw Error('Enter flare rise time from 0 to 1,440 minutes.');
+ if([lon,lat].some(v=>v!==null&&(!Number.isFinite(v)||Math.abs(v)>90)))throw Error('Use coordinates from −90° to +90°, or leave them unknown.');
+ const b=input.background==='manual'?Object.fromEntries(['P10','P50','P10Earlier','P50Earlier','priorFlares'].map(k=>[k,number(input[k])]).concat(['P10Active','P50Active'].map(k=>[k,input[k]]))):automaticBackground(peak,data);
+ if(['P10','P50','P10Earlier','P50Earlier','priorFlares'].some(k=>!Number.isFinite(b[k])||b[k]<0)||!Number.isInteger(b.priorFlares))throw Error('Enter nonnegative GOES medians and an integer preceding C1+ flare count. Zero is valid; blanks are not zero.');
+ if(['P10Active','P50Active'].some(k=>!['yes','no','unknown'].includes(b[k])))throw Error('Specify the event status at the forecast window start.');
+ for(const k of ['integral','previousIntegral'])if(number(input[k])!==null&&(!Number.isFinite(number(input[k]))||number(input[k])<0))throw Error('Optional integrated flux values must be nonnegative.');
+ const features=[Math.log10(flux),Math.log1p(rise),lon===null?null:Math.sin(lon*Math.PI/180),lon===null?null:Math.cos(lon*Math.PI/180),lat===null?null:Math.abs(lat)/90,Math.log10(b.P10+.01),Math.log10(b.P50+.01),Math.log10((b.P10+.01)/(b.P10Earlier+.01)),Math.log10((b.P50+.01)/(b.P50Earlier+.01)),Math.log1p(b.priorFlares)];
+ const eligible={p10_10:b.P10Active==='unknown'?null:b.P10Active==='no',p10_40:b.P10Active==='unknown'?null:b.P10Active==='no',p50_10:b.P50Active==='unknown'?null:b.P50Active==='no'};
+ return {input:{...input},background:b,event:{peakTime:new Date(peak).toISOString(),flareClass:match[0]},createdAt:new Date(now).toISOString(),validStart:new Date(peak+600000).toISOString(),validEnd:new Date(peak+600000+86400000).toISOString(),features,eligible,probabilities:predict(features),legacy:legacyEstimates(input,flux,lon,peak)};
+}
+function draftFor(event){
+ const ev=event||snapshot?.outlooks?.at(-1)?.event||null;
+ return {flareClass:ev?.flareClass||'',peakTime:ev?.peakTime?.slice(0,16)||'',riseMinutes:ev?.riseMinutes??'',longitude:ev?.longitude??'',latitude:ev?.latitude??'',background:'auto',P10:'',P50:'',P10Earlier:'',P50Earlier:'',priorFlares:'',P10Active:'unknown',P50Active:'unknown',integral:'',previous:'unknown',previousIntegral:'',opticalClass:'',radio:'unknown'};
+}
 async function refresh(){
  if(pending)return pending;
  pending=(async()=>{const r=await fetch('https://raw.githubusercontent.com/wreed1989/SpaceWxOps-WXF/main/chhss-data/proton-forecast.json',{cache:'no-store',signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error(`HTTP ${r.status}`);const j=await r.json();if(j.schemaVersion!=='WXF-SEP-0.1')throw Error('Invalid WXF proton product');snapshot=j;})().finally(()=>pending=null);return pending;
 }
 function mount(root,parent){
- let index=-1,disposed=false,manual=null,error='';
- function paint(){
-  if(disposed)return;
-  const rows=snapshot?.outlooks||[],chosen=rows[index<0?rows.length-1:index],opened=!!root.querySelector('details[open]');
-  if(!chosen){root.innerHTML=`<p class="wx-particle-status">${esc(snapshot?.reason||snapshot?.rejected?.[0]?.reason||'No C1+ flare with adequate observations in an active 24-hour window. A quiet interval is not a zero-probability forecast.')}</p><details><summary>Method &amp; verification</summary>${verification()}</details>`;return;}
-  const outlook=manual||chosen,event=outlook.event,expired=Date.now()>Date.parse(outlook.validEnd),late=outlook.latencyMinutes>30;
-  root.innerHTML=`<div class="wx-particle-toolbar"><label>Flare event <select data-wxf-sep-event aria-label="WXF proton flare event">${rows.map((r,i)=>`<option value="${i}"${r===chosen?' selected':''}>${esc(r.event.flareClass)} · ${utc(r.event.peakTime)}</option>`).join('')}</select></label><span class="wx-particle-status ${expired?'wx-particle-warning':''}">${expired?'EXPIRED · ':''}${manual?'Analyst scenario · ':''}Calculated ${utc(outlook.createdAt)}</span></div>
-  <div class="wx-proton-summary">${targets.map(([key,label,color])=>`<div><strong style="color:${color}">${label}</strong><span>${outlook.eligible?.[key]===false?'Event already active at window start':percent(outlook.probabilities[key])}</span><small>New event · 15-minute sustained crossing</small></div>`).join('')}</div>
-  <p class="wx-particle-status">Fixed post-flare window: ${utc(outlook.validStart)} – ${utc(outlook.validEnd)}. ${late?'Late reconstruction: part of this window elapsed before calculation. These are whole-window probabilities, not the remaining risk.':'Probabilities apply to this entire window; later flares can also contribute.'}</p>
-  <div class="wx-particle-plot" data-wxf-sep-prob style="min-height:220px;height:240px"></div>
-  <div class="wx-particle-plot" data-wxf-sep-observed style="min-height:400px;height:440px"></div>
-  <p class="wx-particle-status">${esc(error)}${error?' · ':''}GOES observations through ${utc(snapshot?.observations?.at(-1)?.time)}${Date.now()-Date.parse(snapshot?.observations?.at(-1)?.time)>90*60000?' · STALE':''}. GOES plots use your Alert Settings. WXF probability targets remain the three thresholds stated above. No flux trajectory, PCA absorption, radiation dose or aurora probability is inferred from these probabilities.</p>
-  <details${opened?' open':''}><summary>Inputs, analyst adjustments &amp; verification</summary>
-   <p>Predictors: flare peak and rise time, reported disk location when available, preceding GOES 10/50 MeV levels and trends, and recent C1+ flare count. The two 10 MeV targets require the ≥10 pfu event to be inactive at window start. Missing location remains unknown. STIS, CME and radio data are not yet fitted predictors in this version.</p>
-   <div class="wx-particle-toolbar"><label>Peak class <input data-sep-class aria-label="Proton model flare class" value="${esc(event.flareClass)}" size="6"></label><label>Longitude · west + <input data-sep-lon aria-label="Proton model longitude" type="number" min="-90" max="90" value="${event.longitude??''}" placeholder="Unknown" style="width:100px"></label><label>Latitude · north + <input data-sep-lat aria-label="Proton model latitude" type="number" min="-90" max="90" value="${event.latitude??''}" placeholder="Unknown" style="width:100px"></label><button data-sep-apply>Calculate scenario</button><button data-sep-reset>Reset</button></div><p data-sep-error role="status"></p>
-   <p>Peak ${utc(event.peakTime)} · Rise ${Number(event.riseMinutes).toFixed(0)} min · ${outlook.missingFeatures?.length?'Unavailable inputs: '+esc(outlook.missingFeatures.join(', ')):'All fitted inputs available'}. Analyst adjustments affect this view only; published outlooks remain unchanged.</p>
-   ${verification()}
-   <p><a href="https://www.swpc.noaa.gov/products/goes-proton-flux" target="_blank" rel="noopener">GOES proton measurements</a> · <a href="https://github.com/wreed1989/SpaceWxOps-WXF/tree/main/research/proton_forecast" target="_blank" rel="noopener">WXF method, source manifest and hindcast</a></p>
-  </details>`;
-  const colors=targets.map(t=>t[2]),p=targets.map(([key])=>outlook.eligible?.[key]===false?null:100*outlook.probabilities[key]);
-  const layout={paper_bgcolor:'transparent',plot_bgcolor:'#0a1823',font:{color:'#bed4e1',size:11},margin:{l:155,r:25,t:12,b:45},xaxis:{title:{text:'Whole-window probability (%)'},range:[0,Math.min(100,Math.max(20,...p.filter(Number.isFinite).map(x=>x*1.2)))],gridcolor:'#213c4d',zeroline:false},yaxis:{autorange:'reversed'},showlegend:false,hoverlabel:{bgcolor:'#102635',bordercolor:'#64c8df',font:{color:'#f0f7fb'}}};
-  window.Plotly?.react(root.querySelector('[data-wxf-sep-prob]'),[{type:'bar',orientation:'h',x:p,y:targets.map(t=>t[1]),marker:{color:colors},text:p.map(x=>x===null?'Already active':x.toFixed(1)+'%'),textposition:'outside',textangle:0,cliponaxis:false,textfont:{color:'#e8f4fb'},hovertemplate:'%{y}<br>%{x:.1f}%<extra>WXF experimental</extra>'}],layout,{responsive:true,displaylogo:false,scrollZoom:false});
-  const payload=(snapshot.observations||[]).flatMap(r=>[10,50].map(e=>({time_tag:r.time,energy:`>=${e} MeV`,flux:r['P'+e]}))).filter(r=>Number.isFinite(r.flux));
-  const chart=window.SpaceWxParticles.protonChart({goesProtons:{payload}},24);
-  chart.layout.annotations=(chart.layout.annotations||[]).filter(a=>!String(a.text).includes('UMASEP')).concat([10,50].map((e,i)=>({text:`<b>≥${e} MeV</b> · observed GOES flux`,xref:'paper',yref:'paper',x:0,y:i?.475:1.035,showarrow:false,xanchor:'left'})));
-  window.Plotly?.react(root.querySelector('[data-wxf-sep-observed]'),chart.traces,chart.layout,{responsive:true,displaylogo:false,scrollZoom:false});
-  root.querySelector('[data-wxf-sep-event]').onchange=e=>{index=+e.target.value;manual=null;paint();};
-  root.querySelector('[data-sep-reset]').onclick=()=>{manual=null;paint();};
-  root.querySelector('[data-sep-apply]').onclick=()=>{
-    const val=root.querySelector('[data-sep-class]').value.trim().toUpperCase(),match=val.match(/^([CMX])(\d+(?:\.\d+)?)$/),lon=root.querySelector('[data-sep-lon]'),lat=root.querySelector('[data-sep-lat]');
-    const flux=match?({C:1e-6,M:1e-5,X:1e-4}[match[1]]*+match[2]):NaN;
-    if(!(flux>=1e-6&&flux<=.01)||![lon,lat].every(el=>el.value===''||(Number.isFinite(+el.value)&&Math.abs(+el.value)<=90))){root.querySelector('[data-sep-error]').textContent='Enter a C1+ peak class and coordinates from −90 to +90°, or leave coordinates empty.';return;}
-    const longitude=lon.value===''?null:+lon.value,latitude=lat.value===''?null:+lat.value,features={...chosen.features,log_peak:Math.log10(flux),longitude_sin:longitude===null?null:Math.sin(longitude*Math.PI/180),longitude_cos:longitude===null?null:Math.cos(longitude*Math.PI/180),latitude_abs:latitude===null?null:Math.abs(latitude)/90};
-    manual={...chosen,event:{...chosen.event,flareClass:val,peakFlux:flux,longitude,latitude},features,probabilities:predict(model.features.map(k=>features[k])),createdAt:new Date().toISOString(),missingFeatures:model.features.filter(k=>!Number.isFinite(features[k]))};paint();
-  };
+ session??={draft:draftFor(),result:null,dirty:false};
+ let disposed=false,error='';
+ const field=(key,label,type='number',extra='')=>`<label>${label}<input data-sep-input="${key}" aria-label="${label}" type="${type}" value="${esc(session.draft[key])}" ${extra}></label>`;
+ const select=(key,label,options)=>`<label>${label}<select data-sep-input="${key}" aria-label="${label}">${options.map(([v,t])=>`<option value="${v}"${session.draft[key]===v?' selected':''}>${t}</option>`).join('')}</select></label>`;
+ function eventOptions(){return '<option value="">Select a reported flare…</option>'+(snapshot?.outlooks||[]).map((r,i)=>`<option value="${i}"${r.event.peakTime.slice(0,16)===session.draft.peakTime?' selected':''}>${esc(r.event.flareClass)} · ${utc(r.event.peakTime)}</option>`).join('');}
+ function build(){
+  root.innerHTML=`<section class="wx-sep-inputs"><h3>Model inputs</h3><div class="wx-particle-toolbar"><label>Load flare <select data-wxf-sep-event aria-label="Load observed flare">${eventOptions()}</select></label><button data-sep-reset>Clear inputs</button></div>
+   <div class="wx-sep-input-grid">${field('peakTime','Flare peak · UTC','datetime-local','step="60"')}${field('flareClass','Peak X-ray class','text','placeholder="e.g. M5.0"')}${field('riseMinutes','Start → peak · minutes','number','min="0" max="1440" step="any"')}${field('longitude','Longitude · west +','number','min="-90" max="90" step="any" placeholder="Unknown"')}${field('latitude','Latitude · north +','number','min="-90" max="90" step="any" placeholder="Unknown"')}${select('background','Particle & flare history',[['auto','Automatic · pre-flare GOES'],['manual','Analyst supplied']])}</div>
+   <div data-sep-manual${session.draft.background==='manual'?'':' hidden'}><p class="wx-particle-status">Enter pre-flare medians from five-minute GOES samples. Event status refers to three consecutive five-minute samples immediately before the forecast window starts. The ≥10 pfu event must be inactive for either 10 MeV target.</p><div class="wx-sep-input-grid">${field('P10','10 MeV · last 1 h median · pfu')}${field('P50','50 MeV · last 1 h median · pfu')}${field('P10Earlier','10 MeV · preceding 5 h median · pfu')}${field('P50Earlier','50 MeV · preceding 5 h median · pfu')}${field('priorFlares','Prior 24 h · global C1+ flare count')}${select('P10Active','10 MeV ≥10 pfu already active?',[['unknown','Unknown · withhold probability'],['no','No'],['yes','Yes']])}${select('P50Active','50 MeV ≥10 pfu already active?',[['unknown','Unknown · withhold probability'],['no','No'],['yes','Yes']])}</div></div>
+   <details data-sep-optional><summary>Peak-flux estimate &amp; additional event inputs</summary><p class="wx-particle-status">The optional published PROTONS relations estimate >10 MeV peak flux and flare-peak → proton-peak delay, conditional on an SEP event. Integrate to the decay level (peak + pre-flare background) / 2, including background in the integral. These estimates require C2.4+; they do not change the WXF occurrence probabilities.</p><div class="wx-sep-input-grid">${field('integral','SXR onset → half-power integral · J/m²','number','min="0" step="any"')}${select('previous','Previous flare from same region?',[['unknown','Unknown'],['no','No'],['yes','Yes']])}${field('previousIntegral','Previous flare integral · J/m²','number','min="0" step="any"')}</div><p class="wx-particle-status">Event record only: optical class and radio sweep are saved with this run but are not fitted predictors in WXF-SEP-0.1.</p><div class="wx-sep-input-grid">${field('opticalClass','Optical class · record only','text')}${select('radio','Radio sweep · record only',[['unknown','Unknown'],['none','None observed'],['II','Type II'],['IV','Type IV'],['II+IV','Type II & IV']])}</div></details>
+   <div class="wx-particle-toolbar"><button data-sep-apply>Run WXF Proton Model</button><button data-sep-background>Load pre-flare inputs</button><span class="wx-particle-status" data-sep-draft></span></div><p data-sep-error role="status"></p></section>
+   <section class="wx-sep-results" data-sep-results></section><div class="wx-particle-plot" data-wxf-sep-observed style="min-height:400px;height:440px"></div><p class="wx-particle-status" data-sep-feed></p>
+   <details><summary>Method, output availability &amp; verification</summary><p>WXF-SEP-0.1 estimates three fixed, whole-window event probabilities from peak class, rise time, location, pre-flare particle levels/trends and the prior global C1+ count. It is not a reproduction of SWPC’s internal model. Missing coordinates use training-set imputation. No probability is shown when the event was already active or its baseline status is unknown.</p><p>PCA absorption, SST dose, 50 MeV peak flux and proton onset delay are not calculated. Each needs a separately specified and validated method; a proton probability cannot substitute for these quantities. Exact PROTONS occurrence probabilities additionally require the lookup tables in Balch (1999), Tables 6–8; the 2008 verification tables cannot substitute for them.</p>${verification()}<p>The separate peak estimates follow <a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2007SW000337" target="_blank" rel="noopener">Balch (2008), section 2</a>, also reproduced as equations 7–9 in <a href="https://repository.library.noaa.gov/view/noaa/52048/noaa_52048_DS1.pdf" target="_blank" rel="noopener">Whitman et al., PROTONS review, pp. 34–35</a>. These historical empirical relations are not newly calibrated or verified by the WXF scores above. Integrate SXR from onset through the decay time at (peak + pre-flare background) / 2. The integral includes the background; it is not a background-subtracted fluence. Peak delay is not onset delay and may exceed the 24-hour probability window. No confidence interval is inferred from the published average errors.</p></details>`;
+  root.querySelectorAll('[data-sep-input]').forEach(el=>el.oninput=()=>{session.draft[el.dataset.sepInput]=el.value;session.dirty=true;root.querySelector('[data-sep-manual]').hidden=session.draft.background!=='manual';draftStatus();});
+  root.querySelector('[data-wxf-sep-event]').onchange=e=>{if(e.target.value==='')return;session.draft=draftFor(snapshot.outlooks[+e.target.value].event);session.dirty=true;build();};
+  root.querySelector('[data-sep-reset]').onclick=()=>{session.draft=draftFor({});session.dirty=true;build();};
+  root.querySelector('[data-sep-background]').onclick=()=>{try{const peak=Date.parse(session.draft.peakTime+'Z');if(!Number.isFinite(peak))throw Error('Enter the flare peak in UTC first.');const b=automaticBackground(peak,snapshot);Object.assign(session.draft,b,{background:'manual'});session.dirty=true;build();}catch(e){root.querySelector('[data-sep-error]').textContent=e.message;}};
+  root.querySelector('[data-sep-apply]').onclick=()=>{try{const result=run(session.draft);session.result=result;session.dirty=false;root.querySelector('[data-sep-error]').textContent='';paintResult();draftStatus();}catch(e){root.querySelector('[data-sep-error]').textContent=e.message;}};
+  paintResult();paintObserved();draftStatus();
+ }
+ function draftStatus(){root.querySelector('[data-sep-draft]').textContent=session.dirty?'Inputs changed · Run to apply':session.result?'Showing last completed run':'Inputs ready · Run to calculate';window.SpaceWxProductFlow?.sync(parent);}
+ function paintResult(){
+  const el=root.querySelector('[data-sep-results]');el.querySelectorAll('.js-plotly-plot').forEach(p=>window.Plotly?.purge(p));
+  const r=session.result;if(!r){el.innerHTML='<p class="wx-sep-run-note">Set the flare inputs above and run the model. Observed GOES proton flux is shown below.</p>';return;}
+  const late=Date.parse(r.createdAt)>Date.parse(r.validStart)+1800000,expired=Date.now()>Date.parse(r.validEnd),l=r.legacy;
+  el.innerHTML=`<p class="wx-sep-run-note"><b>${esc(r.event.flareClass)} · peak ${utc(r.event.peakTime)}</b><br>Run ${utc(r.createdAt)} · ${r.input.background==='manual'?'Analyst-supplied history':'Automatic pre-flare history'}${expired?' · EXPIRED / historical scenario':''}<br>Target window: ${utc(r.validStart)} – ${utc(r.validEnd)}${late?'<br>Late reconstruction: these are whole-window probabilities, not remaining risk.':''}</p>
+   <div class="wx-proton-summary">${targets.map(([key,label,color])=>`<div><strong style="color:${color}">${label}</strong><span>${r.eligible[key]===true?percent(r.probabilities[key]):r.eligible[key]===false?'Already active':'Baseline unknown'}</span><small>New event · 15-minute sustained crossing</small></div>`).join('')}</div><div class="wx-particle-plot" data-wxf-sep-prob style="height:220px;min-height:200px"></div>
+   ${l.peakP10!==null||l.peakDelayHours!==null?`<div class="wx-proton-summary"><div><strong>Conditional >10 MeV peak · empirical</strong><span>${l.peakP10===null?'Integral / prior flare needed':l.peakP10.toPrecision(3)+' pfu'}</span></div><div><strong>Flare peak → proton peak · empirical</strong><span>${l.peakDelayHours===null?'Longitude needed':l.peakDelayHours.toFixed(1)+' h'}</span><small>${l.peakTime?utc(l.peakTime):''} · conditional on an SEP event</small></div></div>`:''}
+   <details><summary>Inputs used in this run</summary><p class="wx-particle-status">Peak ${esc(r.input.flareClass)} at ${utc(r.event.peakTime)} · rise ${esc(r.input.riseMinutes)} min · longitude ${esc(number(r.input.longitude)??'unknown')}° (west +) · latitude ${esc(number(r.input.latitude)??'unknown')}° (north +). Global prior C1+ flares: ${r.background.priorFlares}.</p><p class="wx-particle-status">Pre-flare medians: 10 MeV ${r.background.P10.toPrecision(4)} pfu (preceding five hours ${r.background.P10Earlier.toPrecision(4)}); 50 MeV ${r.background.P50.toPrecision(4)} pfu (preceding five hours ${r.background.P50Earlier.toPrecision(4)}). Baseline active: 10 MeV ${esc(r.background.P10Active)}; 50 MeV ${esc(r.background.P50Active)}.</p><p class="wx-particle-status">Half-power SXR integral ${esc(r.input.integral||'unknown')} J/m² · previous same-region flare ${esc(r.input.previous)} · previous integral ${esc(number(r.input.previousIntegral)??'unknown')} J/m². Record only: optical ${esc(r.input.opticalClass||'unknown')}; radio ${esc(r.input.radio)}.</p></details>`;
+  const p=targets.map(([k])=>r.eligible[k]===true?100*r.probabilities[k]:null);
+  window.Plotly?.react(el.querySelector('[data-wxf-sep-prob]'),[{type:'bar',orientation:'h',x:p,y:targets.map(t=>t[1]),marker:{color:targets.map(t=>t[2])},hovertemplate:'%{y}<br>%{x:.1f}%<extra>WXF experimental</extra>'}],{paper_bgcolor:'transparent',plot_bgcolor:'#0a1823',font:{color:'#bed4e1',size:11},margin:{l:155,r:25,t:12,b:45},xaxis:{title:{text:'Whole-window probability (%)'},range:[0,Math.min(100,Math.max(20,...p.filter(Number.isFinite).map(v=>v*1.2)))],gridcolor:'#213c4d',zeroline:false},yaxis:{autorange:'reversed'},showlegend:false,hoverlabel:{bgcolor:'#102635',bordercolor:'#64c8df',font:{color:'#f0f7fb'}}},{responsive:true,displayModeBar:false,scrollZoom:false});
   window.SpaceWxProductFlow?.sync(parent);
+ }
+ function paintObserved(){
+  const payload=(snapshot?.observations||[]).flatMap(r=>[10,50].map(e=>({time_tag:r.time,energy:`>=${e} MeV`,flux:r['P'+e]}))).filter(r=>Number.isFinite(r.flux));
+  const chart=window.SpaceWxParticles.protonChart({goesProtons:{payload}},24);chart.layout.annotations=[];
+  window.Plotly?.react(root.querySelector('[data-wxf-sep-observed]'),chart.traces,chart.layout,{responsive:true,displayModeBar:false,scrollZoom:false});
+  root.querySelector('[data-sep-feed]').textContent=`${error?error+' · ':''}GOES observations through ${utc(snapshot?.observations?.at(-1)?.time)}${Date.now()-Date.parse(snapshot?.observations?.at(-1)?.time)>90*60000?' · STALE':''}. Plots use your Alert Settings. Refresh updates observations; it does not run the model or change your inputs.`;
  }
  function verification(){
   if(!model)return '<p>Trained model unavailable.</p>';
   return `<p>Retrospective held-out years: 2022–2026. Training: 2010–2014; calibration: 2015–2021. Chronological boundaries include an embargo and exclude shared active regions. Counts below are flare-triggered forecasts; overlapping windows are not independent SEP events.</p><div class="wx-particle-table"><table><thead><tr><th>Target</th><th>Scored / positive forecasts</th><th>Brier skill · 95% interval</th><th>Detection / false alarms at 20%</th></tr></thead><tbody>${targets.map(([key,label])=>{const v=model.models[key].verification;return `<tr><td>${label}</td><td>${v.n} / ${v.events}</td><td>${(v.brierSkill*100).toFixed(1)}%<br><small>${v.brierSkill95.map(x=>(x*100).toFixed(1)+'%').join(' to ')}</small></td><td>${percent(v.POD)} / ${v.FAR===null?'No yes forecasts':percent(v.FAR)}</td></tr>`;}).join('')}</tbody></table></div><p>Brier skill compares probability error with the training event rate; higher is better and zero means no improvement. Detection is the fraction of positive forecasts caught. False-alarm ratio is the fraction of issued yes forecasts that were wrong. Intervals use 1,000 resamples of 14-day calendar blocks to retain dependence among nearby flares. These scores use retrospective observations, not a replay of feed delays. They do not establish operational warning performance. This initial model has low detection at the stated 20% cutoff.</p>`;
- }
- paint();return {paint,async refresh(){try{await refresh();error='';}catch(e){error='WXF refresh unavailable; showing dated data';}paint();},stop(){disposed=true;root.querySelectorAll('.js-plotly-plot').forEach(p=>window.Plotly?.purge(p));}};
+ } build();return {paint:()=>{if(!disposed){paintObserved();}},async refresh(){try{await refresh();error='';}catch(e){error='WXF refresh unavailable; showing dated data';}if(!disposed){root.querySelector('[data-wxf-sep-event]').innerHTML=eventOptions();paintObserved();}},stop(){disposed=true;root.querySelectorAll('.js-plotly-plot').forEach(p=>window.Plotly?.purge(p));}};
 }
-window.SpaceWxProtonExperiment={mount,predict,refresh};
+window.SpaceWxProtonExperiment={mount,predict,refresh,run,automaticBackground,legacyEstimates};
 })();
 </script>
 <script id="particleForecastProduct">
@@ -37069,8 +37112,7 @@ window.SpaceWxProtonExperiment={mount,predict,refresh};
         if(forecast.flux!==null&&forecast.units==='pfu')traces.push({name:'Published peak',type:'scatter',mode:'markers',xaxis:xref,yaxis:yref,x:[new Date((Date.parse(forecast.start)+Date.parse(forecast.end))/2).toISOString()],y:[forecast.flux],error_x:{type:'constant',value:(Date.parse(forecast.end)-Date.parse(forecast.start))/2,color,thickness:1},marker:{color:alertStyle()?.color(i?'proton50':'proton',forecast.flux,color)||color,size:10,symbol:'diamond'},hovertemplate:'Provider peak estimate: %{y:.3g} pfu<br>Horizontal bar: validity window, not peak timing<extra>UMASEP</extra>'});
       }
       applyThresholds(chart,i?'proton50':'proton',data.map(r=>r.flux).concat(forecast?.units==='pfu'?forecast.flux:null),yref);
-      chart.annotations.push({text:`<b>≥${energy} MeV</b> · GOES observed / UMASEP forecast window`,xref:'paper',yref:'paper',x:0,y:hi+.035,showarrow:false,xanchor:'left',font:{color,size:10}});
-    });return {traces,layout:chart};
+    });chart.annotations=[];return {traces,layout:chart};
   }
   const mounted=new Map();
   function mount(root,kind){
@@ -37087,7 +37129,7 @@ window.SpaceWxProtonExperiment={mount,predict,refresh};
     function paint(){
       if(disposed)return;const target=root.querySelector('[data-particle-data]'),detailsOpen=!!target.querySelector('details[open]');
       if(sep&&provider==='wxf'){
-        root.querySelector('h2').textContent='WXF Proton Forecast · ≥10 & ≥50 MeV';root.querySelector('.wx-particle-eyebrow').textContent='WXF · EXPERIMENTAL';root.querySelector('[data-particle-status]').textContent='Flare-triggered 24-hour threshold probabilities · historical verification available.';
+        root.querySelector('h2').textContent='WXF Proton Model';root.querySelector('.wx-particle-eyebrow').textContent='WXF · EXPERIMENTAL';root.querySelector('[data-particle-status]').textContent='Flare-triggered 24-hour threshold probabilities · historical verification available.';
         if(wxf)wxf.paint();else wxf=window.SpaceWxProtonExperiment.mount(target,root);return;
       }
       if(sep){root.querySelector('h2').textContent='SEP / Proton · ≥10 & ≥50 MeV';root.querySelector('.wx-particle-eyebrow').textContent='NASA CCMC + NOAA GOES';}
@@ -37108,7 +37150,7 @@ window.SpaceWxProtonExperiment={mount,predict,refresh};
         let rows=[];for(const key of ['umasep10','umasep50','release30','release60','release90']){const source=snapshot.sources[key];try{rows.push(...parseSEP(source?.payload).map(r=>({...r,key,retrieved:source.retrievedAt,error:source.error})));}catch(_){} }
         const uma=rows.filter(r=>r.key.startsWith('umasep')),observation=parseProtons(snapshot.sources.goesProtons?.payload,10).at(-1),old=!observation||Date.now()-observation.time>30*60000;
         target.innerHTML=`<div class="wx-proton-summary">${[10,50].map(e=>{const r=uma.find(r=>r.key==='umasep'+e);return `<div><strong>≥${e} MeV</strong><span>${r?prediction(r):'Forecast unavailable'}</span><small class="${!r||freshness(r)==='EXPIRED'?'wx-particle-warning':''}">${r?freshness(r)+' · '+utc(r.start)+' – '+utc(r.end):'No dated submission'}</small></div>`;}).join('')}</div><div class="wx-particle-toolbar"><span class="wx-particle-status ${old?'wx-particle-warning':''}">${old?'OBSERVATIONS STALE / UNAVAILABLE · ':''}GOES latest ${observation?utc(new Date(observation.time).toISOString()):'unavailable'}</span><label>History <select data-proton-range aria-label="Proton history">${[6,24,72].map(n=>`<option value="${n}"${n===period?' selected':''}>${n} hours</option>`).join('')}</select></label></div><div class="wx-particle-plot" data-proton-plot></div><p class="wx-particle-status">Threshold bands follow your Alert Settings for each energy channel. Vertical tint: UMASEP forecast interval. Dotted line: provider event threshold, independent of your settings. An all-clear forecast supplies no flux curve; it is never drawn as zero. Zero-based scale · pfu = protons cm⁻² s⁻¹ sr⁻¹.</p><details><summary>Numerical predictions, timing &amp; sources</summary><div class="wx-particle-table"><table><thead><tr><th>Model / energy</th><th>Issue / valid · UTC</th><th>Prediction</th><th>Status</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r.model)}<br>${esc(r.energy)}</td><td>Issued ${utc(r.issued)}<br>${utc(r.start)} – ${utc(r.end)}<br>Retrieved ${utc(r.retrieved)}</td><td>${prediction(r)}</td><td>${freshness(r)}${r.error?' · Refresh failed':''}</td></tr>`).join('')}</tbody></table></div><p>HESPERIA REleASE's 15.8–39.8 and 28.2–50.1 MeV differential bands are separate from the ≥10 / ≥50 MeV integral channels. REleASE: University of Kiel and IAASARS / National Observatory of Athens, EU Horizon 2020 grant 637324. UMASEP: University of Málaga. Distributed by NASA CCMC.</p><a href="${GOES}" target="_blank" rel="noopener">GOES raw observations</a> · <a href="${RELAY}" target="_blank" rel="noopener">Numerical forecast snapshot</a> · <a href="https://ccmc.gsfc.nasa.gov/models/UMASEP~v3/" target="_blank" rel="noopener">UMASEP</a> · <a href="https://ccmc.gsfc.nasa.gov/models/HESPERIA_REleASE~v3/" target="_blank" rel="noopener">REleASE attribution</a></details>`;
-        const chart=protonChart(snapshot.sources,period);window.Plotly?.react(target.querySelector('[data-proton-plot]'),chart.traces,chart.layout,{responsive:true,displaylogo:false});target.querySelector('[data-proton-range]').onchange=e=>{period=+e.target.value;paint();};
+        const chart=protonChart(snapshot.sources,period);window.Plotly?.react(target.querySelector('[data-proton-plot]'),chart.traces,chart.layout,{responsive:true,displayModeBar:false,scrollZoom:false});target.querySelector('[data-proton-range]').onchange=e=>{period=+e.target.value;paint();};
       }
       if(detailsOpen&&target.querySelector('details'))target.querySelector('details').open=true;
       window.SpaceWxProductFlow?.sync(root);
@@ -37314,7 +37356,8 @@ window.SpaceWxMonitorLayout=(()=>{
 .fd-app.fd-monitor-workspace .fd-inspector{display:none}
 .fd-app.fd-monitor-workspace .fd-workbench{grid-template-rows:48px minmax(0,1fr)}
 .fd-app.fd-monitor-workspace .fd-workbench-head{display:flex}
-.fd-app.fd-monitor-workspace .fd-global-alert-rail{display:none!important}
+.fd-app.fd-monitor-workspace .fd-global-alert-rail{display:grid!important}
+.fd-app.fd-monitor-workspace .fd-workbench{grid-template-rows:auto auto minmax(0,1fr)!important}
 .fd-monitor-layout{display:block;min-height:0}
 .fd-monitor-layout .fd-wall-grid{grid-template-columns:repeat(24,minmax(0,1fr));grid-auto-rows:4px;grid-auto-flow:row;gap:8px}
 .fd-monitor-layout .fd-wall-tile{position:relative;grid-column:span var(--fd-tile-cols);grid-row:span var(--fd-tile-rows);grid-template-rows:44px minmax(0,1fr);min-height:0}
@@ -37617,6 +37660,29 @@ window.SpaceWxSuprathermal=(()=>{
 </script>
 <!-- HOURLY_GEOMAG_BOOTSTRAP_SLOT -->
 <style>[data-alert-key="radiation"] .alert-name {text-transform:none!important} .alert-tile .alert-reading-row{min-width:0} .alert-tile .alert-reading-row strong{overflow-wrap:anywhere}</style>
+<style id="wxfDeskRunStyles">
+.fd-alert-strip .alert-tile[data-alert-key="radiation"]{min-width:172px}
+.fd-alert-strip .alert-tile[data-alert-key="radiation"] .alert-reading-row{grid-template-columns:auto 1fr;gap:4px;font-size:11px}
+.fd-alert-strip .alert-tile[data-alert-key="radiation"] .alert-reading-row strong{white-space:nowrap;font-size:11px}
+.alert-reading-status{font-size:9px;color:#f2c16d;text-align:center;grid-column:1/-1}
+.fd-hourly-geomag .fd-hourly-geomag-plot{width:100%;min-width:0;min-height:0;height:230px;flex:none}
+.fd-hourly-geomag .plot-container,.fd-hourly-geomag .svg-container{min-height:0}
+.fd-hourly-geomag-row{min-width:0;border-top:1px solid #294858;padding-top:12px}
+.fd-hourly-geomag-row h4{margin:0 14px 4px;font-size:14px;color:#c4dce6}
+.fd-hourly-geomag-row p{margin:0 14px;color:#a5bdc9;font-size:11px}
+.wx-sep-inputs{border:1px solid #335565;background:#0b202d;padding:16px;margin-bottom:16px}
+.wx-sep-inputs h3{margin:0 0 12px;font-size:17px}
+.wx-sep-input-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;margin:12px 0}
+.wx-sep-input-grid label{display:flex;flex-direction:column;gap:6px;font-size:12px;color:#bcd3df}
+.wx-sep-input-grid input,.wx-sep-input-grid select{box-sizing:border-box;min-width:0;width:100%;background:#102e40;color:#e3f2f8;border:1px solid #416679;border-radius:4px;padding:9px;font:inherit;color-scheme:dark}
+.wx-sep-inputs button[data-sep-apply]{background:#4fc6e5;color:#041923;font-weight:700}
+.wx-sep-inputs [data-sep-error]{color:#ffc279;min-height:18px;font-size:12px}
+.wx-sep-inputs details{margin-top:14px}
+.wx-sep-results .wx-proton-summary{grid-template-columns:repeat(auto-fit,minmax(195px,1fr))}
+.wx-sep-results .wx-proton-summary>div{display:flex;flex-direction:column;gap:7px}
+.wx-sep-results .wx-proton-summary span{font-size:22px;font-weight:700}
+.wx-sep-run-note{border-left:3px solid #51bdd5;padding:8px 12px;margin:12px 0;color:#bcd3df;font-size:12px}
+</style>
 <script id="fdDeskScript">
 (function () {
   "use strict";
@@ -37782,8 +37848,8 @@ window.SpaceWxSuprathermal=(()=>{
       products: [
         ["forecast.aurora", "OVATION Prime", "NOW"],
         ["realtime.drap", "D-RAP Absorption", "NOW"],
-        ["model.hourly-geomag", "Hourly Geomag · ap60", "MODEL"],
-        ["realtime.ap", "Ap / Geomagnetic", "LIVE"],
+        ["model.hourly-geomag", "Hourly Ap/GeoMag", "LIVE"],
+        ["realtime.ap", "3-hour Ap", "LIVE"],
         ["realtime.dst", "Dst Index", "LIVE"],
         ["forecast.risk", "Orbit Exposure", "RISK"]
       ]
@@ -38619,7 +38685,7 @@ window.SpaceWxSuprathermal=(()=>{
   }
 
   function normalizeMonitorTiles(candidate) {
-    return window.SpaceWxMonitorLayout.normalize((Array.isArray(candidate)?candidate:DEFAULT_MONITOR_TILES).map(tile=>({...tile,key:canonicalProduct(tile.key)})),(kind,key)=>kind==='visual'?!!SPECIAL_TILES[key]:productAvailable(key));
+    return window.SpaceWxMonitorLayout.normalize((Array.isArray(candidate)?candidate:DEFAULT_MONITOR_TILES).map(tile=>({...tile,key:canonicalProduct(tile.key)})).filter(tile=>tile.key!=="realtime.alerts"),(kind,key)=>kind==='visual'?!!SPECIAL_TILES[key]:productAvailable(key));
   }
 
   function defaultState() {
@@ -38821,7 +38887,7 @@ window.SpaceWxSuprathermal=(()=>{
       const items = group.products.filter((item) => !PRODUCT_ALIASES[item[0]] && productAvailable(item[0]) && `${item[0]} ${item[1]} ${group.name}`.toLowerCase().includes(needle));
       if (!items.length) return "";
       return `<section class="fd-product-group"><button type="button" tabindex="-1"><span>${esc(group.name.toUpperCase())}</span><span>${items.length}</span></button><div class="fd-product-list">${items.map((item) => {
-        const added = state.monitorTiles.some((tile) => tile.kind === "product" && tile.key === item[0]);
+        const added = item[0] === "realtime.alerts" || state.monitorTiles.some((tile) => tile.kind === "product" && tile.key === item[0]);
         return `<div class="fd-product-row"><button type="button" class="fd-product-button" data-domain="${group.domain}" data-fd-product="${esc(item[0])}" title="Open ${esc(item[1])}"><i></i><strong>${esc(item[1])}</strong><small>${esc(item[2])}</small></button><button type="button" class="fd-add-tile${added ? " added" : ""}" data-fd-add-tile="${esc(item[0])}" ${added ? "disabled" : ""} aria-label="${added ? "Already on operations wall" : `Add ${esc(item[1])} to operations wall`}" title="${added ? "Already on wall" : "Add to operations wall"}">${added ? "✓" : "+"}</button></div>`;
       }).join("")}</div></section>`;
     }).join("");
@@ -39085,56 +39151,23 @@ window.SpaceWxSuprathermal=(()=>{
   }
 
   function renderHourlyGeomagProduct(panel) {
-    const primary = hourlyGeomag.primary;
-    const primaryAgeMinutes = primary?.latest ? (Date.now() - new Date(primary.latest.start).getTime()) / 60000 : Infinity;
-    const primaryFresh = Boolean(primary?.latest && primaryAgeMinutes >= 0 && primaryAgeMinutes <= 180 && !primary.error);
-    const activeStations = hourlyGeomag.stations.filter((station) => station.valid);
-    const sortedK = activeStations.map((station) => station.k).filter(Number.isFinite).sort((a, b) => a - b);
-    const medianK = sortedK.length ? sortedK[Math.floor(sortedK.length / 2)] : null;
-    const primaryAvailable = Boolean(primary?.latest);
-    const primaryReading = primaryAvailable ? `ap60 ${primary.latest.ap60}` : "";
-    const primaryState = primaryFresh ? "GFZ PRIMARY" : "GFZ DATA STALE";
-    const level = geomagLevel(primary?.latest?.ap60);
-    const bars = primary?.history?.slice(-12).map((row) => {
-      const rowLevel = geomagLevel(row.ap60);
-      const height = Math.max(4, Math.min(100, Number(row.ap60) / 1.5));
-      return `<i class="fd-hourly-geomag-bar" data-level="${rowLevel}" style="height:${height}%" title="${esc(geomagTime(row.start))} · ap60 ${esc(row.ap60)} · Hp60 ${esc(row.hp60)}"></i>`;
-    }).join("") || `<span class="fd-note">No valid GFZ history loaded.</span>`;
-    const availableStations = HOURLY_GEOMAG_STATIONS
-      .map((definition) => hourlyGeomag.stations.find((item) => item.code === definition.code && item.valid))
-      .filter(Boolean);
-    const stations = availableStations.map((station) => {
-      return `<div class="fd-hourly-geomag-station" title="${esc(station.source)} · ${esc(station.latest)}"><span>${esc(station.code)}</span><strong>K${station.k}</strong><small>${esc(station.source)} · ΔH ${station.deviation.toFixed(1)} nT</small></div>`;
-    }).join("");
-    const fallbackState = activeStations.length
-      ? `${activeStations.length}/${HOURLY_GEOMAG_STATIONS.length} current · median station K${medianK}`
-      : "No current station data";
-    const primaryMarkup = primaryAvailable ? `
-        <section class="fd-hourly-geomag-primary">
-          <span>${primaryState}</span>
-          <div class="fd-hourly-geomag-reading"><strong data-level="${level}">${esc(primaryReading)}</strong><small>Hp60 ${esc(primary.latest.hp60)}</small></div>
-          <div class="fd-hourly-geomag-meta">
-            <span>Interval ${esc(geomagTime(primary.latest.start))} · ${esc(geomagAge(primary.latest.start))}${primaryFresh ? "" : " · do not use as current"}</span>
-            <span><a href="${GFZ_HP60_AP60_URL}" target="_blank" rel="noopener">GFZ Hp60/ap60 nowcast</a> · retrieved ${esc(primary.transport || "direct")}</span>
-          </div>
-          <div class="fd-hourly-geomag-bars" aria-label="Latest twelve hourly ap60 values">${bars}</div>
-        </section>` : "";
-    const stationMarkup = stations || `<div class="fd-hourly-geomag-no-stations">No current station record meets the two-hour coverage and freshness checks. Available stations appear automatically as their feeds recover.</div>`;
-    panel.innerHTML = `
-      <header class="fd-hourly-geomag-head">
-        <div><span class="fd-eyebrow">GEOSPACE · HOURLY ACTIVITY</span><h3>Hourly Geomag</h3><p>GFZ ap60 is the preferred hourly proxy. Station H-deflection is a transparent contingency check, not a replacement for an official network recalculation.</p></div>
-        <button type="button" class="fd-hourly-geomag-refresh" data-fd-geomag-refresh>${hourlyGeomag.status === "loading" ? "REFRESHING…" : "REFRESH"}</button>
-      </header>
-      <div class="fd-hourly-geomag-main${primaryAvailable ? "" : " fd-hourly-geomag-no-primary"}">
-        ${primaryMarkup}
-        <section class="fd-hourly-geomag-fallback">
-          <header><div><span>STATION H-DEFLECTION BACKUP</span><strong>${esc(fallbackState)}</strong></div><small>${primaryFresh ? "standby check" : "contingency in use"}</small></header>
-          <div class="fd-hourly-geomag-stations">${stationMarkup}</div>
-          <footer>Each K is the floor of max–min H over ≥2 h using the supplied station threshold table. Eight target stations are checked; only current stations are shown. The wall summary expresses the median as a clearly labelled Kp approximation; it is not an official Kp or ap60 value.</footer>
-        </section>
-      </div>
-      <p class="fd-hourly-geomag-note">Source status is retained with every refresh. GFZ observations refresh through a published relay when browser access is blocked. Observation times are preserved; stale values are explicitly marked.</p>`;
+    panel.querySelectorAll('.js-plotly-plot').forEach(node=>window.Plotly?.purge(node));
+    const primary=hourlyGeomag.primary,age=primary?.latest?(Date.now()-Date.parse(primary.latest.start))/60000:Infinity;
+    const fresh=Number.isFinite(age)&&age>=0&&age<=180&&!primary?.error;
+    const stations=HOURLY_GEOMAG_STATIONS.map(d=>hourlyGeomag.stations.find(s=>s.code===d.code&&s.valid)).filter(Boolean);
+    const history=(primary?.history||[]).filter(r=>Number.isFinite(r.ap60)&&r.ap60>=0&&Date.parse(r.start)<=Date.now()).slice(-48);
+    panel.innerHTML=`<header class="fd-hourly-geomag-head"><div><span class="fd-eyebrow">GEOSPACE · HOURLY ACTIVITY</span><h3>Hourly Ap/GeoMag</h3><p>Station estimates above · GFZ hourly ap60 below</p></div><button type="button" class="fd-hourly-geomag-refresh" data-fd-geomag-refresh>${hourlyGeomag.status==='loading'?'REFRESHING…':'REFRESH'}</button></header>
+      <section class="fd-hourly-geomag-row"><h4>Station K estimates</h4><p>${stations.length}/${HOURLY_GEOMAG_STATIONS.length} stations current · two-hour H-range proxy</p><div class="fd-hourly-geomag-plot" data-geomag-stations></div></section>
+      <section class="fd-hourly-geomag-row"><h4>Hourly ap60</h4><p>${primary?.latest?`ap60 ${esc(primary.latest.ap60)} · interval ${esc(geomagTime(primary.latest.start))}${fresh?'':' · STALE — last available'}`:'GFZ hourly ap60 unavailable'}</p><div class="fd-hourly-geomag-plot" data-geomag-ap60></div></section>
+      <details class="fd-hourly-geomag-note"><summary>Sources &amp; interpretation</summary><p>Station values estimate K from the preceding two-hour H range using station thresholds, without quiet-day correction. They are not official three-hour station K or planetary Kp. Missing stations are omitted.</p><p><a href="${GFZ_HP60_AP60_URL}" target="_blank" rel="noopener">GFZ Hp60/ap60</a> provides the hourly planetary index. The separate <b>3-hour Ap</b> catalog product retains its three-hour intervals. Observation times are preserved through the relay.</p></details>`;
+    const base={paper_bgcolor:'transparent',plot_bgcolor:'#091a25',font:{color:'#bfd7e3',size:11},margin:{l:52,r:22,t:12,b:46},showlegend:false,hoverlabel:{bgcolor:'#102635',bordercolor:'#65cce1',font:{color:'#f3f9fc'}},yaxis:{gridcolor:'#254353',zeroline:false,rangemode:'tozero',minallowed:0},xaxis:{gridcolor:'#254353',zeroline:false},autosize:true};
+    const config={responsive:true,displayModeBar:false,scrollZoom:false};
+    const definitions=HOURLY_GEOMAG_STATIONS;
+    window.Plotly?.react(panel.querySelector('[data-geomag-stations]'),[{type:'bar',x:definitions.map(d=>d.code),y:definitions.map(d=>stations.find(s=>s.code===d.code)?.k??null),marker:{color:'#58c7e2'},customdata:definitions.map(d=>{const r=stations.find(s=>s.code===d.code);return r?[r.source,r.latest,r.deviation.toFixed(1)]:['Unavailable','',''];}),hovertemplate:'%{x} · estimated K%{y}<br>ΔH %{customdata[2]} nT<br>%{customdata[1]}<br>%{customdata[0]}<extra></extra>'}],{...base,yaxis:{...base.yaxis,title:{text:'Estimated K'},range:[0,9.5],dtick:1},annotations:stations.length?[]:[{text:'No station passes coverage and freshness checks',xref:'paper',yref:'paper',x:.5,y:.5,showarrow:false}]},config);
+    const color=v=>({quiet:'#4dc8ad',elevated:'#f2c45f',high:'#ff9971',severe:'#ef646f'}[geomagLevel(v)]||'#58c7e2');
+    window.Plotly?.react(panel.querySelector('[data-geomag-ap60]'),[{type:'bar',x:history.map(r=>new Date(Date.parse(r.start)+1800000).toISOString()),y:history.map(r=>r.ap60),width:3200000,marker:{color:history.map(r=>color(r.ap60))},customdata:history.map(r=>[r.start,r.hp60]),hovertemplate:'%{customdata[0]}<br>ap60 %{y} · Hp60 %{customdata[1]}<br>One-hour interval · UTC<extra>GFZ</extra>'}],{...base,xaxis:{...base.xaxis,type:'date',tickformat:'%d %b\n%H:%M',title:{text:'UTC'}},yaxis:{...base.yaxis,title:{text:'ap60'},range:[0,Math.max(30,...history.map(r=>r.ap60*1.18))]},annotations:history.length?[]:[{text:'GFZ hourly ap60 unavailable',xref:'paper',yref:'paper',x:.5,y:.5,showarrow:false}]},config);
   }
+
 
   function mountHourlyGeomagProduct(frame) {
     const panel = document.createElement("section");
@@ -39188,6 +39221,7 @@ window.SpaceWxSuprathermal=(()=>{
   function mountProduct(key, target, options = {}) {
     key = canonicalProduct(key);
     if (key === "model.nairas" && !modelAvailable("nairas")) return;
+    if(key === "realtime.alerts"){mountGlobalAlertRail();return;}
     const product = PRODUCT_LOOKUP.get(key) || { label: key, badge: "DATA", domain: "wind" };
     const frame = document.createElement("section");
     frame.className = `fd-product-frame${options.bare ? " bare" : ""}${options.className ? ` ${options.className}` : ""}`;
@@ -39273,7 +39307,7 @@ window.SpaceWxSuprathermal=(()=>{
     document.body.classList.toggle("fd-ch-desk", chDeskActive);
     stashProducts();
     stashVisuals();
-    if(state.preset!=="monitor")mountGlobalAlertRail();
+    mountGlobalAlertRail();
     $$("[data-fd-preset]", app).forEach((button) => button.classList.toggle("active", button.dataset.fdPreset === state.preset));
     if (state.view === "product") renderProductWorkspace();
     else if (state.preset === "model") renderModel();
@@ -39372,7 +39406,7 @@ window.SpaceWxSuprathermal=(()=>{
     const values = current.map((station) => station.k).sort((a, b) => a - b);
     const median = values[Math.floor(values.length / 2)];
     return {
-      value: `Kp ≈ ${median}`,
+      value: `Station K estimate ${median}`,
       detail: `Median station K · ${current.length}/${HOURLY_GEOMAG_STATIONS.length} current`
     };
   }
@@ -39444,7 +39478,7 @@ window.SpaceWxSuprathermal=(()=>{
       ["realtime.imf", "IMF / Bz", readMetric(["imfHeader"], "Awaiting L1 feed"), "L1 driver"],
       ["realtime.speed", "Solar Wind", readMetric(["speedHeader"], "Awaiting plasma feed"), "Propagation"],
       ["realtime.xray", "X-ray", readMetric(["xrayHeader"], "Awaiting GOES"), "Solar activity"],
-      [HOURLY_GEOMAG_PRODUCT, "Hourly Geomag", stationKp.value, stationKp.detail],
+      [HOURLY_GEOMAG_PRODUCT, "Hourly Ap/GeoMag", stationKp.value, stationKp.detail],
       ["forecast.aurora", "OVATION Prime", ovationPrime.value, ovationPrime.detail, "ovation"],
       ["forecast.risk", "Orbit Exposure", orbitExposure.value, orbitExposure.detail]
     ];
@@ -39457,6 +39491,7 @@ window.SpaceWxSuprathermal=(()=>{
   }
 
   function addMonitorTile(key, kind = "product") {
+    if(key==="realtime.alerts"){closeOverlays();openProduct(key);return;}
     const identity = `${kind}:${key}`;
     const pickerWasOpen = Boolean($("#fdDrawer.open", app) && $("#fdDrawerTitle", app)?.textContent === "Add tiles");
     const existing = state.monitorTiles.findIndex((tile) => tile.id === identity);
@@ -40376,10 +40411,6 @@ window.SpaceWxSuprathermal=(()=>{
   }
 
   function openProduct(key, pane) {
-    if(state.preset==='monitor'){
-      const tile=state.monitorTiles.find(t=>t.kind==='product'&&t.key===key);
-      if(tile)removeMonitorTile(tile.id);else addMonitorTile(key);return;
-    }
     if (key === "realtime.alerts") {
       const rail = $(".fd-global-alert-rail", app);
       if (rail) {
@@ -40388,6 +40419,10 @@ window.SpaceWxSuprathermal=(()=>{
         setTimeout(() => rail.classList.remove("fd-alert-rail-focus"), 900);
       }
       return;
+    }
+    if(state.preset==='monitor'){
+      const tile=state.monitorTiles.find(t=>t.kind==='product'&&t.key===key);
+      if(tile)removeMonitorTile(tile.id);else addMonitorTile(key);return;
     }
     if ((key === "model.nairas" && !productAvailable(key)) || (!PRODUCT_LOOKUP.has(key) && !findCard(key))) {
       toast(`Product adapter unavailable: ${key}`);
@@ -40605,7 +40640,7 @@ window.SpaceWxSuprathermal=(()=>{
     const isAdded = (kind, key) => state.monitorTiles.some((tile) => tile.kind === kind && tile.key === key);
     $("#fdDrawerEyebrow", app).textContent = "OPERATIONS WALL";
     $("#fdDrawerTitle", app).textContent = "Add tiles";
-    $("#fdDrawerContent", app).innerHTML = `<section class="fd-inspector-section"><h3>Situation canvases</h3><p class="fd-note">These are operational synthesis views built for the wall. Each can appear only once.</p><div class="fd-tile-picker-grid">${Object.entries(SPECIAL_TILES).map(([key, item]) => `<button type="button" class="fd-tile-picker-item${isAdded("visual", key) ? " added" : ""}" data-fd-add-visual="${key}" ${isAdded("visual", key) ? "disabled" : ""}><span>${esc(item.badge)}</span><strong>${esc(item.label)}</strong><small>${isAdded("visual", key) ? "Already on wall" : "Add to wall"}</small></button>`).join("")}</div></section>${PRODUCT_GROUPS.map((group) => `<section class="fd-inspector-section"><h3>${esc(group.name)}</h3><div class="fd-tile-picker-grid">${group.products.filter(item=>productAvailable(item[0])).map((item) => `<button type="button" class="fd-tile-picker-item${isAdded("product", item[0]) ? " added" : ""}" data-fd-add-tile="${esc(item[0])}" ${isAdded("product", item[0]) ? "disabled" : ""}><span>${esc(item[2])}</span><strong>${esc(item[1])}</strong><small>${isAdded("product", item[0]) ? "Already on wall" : "Add to wall"}</small></button>`).join("")}</div></section>`).join("")}`;
+    $("#fdDrawerContent", app).innerHTML = `<section class="fd-inspector-section"><h3>Situation canvases</h3><p class="fd-note">These are operational synthesis views built for the wall. Each can appear only once.</p><div class="fd-tile-picker-grid">${Object.entries(SPECIAL_TILES).map(([key, item]) => `<button type="button" class="fd-tile-picker-item${isAdded("visual", key) ? " added" : ""}" data-fd-add-visual="${key}" ${isAdded("visual", key) ? "disabled" : ""}><span>${esc(item.badge)}</span><strong>${esc(item.label)}</strong><small>${isAdded("visual", key) ? "Already on wall" : "Add to wall"}</small></button>`).join("")}</div></section>${PRODUCT_GROUPS.map((group) => `<section class="fd-inspector-section"><h3>${esc(group.name)}</h3><div class="fd-tile-picker-grid">${group.products.filter(item=>item[0]!=="realtime.alerts"&&productAvailable(item[0])).map((item) => `<button type="button" class="fd-tile-picker-item${isAdded("product", item[0]) ? " added" : ""}" data-fd-add-tile="${esc(item[0])}" ${isAdded("product", item[0]) ? "disabled" : ""}><span>${esc(item[2])}</span><strong>${esc(item[1])}</strong><small>${isAdded("product", item[0]) ? "Already on wall" : "Add to wall"}</small></button>`).join("")}</div></section>`).join("")}`;
     $("#fdDrawerFoot", app).innerHTML = `<span class="fd-eyebrow" style="margin-right:auto">${state.monitorTiles.length} TILES</span><button type="button" class="fd-button" data-fd-close>Done</button>`;
   }
 

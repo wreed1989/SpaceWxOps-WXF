@@ -54,3 +54,21 @@ assert.ok(html.includes('["realtime.ap", "3-hour Ap", "LIVE"]'));
 assert.ok(html.includes('filter(tile=>tile.key!=="realtime.alerts")'));
 assert.ok(!html.includes('if(state.preset!=="monitor")mountGlobalAlertRail()'));
 console.log('On-demand proton inputs, null/zero validation, pre-flare isolation, published equations and persistent alert contracts passed');
+
+// Selecting a flare prepares every available input without running inference.
+const reported={peakTime:scenario.peakTime+':00Z',flareClass:'M1.0',peakFlux:1.049e-5,riseMinutes:10,longitude:42,latitude:-12,integral:.0041,integralEnd:'2026-09-19T12:12:00Z',previous:'yes',previousIntegral:.03,opticalClass:'1B',radio:'II',inputSources:{location:'https://services.swpc.noaa.gov/json/edited_events.json'}};
+const prepared=sep.draftFor(reported,history);
+assert.equal(prepared.longitude,42);assert.equal(prepared.latitude,-12);assert.equal(prepared.integral,.0041);
+assert.equal(prepared.P10,1);assert.equal(prepared.P50,.1);assert.equal(prepared.priorFlares,1);assert.equal(prepared.background,'auto');
+assert.equal(prepared.previous,'yes');assert.equal(prepared.previousIntegral,.03);assert.equal(prepared.radio,'II');
+assert.equal(sep.run(prepared,history,runAt).features[0],Math.log10(reported.peakFlux));
+assert.equal(sep.run({...prepared,flareClass:'X2.0'},history,runAt).features[0],Math.log10(2e-4));
+assert.equal(sep.draftFor({...reported,longitude:null,latitude:null},history).longitude,'');
+assert.equal(sep.draftFor(undefined,{...history,events:[{...reported,peakTime:'2026-09-19T11:00:00Z'},reported]}).peakTime,scenario.peakTime);
+assert.equal(sep.draftFor({},history).peakTime,'');
+assert.ok(sep.draftFor(reported,{...history,observations:[]}).inputError.includes('20 hours'));
+const missingBaseline={...history,observations:history.observations.filter(r=>Date.parse(r.time)<peak)};
+assert.equal(sep.run(prepared,missingBaseline,runAt).eligible.p10_10,null);
+const frozen=sep.run(prepared,history,runAt);prepared.inputSources.location='changed';assert.notEqual(frozen.input.inputSources.location,'changed');
+assert.ok(!extract('wxfProtonDashboard').includes('data-wxf-sep-prob'));
+console.log('Automatic flare inputs, measured peak precision, missing-location handling and compact probabilities passed');

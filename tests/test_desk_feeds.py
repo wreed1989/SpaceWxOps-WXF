@@ -67,6 +67,13 @@ class ProtonCausality(unittest.TestCase):
         self.assertFalse(model.exceeds(math.nan,'p10_10'))
         self.assertTrue(model.exceeds(10,'p50_10'))
 
+    def test_missing_start_window_samples_withhold_probability(self):
+        prior=[r for r in self.obs if refresh.date(r['time'])<NOW]
+        result=refresh.forecast(self.event,[],prior,self.fitted,NOW+timedelta(minutes=10))
+        self.assertIsNone(result['eligible']['p10_10'])
+        self.assertIsNone(result['eligible']['p10_40'])
+        self.assertIsNone(result['eligible']['p50_10'])
+
     def test_late_run_preserves_the_original_window(self):
         late=refresh.forecast(self.event,[],self.obs,self.fitted,NOW+timedelta(hours=6))
         self.assertEqual(late['latencyMinutes'],350)

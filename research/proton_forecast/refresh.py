@@ -1,10 +1,11 @@
 """Publish experimental event outlooks, preserving actual creation and fixed target windows."""
-import json,math,re
+import json,math
 from pathlib import Path
 from datetime import datetime,timedelta,timezone
 from concurrent.futures import ThreadPoolExecutor
 import requests
 from .model import VERSION,FEATURES,TARGETS,feature_values,predict,exceeds
+from .inputs import event_inputs, solar_demon_rows, SOLAR_DEMON
 FLARES='https://services.swpc.noaa.gov/json/goes/primary/xray-flares-7-day.json'
 PROTONS='https://services.swpc.noaa.gov/json/goes/primary/integral-protons-3-day.json'
 EVENTS='https://services.swpc.noaa.gov/json/edited_events.json'
@@ -35,30 +36,41 @@ def forecast(event,raw_flares,obs,model,now=None):
     count=sum(peak-timedelta(hours=24)<=date(r['max_time'])<peak and (r.get('max_xrlong') or 0)>=1e-6 for r in raw_flares)
     values=feature_values(event,prior,count);probabilities=predict(values,model)
     before=[r for r in obs if start-timedelta(minutes=15)<=date(r['time'])<start]
-    active={key:len(before)>=3 and all(exceeds(r.get(ch),key) for r in before) for key,(ch,threshold) in TARGETS.items()}
-    eligible={key:not active[key] for key in TARGETS}
-    eligible['p10_40']=not active['p10_10']
+    active={key:(all(exceeds(r.get(ch),key) for r in before) if len(before)>=3 and all(r.get(ch) is not None for r in before) else None) for key,(ch,threshold) in TARGETS.items()}
+    eligible={key:None if active[key] is None else not active[key] for key in TARGETS}
+    eligible['p10_40']=eligible['p10_10']
     return {'eligible':eligible,'event':event,'createdAt':stamp(now),'validStart':stamp(start),'validEnd':stamp(end),'latencyMinutes':(now-start).total_seconds()/60,'probabilities':probabilities,'alreadyActive':active,'features':{k:v if math.isfinite(v) else None for k,v in zip(FEATURES,values)},'missingFeatures':[k for k,v in zip(FEATURES,values) if not math.isfinite(v)]}
 
 def collect(now=None,get=requests.get):
-    now=now or datetime.now(timezone.utc)
+    now=now or datetime.now(timezone.utc);warnings=[]
     def fetch(url):
         r=get(url,timeout=(8,25));r.raise_for_status();return r.json()
-    with ThreadPoolExecutor(max_workers=3) as pool:raw,protons,edits=list(pool.map(fetch,[FLARES,PROTONS,EVENTS]))
-    obs=observations(protons);model=json.loads(Path(__file__).with_name('model.json').read_text());out=[];rejected=[]
-    for r in sorted(raw,key=lambda r:r['max_time'] or ''):
-        if not r.get('max_time') or (r.get('max_xrlong') or 0)<1e-6:continue
-        peak=date(r['max_time']);start=date(r['begin_time'])
+    def optional(url, text=False):
+        try:
+            r=get(url,timeout=(8,25));r.raise_for_status()
+            return solar_demon_rows(r.text) if text else r.json()
+        except Exception as exc:
+            warnings.append({'source':url,'reason':str(exc)[:180]});return []
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        futures=[pool.submit(fetch,FLARES),pool.submit(fetch,PROTONS),pool.submit(optional,EVENTS),pool.submit(optional,SOLAR_DEMON,True)]
+        raw,protons,edits,demon=[f.result() for f in futures]
+    raw=[r for r in raw if r.get('max_time') and date(r['max_time'])<=now]
+    obs=[r for r in observations(protons) if date(r['time'])<=now]
+    model=json.loads(Path(__file__).with_name('model.json').read_text());out=[];rejected=[];events=[]
+    for r in sorted(raw,key=lambda r:r['max_time']):
+        if (r.get('max_xrlong') or 0)<1e-6:continue
+        peak=date(r['max_time'])
+        if not (timedelta(0)<=now-peak<timedelta(hours=48)):continue
+        try:ev=event_inputs(r,edits,now,demon)
+        except ValueError as exc:
+            rejected.append({'peakTime':stamp(peak),'reason':str(exc)});continue
+        events.append(ev)
         if not (timedelta(minutes=10)<=now-peak<timedelta(hours=24,minutes=10)):continue
-        ev={'peakTime':stamp(peak),'startTime':stamp(start),'flareClass':r['max_class'],'peakFlux':r['max_xrlong'],'riseMinutes':(peak-start).total_seconds()/60,'longitude':None,'latitude':None}
-        # Position must be an explicit reported location for the same event, never region centre.
-        matches=[x for x in edits if x.get('max_datetime') and abs((date(x['max_datetime'])-peak).total_seconds())<=120 and x.get('type')=='XRA']
-        for x in matches:
-            m=re.fullmatch(r'([NS])(\d{1,2})([EW])(\d{1,2})',str(x.get('location') or '').strip())
-            if m:ev.update(latitude=int(m[2])*(1 if m[1]=='N' else -1),longitude=int(m[4])*(1 if m[3]=='W' else -1))
         try:out.append(forecast(ev,raw,obs,model,now))
         except ValueError as exc:rejected.append({'peakTime':stamp(peak),'reason':str(exc)})
-    return {'schemaVersion':VERSION,'generatedAt':stamp(now),'status':'experimental','outlooks':out,'rejected':rejected,'observations':obs,'rawFlares':raw,'sources':[FLARES,PROTONS,EVENTS]}
+    return {'schemaVersion':VERSION,'inputVersion':2,'generatedAt':stamp(now),'status':'experimental','events':events,
+            'outlooks':out,'rejected':rejected,'observations':obs,'rawFlares':raw,'inputWarnings':warnings,
+            'flareHistoryStart':stamp(now-timedelta(days=7)),'sources':[FLARES,PROTONS,EVENTS,SOLAR_DEMON]}
 
 def publish(root):
     from chhss.publish import read,write

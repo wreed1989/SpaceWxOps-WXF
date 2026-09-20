@@ -274,11 +274,11 @@
     "previous_issued": "2026-09-19T21:00:00Z",
     "attempts": 3,
     "exit_code": 2,
-    "checked_at": "2026-09-20T00:10:48Z",
+    "checked_at": "2026-09-20T00:30:31Z",
     "detail": "JSOC/SHARP retrieval failed after three attempts. The prior WXF magnetic probability was retained transparently while all independent forecast sources were refreshed."
   },
   "external_sources": {
-    "generated_at": "2026-09-20T00:10:50Z",
+    "generated_at": "2026-09-20T00:30:32Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,

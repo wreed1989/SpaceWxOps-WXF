@@ -49,3 +49,21 @@ node tests/test_dashboard.cjs
 ```
 
 Keep the cached source hashes from the manifest: finalized archive files can change. The acquisition's stop date is fixed for this version. The trained model and browser inference fixture are committed; inference does not require scikit-learn. The dashboard test suite checks that its embedded model and JavaScript match these source files.
+
+## On-demand analyst workflow
+
+The Models tab presents **WXF Proton Model** with inputs and an explicit Run button at the top. Load an observed flare or enter a historical scenario. Automatic inference reconstructs the pre-peak five-minute grid for that event; manual mode accepts the same channel medians, earlier medians, global flare count and baseline event eligibility. Missing baseline status withholds the affected probability. Observation refreshes neither execute edited inputs nor overwrite the last completed run. Navigating between products retains the draft and run for that browser session. The published first-issuance ledger is unchanged.
+
+The optional >10 MeV peak estimates use the published relations in [Balch (2008), section 2](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2007SW000337), cross-checked visually against [Whitman et al., section 3.20, equations 7–9](https://repository.library.noaa.gov/view/noaa/52048/noaa_52048_DS1.pdf):
+
+- Peak flux in pfu: `10 * alpha * (Xint / 0.00987)^0.82`.
+- `alpha = (Xprevious / 0.167)^1.146` when `Xprevious > 0.08 J/m²`; otherwise `alpha = 1`. Unknown previous-flare status or a missing integral for a known previous flare withholds peak flux.
+- Flare-peak to proton-peak delay in hours: `9.4 + ((longitudeWest - 78) / 18.1)^2`. This is **not onset delay**, and may extend beyond the probability model's fixed window.
+
+Both estimates are conditional on an SEP event and are screened to C2.4+ and visible-disc coordinates. Integrals are GOES SXR in J/m², from onset through the decay time where flux reaches `(peak + pre-flare background) / 2`, including background in the integral. This corrects the less precise half-maximum wording in the review. No generic event-end or background-subtracted integral is substituted. The WXF probability verification does not validate these additional historical relations, and no synthetic uncertainty interval is attached.
+
+The [NOAA presentation supplied by the user](https://www.spaceweather.gov/sites/default/files/images/u59/05%20Hazel%20Bain%20Official.pdf) confirms the PROTONS inputs and three outputs, and discusses sparse-bin and false-alarm limitations. Reproducing its occurrence probability requires **Balch (1999), Tables 6–8**, including bin boundaries and sparse-sample fallback rules. Those tables are referenced but not reproduced in the 2008 paper; the verification-frequency table is not an inference lookup table. We have not obtained the complete 1999 tables. Consequently radio sweep and optical class are explicitly recorded-only inputs in this release. They do not secretly introduce arbitrary probability multipliers.
+
+Neither user-supplied source specifies high-/mid-latitude aurora probabilities, SSC, post-SSC Ap, PCA, SST dose, >50 MeV peak flux or proton onset predictions. These remain unavailable pending separately sourced or fitted and validated methods. The existing WXF >50 MeV occurrence probability remains functional and independent of the legacy peak relation.
+
+SSC and aurora outputs are omitted from the interface at the user’s request, along with the unused current-Ap input.

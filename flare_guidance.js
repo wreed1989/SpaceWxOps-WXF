@@ -217,7 +217,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14532",
       "label": "AR 14532",
-      "location": "S07W68",
+      "location": "S07W83",
       "mcintosh": "",
       "quality": {
         "level": "fallback",
@@ -233,8 +233,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "component_id": "AR14532-fallback"
         },
         "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
+          "m1": 0.0,
+          "x1": 0.0,
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
@@ -248,7 +248,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14533",
       "label": "AR 14533",
-      "location": "S13E50",
+      "location": "S13E36",
       "mcintosh": "HSX",
       "quality": {
         "level": "fallback",
@@ -264,8 +264,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "component_id": "AR14533-fallback"
         },
         "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
+          "m1": 0.0,
+          "x1": 0.0,
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
@@ -285,7 +285,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14534",
       "label": "AR 14534",
-      "location": "N11W21",
+      "location": "N11W35",
       "mcintosh": "DRI",
       "quality": {
         "level": "research",
@@ -301,8 +301,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "component_id": "HARP14006"
         },
         "swpc": {
-          "m1": 5.0,
-          "x1": 1.0,
+          "m1": 0.0,
+          "x1": 0.0,
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
@@ -324,7 +324,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14535",
       "label": "AR 14535",
-      "location": "N12E58",
+      "location": "N12E44",
       "mcintosh": "HRX",
       "quality": {
         "level": "fallback",
@@ -340,8 +340,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "component_id": "AR14535-fallback"
         },
         "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
+          "m1": 0.0,
+          "x1": 0.0,
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
@@ -361,7 +361,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14536",
       "label": "AR 14536",
-      "location": "N03E01",
+      "location": "N03W14",
       "mcintosh": "CRI",
       "quality": {
         "level": "fallback",
@@ -377,8 +377,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "component_id": "AR14536-fallback"
         },
         "swpc": {
-          "m1": 5.0,
-          "x1": 1.0,
+          "m1": 0.0,
+          "x1": 0.0,
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
@@ -392,7 +392,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14537",
       "label": "AR 14537",
-      "location": "N07W11",
+      "location": "N07W26",
       "mcintosh": "BXO",
       "quality": {
         "level": "fallback",
@@ -408,8 +408,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "component_id": "AR14537-fallback"
         },
         "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
+          "m1": 0.0,
+          "x1": 0.0,
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
@@ -423,7 +423,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14538",
       "label": "AR 14538",
-      "location": "N11W09",
+      "location": "N11W23",
       "mcintosh": "BXO",
       "quality": {
         "level": "fallback",
@@ -439,8 +439,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "component_id": "AR14538-fallback"
         },
         "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
+          "m1": 0.0,
+          "x1": 0.0,
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
@@ -455,7 +455,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20260921&region=&indexnum=1",
-    "retrieved_at": "2026-09-22T01:43:30Z",
+    "retrieved_at": "2026-09-22T05:03:13Z",
     "table_date": "2026-09-21",
     "valid_start": "2026-09-21T00:00:00Z",
     "valid_end": "2026-09-22T00:00:00Z",
@@ -467,7 +467,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-09-22T01:43:30Z",
+    "generated_at": "2026-09-22T05:03:13Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
@@ -761,7 +761,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 46,
+      "records": 49,
       "issued": "2026-09-22T00:00:00Z",
       "valid_start": "2026-09-22T00:00:00Z",
       "valid_end": "2026-09-23T00:00:00Z",
@@ -838,7 +838,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 46,
+      "records": 49,
       "issued": "2026-09-22T00:00:00Z",
       "valid_start": "2026-09-22T00:00:00Z",
       "valid_end": "2026-09-22T12:00:00Z",

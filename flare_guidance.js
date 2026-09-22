@@ -157,6 +157,17 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "valid_end": "2026-09-22T12:06:44Z",
           "note": "Human-operator-moderated global forecast published by SIDC."
         },
+        "ccmc_amos": {
+          "m1": null,
+          "x1": 0.0,
+          "source": "NASA/CCMC Flare Scoreboard · CCMC AMOS",
+          "quality": "published-comparison",
+          "issued": "2026-09-22T00:30:00Z",
+          "valid_start": "2026-09-22T00:00:00Z",
+          "valid_end": "2026-09-23T00:00:00Z",
+          "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
+          "dataset_id": "AMOS_v1_FULLDISK"
+        },
         "ccmc_assa24": {
           "m1": null,
           "x1": 0.0,
@@ -444,7 +455,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20260921&region=&indexnum=1",
-    "retrieved_at": "2026-09-22T00:54:45Z",
+    "retrieved_at": "2026-09-22T01:43:30Z",
     "table_date": "2026-09-21",
     "valid_start": "2026-09-21T00:00:00Z",
     "valid_end": "2026-09-22T00:00:00Z",
@@ -456,7 +467,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-09-22T00:54:45Z",
+    "generated_at": "2026-09-22T01:43:30Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
@@ -593,7 +604,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "ccmc_ccmc_amos": {
       "dataset_id": "AMOS_v1_FULLDISK",
       "label": "CCMC AMOS",
-      "ok": false,
+      "ok": true,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=AMOS_v1_FULLDISK",
       "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=AMOS_v1_FULLDISK&time.min=2026-09-17T21%3A00%3A00.0&time.max=2026-09-22T21%3A00%3A00.0&format=json&options=fields.all",
@@ -630,8 +641,42 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 2,
-      "detail": "Forecast window does not meaningfully overlap target (2026-09-21T00:00:00Z to 2026-09-22T00:00:00Z)"
+      "records": 3,
+      "issued": "2026-09-22T00:30:00Z",
+      "valid_start": "2026-09-22T00:00:00Z",
+      "valid_end": "2026-09-23T00:00:00Z",
+      "m1": null,
+      "x1": 0.0,
+      "selected_record": {
+        "start_window": "2026-09-22T00:00:00.0Z",
+        "end_window": "2026-09-23T00:00:00.0Z",
+        "issue_time": "2026-09-22T00:30:00.0Z",
+        "C": 0.8885,
+        "M": 0.0163,
+        "CPlus": "-1",
+        "MPlus": "-1",
+        "X": 0,
+        "C_uncertainty": "-1",
+        "M_uncertainty": "-1",
+        "CPlus_uncertainty": "-1",
+        "MPlus_uncertainty": "-1",
+        "X_uncertainty": "-1",
+        "C_value_lower": "-1",
+        "M_value_lower": "-1",
+        "CPlus_value_lower": "-1",
+        "MPlus_value_lower": "-1",
+        "X_value_lower": "-1",
+        "C_value_higher": "-1",
+        "M_value_higher": "-1",
+        "CPlus_value_higher": "-1",
+        "MPlus_value_higher": "-1",
+        "X_value_higher": "-1",
+        "C_level": "-1",
+        "M_level": "-1",
+        "CPlus_level": "-1",
+        "MPlus_level": "-1",
+        "X_level": "-1"
+      }
     },
     "ccmc_ccmc_asap": {
       "dataset_id": "ASAP_1_FULLDISK",
@@ -716,7 +761,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 45,
+      "records": 46,
       "issued": "2026-09-22T00:00:00Z",
       "valid_start": "2026-09-22T00:00:00Z",
       "valid_end": "2026-09-23T00:00:00Z",
@@ -793,7 +838,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 45,
+      "records": 46,
       "issued": "2026-09-22T00:00:00Z",
       "valid_start": "2026-09-22T00:00:00Z",
       "valid_end": "2026-09-22T12:00:00Z",

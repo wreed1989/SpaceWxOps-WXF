@@ -1,6 +1,6 @@
 {
   "schemaVersion": "WXF-EF-0.2",
-  "issuedAt": "2026-09-22T13:29:50.716631+00:00",
+  "issuedAt": "2026-09-22T18:09:58.713483+00:00",
   "horizonHours": 24,
   "units": "electrons cm^-2 sr^-1",
   "fluxUnits": "electrons cm^-2 s^-1 sr^-1",
@@ -215,7 +215,7 @@
   "guidanceMode": "Current WXF \u00b7 observed drivers",
   "arrivalSource": {
     "url": "https://kauai.ccmc.gsfc.nasa.gov/CMEscoreboard/WS/get/predictions?CMEtimeStart=2026-09-01&CMEtimeEnd=2026-09-22&closeOutCMEsOnly=false&skipNoArrivalObservedCMEs=false",
-    "retrievedAt": "2026-09-22T13:29:49.840328+00:00",
+    "retrievedAt": "2026-09-22T18:09:57.940220+00:00",
     "sha256": "d028fa4f37b66faeee84e715881731972216db6d050cd405d3b10d67ab7eb83e",
     "path": "2026-09-01_2026-09-22.json",
     "eventCount": 10
@@ -225,14 +225,14 @@
       "path": "IPS-2026-09-08-2026-09-22.json",
       "url": "https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/IPS?startDate=2026-09-08&endDate=2026-09-22&version=ALL&catalog=M2M_CATALOG&location=Earth",
       "sha256": "c858ed19a1ed3954c993f2916582228743c77bf107c026c3ae8ce7409dd30ca6",
-      "retrievedAt": "2026-09-22T13:29:50.398057+00:00",
+      "retrievedAt": "2026-09-22T18:09:58.435189+00:00",
       "rows": 7
     },
     {
       "path": "HSS-2026-09-08-2026-09-22.json",
       "url": "https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/HSS?startDate=2026-09-08&endDate=2026-09-22&version=ALL&catalog=M2M_CATALOG",
       "sha256": "c03ae3c98396d20e003f1e358608c2683d0361babd33eb754842c92d1edb074e",
-      "retrievedAt": "2026-09-22T13:29:50.715557+00:00",
+      "retrievedAt": "2026-09-22T18:09:58.712580+00:00",
       "rows": 4
     }
   ],
@@ -275,7 +275,7 @@
   },
   "candidate": {
     "schemaVersion": "WXF-EF-0.2",
-    "issuedAt": "2026-09-22T13:29:50.716631+00:00",
+    "issuedAt": "2026-09-22T18:09:58.713483+00:00",
     "horizonHours": 24,
     "units": "electrons cm^-2 sr^-1",
     "fluxUnits": "electrons cm^-2 s^-1 sr^-1",
@@ -3504,18 +3504,18 @@
     }
   },
   "inputQuality": {
-    "rawSamples": 10141,
-    "acceptedSamples": 10069,
+    "rawSamples": 10197,
+    "acceptedSamples": 10119,
     "otherElectronSpacecraft": 0,
     "highProtonSamples": 41,
-    "missingProtonSamples": 15,
-    "completeElectronHours": 824,
+    "missingProtonSamples": 13,
+    "completeElectronHours": 826,
     "spacecraftHours": {
-      "GOES-19": 824
+      "GOES-19": 826
     },
-    "hourCount": 854,
+    "hourCount": 859,
     "firstHourEnd": "2026-08-18T01:00:00+00:00",
-    "lastHourEnd": "2026-09-22T14:00:00+00:00"
+    "lastHourEnd": "2026-09-22T19:00:00+00:00"
   },
   "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732",
   "historicalValidation": {
@@ -4014,89 +4014,101 @@
   },
   "externalGuidance": {
     "source": "https://services.swpc.noaa.gov/text/3-day-forecast.txt",
-    "retrievedAt": "2026-09-22T13:29:51.082194+00:00",
+    "retrievedAt": "2026-09-22T18:09:59.074091+00:00",
     "bulletin": ":Product: 3-Day Forecast\n:Issued: 2026 Sep 22 1230 UTC\n# Prepared by the U.S. Dept. of Commerce, NOAA, Space Weather Prediction Center\n#\nA. NOAA Geomagnetic Activity Observation and Forecast\n\nThe greatest observed 3 hr Kp over the past 24 hours was 2 (below NOAA\nScale levels).\nThe greatest expected 3 hr Kp for Sep 22-Sep 24 2026 is 5.33 (NOAA Scale\nG1).\n\nNOAA Kp index breakdown Sep 22-Sep 24 2026\n\n             Sep 22       Sep 23       Sep 24\n00-03UT       2.00         1.67         4.33     \n03-06UT       0.67         2.00         5.33 (G1)\n06-09UT       0.33         2.00         4.67 (G1)\n09-12UT       0.33         2.00         3.33     \n12-15UT       2.00         2.33         2.33     \n15-18UT       0.67         2.67         3.00     \n18-21UT       1.67         3.33         3.33     \n21-00UT       1.67         4.33         3.00     \n\nRationale: G1 (Minor) geomagnetic storm conditions are likely 24 Sep\nunder +CH HSS influences\n\nB. NOAA Solar Radiation Activity Observation and Forecast\n\nSolar radiation, as observed by NOAA GOES-18 over the past 24 hours, was\nbelow S-scale storm level thresholds.\n\nSolar Radiation Storm Forecast for Sep 22-Sep 24 2026\n\n              Sep 22  Sep 23  Sep 24\nS1 or greater    1%      1%      1%\n\nRationale: No S1 (Minor) or greater solar radiation storms are expected.\nNo significant active region activity favorable for radiation storm\nproduction is forecast.\n\nC. NOAA Radio Blackout Activity and Forecast\n\nNo radio blackouts were observed over the past 24 hours.\n\nRadio Blackout Forecast for Sep 22-Sep 24 2026\n\n              Sep 22        Sep 23        Sep 24\nR1-R2           15%           15%           15%\nR3 or greater    1%            1%            1%\n\nRationale: There is a slight chance for R1-R2 (Minor-Moderate) radio\nblackouts through 24 Sep primarily due to the flare potential of Regions\n4534 and 4536.\n",
     "usedAsModelInput": false
   },
   "coronalHoleGuidance": {
     "source": "WXF CH/HSS current.json",
-    "observationTime": "2026-09-22T12:36:28Z",
-    "availableAt": "2026-09-22T13:29:20Z",
+    "observationTime": "2026-09-22T17:12:04Z",
+    "availableAt": "2026-09-22T18:09:34Z",
     "measurementEngine": "chhss-euv-hmi-20260919.2",
     "holes": [
       {
         "id": "CH-20260922-01",
-        "latitude": -39.0740592348677,
-        "longitude": 8.766521651073326,
-        "cmd": 8.766521651073326,
-        "areaDisk": 0.04898835540034887,
-        "areaFraction": 0.04898835540034887,
-        "areaPct": 4.898835540034887,
-        "width": 83.20909840441138,
+        "latitude": -39.32005700118192,
+        "longitude": 10.808084694573749,
+        "cmd": 10.808084694573749,
+        "areaDisk": 0.048640773541063435,
+        "areaFraction": 0.048640773541063435,
+        "areaPct": 4.864077354106343,
+        "width": 86.42178892481914,
         "quantitative": true,
-        "time": "2026-09-22T12:36:28Z"
+        "time": "2026-09-22T17:12:04Z"
       },
       {
         "id": "CH-20260922-02",
-        "latitude": 65.46504703952644,
-        "longitude": 11.388840348471648,
-        "cmd": 11.388840348471648,
-        "areaDisk": 0.030030038366116247,
-        "areaFraction": 0.030030038366116247,
-        "areaPct": 3.003003836611625,
-        "width": 132.00281826479915,
+        "latitude": 67.27899871292412,
+        "longitude": 22.045407611823688,
+        "cmd": 22.045407611823688,
+        "areaDisk": 0.025074134332823173,
+        "areaFraction": 0.025074134332823173,
+        "areaPct": 2.5074134332823172,
+        "width": 133.99695512314705,
         "quantitative": true,
-        "time": "2026-09-22T12:36:28Z"
+        "time": "2026-09-22T17:12:04Z"
       },
       {
         "id": "CH-20260922-03",
-        "latitude": 18.366155540934415,
-        "longitude": -5.053451753537172,
-        "cmd": -5.053451753537172,
-        "areaDisk": 0.012267146316268166,
-        "areaFraction": 0.012267146316268166,
-        "areaPct": 1.2267146316268165,
-        "width": 13.204633667869004,
+        "latitude": 18.70987198333044,
+        "longitude": -2.7147112695233977,
+        "cmd": -2.7147112695233977,
+        "areaDisk": 0.012412779004544378,
+        "areaFraction": 0.012412779004544378,
+        "areaPct": 1.2412779004544379,
+        "width": 12.969018477285982,
         "quantitative": true,
-        "time": "2026-09-22T12:36:28Z"
+        "time": "2026-09-22T17:12:04Z"
       },
       {
         "id": "CH-20260922-04",
-        "latitude": -3.628162860039023,
-        "longitude": 36.57912576127991,
-        "cmd": 36.57912576127991,
-        "areaDisk": 0.0033215163995650885,
-        "areaFraction": 0.0033215163995650885,
-        "areaPct": 0.33215163995650887,
-        "width": 10.989882207582134,
+        "latitude": -3.883215522316625,
+        "longitude": 39.319660703943356,
+        "cmd": 39.319660703943356,
+        "areaDisk": 0.00279848828978423,
+        "areaFraction": 0.00279848828978423,
+        "areaPct": 0.279848828978423,
+        "width": 10.30160613525026,
         "quantitative": true,
-        "time": "2026-09-22T12:36:28Z"
+        "time": "2026-09-22T17:12:04Z"
       },
       {
         "id": "CH-20260922-05",
-        "latitude": 54.84390067607582,
-        "longitude": -59.80018539413076,
-        "cmd": -59.80018539413076,
-        "areaDisk": 0.0019335397398434454,
-        "areaFraction": 0.0019335397398434454,
-        "areaPct": 0.19335397398434453,
-        "width": 26.313274134777146,
+        "latitude": 53.885769302312774,
+        "longitude": -21.06635656166383,
+        "cmd": -21.06635656166383,
+        "areaDisk": 0.00261406069475547,
+        "areaFraction": 0.00261406069475547,
+        "areaPct": 0.261406069475547,
+        "width": 13.164543338552676,
         "quantitative": true,
-        "time": "2026-09-22T12:36:28Z"
+        "time": "2026-09-22T17:12:04Z"
+      },
+      {
+        "id": "CH-20260922-06",
+        "latitude": 43.09411264104437,
+        "longitude": -34.57829467815185,
+        "cmd": -34.57829467815185,
+        "areaDisk": 0.001098546979084354,
+        "areaFraction": 0.001098546979084354,
+        "areaPct": 0.10985469790843538,
+        "width": 7.621610425428685,
+        "quantitative": true,
+        "time": "2026-09-22T17:12:04Z"
       }
     ],
     "usedAsModelInput": false,
     "reason": "Consistent as-issued CH forecast history is still accumulating; 27-day wind recurrence is a separate trained predictor.",
     "recurrencePublication": {
-      "generatedAt": "2026-09-22T13:29:11Z",
+      "generatedAt": "2026-09-22T18:09:25Z",
       "source": "NASA OMNI2 retrospective hourly",
       "coverage": {
         "ok": true,
         "state": "complete",
-        "generatedAt": "2026-09-22T13:29:11Z",
+        "generatedAt": "2026-09-22T18:09:25Z",
         "rows": 1800,
-        "validSpeedHours": 1286,
-        "firstValidHour": "2026-07-09T14:00:00Z",
+        "validSpeedHours": 1281,
+        "firstValidHour": "2026-07-09T19:00:00Z",
         "lastValidHour": "2026-09-13T00:00:00Z",
         "minimumDailyHours": 18,
         "forecastDays": [
@@ -4148,7 +4160,7 @@
   },
   "huxtGuidance": {
     "schemaVersion": "wxf-huxt-1",
-    "issuedAt": "2026-09-22T13:29:32.518592+00:00",
+    "issuedAt": "2026-09-22T18:09:44.192097+00:00",
     "status": "experimental",
     "reason": null,
     "boundary": {
@@ -4156,9 +4168,9 @@
       "createdAt": "2026-09-22T00:06:49+00:00",
       "radiusSolarRadii": 21.509271237602416,
       "coordinateTransform": "HEEQ+180 to Carrington at boundary TIME + rundate",
-      "latitudeDegrees": 7.053902090297061,
-      "speedMin": 253.78669332966285,
-      "speedMax": 602.3894118954952,
+      "latitudeDegrees": 7.039213511304594,
+      "speedMin": 253.65956390449873,
+      "speedMax": 602.4637594943014,
       "sha256": "f6d450019d6eff4d6c711fccef8e269bfb2913b4136e1d4cf6e288bb2ca12cce"
     },
     "cmeInputs": [
@@ -4226,387 +4238,381 @@
     "source": {
       "url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/wsa_enlil/prod/wsa_enlil.20260922/wsa_enlil.mrid00000000.inputs.tar.gz",
       "sha256": "3f9cc93ccc98d4ff8766451717650dd2d64d9775eae2098f47dfed333b3b131b",
-      "retrievedAt": "2026-09-22T13:29:33.140094+00:00",
+      "retrievedAt": "2026-09-22T18:09:45.361360+00:00",
       "path": "/home/runner/work/SpaceWxOps-WXF/SpaceWxOps-WXF/product/huxt-evidence/swpc-ambient-inputs.tar.gz"
     },
     "qualification": "Locally run SWPC-boundary/DONKI HUXt. Reduced-physics speed forecast; no Bz, density, or electron response is inferred. Historical paired runs are needed before training it as an electron predictor.",
     "next24Hours": [
       {
-        "time": "2026-09-22T13:30:50.400549+00:00",
-        "ambientSpeed": 382.6042957985821,
-        "cmeSpeed": 382.6042957985821,
+        "time": "2026-09-22T18:30:50.400523+00:00",
+        "ambientSpeed": 369.18120442739155,
+        "cmeSpeed": 369.18120442739155,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T13:54:01.800549+00:00",
-        "ambientSpeed": 381.48939346403824,
-        "cmeSpeed": 381.48939346403824,
+        "time": "2026-09-22T18:54:01.800523+00:00",
+        "ambientSpeed": 368.24005252975684,
+        "cmeSpeed": 368.24005252975684,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T14:17:13.200549+00:00",
-        "ambientSpeed": 380.385992497853,
-        "cmeSpeed": 380.385992497853,
+        "time": "2026-09-22T19:17:13.200523+00:00",
+        "ambientSpeed": 367.3155852754943,
+        "cmeSpeed": 367.3155852754943,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T14:40:24.600549+00:00",
-        "ambientSpeed": 379.29427829100376,
-        "cmeSpeed": 379.29427829100376,
+        "time": "2026-09-22T19:40:24.600523+00:00",
+        "ambientSpeed": 366.408651221407,
+        "cmeSpeed": 366.408651221407,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T15:03:36.000549+00:00",
-        "ambientSpeed": 378.2144563216001,
-        "cmeSpeed": 378.2144563216001,
+        "time": "2026-09-22T20:03:36.000523+00:00",
+        "ambientSpeed": 365.5202243417499,
+        "cmeSpeed": 365.5202243417499,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T15:26:47.400549+00:00",
-        "ambientSpeed": 377.146754642483,
-        "cmeSpeed": 377.146754642483,
+        "time": "2026-09-22T20:26:47.400523+00:00",
+        "ambientSpeed": 364.65142748618314,
+        "cmeSpeed": 364.65142748618314,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T15:49:58.800549+00:00",
-        "ambientSpeed": 376.09142675377234,
-        "cmeSpeed": 376.09142675377234,
+        "time": "2026-09-22T20:49:58.800523+00:00",
+        "ambientSpeed": 363.80356115335957,
+        "cmeSpeed": 363.80356115335957,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T16:13:10.200549+00:00",
-        "ambientSpeed": 375.0487549354313,
-        "cmeSpeed": 375.0487549354313,
+        "time": "2026-09-22T21:13:10.200523+00:00",
+        "ambientSpeed": 362.9781389581815,
+        "cmeSpeed": 362.9781389581815,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T16:36:21.600549+00:00",
-        "ambientSpeed": 374.01905412887663,
-        "cmeSpeed": 374.01905412887663,
+        "time": "2026-09-22T21:36:21.600523+00:00",
+        "ambientSpeed": 362.17693155997443,
+        "cmeSpeed": 362.17693155997443,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T16:59:33.000549+00:00",
-        "ambientSpeed": 373.00267647834926,
-        "cmeSpeed": 373.00267647834926,
+        "time": "2026-09-22T21:59:33.000523+00:00",
+        "ambientSpeed": 361.40202132894007,
+        "cmeSpeed": 361.40202132894007,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T17:22:44.400549+00:00",
-        "ambientSpeed": 372.0000166680801,
-        "cmeSpeed": 372.0000166680801,
+        "time": "2026-09-22T22:22:44.400523+00:00",
+        "ambientSpeed": 360.65587069080186,
+        "cmeSpeed": 360.65587069080186,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T17:45:55.800549+00:00",
-        "ambientSpeed": 371.0115182217684,
-        "cmeSpeed": 371.0115182217684,
+        "time": "2026-09-22T22:45:55.800523+00:00",
+        "ambientSpeed": 359.94140795130994,
+        "cmeSpeed": 359.94140795130994,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T18:09:07.200549+00:00",
-        "ambientSpeed": 370.0376809733107,
-        "cmeSpeed": 370.0376809733107,
+        "time": "2026-09-22T23:09:07.200523+00:00",
+        "ambientSpeed": 359.2621355265072,
+        "cmeSpeed": 359.2621355265072,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T18:32:18.600549+00:00",
-        "ambientSpeed": 369.0790699661871,
-        "cmeSpeed": 369.0790699661871,
+        "time": "2026-09-22T23:32:18.600523+00:00",
+        "ambientSpeed": 358.62226695928706,
+        "cmeSpeed": 358.62226695928706,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T18:55:30.000549+00:00",
-        "ambientSpeed": 368.1363261061172,
-        "cmeSpeed": 368.1363261061172,
+        "time": "2026-09-22T23:55:30.000523+00:00",
+        "ambientSpeed": 358.02690098667057,
+        "cmeSpeed": 358.02690098667057,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T19:18:41.400549+00:00",
-        "ambientSpeed": 367.2101789720975,
-        "cmeSpeed": 367.2101789720975,
+        "time": "2026-09-23T00:18:41.400523+00:00",
+        "ambientSpeed": 357.4822430995119,
+        "cmeSpeed": 357.4822430995119,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T19:41:52.800549+00:00",
-        "ambientSpeed": 366.301462298129,
-        "cmeSpeed": 366.301462298129,
+        "time": "2026-09-23T00:41:52.800523+00:00",
+        "ambientSpeed": 356.99588952164606,
+        "cmeSpeed": 356.99588952164606,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T20:05:04.200549+00:00",
-        "ambientSpeed": 365.41113277394135,
-        "cmeSpeed": 365.41113277394135,
+        "time": "2026-09-23T01:05:04.200523+00:00",
+        "ambientSpeed": 356.57718888715607,
+        "cmeSpeed": 356.57718888715607,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T20:28:15.600549+00:00",
-        "ambientSpeed": 364.540292987104,
-        "cmeSpeed": 364.540292987104,
+        "time": "2026-09-23T01:28:15.600523+00:00",
+        "ambientSpeed": 356.2377060011191,
+        "cmeSpeed": 356.2377060011191,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T20:51:27.000549+00:00",
-        "ambientSpeed": 363.6902195576744,
-        "cmeSpeed": 363.6902195576744,
+        "time": "2026-09-23T01:51:27.000523+00:00",
+        "ambientSpeed": 355.9918146154541,
+        "cmeSpeed": 355.9918146154541,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T21:14:38.400549+00:00",
-        "ambientSpeed": 362.86239780818534,
-        "cmeSpeed": 362.86239780818534,
+        "time": "2026-09-23T02:14:38.400523+00:00",
+        "ambientSpeed": 355.85745311677636,
+        "cmeSpeed": 355.85745311677636,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T21:37:49.800549+00:00",
-        "ambientSpeed": 362.058564695819,
-        "cmeSpeed": 362.058564695819,
+        "time": "2026-09-23T02:37:49.800523+00:00",
+        "ambientSpeed": 355.8570830952363,
+        "cmeSpeed": 355.8570830952363,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T22:01:01.200549+00:00",
-        "ambientSpeed": 361.28076222855105,
-        "cmeSpeed": 361.28076222855105,
+        "time": "2026-09-23T03:01:01.200523+00:00",
+        "ambientSpeed": 356.01889523618905,
+        "cmeSpeed": 356.01889523618905,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T22:24:12.600549+00:00",
-        "ambientSpeed": 360.53140423553435,
-        "cmeSpeed": 360.53140423553435,
+        "time": "2026-09-23T03:24:12.600523+00:00",
+        "ambientSpeed": 356.3783071769847,
+        "cmeSpeed": 356.3783071769847,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T22:47:24.000549+00:00",
-        "ambientSpeed": 359.81336020523025,
-        "cmeSpeed": 359.81336020523025,
+        "time": "2026-09-23T03:47:24.000523+00:00",
+        "ambientSpeed": 356.9797887826887,
+        "cmeSpeed": 356.9797887826887,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T23:10:35.400549+00:00",
-        "ambientSpeed": 359.1300610014968,
-        "cmeSpeed": 359.1300610014968,
+        "time": "2026-09-23T04:10:35.400523+00:00",
+        "ambientSpeed": 357.87902314534676,
+        "cmeSpeed": 357.87902314534676,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T23:33:46.800549+00:00",
-        "ambientSpeed": 358.4856326953516,
-        "cmeSpeed": 358.4856326953516,
+        "time": "2026-09-23T04:33:46.800523+00:00",
+        "ambientSpeed": 359.14535290486356,
+        "cmeSpeed": 359.14535290486356,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-22T23:56:58.200549+00:00",
-        "ambientSpeed": 357.885066592812,
-        "cmeSpeed": 357.885066592812,
+        "time": "2026-09-23T04:56:58.200523+00:00",
+        "ambientSpeed": 360.8643513290616,
+        "cmeSpeed": 360.8643513290616,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T00:20:09.600549+00:00",
-        "ambientSpeed": 357.33443565393827,
-        "cmeSpeed": 357.33443565393827,
+        "time": "2026-09-23T05:20:09.600523+00:00",
+        "ambientSpeed": 363.14017019039585,
+        "cmeSpeed": 363.14017019039585,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T00:43:21.000549+00:00",
-        "ambientSpeed": 356.84117207405137,
-        "cmeSpeed": 356.84117207405137,
+        "time": "2026-09-23T05:43:21.000523+00:00",
+        "ambientSpeed": 366.0970254498072,
+        "cmeSpeed": 366.0970254498072,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T01:06:32.400549+00:00",
-        "ambientSpeed": 356.4144206745994,
-        "cmeSpeed": 356.4144206745994,
+        "time": "2026-09-23T06:06:32.400523+00:00",
+        "ambientSpeed": 369.87877598303794,
+        "cmeSpeed": 369.87877598303794,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T01:29:43.800549+00:00",
-        "ambientSpeed": 356.065492509038,
-        "cmeSpeed": 356.065492509038,
+        "time": "2026-09-23T06:29:43.800523+00:00",
+        "ambientSpeed": 374.6450683213444,
+        "cmeSpeed": 374.6450683213444,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T01:52:55.200549+00:00",
-        "ambientSpeed": 355.8084449226148,
-        "cmeSpeed": 355.8084449226148,
+        "time": "2026-09-23T06:52:55.200523+00:00",
+        "ambientSpeed": 380.5621061808536,
+        "cmeSpeed": 380.5621061808536,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T02:16:06.600549+00:00",
-        "ambientSpeed": 355.6608217184608,
-        "cmeSpeed": 355.6608217184608,
+        "time": "2026-09-23T07:16:06.600523+00:00",
+        "ambientSpeed": 387.78607396978015,
+        "cmeSpeed": 387.78607396978015,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T02:39:18.000549+00:00",
-        "ambientSpeed": 355.6445931703498,
-        "cmeSpeed": 355.6445931703498,
+        "time": "2026-09-23T07:39:18.000523+00:00",
+        "ambientSpeed": 396.4381032090436,
+        "cmeSpeed": 396.4381032090436,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T03:02:29.400549+00:00",
-        "ambientSpeed": 355.7873404862653,
-        "cmeSpeed": 355.7873404862653,
+        "time": "2026-09-23T08:02:29.400523+00:00",
+        "ambientSpeed": 406.57195834396896,
+        "cmeSpeed": 406.57195834396896,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T03:25:40.800549+00:00",
-        "ambientSpeed": 356.1237302782551,
-        "cmeSpeed": 356.1237302782551,
+        "time": "2026-09-23T08:25:40.800523+00:00",
+        "ambientSpeed": 418.1394540187023,
+        "cmeSpeed": 418.1394540187023,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T03:48:52.200549+00:00",
-        "ambientSpeed": 356.6973167870318,
-        "cmeSpeed": 356.6973167870318,
+        "time": "2026-09-23T08:48:52.200523+00:00",
+        "ambientSpeed": 430.9630243994946,
+        "cmeSpeed": 430.9630243994946,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T04:12:03.600549+00:00",
-        "ambientSpeed": 357.5626848303316,
-        "cmeSpeed": 357.5626848303316,
+        "time": "2026-09-23T09:12:03.600523+00:00",
+        "ambientSpeed": 444.7274191523442,
+        "cmeSpeed": 444.7274191523442,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T04:35:15.000549+00:00",
-        "ambientSpeed": 358.7878915468597,
-        "cmeSpeed": 358.7878915468597,
+        "time": "2026-09-23T09:35:15.000523+00:00",
+        "ambientSpeed": 459.0001846535268,
+        "cmeSpeed": 459.0001846535268,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T04:58:26.400549+00:00",
-        "ambientSpeed": 360.45706053645097,
-        "cmeSpeed": 360.45706053645097,
+        "time": "2026-09-23T09:58:26.400523+00:00",
+        "ambientSpeed": 473.2821460737646,
+        "cmeSpeed": 473.2821460737646,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T05:21:37.800549+00:00",
-        "ambientSpeed": 362.67280228553795,
-        "cmeSpeed": 362.67280228553795,
+        "time": "2026-09-23T10:21:37.800523+00:00",
+        "ambientSpeed": 487.07730285577713,
+        "cmeSpeed": 487.07730285577713,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T05:44:49.200549+00:00",
-        "ambientSpeed": 365.5578525298508,
-        "cmeSpeed": 365.5578525298508,
+        "time": "2026-09-23T10:44:49.200523+00:00",
+        "ambientSpeed": 499.9626452146179,
+        "cmeSpeed": 499.9626452146179,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T06:08:00.600549+00:00",
-        "ambientSpeed": 369.2549211180562,
-        "cmeSpeed": 369.2549211180562,
+        "time": "2026-09-23T11:08:00.600523+00:00",
+        "ambientSpeed": 511.6380317066768,
+        "cmeSpeed": 511.6380317066768,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T06:31:12.000549+00:00",
-        "ambientSpeed": 373.9232590335346,
-        "cmeSpeed": 373.9232590335346,
+        "time": "2026-09-23T11:31:12.000523+00:00",
+        "ambientSpeed": 521.9449084405555,
+        "cmeSpeed": 521.9449084405555,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T06:54:23.400549+00:00",
-        "ambientSpeed": 379.73001243895817,
-        "cmeSpeed": 379.73001243895817,
+        "time": "2026-09-23T11:54:23.400523+00:00",
+        "ambientSpeed": 530.8550323157807,
+        "cmeSpeed": 530.8550323157807,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T07:17:34.800549+00:00",
-        "ambientSpeed": 386.8343406388876,
-        "cmeSpeed": 386.8343406388876,
+        "time": "2026-09-23T12:17:34.800523+00:00",
+        "ambientSpeed": 538.439638271215,
+        "cmeSpeed": 538.439638271215,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T07:40:46.200549+00:00",
-        "ambientSpeed": 395.363025572589,
-        "cmeSpeed": 395.363025572589,
+        "time": "2026-09-23T12:40:46.200523+00:00",
+        "ambientSpeed": 544.8321119824462,
+        "cmeSpeed": 544.8321119824462,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T08:03:57.600549+00:00",
-        "ambientSpeed": 405.3784527674408,
-        "cmeSpeed": 405.3784527674408,
+        "time": "2026-09-23T13:03:57.600523+00:00",
+        "ambientSpeed": 550.1943069938726,
+        "cmeSpeed": 550.1943069938726,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T08:27:09.000549+00:00",
-        "ambientSpeed": 416.843592721056,
-        "cmeSpeed": 416.843592721056,
+        "time": "2026-09-23T13:27:09.000523+00:00",
+        "ambientSpeed": 554.6915738067421,
+        "cmeSpeed": 554.6915738067421,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T08:50:20.400549+00:00",
-        "ambientSpeed": 429.5931067327239,
-        "cmeSpeed": 429.5931067327239,
+        "time": "2026-09-23T13:50:20.400523+00:00",
+        "ambientSpeed": 558.4772692081465,
+        "cmeSpeed": 558.4772692081465,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T09:13:31.800549+00:00",
-        "ambientSpeed": 443.3226104926791,
-        "cmeSpeed": 443.3226104926791,
+        "time": "2026-09-23T14:13:31.800523+00:00",
+        "ambientSpeed": 561.6850844812463,
+        "cmeSpeed": 561.6850844812463,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T09:36:43.200549+00:00",
-        "ambientSpeed": 457.60636304540725,
-        "cmeSpeed": 457.60636304540725,
+        "time": "2026-09-23T14:36:43.200523+00:00",
+        "ambientSpeed": 564.4267712861181,
+        "cmeSpeed": 564.4267712861181,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T09:59:54.600549+00:00",
-        "ambientSpeed": 471.9456395442746,
-        "cmeSpeed": 471.9456395442746,
+        "time": "2026-09-23T14:59:54.600523+00:00",
+        "ambientSpeed": 566.7930586714294,
+        "cmeSpeed": 566.7930586714294,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T10:23:06.000549+00:00",
-        "ambientSpeed": 485.8381766933653,
-        "cmeSpeed": 485.8381766933653,
+        "time": "2026-09-23T15:23:06.000523+00:00",
+        "ambientSpeed": 568.8561334048234,
+        "cmeSpeed": 568.8561334048234,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T10:46:17.400549+00:00",
-        "ambientSpeed": 498.84950282660986,
-        "cmeSpeed": 498.84950282660986,
+        "time": "2026-09-23T15:46:17.400523+00:00",
+        "ambientSpeed": 570.6726444435378,
+        "cmeSpeed": 570.6726444435378,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T11:09:28.800549+00:00",
-        "ambientSpeed": 510.66568413118864,
-        "cmeSpeed": 510.66568413118864,
+        "time": "2026-09-23T16:09:28.800523+00:00",
+        "ambientSpeed": 572.2866498845761,
+        "cmeSpeed": 572.2866498845761,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T11:32:40.200549+00:00",
-        "ambientSpeed": 521.1150979442997,
-        "cmeSpeed": 521.1150979442997,
+        "time": "2026-09-23T16:32:40.200523+00:00",
+        "ambientSpeed": 573.7322306057533,
+        "cmeSpeed": 573.7322306057533,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T11:55:51.600549+00:00",
-        "ambientSpeed": 530.1593434751259,
-        "cmeSpeed": 530.1593434751259,
+        "time": "2026-09-23T16:55:51.600523+00:00",
+        "ambientSpeed": 575.0356773368906,
+        "cmeSpeed": 575.0356773368906,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T12:19:03.000549+00:00",
-        "ambientSpeed": 537.8632862392599,
-        "cmeSpeed": 537.8632862392599,
+        "time": "2026-09-23T17:19:03.000523+00:00",
+        "ambientSpeed": 576.2172552433912,
+        "cmeSpeed": 576.2172552433912,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T12:42:14.400549+00:00",
-        "ambientSpeed": 544.3574828568334,
-        "cmeSpeed": 544.3574828568334,
+        "time": "2026-09-23T17:42:14.400523+00:00",
+        "ambientSpeed": 577.2925946316547,
+        "cmeSpeed": 577.2925946316547,
         "phase": "forecast"
       },
       {
-        "time": "2026-09-23T13:05:25.800549+00:00",
-        "ambientSpeed": 549.8036275617131,
-        "cmeSpeed": 549.8036275617131,
-        "phase": "forecast"
-      },
-      {
-        "time": "2026-09-23T13:28:37.200549+00:00",
-        "ambientSpeed": 554.3685690066714,
-        "cmeSpeed": 554.3685690066714,
+        "time": "2026-09-23T18:05:25.800523+00:00",
+        "ambientSpeed": 578.2737709926452,
+        "cmeSpeed": 578.2737709926452,
         "phase": "forecast"
       }
     ],

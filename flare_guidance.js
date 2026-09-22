@@ -144,13 +144,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
         "mcstat": {
           "m1": 6.0,
           "x1": 0.0,
-          "source": "SolarMonitor MCSTAT dominant-region proxy (maximum of 4 regional forecasts)",
-          "quality": "published-comparison"
-        },
-        "mcevol": {
-          "m1": 0.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCEVOL dominant-region proxy (maximum of 4 regional forecasts)",
+          "source": "SolarMonitor MCSTAT dominant-region proxy (maximum of 3 regional forecasts)",
           "quality": "published-comparison"
         },
         "sidc": {
@@ -233,18 +227,6 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
-        },
-        "mcstat": {
-          "m1": 1.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCSTAT regional forecast",
-          "quality": "published-comparison"
-        },
-        "mcevol": {
-          "m1": 0.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCEVOL regional forecast",
-          "quality": "published-comparison"
         }
       },
       "drivers": [
@@ -462,19 +444,19 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20260921&region=&indexnum=1",
-    "retrieved_at": "2026-09-22T00:12:44Z",
+    "retrieved_at": "2026-09-22T00:54:45Z",
     "table_date": "2026-09-21",
     "valid_start": "2026-09-21T00:00:00Z",
     "valid_end": "2026-09-22T00:00:00Z",
     "wxf_valid_start": "2026-09-22T00:00:00Z",
     "wxf_valid_end": "2026-09-23T00:00:00Z",
     "window_alignment": "latest issue-date comparison; not asserted as an exact WXF target-window match",
-    "regional_forecasts": 4,
+    "regional_forecasts": 3,
     "full_disk_method": "maximum regional probability (dominant-region proxy)",
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-09-22T00:12:44Z",
+    "generated_at": "2026-09-22T00:54:45Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,

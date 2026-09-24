@@ -83,18 +83,18 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     },
     {
       "component_id": "HARP14006",
-      "m1": 6.633951292433071,
+      "m1": 6.633951292433054,
       "x1": 0.49497629480858285
     },
     {
       "component_id": "HARP14026",
-      "m1": 5.139242907231822,
+      "m1": 5.139242907231824,
       "x1": 0.29596133051991724
     },
     {
       "component_id": "HARP14028",
       "m1": 0.3325596465927643,
-      "x1": 0.070385060246751
+      "x1": 0.07038506024675091
     },
     {
       "component_id": "HARP14031",
@@ -103,7 +103,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     },
     {
       "component_id": "HARP14033",
-      "m1": 2.9360054458641143,
+      "m1": 2.936005445864115,
       "x1": 0.223251064554222
     }
   ],
@@ -140,18 +140,6 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "valid_start": "2026-09-24T00:00:00+00:00",
           "valid_end": "2026-09-25T00:00:00+00:00"
         },
-        "mcstat": {
-          "m1": 16.0,
-          "x1": 2.0,
-          "source": "SolarMonitor MCSTAT dominant-region proxy (maximum of 8 regional forecasts)",
-          "quality": "published-comparison"
-        },
-        "mcevol": {
-          "m1": 0.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCEVOL dominant-region proxy (maximum of 8 regional forecasts)",
-          "quality": "published-comparison"
-        },
         "sidc": {
           "m1": 0.0,
           "x1": 0.0,
@@ -161,6 +149,17 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "valid_start": "2026-09-23T11:54:44Z",
           "valid_end": "2026-09-24T11:54:44Z",
           "note": "Human-operator-moderated global forecast published by SIDC."
+        },
+        "ccmc_amos": {
+          "m1": null,
+          "x1": 0.62,
+          "source": "NASA/CCMC Flare Scoreboard · CCMC AMOS",
+          "quality": "published-comparison",
+          "issued": "2026-09-24T00:30:00Z",
+          "valid_start": "2026-09-24T00:00:00Z",
+          "valid_end": "2026-09-25T00:00:00Z",
+          "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
+          "dataset_id": "AMOS_v1_FULLDISK"
         },
         "ccmc_assa24": {
           "m1": null,
@@ -196,13 +195,13 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "dataset_id": "MagPy-HMI-LOS_FULLDISK"
         },
         "ccmc_magpy": {
-          "m1": 6.0,
-          "x1": 4.0,
+          "m1": 2.0,
+          "x1": 2.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC MagPy SHARP",
           "quality": "published-comparison",
-          "issued": "2026-09-24T00:02:11Z",
-          "valid_start": "2026-09-23T21:00:00Z",
-          "valid_end": "2026-09-24T21:00:00Z",
+          "issued": "2026-09-24T01:00:43Z",
+          "valid_start": "2026-09-23T22:00:00Z",
+          "valid_end": "2026-09-24T22:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "MagPy_SHARP_HMI_CEA_FULLDISK"
         }
@@ -232,18 +231,6 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
-        },
-        "mcstat": {
-          "m1": 3.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCSTAT regional forecast",
-          "quality": "published-comparison"
-        },
-        "mcevol": {
-          "m1": 0.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCEVOL regional forecast",
-          "quality": "published-comparison"
         }
       },
       "drivers": [
@@ -277,18 +264,6 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
-        },
-        "mcstat": {
-          "m1": 16.0,
-          "x1": 2.0,
-          "source": "SolarMonitor MCSTAT regional forecast",
-          "quality": "published-comparison"
-        },
-        "mcevol": {
-          "m1": 0.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCEVOL regional forecast",
-          "quality": "published-comparison"
         }
       },
       "drivers": [
@@ -322,18 +297,6 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
-        },
-        "mcstat": {
-          "m1": 3.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCSTAT regional forecast",
-          "quality": "published-comparison"
-        },
-        "mcevol": {
-          "m1": 0.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCEVOL regional forecast",
-          "quality": "published-comparison"
         }
       },
       "drivers": [
@@ -367,12 +330,6 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
-        },
-        "mcstat": {
-          "m1": 12.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCSTAT regional forecast",
-          "quality": "published-comparison"
         }
       },
       "drivers": [
@@ -406,18 +363,6 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
-        },
-        "mcstat": {
-          "m1": 12.0,
-          "x1": 2.0,
-          "source": "SolarMonitor MCSTAT regional forecast",
-          "quality": "published-comparison"
-        },
-        "mcevol": {
-          "m1": 0.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCEVOL regional forecast",
-          "quality": "published-comparison"
         }
       },
       "drivers": [
@@ -451,18 +396,6 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
-        },
-        "mcstat": {
-          "m1": 4.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCSTAT regional forecast",
-          "quality": "published-comparison"
-        },
-        "mcevol": {
-          "m1": 0.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCEVOL regional forecast",
-          "quality": "published-comparison"
         }
       },
       "drivers": [
@@ -496,12 +429,6 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
-        },
-        "mcstat": {
-          "m1": 2.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCSTAT regional forecast",
-          "quality": "published-comparison"
         }
       },
       "drivers": [
@@ -535,12 +462,6 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
-        },
-        "mcstat": {
-          "m1": 1.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCSTAT regional forecast",
-          "quality": "published-comparison"
         }
       },
       "drivers": [
@@ -580,22 +501,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ]
     }
   ],
-  "solar_monitor": {
-    "source": "SolarMonitor",
-    "source_url": "https://www.solarmonitor.org/forecast.php?date=20260923&region=&indexnum=1",
-    "retrieved_at": "2026-09-24T00:32:14Z",
-    "table_date": "2026-09-23",
-    "valid_start": "2026-09-23T00:00:00Z",
-    "valid_end": "2026-09-24T00:00:00Z",
-    "wxf_valid_start": "2026-09-24T00:00:00Z",
-    "wxf_valid_end": "2026-09-25T00:00:00Z",
-    "window_alignment": "latest issue-date comparison; not asserted as an exact WXF target-window match",
-    "regional_forecasts": 8,
-    "full_disk_method": "maximum regional probability (dominant-region proxy)",
-    "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
-  },
   "external_sources": {
-    "generated_at": "2026-09-24T00:32:14Z",
+    "generated_at": "2026-09-24T01:30:52Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
@@ -732,7 +639,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "ccmc_ccmc_amos": {
       "dataset_id": "AMOS_v1_FULLDISK",
       "label": "CCMC AMOS",
-      "ok": false,
+      "ok": true,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=AMOS_v1_FULLDISK",
       "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=AMOS_v1_FULLDISK&time.min=2026-09-19T21%3A00%3A00.0&time.max=2026-09-24T21%3A00%3A00.0&format=json&options=fields.all",
@@ -769,8 +676,42 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 3,
-      "detail": "Forecast window does not meaningfully overlap target (2026-09-23T00:00:00Z to 2026-09-24T00:00:00Z)"
+      "records": 4,
+      "issued": "2026-09-24T00:30:00Z",
+      "valid_start": "2026-09-24T00:00:00Z",
+      "valid_end": "2026-09-25T00:00:00Z",
+      "m1": null,
+      "x1": 0.62,
+      "selected_record": {
+        "start_window": "2026-09-24T00:00:00.0Z",
+        "end_window": "2026-09-25T00:00:00.0Z",
+        "issue_time": "2026-09-24T00:30:00.0Z",
+        "C": 0.9656,
+        "M": 0.1349,
+        "CPlus": "-1",
+        "MPlus": "-1",
+        "X": 0.0062,
+        "C_uncertainty": "-1",
+        "M_uncertainty": "-1",
+        "CPlus_uncertainty": "-1",
+        "MPlus_uncertainty": "-1",
+        "X_uncertainty": "-1",
+        "C_value_lower": "-1",
+        "M_value_lower": "-1",
+        "CPlus_value_lower": "-1",
+        "MPlus_value_lower": "-1",
+        "X_value_lower": "-1",
+        "C_value_higher": "-1",
+        "M_value_higher": "-1",
+        "CPlus_value_higher": "-1",
+        "MPlus_value_higher": "-1",
+        "X_value_higher": "-1",
+        "C_level": "-1",
+        "M_level": "-1",
+        "CPlus_level": "-1",
+        "MPlus_level": "-1",
+        "X_level": "-1"
+      }
     },
     "ccmc_ccmc_asap": {
       "dataset_id": "ASAP_1_FULLDISK",
@@ -855,7 +796,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 93,
+      "records": 94,
       "issued": "2026-09-24T00:00:00Z",
       "valid_start": "2026-09-24T00:00:00Z",
       "valid_end": "2026-09-25T00:00:00Z",
@@ -932,7 +873,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 93,
+      "records": 94,
       "issued": "2026-09-24T00:00:00Z",
       "valid_start": "2026-09-24T00:00:00Z",
       "valid_end": "2026-09-24T12:00:00Z",
@@ -1215,26 +1156,26 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 74,
-      "issued": "2026-09-24T00:02:11Z",
-      "valid_start": "2026-09-23T21:00:00Z",
-      "valid_end": "2026-09-24T21:00:00Z",
-      "m1": 6.0,
-      "x1": 4.0,
+      "records": 75,
+      "issued": "2026-09-24T01:00:43Z",
+      "valid_start": "2026-09-23T22:00:00Z",
+      "valid_end": "2026-09-24T22:00:00Z",
+      "m1": 2.0,
+      "x1": 3.0,
       "selected_record": {
-        "start_window": "2026-09-23T21:00:00.0Z",
-        "end_window": "2026-09-24T21:00:00.0Z",
-        "issue_time": "2026-09-24T00:02:11.0Z",
+        "start_window": "2026-09-23T22:00:00.0Z",
+        "end_window": "2026-09-24T22:00:00.0Z",
+        "issue_time": "2026-09-24T01:00:43.0Z",
         "C": "-1",
         "M": "-1",
         "CPlus": "-1",
-        "MPlus": 0.06,
-        "X": 0.04,
+        "MPlus": 0.02,
+        "X": 0.03,
         "C_uncertainty": "-1",
         "M_uncertainty": "-1",
         "CPlus_uncertainty": "-1",
-        "MPlus_uncertainty": 0.026,
-        "X_uncertainty": 0.026,
+        "MPlus_uncertainty": 0.01,
+        "X_uncertainty": 0.016,
         "C_value_lower": "-1",
         "M_value_lower": "-1",
         "CPlus_value_lower": "-1",

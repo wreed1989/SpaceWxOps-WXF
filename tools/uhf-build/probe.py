@@ -1,18 +1,18 @@
-import urllib.request, pathlib, json, hashlib
+import urllib.request, urllib.parse, pathlib, json
 root=pathlib.Path('model-assets');root.mkdir(exist_ok=True)
-urls={
- 'highlat-v13.pdf':'https://www.researchgate.net/profile/James-Secan/publication/235197572_An_Improved_Model_of_High-Latitude_F-Region_Scintillation_WBMOD_Version_13/links/57740f4208aeb9427e241dc9/An-Improved-Model-of-High-Latitude-F-Region-Scintillation-WBMOD-Version-13.pdf',
- 'equatorial-report2.pdf':'https://apps.dtic.mil/sti/tr/pdf/ADA278568.pdf',
- 'equatorial-report1.pdf':'https://apps.dtic.mil/sti/tr/pdf/ADA264156.pdf',
- 'equatorial-report2.txt':'https://archive.org/download/DTIC_ADA278568/DTIC_ADA278568_djvu.txt',
- 'equatorial-report1.txt':'https://archive.org/download/DTIC_ADA264156/DTIC_ADA264156_djvu.txt'
-}
-log=[]
-for name,url in urls.items():
+def get(url):
+ return urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':'SpaceWxOps model research'}),timeout=60).read()
+ids=['DTIC_ADA264156','DTIC_ADA278568']
+q='title:("Improved Model" AND "High-Latitude")'
+try:
+ search=json.loads(get('https://archive.org/advancedsearch.php?'+urllib.parse.urlencode({'q':q,'output':'json','rows':10,'fl[]':'identifier'})))
+ print('SEARCH',search,flush=True);(root/'archive-search.json').write_text(json.dumps(search))
+ ids += [r['identifier'] for r in search.get('response',{}).get('docs',[])]
+except Exception as e:print('SEARCH ERROR',e)
+for ident in dict.fromkeys(ids):
  try:
-  req=urllib.request.Request(url,headers={'User-Agent':'SpaceWxOps scientific model evaluation'})
-  with urllib.request.urlopen(req,timeout=40) as r: data=r.read();ctype=r.headers.get('Content-Type','')
-  (root/name).write_bytes(data)
-  entry=dict(name=name,url=url,bytes=len(data),type=ctype,sha256=hashlib.sha256(data).hexdigest());log.append(entry);print(entry,flush=True)
- except Exception as e:log.append(dict(name=name,error=str(e)));print(name,e,flush=True)
-(root/'references.json').write_text(json.dumps(log,indent=2))
+  meta=json.loads(get('https://archive.org/metadata/'+ident));(root/(ident+'-metadata.json')).write_text(json.dumps(meta))
+  names=[f['name'] for f in meta.get('files',[]) if f['name'].lower().endswith('.pdf')];print('ITEM',ident,names,flush=True)
+  for name in names[:1]:
+   blob=get('https://archive.org/download/'+ident+'/'+urllib.parse.quote(name));(root/(ident+'.pdf')).write_bytes(blob);print('PDF',ident,len(blob),flush=True)
+ except Exception as e:print('ERROR',ident,e,flush=True)

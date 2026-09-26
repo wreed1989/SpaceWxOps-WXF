@@ -1,18 +1,15 @@
-import urllib.request, urllib.parse, pathlib, json
+import urllib.request,pathlib,json,subprocess,sys
 root=pathlib.Path('model-assets');root.mkdir(exist_ok=True)
-def get(url):
- return urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':'SpaceWxOps model research'}),timeout=60).read()
-ids=['DTIC_ADA264156','DTIC_ADA278568']
-q='title:("Improved Model" AND "High-Latitude")'
-try:
- search=json.loads(get('https://archive.org/advancedsearch.php?'+urllib.parse.urlencode({'q':q,'output':'json','rows':10,'fl[]':'identifier'})))
- print('SEARCH',search,flush=True);(root/'archive-search.json').write_text(json.dumps(search))
- ids += [r['identifier'] for r in search.get('response',{}).get('docs',[])]
-except Exception as e:print('SEARCH ERROR',e)
-for ident in dict.fromkeys(ids):
+urls={
+ 'rino-carrano2019.html':'https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2018JA026353',
+ 'secan1995.html':'https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/94RS03172',
+ 'secan1995.pdf':'https://agupubs.onlinelibrary.wiley.com/doi/pdfdirect/10.1029/94RS03172',
+ 'gussenhoven1983.html':'https://agupubs.onlinelibrary.wiley.com/doi/10.1029/JA088iA07p05692',
+ 'ocb-models.html':'https://ocbpy.readthedocs.io/en/latest/_modules/ocbpy/boundaries/models.html'
+}
+for name,url in urls.items():
  try:
-  meta=json.loads(get('https://archive.org/metadata/'+ident));(root/(ident+'-metadata.json')).write_text(json.dumps(meta))
-  names=[f['name'] for f in meta.get('files',[]) if f['name'].lower().endswith('.pdf')];print('ITEM',ident,names,flush=True)
-  for name in names[:1]:
-   blob=get('https://archive.org/download/'+ident+'/'+urllib.parse.quote(name));(root/(ident+'.pdf')).write_bytes(blob);print('PDF',ident,len(blob),flush=True)
- except Exception as e:print('ERROR',ident,e,flush=True)
+  with urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0'}),timeout=60) as r:data=r.read()
+  (root/name).write_bytes(data);print(name,len(data),flush=True)
+ except Exception as e:print(name,e,flush=True)
+subprocess.run([sys.executable,'-m','pip','download','--no-deps','--no-binary=:all:','--no-build-isolation','apexpy','-d',str(root)],check=False,timeout=180)

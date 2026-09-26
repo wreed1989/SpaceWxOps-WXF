@@ -6,49 +6,20 @@ on:
 permissions:
   contents: read
 jobs:
-  acquire:
+  model:
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
-      - name: Retrieve public model package and service documentation
-        shell: bash
-        run: |
-          mkdir -p model-assets
-          python3 - <<'PY'
-          import urllib.request, urllib.parse, pathlib, hashlib, json, zipfile, re
-          root=pathlib.Path('model-assets')
-          urls={
-            'itu-p531-components.zip':'https://www.itu.int/dms_pubrec/itu-r/rec/p/R-REC-P.531-16-202509-I!!ZIP-E.zip',
-            'wbmod-form.html':'https://kauai.ccmc.gsfc.nasa.gov/instantrun/wbmod/',
-            'itu-p531.pdf':'https://www.itu.int/dms_pubrec/itu-r/rec/p/R-REC-P.531-16-202509-I!!PDF-E.pdf'
-          }
-          log=[]
-          for name,url in urls.items():
-            try:
-              req=urllib.request.Request(url,headers={'User-Agent':'SpaceWxOps model evaluation (public research package)'})
-              with urllib.request.urlopen(req,timeout=75) as r: data=r.read(); final=r.url
-              (root/name).write_bytes(data)
-              rec={'name':name,'url':url,'final':final,'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest()}
-              if name.endswith('.zip'):
-                with zipfile.ZipFile(root/name) as z: rec['members']=z.namelist()
-              log.append(rec); print(json.dumps(rec))
-            except Exception as e: log.append({'name':name,'error':str(e)});print(name,str(e))
-          form=root/'wbmod-form.html'
-          if form.exists():
-            html=form.read_text(errors='replace')
-            print('FORMS',re.findall(r'<form\b[^>]*>',html,re.I))
-            for i,src in enumerate(re.findall(r'<script[^>]*src=[\"\x27]([^\"\x27]+)',html,re.I)):
-              url=urllib.parse.urljoin(urls['wbmod-form.html'],src)
-              if urllib.parse.urlparse(url).netloc!='kauai.ccmc.gsfc.nasa.gov':continue
-              try:
-                data=urllib.request.urlopen(url,timeout=30).read();(root/f'wbmod-script-{i}.js').write_bytes(data)
-                log.append({'name':f'wbmod-script-{i}.js','url':url,'bytes':len(data)});print('SCRIPT',url,len(data))
-              except Exception as e:print('SCRIPT ERROR',url,e)
-          (root/'manifest.json').write_text(json.dumps(log,indent=2))
-          PY
-      - uses: actions/upload-artifact@v4
+      - uses: actions/checkout@v4
         with:
-          name: uhf-public-model-assets
+          sparse-checkout: tools/uhf-build
+          persist-credentials: false
+      - name: Run public WBMOD probe
+        run: python3 tools/uhf-build/probe.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: uhf-wbmod-probe
           path: model-assets
           retention-days: 7
           if-no-files-found: error

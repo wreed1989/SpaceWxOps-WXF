@@ -1,21 +1,18 @@
-import urllib.request, json, pathlib, urllib.parse
+import urllib.request, pathlib, json, hashlib
 root=pathlib.Path('model-assets');root.mkdir(exist_ok=True)
-payload=dict(gridType='4',groundLat=0,groundLon=0,groundAlt=0,satLat=0,satLon=0,satAlt=35786,satVx=0,satVy=0,satVz=0,latStart=-90,latStop=90,latStep=5,lonStart=-180,lonStop=180,lonStep=5,timeStart=0,timeStop=24,timeStep=1,doyStart=15,doyStop=350,doyStep=10,angStart=5,angStop=90,angStep=1,azStep=2,doy=80,hour=0,ltTime=False,firstSet=1,freq=225,phaseStable=10,ssn=80,kp=2,kpAtSS=2,percentile=20,outPar=11)
-(root/'wbmod-request.json').write_text(json.dumps(payload,indent=2))
-url='https://kauai.ccmc.gsfc.nasa.gov/instantrun/api/wbmod/'
-req=urllib.request.Request(url,data=json.dumps(payload).encode(),headers={'Content-Type':'application/json','Accept':'application/json'},method='POST')
-try:
- with urllib.request.urlopen(req,timeout=120) as r: data=r.read();print('RESPONSE HEADERS',dict(r.headers))
- (root/'wbmod-response.json').write_bytes(data);print('MODEL RESPONSE',data.decode()[:12000])
- result=json.loads(data)
- for key,value in result.items():
-  if isinstance(value,str) and (value.startswith('https://') or value.startswith('/')):
-   link=urllib.parse.urljoin(url,value)
-   if urllib.parse.urlparse(link).hostname!='kauai.ccmc.gsfc.nasa.gov':continue
-   try:
-    with urllib.request.urlopen(link,timeout=60) as r: blob=r.read();mime=r.headers.get('content-type','')
-    name=pathlib.Path(urllib.parse.urlparse(link).path).name or key
-    (root/name).write_bytes(blob);print('LINK',key,link,len(blob),mime)
-   except Exception as e:print('LINK ERROR',key,str(e))
-except urllib.error.HTTPError as e:
- print('HTTP ERROR',e.code,dict(e.headers),e.read().decode()[:5000]);raise
+urls={
+ 'highlat-v13.pdf':'https://www.researchgate.net/profile/James-Secan/publication/235197572_An_Improved_Model_of_High-Latitude_F-Region_Scintillation_WBMOD_Version_13/links/57740f4208aeb9427e241dc9/An-Improved-Model-of-High-Latitude-F-Region-Scintillation-WBMOD-Version-13.pdf',
+ 'equatorial-report2.pdf':'https://apps.dtic.mil/sti/tr/pdf/ADA278568.pdf',
+ 'equatorial-report1.pdf':'https://apps.dtic.mil/sti/tr/pdf/ADA264156.pdf',
+ 'equatorial-report2.txt':'https://archive.org/download/DTIC_ADA278568/DTIC_ADA278568_djvu.txt',
+ 'equatorial-report1.txt':'https://archive.org/download/DTIC_ADA264156/DTIC_ADA264156_djvu.txt'
+}
+log=[]
+for name,url in urls.items():
+ try:
+  req=urllib.request.Request(url,headers={'User-Agent':'SpaceWxOps scientific model evaluation'})
+  with urllib.request.urlopen(req,timeout=40) as r: data=r.read();ctype=r.headers.get('Content-Type','')
+  (root/name).write_bytes(data)
+  entry=dict(name=name,url=url,bytes=len(data),type=ctype,sha256=hashlib.sha256(data).hexdigest());log.append(entry);print(entry,flush=True)
+ except Exception as e:log.append(dict(name=name,error=str(e)));print(name,e,flush=True)
+(root/'references.json').write_text(json.dumps(log,indent=2))

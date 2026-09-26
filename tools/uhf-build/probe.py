@@ -2,7 +2,7 @@ import urllib.request, json, pathlib, urllib.parse
 root=pathlib.Path('model-assets');root.mkdir(exist_ok=True)
 payload=dict(gridType='4',groundLat=0,groundLon=0,groundAlt=0,satLat=0,satLon=0,satAlt=35786,satVx=0,satVy=0,satVz=0,latStart=-90,latStop=90,latStep=5,lonStart=-180,lonStop=180,lonStep=5,timeStart=0,timeStop=24,timeStep=1,doyStart=15,doyStop=350,doyStep=10,angStart=5,angStop=90,angStep=1,azStep=2,doy=80,hour=0,ltTime=False,firstSet=1,freq=225,phaseStable=10,ssn=80,kp=2,kpAtSS=2,percentile=20,outPar=11)
 (root/'wbmod-request.json').write_text(json.dumps(payload,indent=2))
-url='https://kauai.ccmc.gsfc.nasa.gov/instantrun/api/wbmod'
+url='https://kauai.ccmc.gsfc.nasa.gov/instantrun/api/wbmod/'
 req=urllib.request.Request(url,data=json.dumps(payload).encode(),headers={'Content-Type':'application/json','Accept':'application/json'},method='POST')
 try:
  with urllib.request.urlopen(req,timeout=120) as r: data=r.read();print('RESPONSE HEADERS',dict(r.headers))

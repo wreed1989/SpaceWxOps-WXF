@@ -22,7 +22,10 @@ jobs:
         with:
           persist-credentials: false
       - name: Install Validators
-        run: python3 -m pip install Pillow==11.3.0 playwright==1.55.0
+        run: |
+          python3 -m pip install Pillow==11.3.0 playwright==1.55.0
+          if ! command -v ffprobe >/dev/null; then sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg; fi
+          if ! command -v google-chrome >/dev/null; then python3 -m playwright install chrome; fi
       - name: Parser And Security Contracts
         run: |
           python3 -m py_compile esa/*.py
@@ -35,7 +38,7 @@ jobs:
         run: |
           python3 esa/publish.py --restore
           if [ ! -f esa-live-output/latest.json ]; then
-            gh run download 36301333345 --repo "$GITHUB_REPOSITORY" --name esa-production-validation --dir initial-cache
+            gh run download 36301927172 --repo "$GITHUB_REPOSITORY" --name esa-release-validation --dir initial-cache
             cp -a initial-cache/esa-live-output ./esa-live-output
           fi
       - name: Collect Provider Products

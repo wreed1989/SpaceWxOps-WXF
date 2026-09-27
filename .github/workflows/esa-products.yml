@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [esa-product-delivery]
-    paths: [esa/probe_remaining.py, .github/workflows/esa-products.yml]
+    paths: [esa/resolve_aeffort.py, .github/workflows/esa-products.yml]
 permissions:
   contents: read
 concurrency:
@@ -19,11 +19,11 @@ jobs:
           persist-credentials: false
       - name: Install Image Validator
         run: python3 -m pip install Pillow==11.3.0
-      - name: Resolve Remaining Products
+      - name: Resolve Current Provider
         env:
           ESAID: ${{ secrets.ESAID }}
           ESASECRET: ${{ secrets.ESASECRET }}
-        run: python3 esa/probe_remaining.py
+        run: python3 esa/resolve_aeffort.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:

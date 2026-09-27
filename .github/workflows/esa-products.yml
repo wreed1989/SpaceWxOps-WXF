@@ -8,7 +8,6 @@ on:
     paths: ['esa/**', '.github/workflows/esa-products.yml']
 permissions:
   contents: write
-  actions: read
 concurrency:
   group: esa-solar-products
   cancel-in-progress: false
@@ -33,14 +32,7 @@ jobs:
           node --check esa/dashboard-services.js
           node --check esa/dashboard-guidance.js
       - name: Restore Previous Passive Cache
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          python3 esa/publish.py --restore
-          if [ ! -f esa-live-output/latest.json ]; then
-            gh run download 36301927172 --repo "$GITHUB_REPOSITORY" --name esa-release-validation --dir initial-cache
-            cp -a initial-cache/esa-live-output ./esa-live-output
-          fi
+        run: python3 esa/publish.py --restore
       - name: Collect Provider Products
         env:
           ESAID: ${{ secrets.ESAID }}

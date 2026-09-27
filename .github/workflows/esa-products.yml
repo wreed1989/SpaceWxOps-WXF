@@ -1,64 +1,73 @@
 name: ESA Solar Products
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '17,47 * * * *'
   push:
-    branches: [esa-product-delivery]
-    paths: [esa/refresh_current.py, .github/workflows/esa-products.yml]
+    branches: [main, esa-product-delivery]
+    paths: ['esa/**', '.github/workflows/esa-products.yml']
 permissions:
-  contents: read
+  contents: write
+  actions: read
 concurrency:
   group: esa-solar-products
   cancel-in-progress: false
 jobs:
   collect:
+    if: github.event_name != 'schedule' || github.ref_name == 'main'
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
-      - name: Install Image Validator
-        run: python3 -m pip install Pillow==11.3.0
-      - name: Reuse Verified Passive Assets
+      - name: Install Validators
+        run: python3 -m pip install Pillow==11.3.0 playwright==1.55.0
+      - name: Parser And Security Contracts
+        run: |
+          python3 -m py_compile esa/*.py
+          python3 -m unittest discover -s esa -p test_delivery.py -v
+          node --check esa/dashboard-services.js
+          node --check esa/dashboard-guidance.js
+      - name: Restore Previous Passive Cache
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh run download 36300818282 --repo "$GITHUB_REPOSITORY" --name esa-production-validation --dir prior-cache
-          cp -a prior-cache/esa-live-output ./esa-live-output
-      - name: Resolve Provider Registration And Forecast Availability
+          python3 esa/publish.py --restore
+          if [ ! -f esa-live-output/latest.json ]; then
+            gh run download 36301333345 --repo "$GITHUB_REPOSITORY" --name esa-production-validation --dir initial-cache
+            cp -a initial-cache/esa-live-output ./esa-live-output
+          fi
+      - name: Collect Provider Products
         env:
           ESAID: ${{ secrets.ESAID }}
           ESASECRET: ${{ secrets.ESASECRET }}
-          ESA_OUTPUT_DIR: esa-diagnostic
-        run: python3 esa/aeffort_feed_probe.py
-      - name: Verify Live HAPI Samples
+        run: python3 esa/refresh_current.py
+      - name: Validate Every Published Asset
+        run: python3 esa/validate_products.py esa-live-output
+      - name: Publish Passive Data Only
         env:
-          ESAID: ${{ secrets.ESAID }}
-          ESASECRET: ${{ secrets.ESASECRET }}
-        run: |
-          PYTHONPATH=esa python3 - <<'PY'
-          import json
-          from pathlib import Path
-          from refresh_current import Collector
-          c=Collector(Path('esa-live-output'))
-          c.doc=c.old
-          c.product('hapi',c.hapi)
-          c.doc['checked_at']=c.stamp
-          Path('esa-live-output/latest.json').write_text(json.dumps(c.doc,separators=(',',':')))
-          print(json.dumps(c.requests,indent=2))
-          PY
-      - name: Preserve Tested Source
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 esa/publish.py
+      - name: Check Browser Delivery
+        if: github.event_name != 'schedule'
+        run: python3 esa/browser_smoke.py
+      - name: Preserve Integration Sources And Results
         if: always()
         run: |
           mkdir -p release-source
           cp esa/*.py esa/*.js release-source/
+          cp .github/workflows/esa-products.yml release-source/
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: esa-production-validation
+          name: esa-release-validation
           path: |
             esa-live-output/
-            esa-diagnostic/
+            esa-validation.json
+            esa-publication.json
+            esa-browser-report.json
+            esa-browser-images/
             release-source/
           retention-days: 3
           if-no-files-found: error

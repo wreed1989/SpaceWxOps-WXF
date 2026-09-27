@@ -1,0 +1,48 @@
+name: ESA M2M Access Check
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - esa-m2m-integration
+    paths:
+      - esa/**
+      - .github/workflows/esa-m2m-check.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: esa-m2m-access-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: Check ESA Credentials And Products
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - name: Check Out Test Branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          sparse-checkout: esa
+          sparse-checkout-cone-mode: true
+      - name: Run Offline Security And Parser Tests
+        run: python3 -m unittest discover -s esa -p 'test_*.py' -v
+      - name: Check ESA Authentication And Product Responses
+        env:
+          ESAID: ${{ secrets.ESAID }}
+          ESASECRET: ${{ secrets.ESASECRET }}
+          ESA_REPORT_DIR: esa-access-report
+        run: python3 esa/check_access.py
+      - name: Save Credential-Free Access Report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: esa-access-report
+          path: |
+            esa-access-report/esa_access_report.json
+            esa-access-report/esa_access_report.md
+          if-no-files-found: warn
+          retention-days: 7

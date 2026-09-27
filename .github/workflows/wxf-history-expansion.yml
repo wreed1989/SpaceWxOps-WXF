@@ -1,0 +1,31 @@
+name: WXF Historical Expansion
+on:
+  workflow_dispatch:
+  push:
+    branches: [wxf-history-reassessment]
+    paths:
+      - '.github/workflows/wxf-history-expansion.yml'
+      - 'flare/history_expand.py'
+permissions:
+  contents: read
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install analysis dependencies
+        run: python -m pip install numpy pandas scipy scikit-learn requests drms joblib packaging
+      - name: Capture preceding-cycle history
+        run: python flare/history_expand.py
+      - name: Retain original records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: WXF-Historical-Expansion
+          path: history-capture/
+          retention-days: 7
+          if-no-files-found: error

@@ -1,0 +1,66 @@
+name: WXF Reassessment Verification
+on:
+  workflow_dispatch:
+  push:
+    branches: [wxf-history-reassessment]
+    paths:
+      - '.github/workflows/wxf-reassessment-verify.yml'
+      - 'flare/reassessment/**'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: wxf-reassessment-verification
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Install the audited numerical environment
+        run: python -m pip install numpy==2.3.5 pandas==2.2.3 scipy==1.17.0 scikit-learn==1.8.0
+      - name: Download actual captured source records
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh run download 36312308127 -n WXF-Historical-Coverage -D raw/coverage
+          gh run download 36312641912 -n WXF-Historical-Expansion -D raw/expansion
+      - name: Reproduce chronological experiment
+        run: python flare/reassessment/reassess_history.py --raw raw/coverage raw/expansion --out verification/patch
+      - name: Test curation and captured predictions
+        env:
+          WXF_AUDIT_OUTPUT: ${{ github.workspace }}/verification/patch
+        run: python -m unittest discover -s flare/reassessment -p 'test_*.py' -v
+      - name: Check numerical reproduction and assembled JavaScript
+        run: |
+          python - <<'PY'
+          import importlib.util,json,pathlib,subprocess
+          root=pathlib.Path('flare/reassessment')
+          r=json.loads(pathlib.Path('verification/patch/patch_report.json').read_text())
+          assert r['partitions']['evaluation']['rows']==3833
+          expected={'M1':0.340143183089091,'X1':0.026445424714831467}
+          for k,v in expected.items():
+              assert abs(r['scores']['Combined'][k]['brier_skill']-v)<1e-7,(k,r['scores']['Combined'][k]['brier_skill'])
+          spec=importlib.util.spec_from_file_location('builder',root/'build_workspace.py');builder=importlib.util.module_from_spec(spec);spec.loader.exec_module(builder)
+          module=builder.assemble(pathlib.Path('flare/workspace.js').read_text(),root)
+          pathlib.Path('verification/workspace.js').write_text(module)
+          subprocess.run(['node','--check','verification/workspace.js'],check=True)
+          print('Real-record scores reproduced; assembled JavaScript parses.')
+          PY
+      - name: Retain reproducible results and source
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: WXF-Reassessment-Verified
+          path: |
+            verification/
+            flare/reassessment/
+          retention-days: 7
+          if-no-files-found: error

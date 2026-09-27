@@ -1,4 +1,4 @@
-/* Current A-EFFort web-feed adapter. Reference time is not an issue time. */
+/* Current A-EFFort web guidance and solar-view lifecycle compatibility. */
 (() => {
 'use strict';
 const f=window.SpaceWxSolarFeed;
@@ -36,4 +36,32 @@ f.recentGuidance=function(r,now=Date.now()){
 f.forecastLabel=function(r,current){
  return r.webGuidance?(f.recentGuidance(r)?'Recent Published Web Guidance':'Older Published Web Guidance'):(current?'Current 24-Hour Forecast':'Archive / Outside Current 24-Hour Window');
 };
+// The host desk sometimes removes a product without calling its disposer.
+// Batched observation permits ordinary tile moves without destroying the view.
+const managed=new Map();let observer=null;
+function manage(root,cleanup){
+ let stopped=false;
+ const entry={seen:root.isConnected,stop(){if(stopped)return;stopped=true;managed.delete(root);cleanup?.();}};
+ managed.set(root,entry);
+ if(!observer){observer=new MutationObserver(()=>{for(const [node,item] of managed){if(node.isConnected)item.seen=true;else if(item.seen)item.stop();}});observer.observe(document.documentElement,{childList:true,subtree:true});}
+ return entry.stop;
+}
+for(const name of ['mountSolarmap','mountHoles','mountConnectivity','mountEUHFORIA','mountHapi']){
+ const mount=f[name];
+ f[name]=function(parent,...args){const dispose=mount(parent,...args);const root=Array.from(parent.children).findLast(x=>x.classList.contains('wx-esa'));return root?manage(root,dispose):dispose;};
+}
+f.activeViewCount=()=>managed.size;
+// Plotly resizes asynchronously: a tile may be hidden/removed before it runs.
+// Restrict this guard to the new ESA plot class; legacy plot behavior is unchanged.
+if(window.Plotly?.Plots?.resize){
+ const resize=window.Plotly.Plots.resize;
+ const displayed=el=>el?.isConnected&&el.getBoundingClientRect().width>0&&el.getBoundingClientRect().height>0;
+ window.Plotly.Plots.resize=function(el,...args){
+  const node=typeof el==='string'?document.getElementById(el):el;
+  if(!node?.classList?.contains('esa-plot'))return resize.call(this,el,...args);
+  if(!displayed(node))return Promise.resolve();
+  const pending=resize.call(this,el,...args);
+  return pending?.catch?pending.catch(error=>{if(displayed(node))throw error;}):pending;
+ };
+}
 })();

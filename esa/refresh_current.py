@@ -5,9 +5,13 @@ from pathlib import Path
 from datetime import datetime,timedelta
 from harvest import Harvester,ASSET_RE,utc,auth
 from current_hapi import current_hapi
+from current_connectivity import current_connectivity
+from current_aeffort import current_flare
 
 class Collector(Harvester):
  hapi=current_hapi
+ connectivity=current_connectivity
+ flare=current_flare
  def __init__(self,root):
   super().__init__(root)
   for url,value in self.old.get('assets',{}).items():

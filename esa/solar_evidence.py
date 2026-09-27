@@ -117,7 +117,8 @@ def parse_demon(text):
             event_id=row[5]
             if not event_id.isdigit():raise ValueError()
             lat,lon=num(row[6]),num(row[7])
-            if lat is None or lon is None or not(-90<=lat<=90 and -180<=lon<=180):raise ValueError()
+            if (lat is not None and not -90<=lat<=90) or (lon is not None and not -180<=lon<=180):raise ValueError()
+            if lat is None or lon is None:lat=lon=None
         except (ValueError,TypeError):rejected+=1;continue
         if event_id in seen:continue
         seen.add(event_id)
@@ -133,7 +134,8 @@ def parse_demon(text):
             estimated_flux_provider_text=row[10][:80],source=src))
     if rejected:raise ValueError('demon_rejected_major_rows')
     return dict(format='solardemon-evidence-v1',source=DEMON,last_processed_at=processed,observed_at=processed,
-        events=sorted(events,key=lambda x:x['peak'],reverse=True)[:500],threshold='estimated_M1+',days=14,below_threshold_excluded=below,
+        events=sorted(events,key=lambda x:x['peak'],reverse=True)[:500],threshold='estimated_M1+',days=14,below_threshold_excluded=below,table_rows_parsed=len(p.rows),
+        major_rows_recognized=sum(1 for row in p.rows if len(row)>1 and major(row[1])),
         note='M1+ EUV-estimated events only. Estimated class is not an official GOES classification. Detector heartbeat, not the last major flare, determines coverage freshness.')
 
 def parse_connectivity(text):

@@ -29,8 +29,10 @@ jobs:
         run: |
           python3 -m py_compile esa/*.py
           python3 -m unittest discover -s esa -p test_delivery.py -v
+          python3 -m unittest discover -s esa -p test_evidence.py -v
           node --check esa/dashboard-services.js
           node --check esa/dashboard-guidance.js
+          node --check esa/solar-model-evidence.js
       - name: Restore Previous Passive Cache
         run: python3 esa/publish.py --restore
       - name: Collect Provider Products
@@ -47,6 +49,9 @@ jobs:
       - name: Check Browser Delivery
         if: github.event_name != 'schedule'
         run: python3 esa/browser_smoke.py
+      - name: Check Solar Evidence And Tile Sizing
+        if: github.event_name != 'schedule'
+        run: python3 esa/browser_evidence.py
       - name: Preserve Integration Sources And Results
         if: always()
         run: |
@@ -62,6 +67,7 @@ jobs:
             esa-validation.json
             esa-publication.json
             esa-browser-report.json
+            esa-evidence-browser.json
             esa-browser-images/
             release-source/
           retention-days: 3

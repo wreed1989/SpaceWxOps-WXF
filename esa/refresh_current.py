@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Production entry point. Provider collection is separate from publication."""
-import hashlib,os,sys
+import hashlib,os,sys,json
 from pathlib import Path
 from datetime import datetime,timedelta
 from harvest import Harvester,ASSET_RE,utc,auth
@@ -16,7 +16,12 @@ class Collector(Harvester):
  def run(self):
   self.product("cactus",lambda:collect_cactus(self))
   self.product("solardemon",lambda:collect_demon(self))
-  return super().run()
+  result=super().run()
+  health=json.loads((self.root/'health.json').read_text())
+  health['evidence']={k:{'events':len(self.doc['products'].get(k,{}).get('events',[])),**{n:self.doc['products'].get(k,{}).get(n) for n in ('observed_at','table_rows_parsed','major_rows_recognized')}} for k in ('cactus','solardemon')}
+  health['evidence']['footpoints']={m['body']:len(m.get('footpoints',{}).get('points',[])) for m in self.doc['products'].get('connectivity',{}).get('models',[])}
+  (self.root/'health.json').write_text(json.dumps(health,indent=2))
+  return result
  flare=current_flare
  def __init__(self,root):
   super().__init__(root)

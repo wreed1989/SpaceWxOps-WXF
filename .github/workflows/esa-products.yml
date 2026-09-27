@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [esa-product-delivery]
-    paths: [esa/collect_products.py, .github/workflows/esa-products.yml]
+    paths: [esa/probe_remaining.py, .github/workflows/esa-products.yml]
 permissions:
   contents: read
 concurrency:
@@ -19,17 +19,11 @@ jobs:
           persist-credentials: false
       - name: Install Image Validator
         run: python3 -m pip install Pillow==11.3.0
-      - name: Collect Live Provider Products
+      - name: Resolve Remaining Products
         env:
           ESAID: ${{ secrets.ESAID }}
           ESASECRET: ${{ secrets.ESASECRET }}
-        run: python3 esa/collect_products.py
-      - name: Save Build Sources For Integration Tests
-        if: always()
-        run: |
-          mkdir -p esa-products/build-source
-          cp esa/*.py esa-products/build-source/
-          cp SpaceWxOps_Coronal_Hole_HSS_Outlook.html esa-products/build-source/repository-dashboard.html
+        run: python3 esa/probe_remaining.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:

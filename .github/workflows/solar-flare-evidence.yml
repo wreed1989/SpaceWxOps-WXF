@@ -51,17 +51,18 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           temp=$(mktemp -d)
-          if git fetch origin flare-live; then
-            git worktree add "$temp/feed" origin/flare-live
-          else
-            git worktree add --detach "$temp/feed" HEAD
-            (cd "$temp/feed" && git checkout --orphan flare-live && git rm -rf .)
-          fi
+          expected=''
+          if git fetch origin flare-live; then expected=$(git rev-parse FETCH_HEAD); fi
+          # This branch is generated, credential-free current data, not source.
+          # Keep one snapshot so repeated high-resolution image updates do not
+          # add unlimited binary history to the source repository.
+          git worktree add --detach "$temp/feed" HEAD
+          (cd "$temp/feed" && git checkout --orphan generated-flare-snapshot && git rm -rf . >/dev/null)
           rsync -a --delete --exclude=.git flare-output/ "$temp/feed/"
           cd "$temp/feed"
           git add -A
-          git diff --cached --quiet || git commit -m 'Refresh registered Solar Flare evidence and completed-label database'
-          git push origin HEAD:refs/heads/flare-live
+          git commit -m 'Refresh current Solar Flare evidence and complete evaluation database'
+          git push --force-with-lease="refs/heads/flare-live:$expected" origin HEAD:refs/heads/flare-live
       - name: Verify live anonymous browser delivery
         if: github.ref == 'refs/heads/main'
         run: python flare/check_delivery.py --output flare-output --live

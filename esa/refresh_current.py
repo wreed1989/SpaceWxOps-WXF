@@ -7,10 +7,16 @@ from harvest import Harvester,ASSET_RE,utc,auth
 from current_hapi import current_hapi
 from current_connectivity import current_connectivity
 from current_aeffort import current_flare
+from solar_evidence import collect_cactus,collect_demon,enrich_connectivity
+auth.PUBLIC_HOSTS.update({"www.sidc.be","sidc.be"})
 
 class Collector(Harvester):
  hapi=current_hapi
- connectivity=current_connectivity
+ def connectivity(self):return enrich_connectivity(self,current_connectivity(self))
+ def run(self):
+  self.product("cactus",lambda:collect_cactus(self))
+  self.product("solardemon",lambda:collect_demon(self))
+  return super().run()
  flare=current_flare
  def __init__(self,root):
   super().__init__(root)

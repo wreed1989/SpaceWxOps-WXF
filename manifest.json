@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "ops-delivery-1",
+  "checkedAt": "2026-09-27T11:15:56.822560+00:00",
+  "products": {
+    "scoreboard": {
+      "status": "available",
+      "events": 10,
+      "retrievedAt": "2026-09-27T11:15:57.013170+00:00",
+      "attempts": []
+    },
+    "refm": {
+      "status": "available",
+      "issuedAt": "2026-09-27T00:14:00+00:00"
+    },
+    "m2mAnimation": {
+      "path": "m2m-animation.gif",
+      "sourceURL": "https://iswa.ccmc.gsfc.nasa.gov/iswa_data_tree/model/heliosphere/wsa-enlil-cone/animation-cme-velocity/2026/09/20260914_153400_2.0_anim.tim-vel.gif",
+      "retrievedAt": "2026-09-27T11:15:57.561604+00:00",
+      "httpLastModified": "Fri, 25 Sep 2026 00:12:10 GMT",
+      "sha256": "20c171b71dcf0ff23ce78be0c59657e35ad3669c00e44b2244e8c6d17edcb8fc",
+      "bytes": 2309847,
+      "kind": "image",
+      "frames": 41,
+      "status": "available",
+      "submittedAt": "2026-09-14T16:02:00+00:00",
+      "event": "2026-09-14T11:08:00-CME-001",
+      "method": "WSA-ENLIL + Cone (NASA M2M)"
+    },
+    "huxtAnimation": {
+      "path": "huxt-animation.mp4",
+      "sourceURL": "https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_animation_latest.mp4",
+      "retrievedAt": "2026-09-27T11:15:57.887917+00:00",
+      "httpLastModified": "Sun, 27 Sep 2026 06:00:05 GMT",
+      "sha256": "9eb798fdcaad918e99d1b992e9eab43051933e686d37a52e2b8976a630672c6e",
+      "bytes": 790083,
+      "kind": "video",
+      "frames": null,
+      "status": "available",
+      "issueTimeSource": "Read model times on provider animation"
+    },
+    "electron-fluence.json": {
+      "status": "experimental",
+      "issuedAt": "2026-09-27T11:15:56.024704+00:00",
+      "dataAsOf": "2026-09-27T11:00:00+00:00",
+      "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732"
+    }
+  }
+}

@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [esa-product-delivery]
-    paths: [esa/harvest.py, .github/workflows/esa-products.yml]
+    paths: [esa/refresh_current.py, .github/workflows/esa-products.yml]
 permissions:
   contents: read
 concurrency:
@@ -19,25 +19,39 @@ jobs:
           persist-credentials: false
       - name: Install Image Validator
         run: python3 -m pip install Pillow==11.3.0
-      - name: Validate Syntax
-        run: python3 -m py_compile esa/harvest.py esa/check_access.py
-      - name: Collect Authenticated Products
+      - name: Reuse Verified Passive Assets
         env:
-          ESAID: ${{ secrets.ESAID }}
-          ESASECRET: ${{ secrets.ESASECRET }}
-        run: python3 esa/harvest.py
-      - name: Inspect Remaining A-EFFort Source
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh run download 36300818282 --repo "$GITHUB_REPOSITORY" --name esa-production-validation --dir prior-cache
+          cp -a prior-cache/esa-live-output ./esa-live-output
+      - name: Resolve Provider Registration And Forecast Availability
         env:
           ESAID: ${{ secrets.ESAID }}
           ESASECRET: ${{ secrets.ESASECRET }}
           ESA_OUTPUT_DIR: esa-diagnostic
         run: python3 esa/aeffort_feed_probe.py
+      - name: Verify Live HAPI Samples
+        env:
+          ESAID: ${{ secrets.ESAID }}
+          ESASECRET: ${{ secrets.ESASECRET }}
+        run: |
+          PYTHONPATH=esa python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from refresh_current import Collector
+          c=Collector(Path('esa-live-output'))
+          c.doc=c.old
+          c.product('hapi',c.hapi)
+          c.doc['checked_at']=c.stamp
+          Path('esa-live-output/latest.json').write_text(json.dumps(c.doc,separators=(',',':')))
+          print(json.dumps(c.requests,indent=2))
+          PY
       - name: Preserve Tested Source
         if: always()
         run: |
           mkdir -p release-source
-          cp esa/*.py release-source/
-          cp esa/*.js release-source/ 2>/dev/null || true
+          cp esa/*.py esa/*.js release-source/
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:

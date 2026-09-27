@@ -1,0 +1,68 @@
+name: ESA Solar Products
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17,47 * * * *'
+  push:
+    branches: [main, esa-product-delivery]
+    paths: ['esa/**', '.github/workflows/esa-products.yml']
+permissions:
+  contents: write
+concurrency:
+  group: esa-solar-products
+  cancel-in-progress: false
+jobs:
+  collect:
+    if: github.event_name != 'schedule' || github.ref_name == 'main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Install Validators
+        run: |
+          python3 -m pip install Pillow==11.3.0 playwright==1.55.0
+          if ! command -v ffprobe >/dev/null; then sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg; fi
+          if ! command -v google-chrome >/dev/null; then python3 -m playwright install chrome; fi
+      - name: Parser And Security Contracts
+        run: |
+          python3 -m py_compile esa/*.py
+          python3 -m unittest discover -s esa -p test_delivery.py -v
+          node --check esa/dashboard-services.js
+          node --check esa/dashboard-guidance.js
+      - name: Restore Previous Passive Cache
+        run: python3 esa/publish.py --restore
+      - name: Collect Provider Products
+        env:
+          ESAID: ${{ secrets.ESAID }}
+          ESASECRET: ${{ secrets.ESASECRET }}
+        run: python3 esa/refresh_current.py
+      - name: Validate Every Published Asset
+        run: python3 esa/validate_products.py esa-live-output
+      - name: Publish Passive Data Only
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 esa/publish.py
+      - name: Check Browser Delivery
+        if: github.event_name != 'schedule'
+        run: python3 esa/browser_smoke.py
+      - name: Preserve Integration Sources And Results
+        if: always()
+        run: |
+          mkdir -p release-source
+          cp esa/*.py esa/*.js release-source/
+          cp .github/workflows/esa-products.yml release-source/
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: esa-release-validation
+          path: |
+            esa-live-output/
+            esa-validation.json
+            esa-publication.json
+            esa-browser-report.json
+            esa-browser-images/
+            release-source/
+          retention-days: 3
+          if-no-files-found: error

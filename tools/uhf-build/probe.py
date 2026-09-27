@@ -1,17 +1,33 @@
-"""Read public client-side interface assets. No operational files are changed."""
-import hashlib,json,pathlib,urllib.request
+"""Four public CCMC Instant Run benchmarks; stop on rate limiting or overload.
+No forecast automation, observations, restricted source, or production writes.
+"""
+import json,pathlib,urllib.request,urllib.parse,urllib.error,time,hashlib
 root=pathlib.Path('model-assets');root.mkdir(exist_ok=True)
-base='https://kauai.ccmc.gsfc.nasa.gov/instantrun/_next/static/chunks/'
-refs={'wbmod_interface.js':base+'pages/wbmod-9d75550207c5ded7.js','common_interface.js':base+'141-1bda8db760f23174.js'}
+base='https://kauai.ccmc.gsfc.nasa.gov'
+params={'gridType':'4','groundLat':0,'groundLon':0,'groundAlt':0,'satLat':0,'satLon':0,'satAlt':20000,'satVx':0,'satVy':0,'satVz':0,'latStart':-90,'latStop':90,'latStep':5,'lonStart':-180,'lonStop':180,'lonStep':5,'timeStart':0,'timeStop':23,'timeStep':1,'doyStart':15,'doyStop':350,'doyStep':10,'angStart':5,'angStop':90,'angStep':1,'azStep':2,'doy':269,'hour':22,'ltTime':False,'firstSet':1,'freq':250,'phaseStable':10,'ssn':92.9,'kp':2,'kpAtSS':2,'percentile':80,'outPar':11}
 records=[]
-for name,url in refs.items():
- record={'file':name,'url':url}
+for frequency,kp in [(225,2),(400,2),(225,6),(400,6)]:
+ p={**params,'freq':frequency,'kp':kp,'kpAtSS':kp}
+ name=f'wbmod_{frequency}MHz_Kp{kp}'
+ (root/(name+'_inputs.json')).write_text(json.dumps(p,indent=2))
+ rec={'name':name,'parameters':p}
  try:
-  request=urllib.request.Request(url,headers={'User-Agent':'SpaceWxOps-Model-Research/1.0'})
-  with urllib.request.urlopen(request,timeout=35) as response: data=response.read(3000000)
-  (root/name).write_bytes(data)
-  record.update(status='success',bytes=len(data),sha256=hashlib.sha256(data).hexdigest())
- except Exception as error: record.update(status='failed',error=str(error))
- records.append(record)
- print(json.dumps(record),flush=True)
-(root/'manifest.json').write_text(json.dumps(records,indent=2))
+  req=urllib.request.Request(base+'/instantrun/api/wbmod',data=json.dumps(p).encode(),headers={'Content-Type':'application/json','Accept':'application/json','User-Agent':'SpaceWxOps-Research-Benchmark/1.0'},method='POST')
+  with urllib.request.urlopen(req,timeout=90) as response: data=response.read(15000000)
+  (root/(name+'_response.json')).write_bytes(data)
+  body=json.loads(data);rec['response']=body
+  plot=body.get('plot')
+  if plot:
+   url=urllib.parse.urljoin(base,plot)
+   if urllib.parse.urlparse(url).hostname!='kauai.ccmc.gsfc.nasa.gov':raise ValueError('Unexpected plot host')
+   with urllib.request.urlopen(url,timeout=35) as response:image=response.read(15000000)
+   (root/(name+'.png')).write_bytes(image)
+   rec['plot_sha256']=hashlib.sha256(image).hexdigest()
+  rec['status']='success'
+ except urllib.error.HTTPError as error:
+  rec.update(status='failed',http_status=error.code,error=error.read(5000).decode(errors='replace'))
+  if error.code in (429,503):
+   records.append(rec);print(json.dumps(rec),flush=True);break
+ except Exception as error:rec.update(status='failed',error=str(error))
+ records.append(rec);print(json.dumps(rec),flush=True);time.sleep(2)
+(root/'benchmark_manifest.json').write_text(json.dumps(records,indent=2))

@@ -25,31 +25,23 @@ jobs:
       - name: Install frozen model runtime and image decoder
         run: |
           python -m pip install -r requirements-runtime-pinned.txt
-          python -m pip install Pillow
+          python -m pip install Pillow playwright
+          python -m playwright install --with-deps chromium
       - uses: actions/cache@v4
         with:
           path: flare-cache
           key: flare-archive-${{ github.run_id }}
           restore-keys: flare-archive-
-      - name: Test current model contract
-        run: python -m unittest -q test_sharp_mag_pipeline.py
+      - name: Test source contracts and model compatibility
+        run: |
+          python -m unittest -q test_sharp_mag_pipeline.py
+          python -m unittest discover -s flare -p 'test_*.py' -v
+          node --check flare/workspace.js
+          python -m py_compile flare/build_workspace.py flare/refresh_evidence.py
       - name: Collect imagery and completed post-training records
         run: python flare/refresh_evidence.py --output flare-output --database
-      - name: Archive verifiable source and products
-        if: always()
-        run: |
-          mkdir -p flare-verification/source
-          cp -r flare flare-verification/source/
-          cp .github/workflows/solar-flare-evidence.yml flare-verification/source/
-          test ! -d flare-output || cp -r flare-output flare-verification/
-          test ! -f sharp_mag_training_report.json || cp sharp_mag_training_report.json flare-verification/source/
-          git rev-parse HEAD > flare-verification/source/commit.txt
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: solar-flare-evidence
-          path: flare-verification/
-          retention-days: 7
+      - name: Verify exact assets and captured-output browser integration
+        run: python flare/check_delivery.py --output flare-output
       - name: Publish verified passive feed
         if: github.ref == 'refs/heads/main'
         shell: bash
@@ -70,3 +62,21 @@ jobs:
           git add -A
           git diff --cached --quiet || git commit -m 'Refresh registered Solar Flare evidence and completed-label database'
           git push origin HEAD:refs/heads/flare-live
+      - name: Verify live anonymous browser delivery
+        if: github.ref == 'refs/heads/main'
+        run: python flare/check_delivery.py --output flare-output --live
+      - name: Archive verifiable source and products
+        if: always()
+        run: |
+          mkdir -p flare-verification/source
+          cp -r flare flare-verification/source/
+          cp .github/workflows/solar-flare-evidence.yml flare-verification/source/
+          test ! -d flare-output || cp -r flare-output flare-verification/
+          test ! -f sharp_mag_training_report.json || cp sharp_mag_training_report.json flare-verification/source/
+          git rev-parse HEAD > flare-verification/source/commit.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: solar-flare-evidence
+          path: flare-verification/
+          retention-days: 7

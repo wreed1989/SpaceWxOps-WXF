@@ -1,11 +1,11 @@
 {
   "schemaVersion": "ops-delivery-1",
-  "checkedAt": "2026-09-29T12:44:22.132299+00:00",
+  "checkedAt": "2026-09-29T18:35:59.182441+00:00",
   "products": {
     "scoreboard": {
       "status": "available",
       "events": 11,
-      "retrievedAt": "2026-09-29T12:44:22.663199+00:00",
+      "retrievedAt": "2026-09-29T18:35:59.664535+00:00",
       "attempts": []
     },
     "refm": {
@@ -15,10 +15,10 @@
     "huxtAnimation": {
       "path": "huxt-animation.mp4",
       "sourceURL": "https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_animation_latest.mp4",
-      "retrievedAt": "2026-09-29T12:44:24.004685+00:00",
-      "httpLastModified": "Tue, 29 Sep 2026 12:00:05 GMT",
-      "sha256": "3df493d76b75be4ade0c835f45fd35d594fbabb161738f4dffe0c6fdabbdf504",
-      "bytes": 911136,
+      "retrievedAt": "2026-09-29T18:36:01.018934+00:00",
+      "httpLastModified": "Tue, 29 Sep 2026 18:00:05 GMT",
+      "sha256": "ba94354ac7172c36d8b2853b4d88550734f3aff236443136b3e63fd8b5f510c6",
+      "bytes": 884016,
       "kind": "video",
       "frames": null,
       "status": "available",
@@ -27,7 +27,7 @@
     "m2mAnimation": {
       "path": "m2m-animation.gif",
       "sourceURL": "https://iswa.gsfc.nasa.gov/ENSEMBLE/2026-09-28_ncmes1_sims27_M2M-SWAO102/20260928_224600_ncmes1_sims27_M2M-SWAO102_anim_tim-den.gif",
-      "retrievedAt": "2026-09-29T12:44:24.537037+00:00",
+      "retrievedAt": "2026-09-29T18:36:01.319161+00:00",
       "httpLastModified": "Tue, 29 Sep 2026 00:22:26 GMT",
       "sha256": "f5f36aaf3130a5becc545dcc50de725b189e3c74d874c87cf8af34ea8097144f",
       "bytes": 1747766,
@@ -41,7 +41,7 @@
     "electron-fluence.json": {
       "status": "withheld",
       "reason": "Insufficient recent electron coverage",
-      "issuedAt": "2026-09-29T12:44:21.438207+00:00",
+      "issuedAt": "2026-09-29T18:35:58.630437+00:00",
       "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732"
     }
   }

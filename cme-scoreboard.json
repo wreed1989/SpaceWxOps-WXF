@@ -41,33 +41,48 @@
           "predictionNote": "Ensemble modeling estimates the spread/uncertainty in CME arrival time predictions using the WSA-ENLIL+Cone model due to uncertainties in CME input parameters.  This is achieved by measuring N CME input parameters, then performing an ensemble of N runs of WSA-ENLIL cone model.  This gives an ensemble of N CME arrival times and impact estimates.\n\nNASA GSFC SWRC ENLIL settings:\nENLIL version: 2.7\nResolution: low2 (256x30x90)\nAmbient settings: a3b1f\nWSA version: 2.2\n(Enlil 2.7 w/res:low2 ambient:a3b1f, WSA2.2)\n\nPlease enter a copy of the entire notification here:\n## Community Coordinated Modeling Center Database Of Notifications, Knowledge, Information ( CCMC DONKI )\n## Message Type: Space Weather Notification - CME update (ensemble) (STEREO A, Missions Near Earth)\n##\n## Message Issue Date: 2026-09-29T01:01:43Z\n## Message ID: 20260929-AL-001\n##\n## Disclaimer: NOAA's Space Weather Prediction Center is the United States Government official source for space weather forecasts. This \"Experimental Research Information\" consists of preliminary NASA research products and should be interpreted and used accordingly.\n\n\n## Summary:\n\nEnsemble modeling update on CME with ID 2026-09-28T14:36:00-CME-001 (see previous notification 20260928-AL-002). Based on analysis by the Moon to Mars Space Weather Analysis Office and heliospheric ensemble modeling carried out at the Community Coordinated Modeling Center, it is estimated that the CME may impact STEREO A. For 27 ensemble members (see notes section), simulations indicate that the leading edge of the CME will reach:\n\n- STEREO A between about 2026-10-01T06:50Z and 2026-10-01T09:50Z (average arrival 2026-10-01T08:31Z) for 11% of simulations.\n\nAdditionally the CME is estimated to reach NASA missions near Earth between about 2026-10-01T16:25Z and 2026-10-02T06:42Z (average arrival 2026-10-02T00:05Z) for 96% of simulations. The ensemble-based forecast indicates that there is a 95% chance for the maximum Kp index to be in the 2-4 range (below minor to below minor).\n\nLinks to the ensemble details of the modeled event:\nhttps://iswa.gsfc.nasa.gov/ENSEMBLE/2026-09-28_ncmes1_sims27_M2M-SWAO102/20260928_224600_ncmes1_sims27_M2M-SWAO102_anim_tim-den.gif\nhttps://iswa.gsfc.nasa.gov/ENSEMBLE/2026-09-28_ncmes1_sims27_M2M-SWAO102/20260928_224600_ncmes1_sims27_M2M-SWAO102_arrival_Earth.gif\nhttps://iswa.gsfc.nasa.gov/ENSEMBLE/2026-09-28_ncmes1_sims27_M2M-SWAO102/20260928_224600_ncmes1_sims27_M2M-SWAO102_Earth_stack.gif\nhttps://iswa.gsfc.nasa.gov/ENSEMBLE/2026-09-28_ncmes1_sims27_M2M-SWAO102/20260928_224600_ncmes1_sims27_M2M-SWAO102_arrival_STA.gif\nhttps://iswa.gsfc.nasa.gov/ENSEMBLE/2026-09-28_ncmes1_sims27_M2M-SWAO102/20260928_224600_ncmes1_sims27_M2M-SWAO102_STA_stack.gif\n\n## Notes:\nEnsemble CME modeling at M2M is performed by building sets of initial CME parameters and carrying out separate simulations for each set. This approach allows a mapping of initial CME parameter uncertainties into a statistical characterization of CME arrival times and impact at locations of interest.\n\nDescription of links: For each location, the first link shows the WSA-ENLIL+Cone model animation for the median CME input parameters, the second link shows the probabilistic distribution of predicted arrival times histogram, and the third link shows a stack plot of the WSA-ENLIL+Cone modeled magnetic field, velocity, density, and temperature for all ensemble members. For missions near Earth, a histogram of the probabilistic Kp forecast is also provided.\n\nFor the full details of the modeled event, please go here:\nhttps://iswa.gsfc.nasa.gov/ENSEMBLE/2026-09-28_ncmes1_sims27_M2M-SWAO102/Detailed_results_20260928_224600_ncmes1_sims27_M2M-SWAO102.txt\n###\n\nThe CME event with ID 2026-09-28T14:36:00-CME-001 is also predicted to impact Juice at 2026-10-02T01:04Z, Solar Orbiter at 2026-09-30T20:57Z, Europa Clipper at 2026-10-01T12:00Z (Glancing Blow), Mars at 2026-10-03T14:00Z (Glancing Blow), Psyche at 2026-10-03T06:00Z (Glancing Blow), and STEREO A at 2026-10-01T16:00Z (Glancing Blow) (plus minus 7 hours) based on previous heliospheric modeling (see notification 20260928-AL-002).\n\n\nCommunity Coordinated Modeling Center Database Of Notifications, Knowledge, Information (CCMC DONKI) Disclaimer\n\nData and/or information stored within the CCMC DONKI is provided \"as is\" without any warranty of any kind, either expressed, implied, or statutory, including, but not limited to, any warranty that the data and/or information will conform to specifications, any implied warranties of merchantability, fitness for a particular purpose, or freedom from infringement, any warranty that the information will be error free, or any warranty that documentation, if provided, will conform to the data and/or information. In no event shall the United States Government, or its contractors or subcontractors, be liable for any damages, including, but not limited to, direct, indirect, special or consequential damages, arising out of, resulting from, or in any way connected with this information, whether or not based upon warranty, contract, tort, or otherwise, whether or not injury was sustained by persons or property or otherwise, and whether or not loss was sustained from, or arose out of the results of, or use of, the data and/or information. The United States Government disclaims all warranties and liabilities regarding third party data and/or information, if present in the data and/or information generated and/or compiled by CCMC DONKI, and distributes it \"as is\".\n\nUse of data and/or information stored within the CCMC DONKI does not, in any manner, constitute an endorsement by NASA of any test results, resulting designs, hardware, or other matters. Use of data and/or information stored within the CCMC DONKI does not, in any manner, constitute the grant of a license to RECIPIENT under any NASA copyright, patent, patent application or other intellectual property.\n\nThe terms of this disclaimer shall be construed, and the legal relations between the parties hereto shall be determined, in accordance with United States federal law.\n\nNOAA's Space Weather Prediction Center is the United States Government official source for space weather forecasts. This \"Experimental Research Information\" consists of preliminary NASA research products and should be interpreted and used accordingly."
         },
         {
-          "predictedMethodName": "Average of all Methods",
-          "submissionTime": "2026-09-29T01:06Z",
-          "predictedArrivalTime": "2026-10-02T01:40Z",
-          "uncertaintyMinusInHrs": null,
-          "uncertaintyPlusInHrs": null,
-          "confidenceInPercentage": 96.0,
-          "predictedMaxKpLowerRange": 2.5,
-          "predictedMaxKpUpperRange": 4.5,
+          "predictedMethodName": "SIDC",
+          "submissionTime": "2026-09-29T15:30Z",
+          "predictedArrivalTime": "2026-10-02T06:00Z",
+          "uncertaintyMinusInHrs": 12.0,
+          "uncertaintyPlusInHrs": 12.0,
+          "confidenceInPercentage": 45.0,
+          "predictedMaxKpLowerRange": 4.0,
+          "predictedMaxKpUpperRange": 5.0,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
           "differenceInHrs": null,
-          "leadTimeInHrs": "72.57",
+          "leadTimeInHrs": "62.50",
+          "predictionNote": ":Issued: 2026 Sep 29 1242 UTC\n#--------------------------------------------------------------------#\n# DAILY BULLETIN ON SOLAR AND GEOMAGNETIC ACTIVITY from the SIDC     #\n# (RWC Belgium)                                                      #\n#--------------------------------------------------------------------#\nSIDC URSIGRAM 60929\nSIDC SOLAR BULLETIN 29 Sep 2026, 1241UT\nSIDC FORECAST\nSOLAR FLARES  : C-class flares expected, (probability >=50%) GEOMAGNETISM  : Quiet (A<20 and K<4) SOLAR PROTONS : Quiet PREDICTIONS FOR 29 Sep 2026  10CM FLUX: 097 / AP: 005 PREDICTIONS FOR 30 Sep 2026  10CM FLUX: 095 / AP: 003 PREDICTIONS FOR 01 Oct 2026  10CM FLUX: 093 / AP: 003\n\nSolar Active Regions and flaring: Solar flaring activity was low over the past 24 hours, with only C-class flares identified. The largest flare was a\nC2.5 flare (SIDC Flare 8622) peaking on September 28 at 15:19 UTC, which was produced by SIDC Sunspot Group 966 (NOAA Active Region 4536). During the flare, the source region (SIDC Sunspot Group 966) of the flare had Beta configuration of its photospheric magnetic field. A total of 3 numbered sunspot groups were identified on the disk over the past 24 hours. SIDC Sunspot Group 962 (NOAA Active Region 4535) is the complex region with its beta-gamma magnetic configurations, but it has not produced any flarings in the past 24 hours. Solar flaring activity is expected to be low over the next 24 hours, with C-class flares likely and a small chance for M-class flares.\n\nCoronal mass ejections: A partial halo coronal mass ejection (CME) was observed in SOHO/LASCO-C2 images around 14:36 UTC on Sep 28. It is associated with a large filament eruption on the W hemisphere of the Sun.\nAssociated post eruptive arcades and dimming were also observed in EUV images. This CME has an angular width of about 200 deg and a projected speed of about 500 km/s. With the bulk of the mass directed strongly westward, only a glancing blow associated with this CME can be expected at the Earth on Oct 02. No other Earth-directed CMEs were detected in the available coronagraph observations during the last 24 hour.\n\nSolar wind: Earth is presently within the slow solar wind regime, with its speed around 300 km/s and interplanetary magnetic field was below 5 nT.\nSlow solar wind conditions are expected to continue over the next 24 hours.\n\nGeomagnetism: Geomagnetic conditions were globally and locally at quiet (NOAA Kp and K BEL 1 to 2), and it is expected to remain so in the next 24 hours.\n\nProton flux levels: The greater than 10 MeV GOES proton flux was below the threshold level over the past 24 hours and it is expected to remain so for the next 24 hours.\n\nElectron fluxes at GEO: The greater than 2 MeV electron flux, as measured by GOES-18 and GOES-19 satellites, remained mostly above the 1000 pfu threshold level during the past 24 hours and is expected to remain so. It was possibly due to the enhanced solar wind speed on previous days. The 24h electron fluence was at moderate levels during the past 24 hours and is expected to remain so."
+        },
+        {
+          "predictedMethodName": "Average of all Methods",
+          "submissionTime": "2026-09-29T17:34Z",
+          "predictedArrivalTime": "2026-10-02T03:06Z",
+          "uncertaintyMinusInHrs": null,
+          "uncertaintyPlusInHrs": null,
+          "confidenceInPercentage": 70.5,
+          "predictedMaxKpLowerRange": 3.0,
+          "predictedMaxKpUpperRange": 4.66667,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "57.53",
           "predictionNote": "This is the auto generated average of all submitted predictions for this CME"
         },
         {
           "predictedMethodName": "Median of all Methods",
-          "submissionTime": "2026-09-29T01:06Z",
-          "predictedArrivalTime": "2026-10-02T01:40Z",
+          "submissionTime": "2026-09-29T17:34Z",
+          "predictedArrivalTime": "2026-10-02T03:15Z",
           "uncertaintyMinusInHrs": null,
           "uncertaintyPlusInHrs": null,
-          "confidenceInPercentage": 96.0,
-          "predictedMaxKpLowerRange": 2.5,
-          "predictedMaxKpUpperRange": 4.5,
+          "confidenceInPercentage": 70.5,
+          "predictedMaxKpLowerRange": 3.0,
+          "predictedMaxKpUpperRange": 5.0,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
           "differenceInHrs": null,
-          "leadTimeInHrs": "72.57",
+          "leadTimeInHrs": "57.68",
           "predictionNote": "This is the auto generated median of all submitted predictions for this CME."
         }
       ]
@@ -854,7 +869,7 @@
     }
   ],
   "source": "https://kauai.ccmc.gsfc.nasa.gov/CMEscoreboard/WS/get/predictions?CMEtimeStart=2026-08-30&CMEtimeEnd=2026-09-30&closeOutCMEsOnly=false&skipNoArrivalObservedCMEs=false",
-  "retrievedAt": "2026-09-29T12:44:22.663199+00:00",
+  "retrievedAt": "2026-09-29T18:35:59.664535+00:00",
   "windowStart": "2026-08-30",
   "windowEnd": "2026-09-30"
 }

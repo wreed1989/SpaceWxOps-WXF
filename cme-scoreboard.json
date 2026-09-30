@@ -868,8 +868,8 @@
       ]
     }
   ],
-  "source": "https://kauai.ccmc.gsfc.nasa.gov/CMEscoreboard/WS/get/predictions?CMEtimeStart=2026-08-30&CMEtimeEnd=2026-09-30&closeOutCMEsOnly=false&skipNoArrivalObservedCMEs=false",
-  "retrievedAt": "2026-09-29T22:56:58.427731+00:00",
-  "windowStart": "2026-08-30",
-  "windowEnd": "2026-09-30"
+  "source": "https://kauai.ccmc.gsfc.nasa.gov/CMEscoreboard/WS/get/predictions?CMEtimeStart=2026-08-31&CMEtimeEnd=2026-10-01&closeOutCMEsOnly=false&skipNoArrivalObservedCMEs=false",
+  "retrievedAt": "2026-09-30T02:03:43.160178+00:00",
+  "windowStart": "2026-08-31",
+  "windowEnd": "2026-10-01"
 }

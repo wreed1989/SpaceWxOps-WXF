@@ -57,33 +57,48 @@
         },
         {
           "predictedMethodName": "Average of all Methods",
-          "submissionTime": "2026-09-29T17:34Z",
-          "predictedArrivalTime": "2026-10-02T03:06Z",
+          "submissionTime": "2026-09-30T07:28Z",
+          "predictedArrivalTime": "2026-10-02T02:20Z",
           "uncertaintyMinusInHrs": null,
           "uncertaintyPlusInHrs": null,
-          "confidenceInPercentage": 70.5,
-          "predictedMaxKpLowerRange": 3.0,
-          "predictedMaxKpUpperRange": 4.66667,
-          "predictedDstMin": null,
-          "predictedDstMinTime": null,
-          "differenceInHrs": null,
-          "leadTimeInHrs": "57.53",
-          "predictionNote": "This is the auto generated average of all submitted predictions for this CME"
-        },
-        {
-          "predictedMethodName": "Median of all Methods",
-          "submissionTime": "2026-09-29T17:34Z",
-          "predictedArrivalTime": "2026-10-02T03:15Z",
-          "uncertaintyMinusInHrs": null,
-          "uncertaintyPlusInHrs": null,
-          "confidenceInPercentage": 70.5,
-          "predictedMaxKpLowerRange": 3.0,
+          "confidenceInPercentage": 67.0,
+          "predictedMaxKpLowerRange": 3.25,
           "predictedMaxKpUpperRange": 5.0,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
           "differenceInHrs": null,
-          "leadTimeInHrs": "57.68",
+          "leadTimeInHrs": "42.87",
+          "predictionNote": "This is the auto generated average of all submitted predictions for this CME"
+        },
+        {
+          "predictedMethodName": "Median of all Methods",
+          "submissionTime": "2026-09-30T07:28Z",
+          "predictedArrivalTime": "2026-10-02T01:40Z",
+          "uncertaintyMinusInHrs": null,
+          "uncertaintyPlusInHrs": null,
+          "confidenceInPercentage": 60.0,
+          "predictedMaxKpLowerRange": 3.5,
+          "predictedMaxKpUpperRange": 5.0,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "42.20",
           "predictionNote": "This is the auto generated median of all submitted predictions for this CME."
+        },
+        {
+          "predictedMethodName": "WSA-ENLIL + Cone (Met Office)",
+          "submissionTime": "2026-09-30T07:30Z",
+          "predictedArrivalTime": "2026-10-02T00:00Z",
+          "uncertaintyMinusInHrs": 12.0,
+          "uncertaintyPlusInHrs": 12.0,
+          "confidenceInPercentage": 60.0,
+          "predictedMaxKpLowerRange": 4.0,
+          "predictedMaxKpUpperRange": 6.0,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "40.50",
+          "predictionNote": "Met Office ENLIL settings.\nENLIL version: 2.7\nResolution: medium-res (512x60x180) (X1=0.1-1.7/uniform X2=30.-150./uniform X3=0.-360./uniform)\nAmbient settings: a3b2-sa1\nWSA version: 4.5\nGONG: mrzqs\nNote that this arrival time forecast is based on the simulation but is then adjusted by a human-in-the-loop.\n\nPlease specify following CME input parameters.\nTime at 21.5Rs boundary: 2026-09-28T20:00Z\nRadial velocity (km/s): 520\nLongitude (deg): 28W\nLatitude (deg): 13N\nHalf-angular width (deg): 38\n\nNotes: \nSpace weather advisor: Rebecca Spalton"
         }
       ]
     },
@@ -869,7 +884,7 @@
     }
   ],
   "source": "https://kauai.ccmc.gsfc.nasa.gov/CMEscoreboard/WS/get/predictions?CMEtimeStart=2026-08-31&CMEtimeEnd=2026-10-01&closeOutCMEsOnly=false&skipNoArrivalObservedCMEs=false",
-  "retrievedAt": "2026-09-30T02:03:43.160178+00:00",
+  "retrievedAt": "2026-09-30T08:25:32.347262+00:00",
   "windowStart": "2026-08-31",
   "windowEnd": "2026-10-01"
 }

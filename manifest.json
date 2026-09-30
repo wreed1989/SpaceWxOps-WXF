@@ -1,52 +1,49 @@
 {
   "schemaVersion": "ops-delivery-1",
-  "checkedAt": "2026-09-30T08:25:31.351937+00:00",
+  "checkedAt": "2026-09-30T15:53:28.930106+00:00",
   "products": {
     "scoreboard": {
-      "status": "available",
-      "events": 11,
-      "retrievedAt": "2026-09-30T08:25:32.347262+00:00",
+      "status": "unavailable",
       "attempts": [
         {
           "url": "https://ccmc.gsfc.nasa.gov/CMESB-Earth/WS/get/predictions",
-          "error": "404 Client Error: Not Found for url: https://ccmc.gsfc.nasa.gov/CMESB-Earth/WS/get/predictions?CMEtimeStart=2026-08-31&CMEtimeEnd=2026-10-01&closeOutCMEsOnly=false&skipNoArrivalObs"
+          "error": "HTTPSConnectionPool(host='ccmc.gsfc.nasa.gov', port=443): Max retries exceeded with url: /CMESB-Earth/WS/get/predictions?CMEtimeStart=2026-08-31&CMEtimeEnd=2026-10-01&closeOutCMEsO"
+        },
+        {
+          "url": "https://kauai.ccmc.gsfc.nasa.gov/CMEscoreboard/WS/get/predictions",
+          "error": "HTTPSConnectionPool(host='ccmc.gsfc.nasa.gov', port=443): Max retries exceeded with url: /news/major-updates (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERI"
+        },
+        {
+          "url": "https://webtools.ccmc.gsfc.nasa.gov/CMEscoreboard/WS/get/predictions",
+          "error": "HTTPSConnectionPool(host='ccmc.gsfc.nasa.gov', port=443): Max retries exceeded with url: /news/major-updates (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERI"
         }
       ]
+    },
+    "m2mAnimation": {
+      "status": "unavailable",
+      "attempts": [],
+      "reason": "No readable animated run linked by an eligible NASA submission"
     },
     "refm": {
       "status": "available",
       "issuedAt": "2026-09-30T00:14:00+00:00"
     },
-    "m2mAnimation": {
-      "path": "m2m-animation.gif",
-      "sourceURL": "https://iswa.gsfc.nasa.gov/ENSEMBLE/2026-09-28_ncmes1_sims27_M2M-SWAO102/20260928_224600_ncmes1_sims27_M2M-SWAO102_anim_tim-den.gif",
-      "retrievedAt": "2026-09-30T08:25:32.797237+00:00",
-      "httpLastModified": "Tue, 29 Sep 2026 00:22:26 GMT",
-      "sha256": "f5f36aaf3130a5becc545dcc50de725b189e3c74d874c87cf8af34ea8097144f",
-      "bytes": 1747766,
-      "kind": "image",
-      "frames": 33,
-      "status": "available",
-      "submittedAt": "2026-09-29T01:01:00+00:00",
-      "event": "2026-09-28T14:36:00-CME-001",
-      "method": "Ensemble WSA-ENLIL + Cone (NASA M2M)"
-    },
     "huxtAnimation": {
       "path": "huxt-animation.mp4",
       "sourceURL": "https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_animation_latest.mp4",
-      "retrievedAt": "2026-09-30T08:25:33.187532+00:00",
-      "httpLastModified": "Wed, 30 Sep 2026 06:00:06 GMT",
-      "sha256": "f8efa48afa57e851051a12c35049bc144e5705580fc953fee17b8cfa2e72f316",
-      "bytes": 909517,
+      "retrievedAt": "2026-09-30T15:53:30.346269+00:00",
+      "httpLastModified": "Wed, 30 Sep 2026 12:00:05 GMT",
+      "sha256": "b67de3522c808484f029a669e652dcc26cf06ebaf27062ed0a1a7122bdd9f818",
+      "bytes": 900337,
       "kind": "video",
       "frames": null,
       "status": "available",
       "issueTimeSource": "Read model times on provider animation"
     },
     "electron-fluence.json": {
-      "status": "experimental",
-      "issuedAt": "2026-09-30T08:25:30.542865+00:00",
-      "dataAsOf": "2026-09-30T08:00:00+00:00",
+      "status": "withheld",
+      "reason": "Input retrieval/quality failure: HTTPSConnectionPool(host='iswa.ccmc.gsfc.nasa.gov', port=443): Max retries exceeded with url: /hapi/data?id=goesp_part_flux_P5M&parameters=P10%2CE2_0%2CsatelliteElectron%2CsatelliteProton&time.min=2026-09-01T00%3A00%3A00%2B00%3A00&time.max=",
+      "issuedAt": "2026-09-30T15:53:28.503667+00:00",
       "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732"
     }
   }

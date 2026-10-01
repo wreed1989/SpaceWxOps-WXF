@@ -1,6 +1,6 @@
 {
   "schemaVersion": "ops-delivery-1",
-  "checkedAt": "2026-10-01T00:31:52.894867+00:00",
+  "checkedAt": "2026-10-01T07:09:56.307821+00:00",
   "products": {
     "scoreboard": {
       "status": "unavailable",
@@ -31,10 +31,10 @@
     "huxtAnimation": {
       "path": "huxt-animation.mp4",
       "sourceURL": "https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_animation_latest.mp4",
-      "retrievedAt": "2026-10-01T00:32:26.217210+00:00",
-      "httpLastModified": "Thu, 01 Oct 2026 00:00:06 GMT",
-      "sha256": "74249b739d64bcfb15170896f07b4b0ed4f577360c6c9da69ea336e4a408459f",
-      "bytes": 851792,
+      "retrievedAt": "2026-10-01T07:10:27.470869+00:00",
+      "httpLastModified": "Thu, 01 Oct 2026 06:00:06 GMT",
+      "sha256": "b646829fdb1a72e98f836209e5d0b5baea0f874983e809b9c443a79a3fccb1bd",
+      "bytes": 857127,
       "kind": "video",
       "frames": null,
       "status": "available",
@@ -43,7 +43,7 @@
     "electron-fluence.json": {
       "status": "withheld",
       "reason": "Insufficient recent electron coverage",
-      "issuedAt": "2026-10-01T00:31:52.225748+00:00",
+      "issuedAt": "2026-10-01T07:09:55.594156+00:00",
       "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732"
     }
   }

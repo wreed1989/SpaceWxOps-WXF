@@ -1,0 +1,73 @@
+{
+  "status": "Updated",
+  "checked_at": "2026-10-02T15:05:03.908369Z",
+  "fitted_through": "2026-09-02",
+  "database_through": "2026-09-30",
+  "labels_through": "2026-10-01",
+  "frozen_cases": 7706,
+  "new_cases": 40,
+  "total_cases": 7746,
+  "frozen_sha256": "12a0f1d5ba245d392c2eb3bcbed41a530b6205b4b20705d534319db1fd20f683",
+  "database_sha256": "773de02f03e5c2e4d2766eed62a4b0cf04a8b4ad360d68bcb33e101655c4c3dc",
+  "quality": {
+    "queried_rows": 321,
+    "skipped_multi_region_harps": 43,
+    "skipped_unmapped_harps": 217,
+    "expanded_rows": 61,
+    "quality_retained": 44,
+    "quality_filter_input": 61,
+    "rejected_longitude": 17,
+    "after_longitude": 44,
+    "quality_missing": 0,
+    "quality_top_values": {
+      "0x00010400": 33,
+      "0x00011C00": 9,
+      "0x00011400": 2
+    },
+    "rejected_quality": 0,
+    "after_quality": 44,
+    "rejected_harp_merge": 0,
+    "after_harp_merge": 44,
+    "rejected_observer_velocity": 0,
+    "after_observer_velocity": 44,
+    "rejected_missing_mapping": 0,
+    "after_mapping": 44,
+    "min_finite_parameters": 12,
+    "rejected_parameter_completeness": 0,
+    "after_parameter_completeness": 44,
+    "unique_region_days": 44,
+    "date_start": "2026-09-01",
+    "date_end": "2026-09-30"
+  },
+  "labels": {
+    "rows_before_label_coverage_filter": 44,
+    "rows_after_label_coverage_filter": 44,
+    "rows_after_ambiguous_day_filter": 44,
+    "available_label_days": 61,
+    "ambiguous_major_flare_days": 0,
+    "ambiguous_negative_rows_removed": 0,
+    "attributed_positive_rows_preserved_on_ambiguous_days": 0,
+    "m1_positive_rows": 0,
+    "x1_positive_rows": 0,
+    "m1_prevalence": 0.0,
+    "x1_prevalence": 0.0
+  },
+  "forward_check": {
+    "M1+": {
+      "cases": 40,
+      "events": 0,
+      "brier": 0.0005510145025415607,
+      "mean_probability": 0.016319090453025088,
+      "observed_frequency": 0.0
+    },
+    "X1+": {
+      "cases": 40,
+      "events": 0,
+      "brier": 3.3749760250960608e-06,
+      "mean_probability": 0.0015326767705660014,
+      "observed_frequency": 0.0
+    }
+  },
+  "retrained": false,
+  "note": "Retrospective post-training update. Final NRT/archive revisions and report publication delays are not reconstructed. Not an as-issued operational backtest."
+}

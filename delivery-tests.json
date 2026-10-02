@@ -1,0 +1,115 @@
+{
+  "mode": "Captured-output Chromium integration",
+  "checks": [
+    {
+      "name": "All Original Asset Hashes Match",
+      "passed": true,
+      "detail": 134
+    },
+    {
+      "name": "All Published Images Decode At Declared Size",
+      "passed": true,
+      "detail": 84
+    },
+    {
+      "name": "Browser Reads Published JSON",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Completed Outcome Database Updated",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "No Retraining Claimed",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Model Input Data Present",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Workspace Receives Current Published Feed",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Current Numbered Regions Render",
+      "passed": true,
+      "detail": 3
+    },
+    {
+      "name": "Anonymous HMI Continuum And Magnetogram Images Decode",
+      "passed": true,
+      "detail": "AR14544"
+    },
+    {
+      "name": "Actual Multi-Frame Slider Populated",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "First Actual Frame Selectable",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Playback Advances Real Frames",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "AIA Native Crop Decodes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Responsive Width 1300",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Responsive Width 700",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Responsive Width 390",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Controlled Guard zero",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Controlled Guard expired",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Controlled Guard retained",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Controlled Guard path",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Controlled Guard future",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "No Unhandled Workspace Errors",
+      "passed": true,
+      "detail": []
+    }
+  ]
+}

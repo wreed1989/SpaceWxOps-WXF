@@ -9,8 +9,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "valid_start": "2026-10-02T00:00:00Z",
   "valid_end": "2026-10-03T00:00:00Z",
   "quality": {
-    "level": "research",
-    "message": "Daily WXF inference from a saved calibrated M1+ model and an independently calibrated magnetic/history X1+ model. Research/shadow guidance unless explicitly validated and marked operational."
+    "level": "degraded",
+    "message": "WXF input refresh unavailable; prior published WXF probabilities retained."
   },
   "input": {
     "series": "hmi.sharp_cea_720s_nrt",
@@ -57,7 +57,9 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "source": "https://services.swpc.noaa.gov/text/3-day-solar-geomag-predictions.txt",
       "issued": "2026-10-01T22:00:00+00:00",
       "valid_date": "2026-10-02"
-    }
+    },
+    "attempted_target_time": "2026-10-01T18:00:00Z",
+    "fallback_from_previous_cycle": true
   },
   "wxf_full_disk": {
     "method": "union_of_unique_region_components",
@@ -117,16 +119,10 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "m1": 14.6,
           "x1": 1.5,
           "source": "WXF sharp-mag-20260903-xstruct-history-v3 regional combination",
-          "quality": "research",
-          "method": "regional_union_with_explicit_fallbacks"
-        },
-        "swpc": {
-          "m1": 15.0,
-          "x1": 1.0,
-          "source": "NOAA/SWPC 3-day whole-disk flare forecast",
-          "quality": "official-operational",
-          "method": "official_swpc",
-          "issued": "2026-10-01T22:00:00+00:00",
+          "quality": "stale-fallback",
+          "method": "regional_union_with_explicit_fallbacks",
+          "issued": "2026-10-01T21:00:00Z",
+          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
           "valid_start": "2026-10-02T00:00:00+00:00",
           "valid_end": "2026-10-03T00:00:00+00:00"
         },
@@ -151,6 +147,17 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "valid_start": "2026-10-01T12:30:04Z",
           "valid_end": "2026-10-02T12:30:04Z",
           "note": "Human-operator-moderated global forecast published by SIDC."
+        },
+        "ccmc_amos": {
+          "m1": null,
+          "x1": 0.0,
+          "source": "NASA/CCMC Flare Scoreboard · CCMC AMOS",
+          "quality": "published-comparison",
+          "issued": "2026-10-02T00:30:00Z",
+          "valid_start": "2026-10-02T00:00:00Z",
+          "valid_end": "2026-10-03T00:00:00Z",
+          "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
+          "dataset_id": "AMOS_v1_FULLDISK"
         },
         "ccmc_assa24": {
           "m1": null,
@@ -179,9 +186,9 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "x1": 2.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC MagPy SHARP",
           "quality": "published-comparison",
-          "issued": "2026-10-02T00:02:17Z",
-          "valid_start": "2026-10-01T21:00:00Z",
-          "valid_end": "2026-10-02T21:00:00Z",
+          "issued": "2026-10-02T01:01:59Z",
+          "valid_start": "2026-10-01T22:00:00Z",
+          "valid_end": "2026-10-02T22:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "MagPy_SHARP_HMI_CEA_FULLDISK"
         },
@@ -195,6 +202,16 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "valid_end": "2026-10-02T17:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "SPS_FULLDISK"
+        },
+        "swpc": {
+          "m1": 15.0,
+          "x1": 1.0,
+          "source": "NOAA/SWPC 3-day whole-disk flare forecast",
+          "quality": "official-operational",
+          "method": "official_swpc",
+          "issued": "2026-10-01T22:00:00+00:00",
+          "valid_start": "2026-10-02T00:00:00+00:00",
+          "valid_end": "2026-10-03T00:00:00+00:00"
         }
       }
     },
@@ -212,16 +229,13 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "m1": 3.7,
           "x1": 0.2,
           "source": "WXF training-climatology coverage fallback",
-          "quality": "research-coverage-fallback",
+          "quality": "stale-fallback",
           "method": "morphology_fallback",
-          "component_id": "AR14533-fallback"
-        },
-        "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
-          "source": "NOAA/SWPC numbered-region flare forecast",
-          "quality": "official-operational",
-          "method": "official_swpc"
+          "component_id": "AR14533-fallback",
+          "issued": "2026-10-01T21:00:00Z",
+          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
+          "valid_start": "2026-10-02T00:00:00+00:00",
+          "valid_end": "2026-10-03T00:00:00+00:00"
         }
       },
       "drivers": [
@@ -243,16 +257,13 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "m1": 7.0,
           "x1": 1.0,
           "source": "Bloomfield et al. (2012) McIntosh-Poisson coverage fallback",
-          "quality": "research-coverage-fallback",
+          "quality": "stale-fallback",
           "method": "morphology_fallback",
-          "component_id": "AR14535-fallback"
-        },
-        "swpc": {
-          "m1": 5.0,
-          "x1": 1.0,
-          "source": "NOAA/SWPC numbered-region flare forecast",
-          "quality": "official-operational",
-          "method": "official_swpc"
+          "component_id": "AR14535-fallback",
+          "issued": "2026-10-01T21:00:00Z",
+          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
+          "valid_start": "2026-10-02T00:00:00+00:00",
+          "valid_end": "2026-10-03T00:00:00+00:00"
         },
         "mcstat": {
           "m1": 7.0,
@@ -264,6 +275,12 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "m1": 9.0,
           "x1": 0.0,
           "source": "SolarMonitor MCEVOL regional forecast",
+          "quality": "published-comparison"
+        },
+        "swpc": {
+          "m1": 5.0,
+          "x1": 1.0,
+          "source": "SWPC regional forecast as displayed by SolarMonitor",
           "quality": "published-comparison"
         }
       },
@@ -286,16 +303,13 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "m1": 3.7,
           "x1": 0.2,
           "source": "WXF training-climatology coverage fallback",
-          "quality": "research-coverage-fallback",
+          "quality": "stale-fallback",
           "method": "morphology_fallback",
-          "component_id": "AR14542-fallback"
-        },
-        "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
-          "source": "NOAA/SWPC numbered-region flare forecast",
-          "quality": "official-operational",
-          "method": "official_swpc"
+          "component_id": "AR14542-fallback",
+          "issued": "2026-10-01T21:00:00Z",
+          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
+          "valid_start": "2026-10-02T00:00:00+00:00",
+          "valid_end": "2026-10-03T00:00:00+00:00"
         }
       },
       "drivers": [
@@ -317,16 +331,13 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "m1": 0.0,
           "x1": 0.0,
           "source": "WXF sharp-mag-20260903-xstruct-history-v3 (independently calibrated magnetic M1/X1)",
-          "quality": "research",
+          "quality": "stale-fallback",
           "method": "sharp_magnetic",
-          "component_id": "HARP14056"
-        },
-        "swpc": {
-          "m1": 5.0,
-          "x1": 1.0,
-          "source": "NOAA/SWPC numbered-region flare forecast",
-          "quality": "official-operational",
-          "method": "official_swpc"
+          "component_id": "HARP14056",
+          "issued": "2026-10-01T21:00:00Z",
+          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
+          "valid_start": "2026-10-02T00:00:00+00:00",
+          "valid_end": "2026-10-03T00:00:00+00:00"
         },
         "mcstat": {
           "m1": 6.0,
@@ -338,6 +349,12 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "m1": 0.0,
           "x1": 0.0,
           "source": "SolarMonitor MCEVOL regional forecast",
+          "quality": "published-comparison"
+        },
+        "swpc": {
+          "m1": 5.0,
+          "x1": 1.0,
+          "source": "SWPC regional forecast as displayed by SolarMonitor",
           "quality": "published-comparison"
         }
       },
@@ -362,16 +379,13 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "m1": 1.0,
           "x1": 0.0,
           "source": "Bloomfield et al. (2012) McIntosh-Poisson coverage fallback",
-          "quality": "research-coverage-fallback",
+          "quality": "stale-fallback",
           "method": "morphology_fallback",
-          "component_id": "AR14545-fallback"
-        },
-        "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
-          "source": "NOAA/SWPC numbered-region flare forecast",
-          "quality": "official-operational",
-          "method": "official_swpc"
+          "component_id": "AR14545-fallback",
+          "issued": "2026-10-01T21:00:00Z",
+          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
+          "valid_start": "2026-10-02T00:00:00+00:00",
+          "valid_end": "2026-10-03T00:00:00+00:00"
         }
       },
       "drivers": [
@@ -380,10 +394,19 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ]
     }
   ],
+  "generation_status": {
+    "ok": false,
+    "used_previous_forecast": true,
+    "previous_issued": "2026-10-01T21:00:00Z",
+    "attempts": 3,
+    "exit_code": 2,
+    "checked_at": "2026-10-02T01:45:42Z",
+    "detail": "JSOC/SHARP retrieval failed after three attempts. The prior WXF magnetic probability was retained transparently while all independent forecast sources were refreshed."
+  },
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20261001&region=&indexnum=1",
-    "retrieved_at": "2026-10-02T00:49:58Z",
+    "retrieved_at": "2026-10-02T01:45:43Z",
     "table_date": "2026-10-01",
     "valid_start": "2026-10-01T00:00:00Z",
     "valid_end": "2026-10-02T00:00:00Z",
@@ -395,7 +418,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-10-02T00:49:58Z",
+    "generated_at": "2026-10-02T01:45:43Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
@@ -498,7 +521,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "ccmc_ccmc_amos": {
       "dataset_id": "AMOS_v1_FULLDISK",
       "label": "CCMC AMOS",
-      "ok": false,
+      "ok": true,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=AMOS_v1_FULLDISK",
       "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=AMOS_v1_FULLDISK&time.min=2026-09-27T21%3A00%3A00.0&time.max=2026-10-02T21%3A00%3A00.0&format=json&options=fields.all",
@@ -535,8 +558,42 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 4,
-      "detail": "Forecast window does not meaningfully overlap target (2026-10-01T00:00:00Z to 2026-10-02T00:00:00Z)"
+      "records": 5,
+      "issued": "2026-10-02T00:30:00Z",
+      "valid_start": "2026-10-02T00:00:00Z",
+      "valid_end": "2026-10-03T00:00:00Z",
+      "m1": null,
+      "x1": 0.0,
+      "selected_record": {
+        "start_window": "2026-10-02T00:00:00.0Z",
+        "end_window": "2026-10-03T00:00:00.0Z",
+        "issue_time": "2026-10-02T00:30:00.0Z",
+        "C": 0.2329,
+        "M": 0.0284,
+        "CPlus": "-1",
+        "MPlus": "-1",
+        "X": 0,
+        "C_uncertainty": "-1",
+        "M_uncertainty": "-1",
+        "CPlus_uncertainty": "-1",
+        "MPlus_uncertainty": "-1",
+        "X_uncertainty": "-1",
+        "C_value_lower": "-1",
+        "M_value_lower": "-1",
+        "CPlus_value_lower": "-1",
+        "MPlus_value_lower": "-1",
+        "X_value_lower": "-1",
+        "C_value_higher": "-1",
+        "M_value_higher": "-1",
+        "CPlus_value_higher": "-1",
+        "MPlus_value_higher": "-1",
+        "X_value_higher": "-1",
+        "C_level": "-1",
+        "M_level": "-1",
+        "CPlus_level": "-1",
+        "MPlus_level": "-1",
+        "X_level": "-1"
+      }
     },
     "ccmc_ccmc_asap": {
       "dataset_id": "ASAP_1_FULLDISK",
@@ -621,7 +678,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 97,
+      "records": 98,
       "issued": "2026-10-02T00:00:00Z",
       "valid_start": "2026-10-02T00:00:00Z",
       "valid_end": "2026-10-03T00:00:00Z",
@@ -698,7 +755,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 97,
+      "records": 98,
       "issued": "2026-10-02T00:00:00Z",
       "valid_start": "2026-10-02T00:00:00Z",
       "valid_end": "2026-10-02T12:00:00Z",
@@ -947,16 +1004,16 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 92,
-      "issued": "2026-10-02T00:02:17Z",
-      "valid_start": "2026-10-01T21:00:00Z",
-      "valid_end": "2026-10-02T21:00:00Z",
+      "records": 93,
+      "issued": "2026-10-02T01:01:59Z",
+      "valid_start": "2026-10-01T22:00:00Z",
+      "valid_end": "2026-10-02T22:00:00Z",
       "m1": 3.0,
       "x1": 2.0,
       "selected_record": {
-        "start_window": "2026-10-01T21:00:00.0Z",
-        "end_window": "2026-10-02T21:00:00.0Z",
-        "issue_time": "2026-10-02T00:02:17.0Z",
+        "start_window": "2026-10-01T22:00:00.0Z",
+        "end_window": "2026-10-02T22:00:00.0Z",
+        "issue_time": "2026-10-02T01:01:59.0Z",
         "C": "-1",
         "M": "-1",
         "CPlus": "-1",
@@ -965,7 +1022,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
         "C_uncertainty": "-1",
         "M_uncertainty": "-1",
         "CPlus_uncertainty": "-1",
-        "MPlus_uncertainty": 0.01,
+        "MPlus_uncertainty": 0.011,
         "X_uncertainty": 0.01,
         "C_value_lower": "-1",
         "M_value_lower": "-1",

@@ -32,42 +32,42 @@
           "uncertaintyMinusInHrs": 12.0,
           "uncertaintyPlusInHrs": 12.0,
           "confidenceInPercentage": null,
-          "predictedMaxKpLowerRange": null,
-          "predictedMaxKpUpperRange": null,
+          "predictedMaxKpLowerRange": 2.67,
+          "predictedMaxKpUpperRange": 4.67,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
           "differenceInHrs": null,
           "leadTimeInHrs": "77.45",
-          "predictionNote": "Please enter the following information for your prediction:\nSWPC ENLIL settings: \nENLIL version: 2.9e\nResolution: medium\nAmbient settings: a8b1\nEjecta settings: d4t1x1\nWSA version: 2.2\nGONG: mrbqs\n\nCME input parameters\nTime at 21.5Rs boundary:\nRadial velocity (km/s):\nLongitude (deg):\nLatitude (deg):\nHalf-angular width (deg):\n\nNotes:\nProduct: Forecast Discussion\nIssued: 2026 Oct 01 1230 UTC\nPrepared by the U.S. Dept. of Commerce, NOAA, Space Weather Prediction\nCenter\n\nSolar Activity\n\n.24 hr Summary...\nSolar activity was very low in the past 24h, with no C-class or greater\nflares observed. Both active regions currently numbered in the visible\ndisk showed some decay during the period: Region 4544 (S09W36, Cro/beta)\nand Region 4535 (N11W65, Dso/beta).\n\nNo Earth-directed CME was observed in the coronagraph imagery. \n\n.Forecast...\nSolar activity is likely to remain at very low levels with a chance for\nC-flares and a slight chance for an M-flare (R1-R2/Minor-Moderate)\nthrough 03 Oct.\n\nEnergetic Particle\n\n.24 hr Summary...\nThe greater than 2 MeV electron flux reached high levels, with a peak of\n3,120 pfu at 30/1435 UTC. The greater than 10 MeV proton flux continued\nat background levels.\n\n.Forecast...\nThe greater than 2 MeV electron flux is expected to reach high levels on\n01-02 Oct and moderate levels on 03 Oct due to the anticipated\ngeomagnetic activity on 02 Oct. The greater than 10 MeV proton flux is\nexpected to remain at background levels through 03 Oct.\n\nSolar Wind\n\n.24 hr Summary...\nSolar wind parameters showed ambient conditions with a speed between\n270-300 km/s and total interplanetary magnetic field (IMF) strength\nbelow 6 nT. The IMF vector components oscillated between -/+ 6 nT in\nresponse to multiple sector crossings occurred in the past 24h, and Bz\nremained predominantly positive. The phi angle varied accordingly.\n\n.Forecast...\nAmbient solar wind conditions are expected to prevail through mid-day on\n02 Oct, when disturbances caused by flanking influences from a CME\nthat left the Sun on 28 Sep are likely to be observed near Earth. On 03\nOct, solar wind enhancements might persist as the CME effects wane and\nthe influence of a positive polarity CH HSS are anticipated.\n\nGeospace\n\n.24 hr Summary...\nThe geomagnetic field remained quiet during the past 24h.\n\n.Forecast...\nThe geomagnetic field is expected to continue mostly quiet through\nmid-day on 02 Oct, when G1 (Minor) storm levels are likely due to\ninfluences from the 28 Sep CME. Active conditions are anticipated for 03\nOct as the CME impact wanes and a positive CH HSS influence begins near\nEarth."
+          "predictionNote": "Please enter the following information for your prediction:\nSWPC ENLIL settings: \nENLIL version: 2.9e\nResolution: medium\nAmbient settings: a8b1\nEjecta settings: d4t1x1\nWSA version: 2.2\nGONG: mrbqs\n\nCME input parameters\nTime at 21.5Rs boundary:\nRadial velocity (km/s):\nLongitude (deg):\nLatitude (deg):\nHalf-angular width (deg):\n\nNotes:\nProduct: Forecast Discussion\nIssued: 2026 Oct 01 1230 UTC\nPrepared by the U.S. Dept. of Commerce, NOAA, Space Weather Prediction\nCenter\n\nSolar Activity\n\n.24 hr Summary...\nSolar activity was very low in the past 24h, with no C-class or greater\nflares observed. Both active regions currently numbered in the visible\ndisk showed some decay during the period: Region 4544 (S09W36, Cro/beta)\nand Region 4535 (N11W65, Dso/beta).\n\nNo Earth-directed CME was observed in the coronagraph imagery. \n\n.Forecast...\nSolar activity is likely to remain at very low levels with a chance for\nC-flares and a slight chance for an M-flare (R1-R2/Minor-Moderate)\nthrough 03 Oct.\n\nEnergetic Particle\n\n.24 hr Summary...\nThe greater than 2 MeV electron flux reached high levels, with a peak of\n3,120 pfu at 30/1435 UTC. The greater than 10 MeV proton flux continued\nat background levels.\n\n.Forecast...\nThe greater than 2 MeV electron flux is expected to reach high levels on\n01-02 Oct and moderate levels on 03 Oct due to the anticipated\ngeomagnetic activity on 02 Oct. The greater than 10 MeV proton flux is\nexpected to remain at background levels through 03 Oct.\n\nSolar Wind\n\n.24 hr Summary...\nSolar wind parameters showed ambient conditions with a speed between\n270-300 km/s and total interplanetary magnetic field (IMF) strength\nbelow 6 nT. The IMF vector components oscillated between -/+ 6 nT in\nresponse to multiple sector crossings occurred in the past 24h, and Bz\nremained predominantly positive. The phi angle varied accordingly.\n\n.Forecast...\nAmbient solar wind conditions are expected to prevail through mid-day on\n02 Oct, when disturbances caused by flanking influences from a CME\nthat left the Sun on 28 Sep are likely to be observed near Earth. On 03\nOct, solar wind enhancements might persist as the CME effects wane and\nthe influence of a positive polarity CH HSS are anticipated.\n\nGeospace\n\n.24 hr Summary...\nThe geomagnetic field remained quiet during the past 24h.\n\n.Forecast...\nThe geomagnetic field is expected to continue mostly quiet through\nmid-day on 02 Oct, when G1 (Minor) storm levels are likely due to\ninfluences from the 28 Sep CME. Active conditions are anticipated for 03\nOct as the CME impact wanes and a positive CH HSS influence begins near\nEarth.\n\nProduct: 3-Day Forecast\nIssued: 2026 Oct 02 1230 UTC\nPrepared by the U.S. Dept. of Commerce, NOAA, Space Weather Prediction\nCenter\n\nA. NOAA Geomagnetic Activity Observation and Forecast\n\nThe greatest observed 3 hr Kp over the past 24 hours was 2 (below NOAA\nScale levels).\nThe greatest expected 3 hr Kp for Oct 02-Oct 04 2026 is 4.67 (NOAA Scale\nG1).\n\nNOAA Kp index breakdown Oct 02-Oct 04 2026\n\n             Oct 02       Oct 03       Oct 04\n00-03UT       1.00         3.67         3.67     \n03-06UT       1.00         3.00         3.67     \n06-09UT       0.33         2.67         2.67     \n09-12UT       0.67         1.67         2.67     \n12-15UT       4.33         1.67         2.67     \n15-18UT       3.67         2.67         3.67     \n18-21UT       4.67 (G1)    3.67         4.67 (G1)\n21-00UT       4.67 (G1)    3.67         3.67     \n\nRationale: G1 (Minor) geomagnetic storms are likely on 02 Oct (due to\nthe anticipated glancing influences of the 28 Sep CME) and 04 Oct (as\nthe CME effects wanes and a +CH/HSS becomes geoeffective).\n\nB. NOAA Solar Radiation Activity Observation and Forecast\n\nSolar radiation, as observed by NOAA GOES-18 over the past 24 hours, was\nbelow S-scale storm level thresholds.\n\nSolar Radiation Storm Forecast for Oct 02-Oct 04 2026\n\n              Oct 02  Oct 03  Oct 04\nS1 or greater    1%      1%      1%\n\nRationale: No S1 (Minor) or greater solar radiation storms are expected.\nNo significant active region activity favorable for radiation storm\nproduction is forecast.\n\nC. NOAA Radio Blackout Activity and Forecast\n\nNo radio blackouts were observed over the past 24 hours.\n\nRadio Blackout Forecast for Oct 02-Oct 04 2026\n\n              Oct 02        Oct 03        Oct 04\nR1-R2           10%           10%           10%\nR3 or greater    1%            1%            1%\n\nRationale: There is a slight chance for R1-R2 (Minor) radio blackouts on\n02-04 Oct."
         },
         {
           "predictedMethodName": "Average of all Methods",
-          "submissionTime": "2026-10-01T17:11Z",
+          "submissionTime": "2026-10-02T18:04Z",
           "predictedArrivalTime": "2026-10-04T01:17Z",
           "uncertaintyMinusInHrs": null,
           "uncertaintyPlusInHrs": null,
           "confidenceInPercentage": null,
-          "predictedMaxKpLowerRange": 3.0,
-          "predictedMaxKpUpperRange": 4.0,
+          "predictedMaxKpLowerRange": 2.835,
+          "predictedMaxKpUpperRange": 4.335,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
           "differenceInHrs": null,
-          "leadTimeInHrs": "56.10",
+          "leadTimeInHrs": "31.22",
           "predictionNote": "Auto-generated average of all methods forecast."
         },
         {
           "predictedMethodName": "Median of all Methods",
-          "submissionTime": "2026-10-01T17:11Z",
+          "submissionTime": "2026-10-02T18:04Z",
           "predictedArrivalTime": "2026-10-04T01:17Z",
           "uncertaintyMinusInHrs": null,
           "uncertaintyPlusInHrs": null,
           "confidenceInPercentage": null,
-          "predictedMaxKpLowerRange": 3.0,
-          "predictedMaxKpUpperRange": 4.0,
+          "predictedMaxKpLowerRange": 2.835,
+          "predictedMaxKpUpperRange": 4.335,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
           "differenceInHrs": null,
-          "leadTimeInHrs": "56.10",
+          "leadTimeInHrs": "31.22",
           "predictionNote": "Auto-generated median of all methods forecast."
         }
       ]
@@ -971,7 +971,7 @@
     }
   ],
   "source": "https://ccmc.gsfc.nasa.gov/CMESB-Earth/WS/get/predictions?CMEtimeStart=2026-09-02&CMEtimeEnd=2026-10-03&closeOutCMEsOnly=false&skipNoArrivalObservedCMEs=false",
-  "retrievedAt": "2026-10-02T13:49:22.028607+00:00",
+  "retrievedAt": "2026-10-02T19:13:51.457886+00:00",
   "windowStart": "2026-09-02",
   "windowEnd": "2026-10-03"
 }

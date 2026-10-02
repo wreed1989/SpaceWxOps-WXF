@@ -1,24 +1,24 @@
 {
   "schemaVersion": "ops-delivery-1",
-  "checkedAt": "2026-10-01T20:20:08.452226+00:00",
+  "checkedAt": "2026-10-02T00:43:22.689403+00:00",
   "products": {
     "scoreboard": {
       "status": "available",
       "events": 12,
-      "retrievedAt": "2026-10-01T20:20:09.004294+00:00",
+      "retrievedAt": "2026-10-02T00:43:23.173680+00:00",
       "attempts": []
     },
     "refm": {
       "status": "available",
-      "issuedAt": "2026-10-01T00:14:00+00:00"
+      "issuedAt": "2026-10-02T00:14:00+00:00"
     },
     "huxtAnimation": {
       "path": "huxt-animation.mp4",
       "sourceURL": "https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_animation_latest.mp4",
-      "retrievedAt": "2026-10-01T20:20:10.404605+00:00",
-      "httpLastModified": "Thu, 01 Oct 2026 18:00:06 GMT",
-      "sha256": "b15362f1f4154260f11bdda9c55931413a091d62b42223a1835444ba87c19aa7",
-      "bytes": 836587,
+      "retrievedAt": "2026-10-02T00:43:24.507928+00:00",
+      "httpLastModified": "Fri, 02 Oct 2026 00:00:06 GMT",
+      "sha256": "a67e36ac448d878a5d35a10e61d4dbea44c6b330b878d963437079e465746f00",
+      "bytes": 842780,
       "kind": "video",
       "frames": null,
       "status": "available",
@@ -27,7 +27,7 @@
     "m2mAnimation": {
       "path": "m2m-animation.gif",
       "sourceURL": "https://iswa.gsfc.nasa.gov/ENSEMBLE/2026-09-28_ncmes1_sims27_M2M-SWAO102/20260928_224600_ncmes1_sims27_M2M-SWAO102_anim_tim-den.gif",
-      "retrievedAt": "2026-10-01T20:20:11.036560+00:00",
+      "retrievedAt": "2026-10-02T00:43:25.043088+00:00",
       "httpLastModified": "Tue, 29 Sep 2026 00:22:26 GMT",
       "sha256": "f5f36aaf3130a5becc545dcc50de725b189e3c74d874c87cf8af34ea8097144f",
       "bytes": 1747766,
@@ -39,9 +39,9 @@
       "method": "Ensemble WSA-ENLIL + Cone (NASA M2M)"
     },
     "electron-fluence.json": {
-      "status": "withheld",
-      "reason": "Insufficient recent electron coverage",
-      "issuedAt": "2026-10-01T20:20:07.727447+00:00",
+      "status": "experimental",
+      "issuedAt": "2026-10-02T00:43:22.031172+00:00",
+      "dataAsOf": "2026-10-02T00:00:00+00:00",
       "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732"
     }
   }

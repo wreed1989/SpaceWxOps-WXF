@@ -1,27 +1,44 @@
-# Maintained repository inventory
+# Repository retention and recovery
 
-Consolidation baseline: `d68b02a449054104fad8ccdf9dfb1b0be7710ed2`.
+Cleanup date: **October 3, 2026**. Immutable pre-cleanup commit: `97e029c6840308112fc5b8a0b565210f13f0b8d7`.
 
-| Area | Maintained source / decision |
+## Scope
+
+Keep the current dashboard, its source/build dependencies, scheduled publishing, operational recovery paths, scientific verification, and compact reproducibility records. Remove disconnected experimental lanes and bulky offline outputs. Source layout and public feed URLs are not renamed.
+
+The baseline tree contains **317 tracked files, 118,304,308 bytes** (uncompressed contents, excluding Git history). The 34 retired files below total **20,875,306 bytes** before documentation and integrity-test changes. A temporary inventory test used during the audit is removed from the final change.
+
+| Retired from the current tree | Reason |
 | --- | --- |
-| Dashboard | `SpaceWxOps_Coronal_Hole_HSS_Outlook.html`; the previous dashboard's base DOM IDs, embedded data blocks, flare desk, HMI loop, and external source interfaces are present. The newer document adds registered CH/HSS functionality and intentionally removes the alternate model/training interface. Old dashboard URL and root index redirect to it. |
-| CH/HSS processing | `chhss/core.py`, `pipeline.py`, `live.py`, `aia_quality.py`; recovered from successful live runtime `4c0e78c224dfec00f0eeef81cda4201df353acb7`. Historical core/pipeline were identical at the former backfill pin `f99e2b556a49be2dcbb94e20ed20c32e302dabbc`. Package imports, CLI, and publication are maintained in this checkout. Science functions/recipe are unchanged. |
-| Dashboard publication | `chhss/publish.py` produces the previously missing feed/history endpoints. The HTML decodes the worker's run-length rasters and consumes its actual `chhss-validation-1` report. |
-| Backfill evidence | Complete run evidence goes to a unique release; `scripts/archive_backfill.py` produces its checksummed manifest. Only compact records are staged by the workflow. |
-| 2024 partial observations | Removed at the owner's request, without a replacement release. The 2.4 KB performance report remains under `docs/validation/`; it is not current-period data. |
-| Retired workflow | The one-off `chhss-persist-quarter.yml` and unused root `CHHSS_Automated_Data_Workflow.yml` are removed. No older embedded Python implementation is maintained. |
-| Flare inference | `sharp_mag_pipeline.py`, frozen model artifacts, and the existing daily/recovery/external workflows remain active. |
-| External flare adapter | `external_flare_guidance_strict_v4.py` is the workflow entry point. It actively imports `external_flare_guidance.py`, `external_flare_guidance_fixed.py`, and `external_flare_guidance_strict_v3.py` for acquisition, strict catalog matching and schema decoding. These are dependencies, not removable duplicate versions. Unreferenced `external_flare_guidance_v2.py` is removed. |
-| Research datasets | Existing complete derived training/evaluation datasets, model artifacts, builders, manifests, and reports remain. They are intentionally reproducible scientific inputs rather than per-run rasters. See `DATASETS.md`. |
+| `research/cross-era/` and its four `datasets/` artifacts | Standalone retrospective experiment; no maintained runtime consumer found. |
+| `research/sdo-temporal/` and its three `datasets/` artifacts | Standalone image-feature experiment; no maintained runtime consumer found. |
+| `research/flaredb/` and `audit_flaredb_coverage.py` | Unreferenced offline coverage audit. |
+| `ccmc_diagnostic.json` and `.github/workflows/ccmc-diagnostic.yml` | One-off catalog inspection, not the active external flare adapter. |
+| `.github/workflows/solar-flare-review.yml` | One-off source/observation capture. The recurring `solar-flare-evidence.yml` publisher is retained. |
+| Electron `hindcast-predictions.csv.gz`, `event-response.json`, and `event-response.png` | Offline per-case results and event-study output; the runtime uses compact evaluation reports, not these bulky files. Their evidence links now point to the exact archived versions. |
 
-Both CH/HSS workflows now execute the triggering checkout. Branch runs upload test evidence but cannot write production products or releases. Main-branch publication retries against the latest main and stages only `chhss-data`. Existing flare publication guards remain unchanged.
+## Dependencies deliberately retained
 
-The old setup guide described a different, unused embedded worker. It is replaced by instructions matching the active implementation, including the actual 18-hour daily-truth gate and the absence of staged JSOC exports. No scientific improvement or operational qualification is inferred from consolidation.
+- All three electron model arrays: `model.npz`, `model-guidance.npz`, and `model-no-cme.npz`. The publisher selects guidance/fallback models according to source availability. Their combined size is **71,327,718 bytes**. Removing the larger pair would disable an existing forecast path.
+- `datasets/sharp_mag_training_table_v2.csv.gz`: consumed during live flare evidence generation, as well as offline verification.
+- The full active external-adapter import chain, including `external_flare_guidance_fixed.py` and `external_flare_guidance_strict_v3.py`.
+- Model manifests, compact validation reports, scientific tests, licenses and the HUXt ephemeris. In particular, `docs/validation/2024-q1.json` is a small regression fixture for rejecting old-recipe validation, not current-period evidence.
+- CH/HSS backfill manifests, current feeds, rolling ledgers, and as-issued flare/electron histories. These are functional inputs or evidence, not temporary cache directories.
+- `index.html` and the 311-byte old-dashboard redirect. Keeping bookmarks working costs less than removing a working interface.
+- Scientific builders, model-reassessment tools, and documentation needed to reproduce or interpret the retained models. No accuracy claim changes as a result of file cleanup.
 
-Large binaries are removed only from the current tree. Commit history, older source pins and branches are preserved; reducing stored Git history would be a separate migration. Live ledger files are bounded to 90 days. Temporary source caches, raw FITS, full observation directories and backfill ZIPs are ignored; the publisher stages an explicit compact allowlist after release verification.
+The active HTML, numerical code, frozen model files, feed snapshots, and scheduled live workflows are byte-for-byte unchanged in this cleanup. Existing tests are preserved; a small repository-integrity test checks retained dataset hashes and critical dependency paths.
 
-## September 2026 acceptance
+## Recover historical research
 
-- [Live run 35416523726](https://github.com/wreed1989/SpaceWxOps-WXF/actions/runs/35416523726) succeeded with actual source time `2026-09-19T01:48:04Z` (September 18 in US Central time). HMI is explicitly degraded by `NOCOSMICRAY`; temporal agreement supports positive E/M signs, with W unknown.
-- [September 1–7 run 35416524934](https://github.com/wreed1989/SpaceWxOps-WXF/actions/runs/35416524934) acquired all seven requested days. Five targets had paired daily truth, two lacked adequate target/baseline coverage. MAE is **116.8 km/s**, versus **86.3 km/s** for recurrence. This small recent test does not establish representative skill and does not qualify the model for operational promotion.
-- All seven retained mask hashes/case reconstructions and the saved metrics were verified locally against the retained hourly truth. [Complete recent run evidence](https://github.com/wreed1989/SpaceWxOps-WXF/releases/tag/chhss-2026-09-01-2026-09-08-35416524934-1) was downloaded again and byte-compared after release upload. The compact manifest is in `chhss-data/backfill/2026-09-01_2026-09-08/archive.json`.
+All retired files remain available in the [complete pre-cleanup source tree](https://github.com/wreed1989/SpaceWxOps-WXF/tree/97e029c6840308112fc5b8a0b565210f13f0b8d7). The earlier [consolidation record](https://github.com/wreed1989/SpaceWxOps-WXF/blob/97e029c6840308112fc5b8a0b565210f13f0b8d7/docs/CONSOLIDATION.md) preserves CH/HSS acceptance results and links to archived full backfill evidence.
+
+To inspect the original tree in a separate local directory after fetching its history:
+
+```bash
+git worktree add --detach ../SpaceWxOps-before-cleanup 97e029c6840308112fc5b8a0b565210f13f0b8d7
+```
+
+A shallow clone may first need `git fetch origin 97e029c6840308112fc5b8a0b565210f13f0b8d7`. The separate worktree avoids mixing retired datasets with current model inputs. The new ignore rules keep retired output paths and local workflow evidence from being accidentally recommitted.
+
+This cleanup does **not** rewrite Git history, delete delivery branches, expire releases, purge Actions artifacts, or shrink all historical repository objects. Those are distinct operations with different recovery and compatibility consequences. Further substantial source-tree reduction requires a deliberate model-storage/deployment change, not guessing which live model to delete.

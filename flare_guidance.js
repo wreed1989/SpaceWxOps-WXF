@@ -5,98 +5,96 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "script_version": "2.0.0",
   "operational": false,
   "probability_scale": "percent",
-  "issued": "2026-10-02T21:00:00Z",
-  "valid_start": "2026-10-03T00:00:00Z",
-  "valid_end": "2026-10-04T00:00:00Z",
+  "issued": "2026-10-04T21:00:00Z",
+  "valid_start": "2026-10-05T00:00:00Z",
+  "valid_end": "2026-10-06T00:00:00Z",
   "quality": {
-    "level": "degraded",
-    "message": "WXF input refresh unavailable; prior published WXF probabilities retained."
+    "level": "research",
+    "message": "Daily WXF inference from a saved calibrated M1+ model and an independently calibrated magnetic/history X1+ model. Research/shadow guidance unless explicitly validated and marked operational."
   },
   "input": {
     "series": "hmi.sharp_cea_720s_nrt",
-    "target_time": "2026-10-01T18:00:00Z",
-    "latest_record": "2026-10-01T18:00:00Z",
-    "oldest_retained_record": "2026-10-01T18:00:00Z",
-    "raw_records": 1440,
-    "retained_regions": 1,
+    "target_time": "2026-10-04T18:00:00Z",
+    "latest_record": "2026-10-04T18:00:00Z",
+    "oldest_retained_record": "2026-10-04T18:00:00Z",
+    "raw_records": 1817,
+    "retained_regions": 2,
     "mapping": {
       "skipped_multi_region_harps": 0,
-      "skipped_unmapped_harps": 7,
+      "skipped_unmapped_harps": 11,
       "expanded_rows": 5
     },
     "quality": {
       "input": 5,
-      "rejected_longitude": 4,
-      "after_longitude": 1,
+      "rejected_longitude": 3,
+      "after_longitude": 2,
       "quality_missing": 0,
       "quality_top_values": {
-        "0x00010400": 1
+        "0x00010400": 2
       },
       "rejected_quality": 0,
-      "after_quality": 1,
+      "after_quality": 2,
       "rejected_harp_merge": 0,
-      "after_harp_merge": 1,
+      "after_harp_merge": 2,
       "rejected_observer_velocity": 0,
-      "after_observer_velocity": 1,
+      "after_observer_velocity": 2,
       "rejected_missing_mapping": 0,
-      "after_mapping": 1,
+      "after_mapping": 2,
       "min_finite_parameters": 12,
       "rejected_parameter_completeness": 0,
-      "after_parameter_completeness": 1,
-      "retained": 1
+      "after_parameter_completeness": 2,
+      "retained": 2
     },
     "flare_history": {
       "available": true,
       "source": "https://services.swpc.noaa.gov/json/edited_events.json",
-      "events": 4,
-      "m1_plus_events": 4,
+      "events": 1,
+      "m1_plus_events": 1,
       "x1_plus_events": 0
     },
     "swpc_full_disk": {
       "available": true,
       "source": "https://services.swpc.noaa.gov/text/3-day-solar-geomag-predictions.txt",
-      "issued": "2026-10-01T22:00:00+00:00",
-      "valid_date": "2026-10-02"
-    },
-    "attempted_target_time": "2026-10-02T18:00:00Z",
-    "fallback_from_previous_cycle": true
+      "issued": "2026-10-04T22:00:00+00:00",
+      "valid_date": "2026-10-05"
+    }
   },
   "wxf_full_disk": {
     "method": "union_of_unique_region_components",
     "formula": "1 - product(1 - regional probability)",
     "components": 5,
     "numbered_regions": 5,
-    "sharp_regions": 1,
+    "sharp_regions": 2,
     "shared_harp_region_values": 0,
-    "fallback_regions": 4,
+    "fallback_regions": 3,
     "unnumbered_or_farside_residual": false,
     "note": "Coverage aggregate, not a separately trained full-disk classifier. Shared HARP probabilities are included once. The product formula assumes independent components and is not a validated full-disk calibration."
   },
   "wxf_region_components": [
     {
-      "component_id": "AR14533-fallback",
+      "component_id": "AR14544-fallback",
       "m1": 3.698416818063846,
       "x1": 0.24656112120425644
     },
     {
-      "component_id": "AR14535-fallback",
-      "m1": 7.000000000000001,
-      "x1": 1.0
-    },
-    {
-      "component_id": "AR14542-fallback",
-      "m1": 3.698416818063846,
-      "x1": 0.24656112120425644
-    },
-    {
-      "component_id": "AR14545-fallback",
-      "m1": 1.0,
+      "component_id": "AR14546-fallback",
+      "m1": 2.0,
       "x1": 0.0
     },
     {
-      "component_id": "HARP14056",
-      "m1": 0.03117397214306953,
-      "x1": 0.02015386760237846
+      "component_id": "AR14548-fallback",
+      "m1": 3.0,
+      "x1": 0.0
+    },
+    {
+      "component_id": "HARP14058",
+      "m1": 1.3783360533072644,
+      "x1": 0.09830111664617905
+    },
+    {
+      "component_id": "HARP14067",
+      "m1": 1.1435717095711704,
+      "x1": 0.07997718475344756
     }
   ],
   "regions": [
@@ -109,33 +107,39 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       },
       "drivers": [
         "5 numbered active regions represented",
-        "1 SHARP region values; 4 fallbacks",
+        "2 SHARP region values; 3 fallbacks",
         "Regional probabilities combined as 1 - product(1 - p_i)",
         "Shared HARPs counted once in the full-disk aggregate",
         "No unnumbered or farside residual term"
       ],
       "members": {
         "sharpmag": {
-          "m1": 14.6,
-          "x1": 1.5,
+          "m1": 10.7,
+          "x1": 0.4,
           "source": "WXF sharp-mag-20260903-xstruct-history-v3 regional combination",
-          "quality": "stale-fallback",
-          "method": "regional_union_with_explicit_fallbacks",
-          "issued": "2026-10-02T21:00:00Z",
-          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
-          "valid_start": "2026-10-02T00:00:00+00:00",
-          "valid_end": "2026-10-03T00:00:00+00:00"
+          "quality": "research",
+          "method": "regional_union_with_explicit_fallbacks"
+        },
+        "swpc": {
+          "m1": 5.0,
+          "x1": 1.0,
+          "source": "NOAA/SWPC 3-day whole-disk flare forecast",
+          "quality": "official-operational",
+          "method": "official_swpc",
+          "issued": "2026-10-04T22:00:00+00:00",
+          "valid_start": "2026-10-05T00:00:00+00:00",
+          "valid_end": "2026-10-06T00:00:00+00:00"
         },
         "mcstat": {
           "m1": 7.0,
-          "x1": 1.0,
-          "source": "SolarMonitor MCSTAT dominant-region proxy (maximum of 2 regional forecasts)",
+          "x1": 0.0,
+          "source": "SolarMonitor MCSTAT dominant-region proxy (maximum of 4 regional forecasts)",
           "quality": "published-comparison"
         },
         "mcevol": {
-          "m1": 3.0,
+          "m1": 9.0,
           "x1": 0.0,
-          "source": "SolarMonitor MCEVOL dominant-region proxy (maximum of 2 regional forecasts)",
+          "source": "SolarMonitor MCEVOL dominant-region proxy (maximum of 4 regional forecasts)",
           "quality": "published-comparison"
         },
         "sidc": {
@@ -143,30 +147,19 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "x1": 0.0,
           "source": "SIDC 24-hour Global Flare Forecast",
           "quality": "published-comparison",
-          "issued": "2026-10-03T12:30:12Z",
-          "valid_start": "2026-10-03T12:30:12Z",
-          "valid_end": "2026-10-04T12:30:12Z",
+          "issued": "2026-10-04T12:30:16Z",
+          "valid_start": "2026-10-04T12:30:16Z",
+          "valid_end": "2026-10-05T12:30:16Z",
           "note": "Human-operator-moderated global forecast published by SIDC."
-        },
-        "ccmc_amos": {
-          "m1": null,
-          "x1": 0.09,
-          "source": "NASA/CCMC Flare Scoreboard · CCMC AMOS",
-          "quality": "published-comparison",
-          "issued": "2026-10-03T00:30:00Z",
-          "valid_start": "2026-10-03T00:00:00Z",
-          "valid_end": "2026-10-04T00:00:00Z",
-          "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
-          "dataset_id": "AMOS_v1_FULLDISK"
         },
         "ccmc_assa24": {
           "m1": null,
           "x1": 0.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC ASSA 24H",
           "quality": "published-comparison",
-          "issued": "2026-10-03T00:00:00Z",
-          "valid_start": "2026-10-03T00:00:00Z",
-          "valid_end": "2026-10-04T00:00:00Z",
+          "issued": "2026-10-04T23:00:00Z",
+          "valid_start": "2026-10-04T23:00:00Z",
+          "valid_end": "2026-10-05T23:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "ASSA_24H_1_FULLDISK"
         },
@@ -175,31 +168,20 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "x1": 0.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC ASSA",
           "quality": "published-comparison",
-          "issued": "2026-10-03T00:00:00Z",
-          "valid_start": "2026-10-03T00:00:00Z",
-          "valid_end": "2026-10-03T12:00:00Z",
+          "issued": "2026-10-04T23:00:00Z",
+          "valid_start": "2026-10-04T23:00:00Z",
+          "valid_end": "2026-10-05T11:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "ASSA_1_FULLDISK"
         },
-        "ccmc_magpy_los": {
+        "ccmc_magpy": {
           "m1": 1.0,
           "x1": 1.0,
-          "source": "NASA/CCMC Flare Scoreboard · CCMC MagPy HMI LOS",
-          "quality": "published-comparison",
-          "issued": "2026-10-03T03:05:27Z",
-          "valid_start": "2026-10-03T00:00:00Z",
-          "valid_end": "2026-10-04T00:00:00Z",
-          "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
-          "dataset_id": "MagPy-HMI-LOS_FULLDISK"
-        },
-        "ccmc_magpy": {
-          "m1": 2.0,
-          "x1": 2.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC MagPy SHARP",
           "quality": "published-comparison",
-          "issued": "2026-10-03T03:02:31Z",
-          "valid_start": "2026-10-03T00:00:00Z",
-          "valid_end": "2026-10-04T00:00:00Z",
+          "issued": "2026-10-04T23:03:03Z",
+          "valid_start": "2026-10-04T20:00:00Z",
+          "valid_end": "2026-10-05T20:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "MagPy_SHARP_HMI_CEA_FULLDISK"
         },
@@ -208,227 +190,231 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "x1": 1.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC SPS",
           "quality": "published-comparison",
-          "issued": "2026-10-02T17:00:00Z",
-          "valid_start": "2026-10-02T17:00:00Z",
-          "valid_end": "2026-10-03T17:00:00Z",
+          "issued": "2026-10-04T17:00:00Z",
+          "valid_start": "2026-10-04T17:00:00Z",
+          "valid_end": "2026-10-05T17:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "SPS_FULLDISK"
-        },
-        "swpc": {
-          "m1": 5.0,
-          "x1": 1.0,
-          "source": "NOAA/SWPC 3-day whole-disk flare forecast",
-          "quality": "official-operational",
-          "method": "official_swpc",
-          "issued": "2026-10-02T22:00:00+00:00",
-          "valid_start": "2026-10-03T00:00:00+00:00",
-          "valid_end": "2026-10-04T00:00:00+00:00"
         }
       }
     },
     {
-      "id": "AR14533",
-      "label": "AR 14533",
-      "location": "S13W87",
-      "mcintosh": "",
-      "quality": {
-        "level": "fallback",
-        "message": "Numbered region is represented, but no accepted live SHARP vector was available; this is not a SHARP magnetic inference."
-      },
-      "members": {
-        "sharpmag": {
-          "m1": 3.7,
-          "x1": 0.2,
-          "source": "WXF training-climatology coverage fallback",
-          "quality": "stale-fallback",
-          "method": "morphology_fallback",
-          "component_id": "AR14533-fallback",
-          "issued": "2026-10-02T21:00:00Z",
-          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
-          "valid_start": "2026-10-02T00:00:00+00:00",
-          "valid_end": "2026-10-03T00:00:00+00:00"
-        }
-      },
-      "drivers": [
-        "McIntosh class unavailable or absent from published table",
-        "No accepted live single-region SHARP vector"
-      ]
-    },
-    {
-      "id": "AR14535",
-      "label": "AR 14535",
-      "location": "N11W72",
-      "mcintosh": "DSO",
-      "quality": {
-        "level": "fallback",
-        "message": "Numbered region is represented, but no accepted live SHARP vector was available; this is not a SHARP magnetic inference."
-      },
-      "members": {
-        "sharpmag": {
-          "m1": 7.0,
-          "x1": 1.0,
-          "source": "Bloomfield et al. (2012) McIntosh-Poisson coverage fallback",
-          "quality": "stale-fallback",
-          "method": "morphology_fallback",
-          "component_id": "AR14535-fallback",
-          "issued": "2026-10-02T21:00:00Z",
-          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
-          "valid_start": "2026-10-02T00:00:00+00:00",
-          "valid_end": "2026-10-03T00:00:00+00:00"
-        },
-        "mcstat": {
-          "m1": 7.0,
-          "x1": 1.0,
-          "source": "SolarMonitor MCSTAT regional forecast",
-          "quality": "published-comparison"
-        },
-        "mcevol": {
-          "m1": 3.0,
-          "x1": 0.0,
-          "source": "SolarMonitor MCEVOL regional forecast",
-          "quality": "published-comparison"
-        },
-        "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
-          "source": "SWPC regional forecast as displayed by SolarMonitor",
-          "quality": "published-comparison"
-        }
-      },
-      "drivers": [
-        "McIntosh DSO",
-        "No accepted live single-region SHARP vector"
-      ]
-    },
-    {
-      "id": "AR14542",
-      "label": "AR 14542",
-      "location": "S19W77",
-      "mcintosh": "",
-      "quality": {
-        "level": "fallback",
-        "message": "Numbered region is represented, but no accepted live SHARP vector was available; this is not a SHARP magnetic inference."
-      },
-      "members": {
-        "sharpmag": {
-          "m1": 3.7,
-          "x1": 0.2,
-          "source": "WXF training-climatology coverage fallback",
-          "quality": "stale-fallback",
-          "method": "morphology_fallback",
-          "component_id": "AR14542-fallback",
-          "issued": "2026-10-02T21:00:00Z",
-          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
-          "valid_start": "2026-10-02T00:00:00+00:00",
-          "valid_end": "2026-10-03T00:00:00+00:00"
-        }
-      },
-      "drivers": [
-        "McIntosh class unavailable or absent from published table",
-        "No accepted live single-region SHARP vector"
-      ]
-    },
-    {
       "id": "AR14544",
       "label": "AR 14544",
-      "location": "S09W43",
-      "mcintosh": "AXX",
+      "location": "S09W85",
+      "mcintosh": "",
       "quality": {
-        "level": "research",
-        "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=38.2°"
+        "level": "fallback",
+        "message": "Numbered region is represented, but no accepted live SHARP vector was available; this is not a SHARP magnetic inference."
       },
       "members": {
         "sharpmag": {
+          "m1": 3.7,
+          "x1": 0.2,
+          "source": "WXF training-climatology coverage fallback",
+          "quality": "research-coverage-fallback",
+          "method": "morphology_fallback",
+          "component_id": "AR14544-fallback"
+        },
+        "swpc": {
           "m1": 0.0,
           "x1": 0.0,
-          "source": "WXF sharp-mag-20260903-xstruct-history-v3 (independently calibrated magnetic M1/X1)",
-          "quality": "stale-fallback",
-          "method": "sharp_magnetic",
-          "component_id": "HARP14056",
-          "issued": "2026-10-02T21:00:00Z",
-          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
-          "valid_start": "2026-10-02T00:00:00+00:00",
-          "valid_end": "2026-10-03T00:00:00+00:00"
+          "source": "NOAA/SWPC numbered-region flare forecast",
+          "quality": "official-operational",
+          "method": "official_swpc"
         }
       },
       "drivers": [
-        "M1+: lower active magnetic area",
-        "M1+: lower strong-gradient PIL flux",
-        "X1+ direct: lower active magnetic area",
-        "X1+ direct: lower strong-gradient PIL flux"
+        "McIntosh class unavailable or absent from published table",
+        "No accepted live single-region SHARP vector"
       ]
     },
     {
       "id": "AR14545",
       "label": "AR 14545",
-      "location": "N20E61",
-      "mcintosh": "BXO",
+      "location": "N20E20",
+      "mcintosh": "CRO",
+      "quality": {
+        "level": "research",
+        "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=21.5°"
+      },
+      "members": {
+        "sharpmag": {
+          "m1": 1.4,
+          "x1": 0.1,
+          "source": "WXF sharp-mag-20260903-xstruct-history-v3 (independently calibrated magnetic M1/X1)",
+          "quality": "research",
+          "method": "sharp_magnetic",
+          "component_id": "HARP14058"
+        },
+        "swpc": {
+          "m1": 1.0,
+          "x1": 1.0,
+          "source": "NOAA/SWPC numbered-region flare forecast",
+          "quality": "official-operational",
+          "method": "official_swpc"
+        },
+        "mcstat": {
+          "m1": 7.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCSTAT regional forecast",
+          "quality": "published-comparison"
+        },
+        "mcevol": {
+          "m1": 9.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCEVOL regional forecast",
+          "quality": "published-comparison"
+        }
+      },
+      "drivers": [
+        "M1+: falling total unsigned flux",
+        "M1+: falling total free-energy proxy",
+        "X1+ direct: rising mean vertical-field gradient",
+        "X1+ direct: lower mean total-field gradient"
+      ]
+    },
+    {
+      "id": "AR14546",
+      "label": "AR 14546",
+      "location": "S19W74",
+      "mcintosh": "HRX",
       "quality": {
         "level": "fallback",
         "message": "Numbered region is represented, but no accepted live SHARP vector was available; this is not a SHARP magnetic inference."
       },
       "members": {
         "sharpmag": {
-          "m1": 1.0,
+          "m1": 2.0,
           "x1": 0.0,
           "source": "Bloomfield et al. (2012) McIntosh-Poisson coverage fallback",
-          "quality": "stale-fallback",
+          "quality": "research-coverage-fallback",
           "method": "morphology_fallback",
-          "component_id": "AR14545-fallback",
-          "issued": "2026-10-02T21:00:00Z",
-          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
-          "valid_start": "2026-10-02T00:00:00+00:00",
-          "valid_end": "2026-10-03T00:00:00+00:00"
+          "component_id": "AR14546-fallback"
+        },
+        "swpc": {
+          "m1": 1.0,
+          "x1": 1.0,
+          "source": "NOAA/SWPC numbered-region flare forecast",
+          "quality": "official-operational",
+          "method": "official_swpc"
+        },
+        "mcstat": {
+          "m1": 2.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCSTAT regional forecast",
+          "quality": "published-comparison"
+        },
+        "mcevol": {
+          "m1": 1.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCEVOL regional forecast",
+          "quality": "published-comparison"
+        }
+      },
+      "drivers": [
+        "McIntosh HRX",
+        "No accepted live single-region SHARP vector"
+      ]
+    },
+    {
+      "id": "AR14547",
+      "label": "AR 14547",
+      "location": "N15W33",
+      "mcintosh": "CRO",
+      "quality": {
+        "level": "research",
+        "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=28.9°"
+      },
+      "members": {
+        "sharpmag": {
+          "m1": 1.1,
+          "x1": 0.1,
+          "source": "WXF sharp-mag-20260903-xstruct-history-v3 (independently calibrated magnetic M1/X1)",
+          "quality": "research",
+          "method": "sharp_magnetic",
+          "component_id": "HARP14067"
+        },
+        "swpc": {
+          "m1": 1.0,
+          "x1": 1.0,
+          "source": "NOAA/SWPC numbered-region flare forecast",
+          "quality": "official-operational",
+          "method": "official_swpc"
         },
         "mcstat": {
           "m1": 1.0,
           "x1": 0.0,
           "source": "SolarMonitor MCSTAT regional forecast",
           "quality": "published-comparison"
+        }
+      },
+      "drivers": [
+        "M1+: rising total unsigned flux",
+        "M1+: rising total free-energy proxy",
+        "X1+ direct: rising total unsigned current helicity",
+        "X1+ direct: rising absolute net current helicity"
+      ]
+    },
+    {
+      "id": "AR14548",
+      "label": "AR 14548",
+      "location": "S11E51",
+      "mcintosh": "HSX",
+      "quality": {
+        "level": "fallback",
+        "message": "Numbered region is represented, but no accepted live SHARP vector was available; this is not a SHARP magnetic inference."
+      },
+      "members": {
+        "sharpmag": {
+          "m1": 3.0,
+          "x1": 0.0,
+          "source": "Bloomfield et al. (2012) McIntosh-Poisson coverage fallback",
+          "quality": "research-coverage-fallback",
+          "method": "morphology_fallback",
+          "component_id": "AR14548-fallback"
         },
         "swpc": {
           "m1": 1.0,
           "x1": 1.0,
-          "source": "SWPC regional forecast as displayed by SolarMonitor",
+          "source": "NOAA/SWPC numbered-region flare forecast",
+          "quality": "official-operational",
+          "method": "official_swpc"
+        },
+        "mcstat": {
+          "m1": 3.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCSTAT regional forecast",
           "quality": "published-comparison"
         }
       },
       "drivers": [
-        "McIntosh BXO",
+        "McIntosh HSX",
         "No accepted live single-region SHARP vector"
       ]
     }
   ],
-  "generation_status": {
-    "ok": false,
-    "used_previous_forecast": true,
-    "previous_issued": "2026-10-02T21:00:00Z",
-    "attempts": 3,
-    "exit_code": 2,
-    "checked_at": "2026-10-03T05:24:11Z",
-    "detail": "JSOC/SHARP retrieval failed after three attempts. The prior WXF magnetic probability was retained transparently while all independent forecast sources were refreshed."
-  },
   "solar_monitor": {
     "source": "SolarMonitor",
-    "source_url": "https://www.solarmonitor.org/forecast.php?date=20261002&region=&indexnum=1",
-    "retrieved_at": "2026-10-03T16:20:15Z",
-    "table_date": "2026-10-02",
-    "valid_start": "2026-10-02T00:00:00Z",
-    "valid_end": "2026-10-03T00:00:00Z",
-    "wxf_valid_start": "2026-10-03T00:00:00Z",
-    "wxf_valid_end": "2026-10-04T00:00:00Z",
+    "source_url": "https://www.solarmonitor.org/forecast.php?date=20261004&region=&indexnum=1",
+    "retrieved_at": "2026-10-04T23:58:48Z",
+    "table_date": "2026-10-04",
+    "valid_start": "2026-10-04T00:00:00Z",
+    "valid_end": "2026-10-05T00:00:00Z",
+    "wxf_valid_start": "2026-10-05T00:00:00Z",
+    "wxf_valid_end": "2026-10-06T00:00:00Z",
     "window_alignment": "latest issue-date comparison; not asserted as an exact WXF target-window match",
-    "regional_forecasts": 2,
+    "regional_forecasts": 4,
     "full_disk_method": "maximum regional probability (dominant-region proxy)",
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-10-03T16:20:15Z",
+    "generated_at": "2026-10-04T23:58:49Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
       "url": "https://www.sidc.be/WMO/FlareForecast.php",
-      "issued": "2026-10-03T12:30:12Z",
+      "issued": "2026-10-04T12:30:16Z",
       "m1": 0.0,
       "x1": 0.0
     },
@@ -443,7 +429,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "ok": true,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=SIDC_Operator_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=SIDC_Operator_FULLDISK&time.min=2026-09-28T21%3A00%3A00.0&time.max=2026-10-03T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=SIDC_Operator_FULLDISK&time.min=2026-09-30T21%3A00%3A00.0&time.max=2026-10-05T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -477,20 +463,20 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 4,
-      "issued": "2026-10-02T12:33:13Z",
-      "valid_start": "2026-10-02T12:30:00Z",
-      "valid_end": "2026-10-03T12:30:00Z",
-      "m1": 19.0,
+      "records": 3,
+      "issued": "2026-10-04T12:37:37Z",
+      "valid_start": "2026-10-04T12:30:00Z",
+      "valid_end": "2026-10-05T12:30:00Z",
+      "m1": 20.0,
       "x1": 1.0,
       "selected_record": {
-        "start_window": "2026-10-02T12:30:00.0Z",
-        "end_window": "2026-10-03T12:30:00.0Z",
-        "issue_time": "2026-10-02T12:33:13.0Z",
+        "start_window": "2026-10-04T12:30:00.0Z",
+        "end_window": "2026-10-05T12:30:00.0Z",
+        "issue_time": "2026-10-04T12:37:37.0Z",
         "C": "-1",
         "M": "-1",
         "CPlus": 0.7,
-        "MPlus": 0.19,
+        "MPlus": 0.2,
         "X": 0.01,
         "C_uncertainty": "-1",
         "M_uncertainty": "-1",
@@ -510,7 +496,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
         "C_level": "-1",
         "M_level": "-1",
         "CPlus_level": 0.7,
-        "MPlus_level": 0.19,
+        "MPlus_level": 0.2,
         "X_level": 0.01
       }
     },
@@ -520,7 +506,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "ok": false,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=MO_TOT1_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MO_TOT1_FULLDISK&time.min=2026-09-28T21%3A00%3A00.0&time.max=2026-10-03T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MO_TOT1_FULLDISK&time.min=2026-09-30T21%3A00%3A00.0&time.max=2026-10-05T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -560,10 +546,10 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "ccmc_ccmc_amos": {
       "dataset_id": "AMOS_v1_FULLDISK",
       "label": "CCMC AMOS",
-      "ok": true,
+      "ok": false,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=AMOS_v1_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=AMOS_v1_FULLDISK&time.min=2026-09-28T21%3A00%3A00.0&time.max=2026-10-03T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=AMOS_v1_FULLDISK&time.min=2026-09-30T21%3A00%3A00.0&time.max=2026-10-05T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -597,42 +583,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 5,
-      "issued": "2026-10-03T00:30:00Z",
-      "valid_start": "2026-10-03T00:00:00Z",
-      "valid_end": "2026-10-04T00:00:00Z",
-      "m1": null,
-      "x1": 0.09,
-      "selected_record": {
-        "start_window": "2026-10-03T00:00:00.0Z",
-        "end_window": "2026-10-04T00:00:00.0Z",
-        "issue_time": "2026-10-03T00:30:00.0Z",
-        "C": 0.219,
-        "M": 0.0194,
-        "CPlus": "-1",
-        "MPlus": "-1",
-        "X": 0.0009,
-        "C_uncertainty": "-1",
-        "M_uncertainty": "-1",
-        "CPlus_uncertainty": "-1",
-        "MPlus_uncertainty": "-1",
-        "X_uncertainty": "-1",
-        "C_value_lower": "-1",
-        "M_value_lower": "-1",
-        "CPlus_value_lower": "-1",
-        "MPlus_value_lower": "-1",
-        "X_value_lower": "-1",
-        "C_value_higher": "-1",
-        "M_value_higher": "-1",
-        "CPlus_value_higher": "-1",
-        "MPlus_value_higher": "-1",
-        "X_value_higher": "-1",
-        "C_level": "-1",
-        "M_level": "-1",
-        "CPlus_level": "-1",
-        "MPlus_level": "-1",
-        "X_level": "-1"
-      }
+      "records": 4,
+      "detail": "Forecast window does not meaningfully overlap target (2026-10-04T00:00:00Z to 2026-10-05T00:00:00Z)"
     },
     "ccmc_ccmc_asap": {
       "dataset_id": "ASAP_1_FULLDISK",
@@ -640,7 +592,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "ok": false,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=ASAP_1_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=ASAP_1_FULLDISK&time.min=2026-09-28T21%3A00%3A00.0&time.max=2026-10-03T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=ASAP_1_FULLDISK&time.min=2026-09-30T21%3A00%3A00.0&time.max=2026-10-05T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -683,7 +635,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "ok": true,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=ASSA_24H_1_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=ASSA_24H_1_FULLDISK&time.min=2026-09-28T21%3A00%3A00.0&time.max=2026-10-03T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=ASSA_24H_1_FULLDISK&time.min=2026-09-30T21%3A00%3A00.0&time.max=2026-10-05T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -717,18 +669,18 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 113,
-      "issued": "2026-10-03T00:00:00Z",
-      "valid_start": "2026-10-03T00:00:00Z",
-      "valid_end": "2026-10-04T00:00:00Z",
+      "records": 99,
+      "issued": "2026-10-04T23:00:00Z",
+      "valid_start": "2026-10-04T23:00:00Z",
+      "valid_end": "2026-10-05T23:00:00Z",
       "m1": null,
       "x1": 0.0,
       "selected_record": {
-        "start_window": "2026-10-03T00:00:00.0Z",
-        "end_window": "2026-10-04T00:00:00.0Z",
-        "issue_time": "2026-10-03T00:00:00.0Z",
-        "C": 0.36,
-        "M": 0.0591,
+        "start_window": "2026-10-04T23:00:00.0Z",
+        "end_window": "2026-10-05T23:00:00.0Z",
+        "issue_time": "2026-10-04T23:00:00.0Z",
+        "C": 0.8151,
+        "M": 0.2079,
         "CPlus": "-1",
         "MPlus": "-1",
         "X": 0,
@@ -760,7 +712,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "ok": true,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=ASSA_1_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=ASSA_1_FULLDISK&time.min=2026-09-28T21%3A00%3A00.0&time.max=2026-10-03T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=ASSA_1_FULLDISK&time.min=2026-09-30T21%3A00%3A00.0&time.max=2026-10-05T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -794,18 +746,18 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 113,
-      "issued": "2026-10-03T00:00:00Z",
-      "valid_start": "2026-10-03T00:00:00Z",
-      "valid_end": "2026-10-03T12:00:00Z",
+      "records": 99,
+      "issued": "2026-10-04T23:00:00Z",
+      "valid_start": "2026-10-04T23:00:00Z",
+      "valid_end": "2026-10-05T11:00:00Z",
       "m1": null,
       "x1": 0.0,
       "selected_record": {
-        "start_window": "2026-10-03T00:00:00.0Z",
-        "end_window": "2026-10-03T12:00:00.0Z",
-        "issue_time": "2026-10-03T00:00:00.0Z",
-        "C": 0.2,
-        "M": 0.03,
+        "start_window": "2026-10-04T23:00:00.0Z",
+        "end_window": "2026-10-05T11:00:00.0Z",
+        "issue_time": "2026-10-04T23:00:00.0Z",
+        "C": 0.57,
+        "M": 0.11,
         "CPlus": "-1",
         "MPlus": "-1",
         "X": 0,
@@ -837,7 +789,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "ok": false,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=BoM_flare1_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=BoM_flare1_FULLDISK&time.min=2026-09-28T21%3A00%3A00.0&time.max=2026-10-03T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=BoM_flare1_FULLDISK&time.min=2026-09-30T21%3A00%3A00.0&time.max=2026-10-05T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -880,7 +832,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "ok": false,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=MAG4_LOS_FEr_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MAG4_LOS_FEr_FULLDISK&time.min=2026-09-28T21%3A00%3A00.0&time.max=2026-10-03T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MAG4_LOS_FEr_FULLDISK&time.min=2026-09-30T21%3A00%3A00.0&time.max=2026-10-05T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -923,7 +875,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "ok": false,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=MAG4_LOS_r_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MAG4_LOS_r_FULLDISK&time.min=2026-09-28T21%3A00%3A00.0&time.max=2026-10-03T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MAG4_LOS_r_FULLDISK&time.min=2026-09-30T21%3A00%3A00.0&time.max=2026-10-05T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -963,10 +915,10 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "ccmc_ccmc_magpy_los": {
       "dataset_id": "MagPy-HMI-LOS_FULLDISK",
       "label": "CCMC MagPy HMI LOS",
-      "ok": true,
+      "ok": false,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=MagPy-HMI-LOS_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MagPy-HMI-LOS_FULLDISK&time.min=2026-09-28T21%3A00%3A00.0&time.max=2026-10-03T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MagPy-HMI-LOS_FULLDISK&time.min=2026-09-30T21%3A00%3A00.0&time.max=2026-10-05T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -1000,42 +952,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 66,
-      "issued": "2026-10-03T03:05:27Z",
-      "valid_start": "2026-10-03T00:00:00Z",
-      "valid_end": "2026-10-04T00:00:00Z",
-      "m1": 1.0,
-      "x1": 1.0,
-      "selected_record": {
-        "start_window": "2026-10-03T00:00:00.0Z",
-        "end_window": "2026-10-04T00:00:00.0Z",
-        "issue_time": "2026-10-03T03:05:27.0Z",
-        "C": "-1",
-        "M": "-1",
-        "CPlus": "-1",
-        "MPlus": 0.01,
-        "X": 0.01,
-        "C_uncertainty": "-1",
-        "M_uncertainty": "-1",
-        "CPlus_uncertainty": "-1",
-        "MPlus_uncertainty": 0.01,
-        "X_uncertainty": 0.01,
-        "C_value_lower": "-1",
-        "M_value_lower": "-1",
-        "CPlus_value_lower": "-1",
-        "MPlus_value_lower": "-1",
-        "X_value_lower": "-1",
-        "C_value_higher": "-1",
-        "M_value_higher": "-1",
-        "CPlus_value_higher": "-1",
-        "MPlus_value_higher": "-1",
-        "X_value_higher": "-1",
-        "C_level": "-1",
-        "M_level": "-1",
-        "CPlus_level": "-1",
-        "MPlus_level": "-1",
-        "X_level": "-1"
-      }
+      "records": 26,
+      "detail": "Forecast window does not meaningfully overlap target (2026-10-03T07:00:00Z to 2026-10-04T07:00:00Z)"
     },
     "ccmc_ccmc_magpy": {
       "dataset_id": "MagPy_SHARP_HMI_CEA_FULLDISK",
@@ -1043,7 +961,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "ok": true,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=MagPy_SHARP_HMI_CEA_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MagPy_SHARP_HMI_CEA_FULLDISK&time.min=2026-09-28T21%3A00%3A00.0&time.max=2026-10-03T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=MagPy_SHARP_HMI_CEA_FULLDISK&time.min=2026-09-30T21%3A00%3A00.0&time.max=2026-10-05T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -1077,21 +995,21 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 116,
-      "issued": "2026-10-03T03:02:31Z",
-      "valid_start": "2026-10-03T00:00:00Z",
-      "valid_end": "2026-10-04T00:00:00Z",
-      "m1": 2.0,
-      "x1": 2.0,
+      "records": 110,
+      "issued": "2026-10-04T23:03:03Z",
+      "valid_start": "2026-10-04T20:00:00Z",
+      "valid_end": "2026-10-05T20:00:00Z",
+      "m1": 1.0,
+      "x1": 1.0,
       "selected_record": {
-        "start_window": "2026-10-03T00:00:00.0Z",
-        "end_window": "2026-10-04T00:00:00.0Z",
-        "issue_time": "2026-10-03T03:02:31.0Z",
+        "start_window": "2026-10-04T20:00:00.0Z",
+        "end_window": "2026-10-05T20:00:00.0Z",
+        "issue_time": "2026-10-04T23:03:03.0Z",
         "C": "-1",
         "M": "-1",
         "CPlus": "-1",
-        "MPlus": 0.02,
-        "X": 0.02,
+        "MPlus": 0.01,
+        "X": 0.01,
         "C_uncertainty": "-1",
         "M_uncertainty": "-1",
         "CPlus_uncertainty": "-1",
@@ -1120,7 +1038,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "ok": true,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=SPS_FULLDISK",
-      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=SPS_FULLDISK&time.min=2026-09-28T21%3A00%3A00.0&time.max=2026-10-03T21%3A00%3A00.0&format=json&options=fields.all",
+      "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=SPS_FULLDISK&time.min=2026-09-30T21%3A00%3A00.0&time.max=2026-10-05T21%3A00%3A00.0&format=json&options=fields.all",
       "schema_source": "data",
       "parameter_names": [
         "start_window",
@@ -1154,16 +1072,16 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 3,
-      "issued": "2026-10-02T17:00:00Z",
-      "valid_start": "2026-10-02T17:00:00Z",
-      "valid_end": "2026-10-03T17:00:00Z",
+      "records": 4,
+      "issued": "2026-10-04T17:00:00Z",
+      "valid_start": "2026-10-04T17:00:00Z",
+      "valid_end": "2026-10-05T17:00:00Z",
       "m1": null,
       "x1": 1.0,
       "selected_record": {
-        "start_window": "2026-10-02T17:00:00.0Z",
-        "end_window": "2026-10-03T17:00:00.0Z",
-        "issue_time": "2026-10-02T17:00:00.0Z",
+        "start_window": "2026-10-04T17:00:00.0Z",
+        "end_window": "2026-10-05T17:00:00.0Z",
+        "issue_time": "2026-10-04T17:00:00.0Z",
         "C": 0.55,
         "M": 0.1,
         "CPlus": "-1",
@@ -1214,7 +1132,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "swpc": {
       "ok": true,
       "detail": "Official benchmark refreshed independently of SHARP",
-      "issued": "2026-10-02T22:00:00+00:00",
+      "issued": "2026-10-04T22:00:00+00:00",
       "url": "https://services.swpc.noaa.gov/text/3-day-solar-geomag-predictions.txt"
     },
     "strict_parser_version": "5.0.0",

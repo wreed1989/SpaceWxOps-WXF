@@ -1,14 +1,86 @@
 {
   "rows": [
     {
-      "cmeID": "2026-09-30T03:12:00-CME-001",
-      "observedTime": "2026-09-30T03:12Z",
+      "cmeID": "2026-10-06T06:23:00-CME-001",
+      "observedTime": "2026-10-06T06:23Z",
       "noArrivalObserved": false,
       "arrivalTime": null,
       "maxKP": null,
       "dstMin": null,
       "dstMinTime": null,
-      "cmeNote": "CME first seen to the West by SOHO LASCO C2 beginning at 2026-09-30T03:12Z, as well as by SOHO LASCO C3, STEREO A COR2 and GOES CCOR-1. The source of this event is a C8.6 flare from Active Region 14535 (N11W48) seen peaking at 2026-09-30T02:46Z. This flare can be seen clearly in SDO AIA 131, along with field line opening, dimming and an EUV wave seen in SDO AIA 171/193/211, GOES SUVI 284 and STEREO A EUVI 195.",
+      "cmeNote": "Full halo CME in SOHO LASCO C2/C3 and GOES CCOR-1, first seen to the NE in STEREO A COR2 (shock fully to the E, wide). The source is AR 14549, associated with an M1.4 flare (N10E12) peaking at 2026-10-06T06:10Z, observed in SDO AIA 131. Also observed as an EUV wave, field line movement, brightening, filament ejecta, and small post-eruptive arcade in SDO AIA 131/171/193/304. Additionally observed on the NE limb of STEREO A EUVI 195 as field line movement and EUV wave, and EUVI 304 as filament ejecta.",
+      "predictions": [
+        {
+          "predictedMethodName": "WSA-ENLIL + Cone (NASA M2M)",
+          "submissionTime": "2026-10-06T12:08Z",
+          "predictedArrivalTime": "2026-10-09T04:16Z",
+          "uncertaintyMinusInHrs": 7.0,
+          "uncertaintyPlusInHrs": 7.0,
+          "confidenceInPercentage": null,
+          "predictedMaxKpLowerRange": 4.0,
+          "predictedMaxKpUpperRange": 6.0,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "64.13",
+          "predictionNote": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/48993/1\nModel Inputs:\n2026-10-06T06:23:00-CME-001 with CME Analysis: Lon.=6.0, Lat.=26.0, Speed=570.0, HalfAngle=40.0, Time21.5=2026-10-06T12:42Z\n\nModel Output:\n\nEarth Impact:\nEarth Shock Arrival Time = 2026-10-09T04:16Z (+- 7 hours)\nDuration of disturbance (hr) =21.2 (+- 8 hours)\nMinimum magnetopause standoff distance: Rmin(Re) = 6.0\n(kp)90=4\n(kp)180=6\n\nOther Location(s) Impact:\nEuropa Clipper with esitmated shock arrival time 2026-10-09T00:02Z\nJuice with esitmated shock arrival time 2026-10-08T23:26Z\nSolar Orbiter with esitmated shock arrival time 2026-10-08T12:09Z\n\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_anim.tim-den.gif\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_anim.tim-vel.gif\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_anim.tim-vel-Stereo_A.gif\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_anim.tim-den-Stereo_A.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_Kp_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_STA_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_PSP_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_SolO_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_Merc_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_Mars_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_Bepi_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_Venus_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_Juice_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_Psyche_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_Osiris_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_EuropaClippr_timeline.gif"
+        },
+        {
+          "predictedMethodName": "WSA-ENLIL + Cone (Met Office)",
+          "submissionTime": "2026-10-06T13:31Z",
+          "predictedArrivalTime": "2026-10-09T04:00Z",
+          "uncertaintyMinusInHrs": 6.0,
+          "uncertaintyPlusInHrs": 6.0,
+          "confidenceInPercentage": null,
+          "predictedMaxKpLowerRange": 5.0,
+          "predictedMaxKpUpperRange": 6.0,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "62.48",
+          "predictionNote": "Met Office ENLIL settings.\nENLIL version: 2.7\nResolution: medium-res (512x60x180) (X1=0.1-1.7/uniform X2=30.-150./uniform X3=0.-360./uniform)\nAmbient settings: a3b2-sa1\nWSA version: 4.5\nGONG: mrzqs\nNote that this arrival time forecast is based on the simulation but is then adjusted by a human-in-the-loop.\n\nPlease specify following CME input parameters.\nTime at 21.5Rs boundary: 2026-10-06T12:00Z\nRadial velocity (km/s): 600\nLongitude (deg): 002W\nLatitude (deg): 20N\nHalf-angular width (deg): 37 \n\nNotes: Early estimate using few close-in image pairs, mainly Lasco C2 and Stereo A. Mix of analyses from forecasters (MTL and CL). Early hours Friday 09 October most likley arrival time, peak G2. Fit mainly to apparent driver, full width of C2 imagery not encompassed as assumed part shock.\nSpace weather advisor: MTL, CL"
+        },
+        {
+          "predictedMethodName": "Average of all Methods",
+          "submissionTime": "2026-10-06T14:24Z",
+          "predictedArrivalTime": "2026-10-09T04:08Z",
+          "uncertaintyMinusInHrs": null,
+          "uncertaintyPlusInHrs": null,
+          "confidenceInPercentage": null,
+          "predictedMaxKpLowerRange": 4.5,
+          "predictedMaxKpUpperRange": 6.0,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "61.73",
+          "predictionNote": "Auto-generated average of all methods forecast."
+        },
+        {
+          "predictedMethodName": "Median of all Methods",
+          "submissionTime": "2026-10-06T14:24Z",
+          "predictedArrivalTime": "2026-10-09T04:08Z",
+          "uncertaintyMinusInHrs": null,
+          "uncertaintyPlusInHrs": null,
+          "confidenceInPercentage": null,
+          "predictedMaxKpLowerRange": 4.5,
+          "predictedMaxKpUpperRange": 6.0,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "61.73",
+          "predictionNote": "Auto-generated median of all methods forecast."
+        }
+      ]
+    },
+    {
+      "cmeID": "2026-09-30T03:12:00-CME-001",
+      "observedTime": "2026-09-30T03:12Z",
+      "noArrivalObserved": false,
+      "arrivalTime": "2026-10-03T01:26Z",
+      "maxKP": null,
+      "dstMin": null,
+      "dstMinTime": null,
+      "cmeNote": "Minor but clear CME arrival, with a sudden jump in solar wind speed from 270 to 306 km/s, accompanied by an increase in B total from 4 to 5 nT and then eventually to over 9 nT. An increase in ion density from 3 to 16 particles/cm^3 and a jump in temperature from 30k K to over 140k K was also observed. Bz reached around -7 nT during the early part of the arrival but turned northwards around 2026-10-03T07:23Z. This CME arrival directly precedes the onset of the coronal hole high speed stream starting at 2026-10-03T23:40Z. CME first seen to the West by SOHO LASCO C2 beginning at 2026-09-30T03:12Z, as well as by SOHO LASCO C3, STEREO A COR2 and GOES CCOR-1. The source of this event is a C8.6 flare from Active Region 14535 (N11W48) seen peaking at 2026-09-30T02:46Z. This flare can be seen clearly in SDO AIA 131, along with field line opening, dimming and an EUV wave seen in SDO AIA 171/193/211, GOES SUVI 284 and STEREO A EUVI 195.",
       "predictions": [
         {
           "predictedMethodName": "WSA-ENLIL + Cone (NASA M2M)",
@@ -21,8 +93,8 @@
           "predictedMaxKpUpperRange": 4.0,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
-          "differenceInHrs": null,
-          "leadTimeInHrs": "72.15",
+          "differenceInHrs": "11.13",
+          "leadTimeInHrs": "61.02",
           "predictionNote": "NASA GSFC M2M ENLIL settings:\nENLIL version: 2.7\nResolution: low2 (256x30x90)\nAmbient settings: a4b1\nEjecta settings d4t1x1\nWSA version: 2.2\nGONG: mrzqs\ncormode: single\n\n\nPlease enter the full notification:"
         },
         {
@@ -36,8 +108,8 @@
           "predictedMaxKpUpperRange": 4.67,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
-          "differenceInHrs": null,
-          "leadTimeInHrs": "77.45",
+          "differenceInHrs": "36.57",
+          "leadTimeInHrs": "40.88",
           "predictionNote": "Please enter the following information for your prediction:\nSWPC ENLIL settings: \nENLIL version: 2.9e\nResolution: medium\nAmbient settings: a8b1\nEjecta settings: d4t1x1\nWSA version: 2.2\nGONG: mrbqs\n\nCME input parameters\nTime at 21.5Rs boundary:\nRadial velocity (km/s):\nLongitude (deg):\nLatitude (deg):\nHalf-angular width (deg):\n\nNotes:\nProduct: Forecast Discussion\nIssued: 2026 Oct 01 1230 UTC\nPrepared by the U.S. Dept. of Commerce, NOAA, Space Weather Prediction\nCenter\n\nSolar Activity\n\n.24 hr Summary...\nSolar activity was very low in the past 24h, with no C-class or greater\nflares observed. Both active regions currently numbered in the visible\ndisk showed some decay during the period: Region 4544 (S09W36, Cro/beta)\nand Region 4535 (N11W65, Dso/beta).\n\nNo Earth-directed CME was observed in the coronagraph imagery. \n\n.Forecast...\nSolar activity is likely to remain at very low levels with a chance for\nC-flares and a slight chance for an M-flare (R1-R2/Minor-Moderate)\nthrough 03 Oct.\n\nEnergetic Particle\n\n.24 hr Summary...\nThe greater than 2 MeV electron flux reached high levels, with a peak of\n3,120 pfu at 30/1435 UTC. The greater than 10 MeV proton flux continued\nat background levels.\n\n.Forecast...\nThe greater than 2 MeV electron flux is expected to reach high levels on\n01-02 Oct and moderate levels on 03 Oct due to the anticipated\ngeomagnetic activity on 02 Oct. The greater than 10 MeV proton flux is\nexpected to remain at background levels through 03 Oct.\n\nSolar Wind\n\n.24 hr Summary...\nSolar wind parameters showed ambient conditions with a speed between\n270-300 km/s and total interplanetary magnetic field (IMF) strength\nbelow 6 nT. The IMF vector components oscillated between -/+ 6 nT in\nresponse to multiple sector crossings occurred in the past 24h, and Bz\nremained predominantly positive. The phi angle varied accordingly.\n\n.Forecast...\nAmbient solar wind conditions are expected to prevail through mid-day on\n02 Oct, when disturbances caused by flanking influences from a CME\nthat left the Sun on 28 Sep are likely to be observed near Earth. On 03\nOct, solar wind enhancements might persist as the CME effects wane and\nthe influence of a positive polarity CH HSS are anticipated.\n\nGeospace\n\n.24 hr Summary...\nThe geomagnetic field remained quiet during the past 24h.\n\n.Forecast...\nThe geomagnetic field is expected to continue mostly quiet through\nmid-day on 02 Oct, when G1 (Minor) storm levels are likely due to\ninfluences from the 28 Sep CME. Active conditions are anticipated for 03\nOct as the CME impact wanes and a positive CH HSS influence begins near\nEarth.\n\nProduct: 3-Day Forecast\nIssued: 2026 Oct 02 1230 UTC\nPrepared by the U.S. Dept. of Commerce, NOAA, Space Weather Prediction\nCenter\n\nA. NOAA Geomagnetic Activity Observation and Forecast\n\nThe greatest observed 3 hr Kp over the past 24 hours was 2 (below NOAA\nScale levels).\nThe greatest expected 3 hr Kp for Oct 02-Oct 04 2026 is 4.67 (NOAA Scale\nG1).\n\nNOAA Kp index breakdown Oct 02-Oct 04 2026\n\n             Oct 02       Oct 03       Oct 04\n00-03UT       1.00         3.67         3.67     \n03-06UT       1.00         3.00         3.67     \n06-09UT       0.33         2.67         2.67     \n09-12UT       0.67         1.67         2.67     \n12-15UT       4.33         1.67         2.67     \n15-18UT       3.67         2.67         3.67     \n18-21UT       4.67 (G1)    3.67         4.67 (G1)\n21-00UT       4.67 (G1)    3.67         3.67     \n\nRationale: G1 (Minor) geomagnetic storms are likely on 02 Oct (due to\nthe anticipated glancing influences of the 28 Sep CME) and 04 Oct (as\nthe CME effects wanes and a +CH/HSS becomes geoeffective).\n\nB. NOAA Solar Radiation Activity Observation and Forecast\n\nSolar radiation, as observed by NOAA GOES-18 over the past 24 hours, was\nbelow S-scale storm level thresholds.\n\nSolar Radiation Storm Forecast for Oct 02-Oct 04 2026\n\n              Oct 02  Oct 03  Oct 04\nS1 or greater    1%      1%      1%\n\nRationale: No S1 (Minor) or greater solar radiation storms are expected.\nNo significant active region activity favorable for radiation storm\nproduction is forecast.\n\nC. NOAA Radio Blackout Activity and Forecast\n\nNo radio blackouts were observed over the past 24 hours.\n\nRadio Blackout Forecast for Oct 02-Oct 04 2026\n\n              Oct 02        Oct 03        Oct 04\nR1-R2           10%           10%           10%\nR3 or greater    1%            1%            1%\n\nRationale: There is a slight chance for R1-R2 (Minor) radio blackouts on\n02-04 Oct."
         },
         {
@@ -51,8 +123,8 @@
           "predictedMaxKpUpperRange": 4.335,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
-          "differenceInHrs": null,
-          "leadTimeInHrs": "31.22",
+          "differenceInHrs": "23.85",
+          "leadTimeInHrs": "7.37",
           "predictionNote": "Auto-generated average of all methods forecast."
         },
         {
@@ -66,8 +138,8 @@
           "predictedMaxKpUpperRange": 4.335,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
-          "differenceInHrs": null,
-          "leadTimeInHrs": "31.22",
+          "differenceInHrs": "23.85",
+          "leadTimeInHrs": "7.37",
           "predictionNote": "Auto-generated median of all methods forecast."
         }
       ]
@@ -75,12 +147,12 @@
     {
       "cmeID": "2026-09-28T14:36:00-CME-001",
       "observedTime": "2026-09-28T14:36Z",
-      "noArrivalObserved": false,
+      "noArrivalObserved": true,
       "arrivalTime": null,
       "maxKP": null,
       "dstMin": null,
       "dstMinTime": null,
-      "cmeNote": "Bright loop CME first seen to the West by SOHO LASCO C2 beginning at 2026-09-28T14:36Z, as well as by SOHO LASCO C3 and GOES CCOR-1, as well as to the East in STEREO A COR2 in later frames. The source of this event is a very large filament eruption seen stretching from approx. S10W50 to N45W50 (centered at approx. N27W50) with liftoff beginning at approx. 2026-09-28T13:51Z as seen in SDO AIA, STEREO A EUVI and GOES SUVI 304. Post eruptive arcades, dimming and wide field line opening can be seen in SDO AIA 171/193/211, GOES SUVI 284 and STEREO A EUVI 195.",
+      "cmeNote": "The arrival of this CME was not clearly detected at L1. Bright loop CME first seen to the West by SOHO LASCO C2 beginning at 2026-09-28T14:36Z, as well as by SOHO LASCO C3 and GOES CCOR-1, as well as to the East in STEREO A COR2 in later frames. The source of this event is a very large filament eruption seen stretching from approx. S10W50 to N45W50 (centered at approx. N27W50) with liftoff beginning at approx. 2026-09-28T13:51Z as seen in SDO AIA, STEREO A EUVI and GOES SUVI 304. Post eruptive arcades, dimming and wide field line opening can be seen in SDO AIA 171/193/211, GOES SUVI 284 and STEREO A EUVI 195.",
       "predictions": [
         {
           "predictedMethodName": "WSA-ENLIL + Cone (NASA M2M)",
@@ -725,7 +797,7 @@
     }
   ],
   "source": "https://ccmc.gsfc.nasa.gov/CMESB-Earth/WS/get/predictions?CMEtimeStart=2026-09-06&CMEtimeEnd=2026-10-07&closeOutCMEsOnly=false&skipNoArrivalObservedCMEs=false",
-  "retrievedAt": "2026-10-06T10:08:30.377154+00:00",
+  "retrievedAt": "2026-10-06T16:45:25.857498+00:00",
   "windowStart": "2026-09-06",
   "windowEnd": "2026-10-07"
 }

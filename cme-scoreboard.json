@@ -1,6 +1,63 @@
 {
   "rows": [
     {
+      "cmeID": "2026-10-06T09:53:00-CME-001",
+      "observedTime": "2026-10-06T09:53Z",
+      "noArrivalObserved": false,
+      "arrivalTime": null,
+      "maxKP": null,
+      "dstMin": null,
+      "dstMinTime": null,
+      "cmeNote": "CME observed to the NE in STEREO A COR2, also faintly observed to the N in SOHO LASCO C2/C3 and GOES CCOR-1. The source is AR 14549, associated with an M1.8 class flare (N08E07) peaking at 2026-10-06T08:05Z, observed in SDO AIA 131. Also observed as field line movement, EUV wave, dimming, and brightening in SDO AIA 171/193 starting around 2026-10-06T07:52Z, with brightening and filament ejecta in SDO AIA 304. Also observed well in STEREO A EUVI 195/304 starting around 2026-10-06T08:05Z as field line movement and filament ejecta on the NE limb, with some northward deflection.",
+      "predictions": [
+        {
+          "predictedMethodName": "WSA-ENLIL + Cone (NASA M2M)",
+          "submissionTime": "2026-10-06T17:07Z",
+          "predictedArrivalTime": "2026-10-09T20:00Z",
+          "uncertaintyMinusInHrs": 7.0,
+          "uncertaintyPlusInHrs": 7.0,
+          "confidenceInPercentage": null,
+          "predictedMaxKpLowerRange": 3.0,
+          "predictedMaxKpUpperRange": 4.0,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "74.88",
+          "predictionNote": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/49002/1\nModel Inputs:\n2026-10-06T09:53:00-CME-001 with CME Analysis: Lon.=-1.0, Lat.=28.0, Speed=424.0, HalfAngle=24.0, Time21.5=2026-10-06T18:49Z\n\nModel Output:\n\nEarth Impact:\nEarth Shock Arrival Time = 2026-10-09T20:00Z (+- 7 hours)\n(kp)90=3\n(kp)180=4\n\nOther Location(s) Impact:\nJuice with esitmated shock arrival time 2026-10-09T17:41Z\nEuropa Clipper with esitmated shock arrival time 2026-10-09T06:00Z\n\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_184900_2.0_anim.tim-den.gif\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_184900_2.0_anim.tim-vel.gif\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_184900_2.0_anim.tim-vel-Stereo_A.gif\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_184900_2.0_anim.tim-den-Stereo_A.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_184900_2.0_ENLIL_CONE_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_184900_2.0_ENLIL_CONE_Kp_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_184900_2.0_ENLIL_CONE_STA_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_184900_2.0_ENLIL_CONE_PSP_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_184900_2.0_ENLIL_CONE_SolO_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_184900_2.0_ENLIL_CONE_Merc_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_184900_2.0_ENLIL_CONE_Mars_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_184900_2.0_ENLIL_CONE_Bepi_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_184900_2.0_ENLIL_CONE_Venus_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_184900_2.0_ENLIL_CONE_Juice_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_184900_2.0_ENLIL_CONE_Psyche_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_184900_2.0_ENLIL_CONE_Osiris_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_184900_2.0_ENLIL_CONE_EuropaClippr_timeline.gif"
+        },
+        {
+          "predictedMethodName": "Average of all Methods",
+          "submissionTime": "2026-10-06T18:25Z",
+          "predictedArrivalTime": "2026-10-09T20:00Z",
+          "uncertaintyMinusInHrs": null,
+          "uncertaintyPlusInHrs": null,
+          "confidenceInPercentage": null,
+          "predictedMaxKpLowerRange": 3.0,
+          "predictedMaxKpUpperRange": 4.0,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "73.58",
+          "predictionNote": "Auto-generated average of all methods forecast."
+        },
+        {
+          "predictedMethodName": "Median of all Methods",
+          "submissionTime": "2026-10-06T18:25Z",
+          "predictedArrivalTime": "2026-10-09T20:00Z",
+          "uncertaintyMinusInHrs": null,
+          "uncertaintyPlusInHrs": null,
+          "confidenceInPercentage": null,
+          "predictedMaxKpLowerRange": 3.0,
+          "predictedMaxKpUpperRange": 4.0,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "73.58",
+          "predictionNote": "Auto-generated median of all methods forecast."
+        }
+      ]
+    },
+    {
       "cmeID": "2026-10-06T06:23:00-CME-001",
       "observedTime": "2026-10-06T06:23Z",
       "noArrivalObserved": false,
@@ -26,6 +83,21 @@
           "predictionNote": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/48993/1\nModel Inputs:\n2026-10-06T06:23:00-CME-001 with CME Analysis: Lon.=6.0, Lat.=26.0, Speed=570.0, HalfAngle=40.0, Time21.5=2026-10-06T12:42Z\n\nModel Output:\n\nEarth Impact:\nEarth Shock Arrival Time = 2026-10-09T04:16Z (+- 7 hours)\nDuration of disturbance (hr) =21.2 (+- 8 hours)\nMinimum magnetopause standoff distance: Rmin(Re) = 6.0\n(kp)90=4\n(kp)180=6\n\nOther Location(s) Impact:\nEuropa Clipper with esitmated shock arrival time 2026-10-09T00:02Z\nJuice with esitmated shock arrival time 2026-10-08T23:26Z\nSolar Orbiter with esitmated shock arrival time 2026-10-08T12:09Z\n\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_anim.tim-den.gif\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_anim.tim-vel.gif\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_anim.tim-vel-Stereo_A.gif\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_anim.tim-den-Stereo_A.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_Kp_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_STA_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_PSP_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_SolO_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_Merc_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_Mars_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_Bepi_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_Venus_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_Juice_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_Psyche_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_Osiris_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261006_124200_2.0_ENLIL_CONE_EuropaClippr_timeline.gif"
         },
         {
+          "predictedMethodName": "SIDC",
+          "submissionTime": "2026-10-06T12:27Z",
+          "predictedArrivalTime": "2026-10-09T16:00Z",
+          "uncertaintyMinusInHrs": 12.0,
+          "uncertaintyPlusInHrs": 12.0,
+          "confidenceInPercentage": 70.0,
+          "predictedMaxKpLowerRange": 4.0,
+          "predictedMaxKpUpperRange": 6.0,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "75.55",
+          "predictionNote": ":Issued: 2026 Oct 06 1233 UTC\n#--------------------------------------------------------------------#\n# DAILY BULLETIN ON SOLAR AND GEOMAGNETIC ACTIVITY from the SIDC     #\n# (RWC Belgium)                                                      #\n#--------------------------------------------------------------------#\nSIDC URSIGRAM 61006\nSIDC SOLAR BULLETIN 06 Oct 2026, 1232UT\nSIDC FORECAST\n\n\n...A relatively narrow westward coronal mass ejection (SIDC CME 725) was observed by STEREO A/COR2 to lift off the solar surface around 06:23 UTC on October 06. A faint halo CME was detected by LASCO/C2 around 07:12 UTC on October 06. This CME appears associated with a large dimming and a coronal wave observed on disc and related to the M1.4 flaring (SIDC Flare 8666) produced by SIDC Sunspot Group 976 (NOAA Active Region\n4549) near the solar disc centre. An associated fast type II radio emission was detected at 05:59 UTC. The CME is estimated to have a projected velocity around 560 km/s and is expected to have an Earth-directed component. Preliminary analysis suggests possible arrival time on October 09."
+        },
+        {
           "predictedMethodName": "WSA-ENLIL + Cone (Met Office)",
           "submissionTime": "2026-10-06T13:31Z",
           "predictedArrivalTime": "2026-10-09T04:00Z",
@@ -41,33 +113,48 @@
           "predictionNote": "Met Office ENLIL settings.\nENLIL version: 2.7\nResolution: medium-res (512x60x180) (X1=0.1-1.7/uniform X2=30.-150./uniform X3=0.-360./uniform)\nAmbient settings: a3b2-sa1\nWSA version: 4.5\nGONG: mrzqs\nNote that this arrival time forecast is based on the simulation but is then adjusted by a human-in-the-loop.\n\nPlease specify following CME input parameters.\nTime at 21.5Rs boundary: 2026-10-06T12:00Z\nRadial velocity (km/s): 600\nLongitude (deg): 002W\nLatitude (deg): 20N\nHalf-angular width (deg): 37 \n\nNotes: Early estimate using few close-in image pairs, mainly Lasco C2 and Stereo A. Mix of analyses from forecasters (MTL and CL). Early hours Friday 09 October most likley arrival time, peak G2. Fit mainly to apparent driver, full width of C2 imagery not encompassed as assumed part shock.\nSpace weather advisor: MTL, CL"
         },
         {
-          "predictedMethodName": "Average of all Methods",
-          "submissionTime": "2026-10-06T14:24Z",
-          "predictedArrivalTime": "2026-10-09T04:08Z",
-          "uncertaintyMinusInHrs": null,
-          "uncertaintyPlusInHrs": null,
-          "confidenceInPercentage": null,
-          "predictedMaxKpLowerRange": 4.5,
+          "predictedMethodName": "Ensemble WSA-ENLIL + Cone (NASA M2M)",
+          "submissionTime": "2026-10-06T20:50Z",
+          "predictedArrivalTime": "2026-10-09T06:48Z",
+          "uncertaintyMinusInHrs": 6.32,
+          "uncertaintyPlusInHrs": 4.83,
+          "confidenceInPercentage": 100.0,
+          "predictedMaxKpLowerRange": 4.0,
           "predictedMaxKpUpperRange": 6.0,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
           "differenceInHrs": null,
-          "leadTimeInHrs": "61.73",
+          "leadTimeInHrs": "57.97",
+          "predictionNote": "Ensemble modeling estimates the spread/uncertainty in CME arrival time predictions using the WSA-ENLIL+Cone model due to uncertainties in CME input parameters.  This is achieved by measuring N CME input parameters, then performing an ensemble of N runs of WSA-ENLIL cone model.  This gives an ensemble of N CME arrival times and impact estimates.\n\nNASA GSFC SWRC ENLIL settings:\nENLIL version: 2.7\nResolution: low2 (256x30x90)\nAmbient settings: a3b1f\nWSA version: 2.2\n(Enlil 2.7 w/res:low2 ambient:a3b1f, WSA2.2)\n\nPlease enter a copy of the entire notification here:\n## Community Coordinated Modeling Center Database Of Notifications, Knowledge, Information ( CCMC DONKI )\n## Message Type: Space Weather Notification - CME update (ensemble) (STEREO A, Missions Near Earth)\n##\n## Message Issue Date: 2026-10-06T20:49:33Z\n## Message ID: 20261006-AL-002\n##\n## Disclaimer: NOAA's Space Weather Prediction Center is the United States Government official source for space weather forecasts. This \"Experimental Research Information\" consists of preliminary NASA research products and should be interpreted and used accordingly.\n\n\n## Summary:\n\nEnsemble modeling update on CME with ID 2026-10-06T06:23:00-CME-001 (see previous notification 20261006-AL-001). Based on analysis by the Moon to Mars Space Weather Analysis Office and heliospheric ensemble modeling carried out at the Community Coordinated Modeling Center, it is estimated that the CME may impact STEREO A. For 27 ensemble members (see notes section), simulations indicate that the leading edge of the CME will reach:\n\n- STEREO A between about 2026-10-09T02:42Z and 2026-10-09T02:42Z (average arrival 2026-10-09T02:42Z) for 3% of simulations.\n\nAdditionally the CME is estimated to reach NASA missions near Earth between about 2026-10-09T00:29Z and 2026-10-09T11:38Z (average arrival 2026-10-09T06:48Z) for 100% of simulations.  The ensemble-based forecast indicates that there is a 96% chance for the maximum Kp index to be in the 4-6 range (below minor to moderate).\n\nLinks to the ensemble details of the modeled event:\nhttps://iswa.gsfc.nasa.gov/ENSEMBLE/2026-10-06_ncmes1_sims27_M2M-SWAO103/20261006_124200_ncmes1_sims27_M2M-SWAO103_anim_tim-den.gif\nhttps://iswa.gsfc.nasa.gov/ENSEMBLE/2026-10-06_ncmes1_sims27_M2M-SWAO103/20261006_124200_ncmes1_sims27_M2M-SWAO103_arrival_Earth.gif\nhttps://iswa.gsfc.nasa.gov/ENSEMBLE/2026-10-06_ncmes1_sims27_M2M-SWAO103/20261006_124200_ncmes1_sims27_M2M-SWAO103_Earth_stack.gif\nhttps://iswa.gsfc.nasa.gov/ENSEMBLE/2026-10-06_ncmes1_sims27_M2M-SWAO103/20261006_124200_ncmes1_sims27_M2M-SWAO103_arrival_STA.gif\nhttps://iswa.gsfc.nasa.gov/ENSEMBLE/2026-10-06_ncmes1_sims27_M2M-SWAO103/20261006_124200_ncmes1_sims27_M2M-SWAO103_STA_stack.gif\n\n## Notes:\nThe CME event with ID 2026-10-06T06:23:00-CME-001 is also predicted to impact Europa Clipper at 2026-10-09T00:02Z, Juice at 2026-10-08T23:26Z, Solar Orbiter at 2026-10-08T12:09Z, Mars at 2026-10-11T06:00Z (glancing blow), and OSIRIS-APEX at 2026-10-10T00:00Z (glancing blow) (plus minus 7 hours) based on previous heliospheric modeling (see notification 20261006-AL-001).\n\nThis CME event (2026-10-06T06:23:00-CME-001) is associated with M1.4 flare from AR 14549 (N10E12) with ID 2026-10-06T05:38:00-FLR-001 which peaked at 2026-10-06T06:10Z.\n\nEnsemble CME modeling at M2M is performed by building sets of initial CME parameters and carrying out separate simulations for each set. This approach allows a mapping of initial CME parameter uncertainties into a statistical characterization of CME arrival times and impact at locations of interest.\n\nDescription of links: For each location, the first link shows the WSA-ENLIL+Cone model animation for the median CME input parameters, the second link shows the probabilistic distribution of predicted arrival times histogram, and the third link shows a stack plot of the WSA-ENLIL+Cone modeled magnetic field, velocity, density, and temperature for all ensemble members. For missions near Earth, a histogram of the probabilistic Kp forecast is also provided.\n\nFor the full details of the modeled event, please go here:\nhttps://iswa.gsfc.nasa.gov/ENSEMBLE/2026-10-06_ncmes1_sims27_M2M-SWAO103/Detailed_results_20261006_124200_ncmes1_sims27_M2M-SWAO103.txt\n\n###\n\nCommunity Coordinated Modeling Center Database Of Notifications, Knowledge, Information (CCMC DONKI) Disclaimer\n\nData and/or information stored within the CCMC DONKI is provided \"as is\" without any warranty of any kind, either expressed, implied, or statutory, including, but not limited to, any warranty that the data and/or information will conform to specifications, any implied warranties of merchantability, fitness for a particular purpose, or freedom from infringement, any warranty that the information will be error free, or any warranty that documentation, if provided, will conform to the data and/or information. In no event shall the United States Government, or its contractors or subcontractors, be liable for any damages, including, but not limited to, direct, indirect, special or consequential damages, arising out of, resulting from, or in any way connected with this information, whether or not based upon warranty, contract, tort, or otherwise, whether or not injury was sustained by persons or property or otherwise, and whether or not loss was sustained from, or arose out of the results of, or use of, the data and/or information. The United States Government disclaims all warranties and liabilities regarding third party data and/or information, if present in the data and/or information generated and/or compiled by CCMC DONKI, and distributes it \"as is\".\n\nUse of data and/or information stored within the CCMC DONKI does not, in any manner, constitute an endorsement by NASA of any test results, resulting designs, hardware, or other matters. Use of data and/or information stored within the CCMC DONKI does not, in any manner, constitute the grant of a license to RECIPIENT under any NASA copyright, patent, patent application or other intellectual property.\n\nThe terms of this disclaimer shall be construed, and the legal relations between the parties hereto shall be determined, in accordance with United States federal law.\n\nNOAA's Space Weather Prediction Center is the United States Government official source for space weather forecasts. This \"Experimental Research Information\" consists of preliminary NASA research products and should be interpreted and used accordingly."
+        },
+        {
+          "predictedMethodName": "Average of all Methods",
+          "submissionTime": "2026-10-06T20:54Z",
+          "predictedArrivalTime": "2026-10-09T07:46Z",
+          "uncertaintyMinusInHrs": null,
+          "uncertaintyPlusInHrs": null,
+          "confidenceInPercentage": 85.0,
+          "predictedMaxKpLowerRange": 4.25,
+          "predictedMaxKpUpperRange": 6.0,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "58.87",
           "predictionNote": "Auto-generated average of all methods forecast."
         },
         {
           "predictedMethodName": "Median of all Methods",
-          "submissionTime": "2026-10-06T14:24Z",
-          "predictedArrivalTime": "2026-10-09T04:08Z",
+          "submissionTime": "2026-10-06T20:54Z",
+          "predictedArrivalTime": "2026-10-09T05:32Z",
           "uncertaintyMinusInHrs": null,
           "uncertaintyPlusInHrs": null,
-          "confidenceInPercentage": null,
-          "predictedMaxKpLowerRange": 4.5,
+          "confidenceInPercentage": 85.0,
+          "predictedMaxKpLowerRange": 4.0,
           "predictedMaxKpUpperRange": 6.0,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
           "differenceInHrs": null,
-          "leadTimeInHrs": "61.73",
+          "leadTimeInHrs": "56.63",
           "predictionNote": "Auto-generated median of all methods forecast."
         }
       ]
@@ -797,7 +884,7 @@
     }
   ],
   "source": "https://ccmc.gsfc.nasa.gov/CMESB-Earth/WS/get/predictions?CMEtimeStart=2026-09-06&CMEtimeEnd=2026-10-07&closeOutCMEsOnly=false&skipNoArrivalObservedCMEs=false",
-  "retrievedAt": "2026-10-06T16:45:25.857498+00:00",
+  "retrievedAt": "2026-10-06T21:36:35.223432+00:00",
   "windowStart": "2026-09-06",
   "windowEnd": "2026-10-07"
 }

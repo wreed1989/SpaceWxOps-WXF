@@ -62,20 +62,15 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "wxf_full_disk": {
     "method": "union_of_unique_region_components",
     "formula": "1 - product(1 - regional probability)",
-    "components": 5,
-    "numbered_regions": 5,
+    "components": 4,
+    "numbered_regions": 4,
     "sharp_regions": 3,
     "shared_harp_region_values": 0,
-    "fallback_regions": 2,
+    "fallback_regions": 1,
     "unnumbered_or_farside_residual": false,
     "note": "Coverage aggregate, not a separately trained full-disk classifier. Shared HARP probabilities are included once. The product formula assumes independent components and is not a validated full-disk calibration."
   },
   "wxf_region_components": [
-    {
-      "component_id": "AR14546-fallback",
-      "m1": 3.698416818063846,
-      "x1": 0.24656112120425644
-    },
     {
       "component_id": "AR14549-fallback",
       "m1": 18.0,
@@ -106,16 +101,16 @@ window.FLARE_GUIDANCE_PAYLOAD = {
         "message": "Visible-disk WXF coverage aggregate. Accepted SHARP components and explicit morphology/climatology fallbacks are combined once per HARP/region."
       },
       "drivers": [
-        "5 numbered active regions represented",
-        "3 SHARP region values; 2 fallbacks",
+        "4 numbered active regions represented",
+        "3 SHARP region values; 1 fallbacks",
         "Regional probabilities combined as 1 - product(1 - p_i)",
         "Shared HARPs counted once in the full-disk aggregate",
         "No unnumbered or farside residual term"
       ],
       "members": {
         "sharpmag": {
-          "m1": 51.7,
-          "x1": 3.0,
+          "m1": 49.9,
+          "x1": 2.7,
           "source": "WXF sharp-mag-20260903-xstruct-history-v3 regional combination",
           "quality": "research",
           "method": "regional_union_with_explicit_fallbacks"
@@ -186,24 +181,24 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "dataset_id": "ASSA_1_FULLDISK"
         },
         "ccmc_magpy_los": {
-          "m1": 21.0,
-          "x1": 4.0,
+          "m1": 20.0,
+          "x1": 3.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC MagPy HMI LOS",
           "quality": "published-comparison",
-          "issued": "2026-10-06T00:11:17Z",
-          "valid_start": "2026-10-05T21:00:00Z",
-          "valid_end": "2026-10-06T21:00:00Z",
+          "issued": "2026-10-06T03:13:27Z",
+          "valid_start": "2026-10-06T00:00:00Z",
+          "valid_end": "2026-10-07T00:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "MagPy-HMI-LOS_FULLDISK"
         },
         "ccmc_magpy": {
           "m1": 11.0,
-          "x1": 5.0,
+          "x1": 4.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC MagPy SHARP",
           "quality": "published-comparison",
-          "issued": "2026-10-06T02:01:56Z",
-          "valid_start": "2026-10-05T23:00:00Z",
-          "valid_end": "2026-10-06T23:00:00Z",
+          "issued": "2026-10-06T03:02:51Z",
+          "valid_start": "2026-10-06T00:00:00Z",
+          "valid_end": "2026-10-07T00:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "MagPy_SHARP_HMI_CEA_FULLDISK"
         }
@@ -212,8 +207,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14545",
       "label": "AR 14545",
-      "location": "N20E07",
-      "mcintosh": "DRO",
+      "location": "N18W06",
+      "mcintosh": "DAO",
       "quality": {
         "level": "research",
         "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=11.6°"
@@ -228,7 +223,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "component_id": "HARP14058"
         },
         "swpc": {
-          "m1": 5.0,
+          "m1": 10.0,
           "x1": 1.0,
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
@@ -255,40 +250,9 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ]
     },
     {
-      "id": "AR14546",
-      "label": "AR 14546",
-      "location": "S19W88",
-      "mcintosh": "",
-      "quality": {
-        "level": "fallback",
-        "message": "Numbered region is represented, but no accepted live SHARP vector was available; this is not a SHARP magnetic inference."
-      },
-      "members": {
-        "sharpmag": {
-          "m1": 3.7,
-          "x1": 0.2,
-          "source": "WXF training-climatology coverage fallback",
-          "quality": "research-coverage-fallback",
-          "method": "morphology_fallback",
-          "component_id": "AR14546-fallback"
-        },
-        "swpc": {
-          "m1": 0.0,
-          "x1": 0.0,
-          "source": "NOAA/SWPC numbered-region flare forecast",
-          "quality": "official-operational",
-          "method": "official_swpc"
-        }
-      },
-      "drivers": [
-        "McIntosh class unavailable or absent from published table",
-        "No accepted live single-region SHARP vector"
-      ]
-    },
-    {
       "id": "AR14547",
       "label": "AR 14547",
-      "location": "N15W46",
+      "location": "N15W59",
       "mcintosh": "BXI",
       "quality": {
         "level": "research",
@@ -333,7 +297,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14548",
       "label": "AR 14548",
-      "location": "S12E38",
+      "location": "S12E25",
       "mcintosh": "HSX",
       "quality": {
         "level": "research",
@@ -378,7 +342,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14549",
       "label": "AR 14549",
-      "location": "N10E15",
+      "location": "N10E01",
       "mcintosh": "DAI",
       "quality": {
         "level": "fallback",
@@ -394,8 +358,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "component_id": "AR14549-fallback"
         },
         "swpc": {
-          "m1": 10.0,
-          "x1": 1.0,
+          "m1": 40.0,
+          "x1": 5.0,
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
@@ -410,7 +374,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20261005&region=&indexnum=1",
-    "retrieved_at": "2026-10-06T02:20:28Z",
+    "retrieved_at": "2026-10-06T06:23:53Z",
     "table_date": "2026-10-05",
     "valid_start": "2026-10-05T00:00:00Z",
     "valid_end": "2026-10-06T00:00:00Z",
@@ -422,7 +386,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-10-06T02:20:28Z",
+    "generated_at": "2026-10-06T06:23:53Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
@@ -716,7 +680,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 102,
+      "records": 106,
       "issued": "2026-10-06T00:00:00Z",
       "valid_start": "2026-10-06T00:00:00Z",
       "valid_end": "2026-10-07T00:00:00Z",
@@ -793,7 +757,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 102,
+      "records": 106,
       "issued": "2026-10-06T00:00:00Z",
       "valid_start": "2026-10-06T00:00:00Z",
       "valid_end": "2026-10-06T12:00:00Z",
@@ -999,26 +963,26 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 38,
-      "issued": "2026-10-06T00:11:17Z",
-      "valid_start": "2026-10-05T21:00:00Z",
-      "valid_end": "2026-10-06T21:00:00Z",
-      "m1": 21.0,
-      "x1": 4.0,
+      "records": 46,
+      "issued": "2026-10-06T03:13:27Z",
+      "valid_start": "2026-10-06T00:00:00Z",
+      "valid_end": "2026-10-07T00:00:00Z",
+      "m1": 20.0,
+      "x1": 3.0,
       "selected_record": {
-        "start_window": "2026-10-05T21:00:00.0Z",
-        "end_window": "2026-10-06T21:00:00.0Z",
-        "issue_time": "2026-10-06T00:11:17.0Z",
+        "start_window": "2026-10-06T00:00:00.0Z",
+        "end_window": "2026-10-07T00:00:00.0Z",
+        "issue_time": "2026-10-06T03:13:27.0Z",
         "C": "-1",
         "M": "-1",
         "CPlus": "-1",
-        "MPlus": 0.21,
-        "X": 0.04,
+        "MPlus": 0.2,
+        "X": 0.03,
         "C_uncertainty": "-1",
         "M_uncertainty": "-1",
         "CPlus_uncertainty": "-1",
-        "MPlus_uncertainty": 0.034,
-        "X_uncertainty": 0.033,
+        "MPlus_uncertainty": 0.031,
+        "X_uncertainty": 0.028,
         "C_value_lower": "-1",
         "M_value_lower": "-1",
         "CPlus_value_lower": "-1",
@@ -1076,26 +1040,26 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 122,
-      "issued": "2026-10-06T02:01:56Z",
-      "valid_start": "2026-10-05T23:00:00Z",
-      "valid_end": "2026-10-06T23:00:00Z",
+      "records": 126,
+      "issued": "2026-10-06T03:02:51Z",
+      "valid_start": "2026-10-06T00:00:00Z",
+      "valid_end": "2026-10-07T00:00:00Z",
       "m1": 11.0,
-      "x1": 5.0,
+      "x1": 4.0,
       "selected_record": {
-        "start_window": "2026-10-05T23:00:00.0Z",
-        "end_window": "2026-10-06T23:00:00.0Z",
-        "issue_time": "2026-10-06T02:01:56.0Z",
+        "start_window": "2026-10-06T00:00:00.0Z",
+        "end_window": "2026-10-07T00:00:00.0Z",
+        "issue_time": "2026-10-06T03:02:51.0Z",
         "C": "-1",
         "M": "-1",
         "CPlus": "-1",
         "MPlus": 0.11,
-        "X": 0.05,
+        "X": 0.04,
         "C_uncertainty": "-1",
         "M_uncertainty": "-1",
         "CPlus_uncertainty": "-1",
-        "MPlus_uncertainty": 0.054,
-        "X_uncertainty": 0.029,
+        "MPlus_uncertainty": 0.053,
+        "X_uncertainty": 0.027,
         "C_value_lower": "-1",
         "M_value_lower": "-1",
         "CPlus_value_lower": "-1",

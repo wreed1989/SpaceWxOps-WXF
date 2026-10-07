@@ -158,33 +158,48 @@
           "predictionNote": "Please enter the following information for your prediction:\nBoM ENLIL settings: \nENLIL version: 2.7\nGrid: 256x30x90\nResolution: low\nAmbient settings: \nEjecta settings: \nWSA version: 2.2\nGONG: \n\nCME input parameters\nTime at 21.5Rs boundary: 2026-10-06 14:09\nRadial velocity (km/s): 458\nLongitude (deg): 26\nLatitude (deg): 5\nHalf-angular width (deg): 45\n\nNotes:"
         },
         {
+          "predictedMethodName": "ELEvo",
+          "submissionTime": "2026-10-07T11:05Z",
+          "predictedArrivalTime": "2026-10-09T09:00Z",
+          "uncertaintyMinusInHrs": 10.58,
+          "uncertaintyPlusInHrs": 10.58,
+          "confidenceInPercentage": 100.0,
+          "predictedMaxKpLowerRange": null,
+          "predictedMaxKpUpperRange": null,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "45.92",
+          "predictionNote": "Predicted Arrival Time: 2026-10-09T09:00Z (+/- 10.58h) \nPredicted Arrival Speed: 516 +/-  80 km/s \n\n\nCME input parameters: \nApex direction (deg): 3.0 longitude, 15.0 latitude  \nInverse ellipse aspect ratio: 0.7 \nAngular half width (in ecliptic, deg): 44.5\ninitial CME speed: 571.5 (+/- 50) km/s \ninitial height: 21.5 R_sun \ninitial time:     2026-10-06T12:30Z \ndrag parameter: 0.1e-7 (+/- 0.025e-7) /km  \nambient solar wind speed: 400 (+/- 50) km/s \ntime step: 10 min \nensemble members: 50k"
+        },
+        {
           "predictedMethodName": "Average of all Methods",
-          "submissionTime": "2026-10-07T00:48Z",
-          "predictedArrivalTime": "2026-10-09T06:30Z",
+          "submissionTime": "2026-10-07T11:07Z",
+          "predictedArrivalTime": "2026-10-09T06:52Z",
           "uncertaintyMinusInHrs": null,
           "uncertaintyPlusInHrs": null,
-          "confidenceInPercentage": 86.6667,
+          "confidenceInPercentage": 90.0,
           "predictedMaxKpLowerRange": 4.33333,
           "predictedMaxKpUpperRange": 6.0,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
           "differenceInHrs": null,
-          "leadTimeInHrs": "53.70",
+          "leadTimeInHrs": "43.75",
           "predictionNote": "Auto-generated average of all methods forecast."
         },
         {
           "predictedMethodName": "Median of all Methods",
-          "submissionTime": "2026-10-07T00:48Z",
-          "predictedArrivalTime": "2026-10-09T05:32Z",
+          "submissionTime": "2026-10-07T11:07Z",
+          "predictedArrivalTime": "2026-10-09T06:48Z",
           "uncertaintyMinusInHrs": null,
           "uncertaintyPlusInHrs": null,
-          "confidenceInPercentage": 90.0,
+          "confidenceInPercentage": 95.0,
           "predictedMaxKpLowerRange": 4.0,
           "predictedMaxKpUpperRange": 6.0,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
           "differenceInHrs": null,
-          "leadTimeInHrs": "52.73",
+          "leadTimeInHrs": "43.68",
           "predictionNote": "Auto-generated median of all methods forecast."
         }
       ]
@@ -770,7 +785,7 @@
     }
   ],
   "source": "https://ccmc.gsfc.nasa.gov/CMESB-Earth/WS/get/predictions?CMEtimeStart=2026-09-07&CMEtimeEnd=2026-10-08&closeOutCMEsOnly=false&skipNoArrivalObservedCMEs=false",
-  "retrievedAt": "2026-10-07T08:35:16.835845+00:00",
+  "retrievedAt": "2026-10-07T16:23:27.366272+00:00",
   "windowStart": "2026-09-07",
   "windowEnd": "2026-10-08"
 }

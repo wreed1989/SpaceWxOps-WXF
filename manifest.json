@@ -1,11 +1,11 @@
 {
   "schemaVersion": "ops-delivery-1",
-  "checkedAt": "2026-10-08T16:25:25.191274+00:00",
+  "checkedAt": "2026-10-08T22:01:57.146240+00:00",
   "products": {
     "scoreboard": {
       "status": "available",
-      "events": 9,
-      "retrievedAt": "2026-10-08T16:25:25.591065+00:00",
+      "events": 10,
+      "retrievedAt": "2026-10-08T22:01:57.219555+00:00",
       "attempts": []
     },
     "refm": {
@@ -15,7 +15,7 @@
     "m2mAnimation": {
       "path": "m2m-animation.gif",
       "sourceURL": "https://iswa.ccmc.gsfc.nasa.gov/iswa_data_tree/model/heliosphere/wsa-enlil-cone/animation-cme-velocity/2026/10/20261008_004000_2.0_anim.tim-vel.gif",
-      "retrievedAt": "2026-10-08T16:25:26.961624+00:00",
+      "retrievedAt": "2026-10-08T22:01:57.544097+00:00",
       "httpLastModified": "Wed, 07 Oct 2026 18:40:13 GMT",
       "sha256": "2968dbbab8dcdd4eb7b72b01470cf98296a564e95096f8ddcf55e7f340a7dfb6",
       "bytes": 2225009,
@@ -29,10 +29,10 @@
     "huxtAnimation": {
       "path": "huxt-animation.mp4",
       "sourceURL": "https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_animation_latest.mp4",
-      "retrievedAt": "2026-10-08T16:25:26.976828+00:00",
-      "httpLastModified": "Thu, 08 Oct 2026 12:00:05 GMT",
-      "sha256": "a1c5383f8f290056a2bf1e51de90f3b1ed03bb86330cfac0e2ee6c627071e83a",
-      "bytes": 960373,
+      "retrievedAt": "2026-10-08T22:01:58.140215+00:00",
+      "httpLastModified": "Thu, 08 Oct 2026 18:00:06 GMT",
+      "sha256": "beb2392602489036463f0a35f04b997ec6f0248af3cb19b7579096995a254554",
+      "bytes": 978236,
       "kind": "video",
       "frames": null,
       "status": "available",
@@ -40,8 +40,8 @@
     },
     "electron-fluence.json": {
       "status": "experimental",
-      "issuedAt": "2026-10-08T16:25:24.681442+00:00",
-      "dataAsOf": "2026-10-08T16:00:00+00:00",
+      "issuedAt": "2026-10-08T22:01:56.368238+00:00",
+      "dataAsOf": "2026-10-08T21:00:00+00:00",
       "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732"
     }
   }

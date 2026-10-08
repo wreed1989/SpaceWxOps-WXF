@@ -125,6 +125,18 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "valid_start": "2026-10-08T00:00:00+00:00",
           "valid_end": "2026-10-09T00:00:00+00:00"
         },
+        "mcstat": {
+          "m1": 24.0,
+          "x1": 2.0,
+          "source": "SolarMonitor MCSTAT dominant-region proxy (maximum of 4 regional forecasts)",
+          "quality": "published-comparison"
+        },
+        "mcevol": {
+          "m1": 12.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCEVOL dominant-region proxy (maximum of 4 regional forecasts)",
+          "quality": "published-comparison"
+        },
         "sidc": {
           "m1": 0.0,
           "x1": 0.0,
@@ -227,6 +239,18 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
+        },
+        "mcstat": {
+          "m1": 7.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCSTAT regional forecast",
+          "quality": "published-comparison"
+        },
+        "mcevol": {
+          "m1": 0.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCEVOL regional forecast",
+          "quality": "published-comparison"
         }
       },
       "drivers": [
@@ -260,6 +284,12 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
+        },
+        "mcstat": {
+          "m1": 4.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCSTAT regional forecast",
+          "quality": "published-comparison"
         }
       },
       "drivers": [
@@ -291,6 +321,18 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
+        },
+        "mcstat": {
+          "m1": 3.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCSTAT regional forecast",
+          "quality": "published-comparison"
+        },
+        "mcevol": {
+          "m1": 0.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCEVOL regional forecast",
+          "quality": "published-comparison"
         }
       },
       "drivers": [
@@ -324,6 +366,18 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
+        },
+        "mcstat": {
+          "m1": 24.0,
+          "x1": 2.0,
+          "source": "SolarMonitor MCSTAT regional forecast",
+          "quality": "published-comparison"
+        },
+        "mcevol": {
+          "m1": 12.0,
+          "x1": 0.0,
+          "source": "SolarMonitor MCEVOL regional forecast",
+          "quality": "published-comparison"
         }
       },
       "drivers": [
@@ -365,8 +419,22 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ]
     }
   ],
+  "solar_monitor": {
+    "source": "SolarMonitor",
+    "source_url": "https://www.solarmonitor.org/forecast.php?date=20261007&region=&indexnum=1",
+    "retrieved_at": "2026-10-08T01:59:40Z",
+    "table_date": "2026-10-07",
+    "valid_start": "2026-10-07T00:00:00Z",
+    "valid_end": "2026-10-08T00:00:00Z",
+    "wxf_valid_start": "2026-10-08T00:00:00Z",
+    "wxf_valid_end": "2026-10-09T00:00:00Z",
+    "window_alignment": "latest issue-date comparison; not asserted as an exact WXF target-window match",
+    "regional_forecasts": 4,
+    "full_disk_method": "maximum regional probability (dominant-region proxy)",
+    "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
+  },
   "external_sources": {
-    "generated_at": "2026-10-08T01:03:42Z",
+    "generated_at": "2026-10-08T01:59:40Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
@@ -660,7 +728,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 100,
+      "records": 101,
       "issued": "2026-10-08T00:00:00Z",
       "valid_start": "2026-10-08T00:00:00Z",
       "valid_end": "2026-10-09T00:00:00Z",
@@ -737,7 +805,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 100,
+      "records": 101,
       "issued": "2026-10-08T00:00:00Z",
       "valid_start": "2026-10-08T00:00:00Z",
       "valid_end": "2026-10-08T12:00:00Z",

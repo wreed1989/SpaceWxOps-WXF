@@ -56,23 +56,38 @@
           "predictionNote": "KSWC ENLIL settings:\nENLIL version: 2.7e\nResolution: low (256x30x90)\nAmbient settings: a5b1\nWSA version: 2.2\n\n\nCME input parameters\nTime at 21.5Rs boundary: 2026-10-08T00:12Z\nRadial velocity (km/s): 354\nLongitude (deg): 15.3\nLatitude (deg): 18.7\nHalf-angular width (deg): 36.5\n\nNotes:"
         },
         {
-          "predictedMethodName": "Average of all Methods",
-          "submissionTime": "2026-10-08T01:09Z",
-          "predictedArrivalTime": "2026-10-11T07:40Z",
-          "uncertaintyMinusInHrs": null,
-          "uncertaintyPlusInHrs": null,
+          "predictedMethodName": "WSA-ENLIL + Cone (Met Office)",
+          "submissionTime": "2026-10-08T03:00Z",
+          "predictedArrivalTime": "2026-10-10T16:00Z",
+          "uncertaintyMinusInHrs": 10.0,
+          "uncertaintyPlusInHrs": 10.0,
           "confidenceInPercentage": null,
-          "predictedMaxKpLowerRange": 2.0,
-          "predictedMaxKpUpperRange": 4.0,
+          "predictedMaxKpLowerRange": 3.0,
+          "predictedMaxKpUpperRange": 5.0,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
           "differenceInHrs": null,
-          "leadTimeInHrs": "78.52",
+          "leadTimeInHrs": "61.00",
+          "predictionNote": "Met Office ENLIL settings.\nENLIL version: 2.7\nResolution: medium-res (512x60x180) (X1=0.1-1.7/uniform X2=30.-150./uniform X3=0.-360./uniform)\nAmbient settings: a3b2-sa1\nWSA version: 4.5\nGONG: mrzqs\nNote that this arrival time forecast is based on the simulation but is then adjusted by a human-in-the-loop.\n\nPlease specify following CME input parameters.\nTime at 21.5Rs boundary: 2026-10-07T22:08Z\nRadial velocity (km/s): 550\nLongitude (deg): W16\nLatitude (deg): N16\nHalf-angular width (deg): 25\n\nNotes: Some uncertainty in analysis due to lack of imagery, and also varying speeds on analysis.\nSpace weather advisor: Katie Howard"
+        },
+        {
+          "predictedMethodName": "Average of all Methods",
+          "submissionTime": "2026-10-08T03:07Z",
+          "predictedArrivalTime": "2026-10-11T03:45Z",
+          "uncertaintyMinusInHrs": null,
+          "uncertaintyPlusInHrs": null,
+          "confidenceInPercentage": null,
+          "predictedMaxKpLowerRange": 2.33333,
+          "predictedMaxKpUpperRange": 4.33333,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "72.63",
           "predictionNote": "Auto-generated average of all methods forecast."
         },
         {
           "predictedMethodName": "Median of all Methods",
-          "submissionTime": "2026-10-08T01:09Z",
+          "submissionTime": "2026-10-08T03:07Z",
           "predictedArrivalTime": "2026-10-11T06:00Z",
           "uncertaintyMinusInHrs": null,
           "uncertaintyPlusInHrs": null,
@@ -82,7 +97,7 @@
           "predictedDstMin": null,
           "predictedDstMinTime": null,
           "differenceInHrs": null,
-          "leadTimeInHrs": "76.85",
+          "leadTimeInHrs": "74.88",
           "predictionNote": "Auto-generated median of all methods forecast."
         }
       ]
@@ -860,7 +875,7 @@
     }
   ],
   "source": "https://ccmc.gsfc.nasa.gov/CMESB-Earth/WS/get/predictions?CMEtimeStart=2026-09-08&CMEtimeEnd=2026-10-09&closeOutCMEsOnly=false&skipNoArrivalObservedCMEs=false",
-  "retrievedAt": "2026-10-08T01:52:07.044711+00:00",
+  "retrievedAt": "2026-10-08T08:52:35.720457+00:00",
   "windowStart": "2026-09-08",
   "windowEnd": "2026-10-09"
 }

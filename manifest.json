@@ -1,47 +1,47 @@
 {
   "schemaVersion": "ops-delivery-1",
-  "checkedAt": "2026-10-09T08:56:20.351355+00:00",
+  "checkedAt": "2026-10-09T16:08:29.584917+00:00",
   "products": {
     "scoreboard": {
       "status": "available",
       "events": 11,
-      "retrievedAt": "2026-10-09T08:56:20.677591+00:00",
+      "retrievedAt": "2026-10-09T16:08:29.666065+00:00",
       "attempts": []
     },
     "refm": {
       "status": "available",
       "issuedAt": "2026-10-09T00:14:00+00:00"
     },
+    "m2mAnimation": {
+      "path": "m2m-animation.gif",
+      "sourceURL": "https://iswa.gsfc.nasa.gov/ENSEMBLE/2026-10-08_ncmes2_sims27_M2M-SWAO104/20261008_162400_ncmes2_sims27_M2M-SWAO104_anim_tim-den.gif",
+      "retrievedAt": "2026-10-09T16:08:30.272833+00:00",
+      "httpLastModified": "Fri, 09 Oct 2026 02:47:02 GMT",
+      "sha256": "79afbcbf93b013c0b21a911d3e0509513631ab905402325c7d446a04d19ccdbc",
+      "bytes": 1678772,
+      "kind": "image",
+      "frames": 33,
+      "status": "available",
+      "submittedAt": "2026-10-09T00:46:00+00:00",
+      "event": "2026-10-08T16:53:00-CME-001",
+      "method": "Ensemble WSA-ENLIL + Cone (NASA M2M)"
+    },
     "huxtAnimation": {
       "path": "huxt-animation.mp4",
       "sourceURL": "https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_animation_latest.mp4",
-      "retrievedAt": "2026-10-09T08:56:21.713397+00:00",
-      "httpLastModified": "Fri, 09 Oct 2026 06:00:05 GMT",
-      "sha256": "f814704329aac34a7a21a8ec6f365443ccea17c5baf569241f97832ce896af79",
-      "bytes": 1002385,
+      "retrievedAt": "2026-10-09T16:08:30.526767+00:00",
+      "httpLastModified": "Fri, 09 Oct 2026 12:00:06 GMT",
+      "sha256": "0012e5ee34388bfd96ebf895842b2c388159267c17d87368624288e9b308f446",
+      "bytes": 1015347,
       "kind": "video",
       "frames": null,
       "status": "available",
       "issueTimeSource": "Read model times on provider animation"
     },
-    "m2mAnimation": {
-      "path": "m2m-animation.gif",
-      "sourceURL": "https://iswa.ccmc.gsfc.nasa.gov/iswa_data_tree/model/heliosphere/wsa-enlil-cone/animation-cme-velocity/2026/10/20261008_225300_2.0_anim.tim-vel.gif",
-      "retrievedAt": "2026-10-09T08:56:21.872251+00:00",
-      "httpLastModified": "Thu, 08 Oct 2026 22:21:40 GMT",
-      "sha256": "c26eb8edeaa3f5fe4e03c078f952e463da44639d116bfa6b610a5fed15186198",
-      "bytes": 2230364,
-      "kind": "image",
-      "frames": 41,
-      "status": "available",
-      "submittedAt": "2026-10-08T22:21:00+00:00",
-      "event": "2026-10-08T16:53:00-CME-001",
-      "method": "WSA-ENLIL + Cone (NASA M2M)"
-    },
     "electron-fluence.json": {
       "status": "experimental",
-      "issuedAt": "2026-10-09T08:56:19.552189+00:00",
-      "dataAsOf": "2026-10-09T08:00:00+00:00",
+      "issuedAt": "2026-10-09T16:08:28.852181+00:00",
+      "dataAsOf": "2026-10-09T15:00:00+00:00",
       "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732"
     }
   }

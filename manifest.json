@@ -1,21 +1,33 @@
 {
   "schemaVersion": "ops-delivery-1",
-  "checkedAt": "2026-10-09T02:04:53.987879+00:00",
+  "checkedAt": "2026-10-09T08:56:20.351355+00:00",
   "products": {
     "scoreboard": {
       "status": "available",
       "events": 11,
-      "retrievedAt": "2026-10-09T02:04:54.155126+00:00",
+      "retrievedAt": "2026-10-09T08:56:20.677591+00:00",
       "attempts": []
     },
     "refm": {
       "status": "available",
       "issuedAt": "2026-10-09T00:14:00+00:00"
     },
+    "huxtAnimation": {
+      "path": "huxt-animation.mp4",
+      "sourceURL": "https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_animation_latest.mp4",
+      "retrievedAt": "2026-10-09T08:56:21.713397+00:00",
+      "httpLastModified": "Fri, 09 Oct 2026 06:00:05 GMT",
+      "sha256": "f814704329aac34a7a21a8ec6f365443ccea17c5baf569241f97832ce896af79",
+      "bytes": 1002385,
+      "kind": "video",
+      "frames": null,
+      "status": "available",
+      "issueTimeSource": "Read model times on provider animation"
+    },
     "m2mAnimation": {
       "path": "m2m-animation.gif",
       "sourceURL": "https://iswa.ccmc.gsfc.nasa.gov/iswa_data_tree/model/heliosphere/wsa-enlil-cone/animation-cme-velocity/2026/10/20261008_225300_2.0_anim.tim-vel.gif",
-      "retrievedAt": "2026-10-09T02:04:54.789473+00:00",
+      "retrievedAt": "2026-10-09T08:56:21.872251+00:00",
       "httpLastModified": "Thu, 08 Oct 2026 22:21:40 GMT",
       "sha256": "c26eb8edeaa3f5fe4e03c078f952e463da44639d116bfa6b610a5fed15186198",
       "bytes": 2230364,
@@ -26,22 +38,10 @@
       "event": "2026-10-08T16:53:00-CME-001",
       "method": "WSA-ENLIL + Cone (NASA M2M)"
     },
-    "huxtAnimation": {
-      "path": "huxt-animation.mp4",
-      "sourceURL": "https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_animation_latest.mp4",
-      "retrievedAt": "2026-10-09T02:04:55.148652+00:00",
-      "httpLastModified": "Fri, 09 Oct 2026 00:00:06 GMT",
-      "sha256": "84fabb0d5644fec5260378545373c4ca9ec1db9f24dfa19c3e2d398bba05ab0b",
-      "bytes": 986361,
-      "kind": "video",
-      "frames": null,
-      "status": "available",
-      "issueTimeSource": "Read model times on provider animation"
-    },
     "electron-fluence.json": {
       "status": "experimental",
-      "issuedAt": "2026-10-09T02:04:53.224545+00:00",
-      "dataAsOf": "2026-10-09T01:00:00+00:00",
+      "issuedAt": "2026-10-09T08:56:19.552189+00:00",
+      "dataAsOf": "2026-10-09T08:00:00+00:00",
       "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732"
     }
   }

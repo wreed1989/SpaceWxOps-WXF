@@ -1,11 +1,11 @@
 {
   "schemaVersion": "ops-delivery-1",
-  "checkedAt": "2026-10-10T07:00:13.539787+00:00",
+  "checkedAt": "2026-10-10T13:35:37.533491+00:00",
   "products": {
     "scoreboard": {
       "status": "available",
       "events": 10,
-      "retrievedAt": "2026-10-10T07:00:14.008791+00:00",
+      "retrievedAt": "2026-10-10T13:35:38.048557+00:00",
       "attempts": []
     },
     "refm": {
@@ -15,10 +15,10 @@
     "huxtAnimation": {
       "path": "huxt-animation.mp4",
       "sourceURL": "https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_animation_latest.mp4",
-      "retrievedAt": "2026-10-10T07:00:15.309350+00:00",
-      "httpLastModified": "Sat, 10 Oct 2026 06:00:05 GMT",
-      "sha256": "b7291f59eeaf2d38f239ac34c01d6ebb9c5af87c91f7c36626d95f8a5844267f",
-      "bytes": 1023374,
+      "retrievedAt": "2026-10-10T13:35:39.661218+00:00",
+      "httpLastModified": "Sat, 10 Oct 2026 12:00:05 GMT",
+      "sha256": "62a48c14b0a0fe5b2b862868148d97f4b2966f2439d9da87e46dffb443281679",
+      "bytes": 1072423,
       "kind": "video",
       "frames": null,
       "status": "available",
@@ -27,7 +27,7 @@
     "m2mAnimation": {
       "path": "m2m-animation.gif",
       "sourceURL": "https://iswa.gsfc.nasa.gov/ENSEMBLE/2026-10-08_ncmes2_sims27_M2M-SWAO104/20261008_162400_ncmes2_sims27_M2M-SWAO104_anim_tim-den.gif",
-      "retrievedAt": "2026-10-10T07:00:18.112056+00:00",
+      "retrievedAt": "2026-10-10T13:35:41.817404+00:00",
       "httpLastModified": "Fri, 09 Oct 2026 02:47:02 GMT",
       "sha256": "79afbcbf93b013c0b21a911d3e0509513631ab905402325c7d446a04d19ccdbc",
       "bytes": 1678772,
@@ -40,8 +40,8 @@
     },
     "electron-fluence.json": {
       "status": "experimental",
-      "issuedAt": "2026-10-10T07:00:12.955365+00:00",
-      "dataAsOf": "2026-10-10T06:00:00+00:00",
+      "issuedAt": "2026-10-10T13:35:36.806027+00:00",
+      "dataAsOf": "2026-10-10T13:00:00+00:00",
       "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732"
     }
   }

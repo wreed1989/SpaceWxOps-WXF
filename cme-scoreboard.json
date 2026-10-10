@@ -86,33 +86,63 @@
           "predictionNote": ":Issued: 2026 Oct 09 1402 UTC\n#--------------------------------------------------------------------#\n# FAST WARNING 'PRESTO' MESSAGE  from the SIDC (RWC-Belgium)         #\n#--------------------------------------------------------------------#\nA partial halo coronal mass ejection (SIDC CME 727) was observed by LASCO/C2 to lift off the solar surface around 16:12 UTC on October 08. The eruption has a white-light shock and is likely linked to the M6.7 flaring from SIDC Sunspot Group 976 (NOAA Active Region 4549) with peak time at 15:48 UTC on October 08. Associated EUV dimming and a wide coronal wave detected in the SDO/AIA data around 16:33 UTC on October 08. Related type II and type IV solar radio emissions were detected at 15:42 UTC and 16:12 UTC on October 08 respectively. The CME has an estimated projected speed of about 500 km/s and is analysed to have an Earth-directed component with a possible arrival at Earth late UTC on October 11 to early UTC on October 12. Active conditions with possible minor geomagnetic storms can be reached if the CME arrives.\n#--------------------------------------------------------------------#\n# Solar Influences Data analysis Center - RWC Belgium                #\n# Royal Observatory of Belgium                                       #"
         },
         {
-          "predictedMethodName": "Average of all Methods",
-          "submissionTime": "2026-10-09T15:45Z",
-          "predictedArrivalTime": "2026-10-11T17:58Z",
-          "uncertaintyMinusInHrs": null,
-          "uncertaintyPlusInHrs": null,
-          "confidenceInPercentage": 63.5,
-          "predictedMaxKpLowerRange": 3.2,
-          "predictedMaxKpUpperRange": 4.8,
+          "predictedMethodName": "WSA-ENLIL + Cone (Met Office)",
+          "submissionTime": "2026-10-09T23:08Z",
+          "predictedArrivalTime": "2026-10-11T15:00Z",
+          "uncertaintyMinusInHrs": 12.0,
+          "uncertaintyPlusInHrs": 12.0,
+          "confidenceInPercentage": 55.0,
+          "predictedMaxKpLowerRange": 3.0,
+          "predictedMaxKpUpperRange": 6.0,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
           "differenceInHrs": null,
-          "leadTimeInHrs": "50.22",
+          "leadTimeInHrs": "39.87",
+          "predictionNote": "Met Office ENLIL settings.\nENLIL version: 2.7\nResolution: medium-res (512x60x180) (X1=0.1-1.7/uniform X2=30.-150./uniform X3=0.-360./uniform)\nAmbient settings: a3b2-sa1\nWSA version: 4.5\nGONG: mrzqs\nNote that this arrival time forecast is based on the simulation but is then adjusted by a human-in-the-loop.\n\nPlease specify following CME input parameters.\nTime at 21.5Rs boundary: 08/2200\nRadial velocity (km/s): 600\nLongitude (deg): 20W\nLatitude (deg): 28N\nHalf-angular width (deg): 36\n\nNotes: \nSpace weather advisor:"
+        },
+        {
+          "predictedMethodName": "WSA-ENLIL + Cone (KSWC)",
+          "submissionTime": "2026-10-09T23:27Z",
+          "predictedArrivalTime": "2026-10-12T00:00Z",
+          "uncertaintyMinusInHrs": null,
+          "uncertaintyPlusInHrs": null,
+          "confidenceInPercentage": null,
+          "predictedMaxKpLowerRange": null,
+          "predictedMaxKpUpperRange": null,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "48.55",
+          "predictionNote": "KSWC ENLIL settings:\nENLIL version: 2.7e\nResolution: low (256x30x90)\nAmbient settings: a5b1\nWSA version: 2.2\n\n\nCME input parameters\nTime at 21.5Rs boundary: 2026-10-08T22:52Z\nRadial velocity (km/s): 569.7\nLongitude (deg): 22.6\nLatitude (deg): 27.5\nHalf-angular width (deg): 38\n\nNotes:"
+        },
+        {
+          "predictedMethodName": "Average of all Methods",
+          "submissionTime": "2026-10-09T23:30Z",
+          "predictedArrivalTime": "2026-10-11T18:24Z",
+          "uncertaintyMinusInHrs": null,
+          "uncertaintyPlusInHrs": null,
+          "confidenceInPercentage": 60.6667,
+          "predictedMaxKpLowerRange": 3.16667,
+          "predictedMaxKpUpperRange": 5.0,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "42.90",
           "predictionNote": "Auto-generated average of all methods forecast."
         },
         {
           "predictedMethodName": "Median of all Methods",
-          "submissionTime": "2026-10-09T15:45Z",
+          "submissionTime": "2026-10-09T23:30Z",
           "predictedArrivalTime": "2026-10-11T20:14Z",
           "uncertaintyMinusInHrs": null,
           "uncertaintyPlusInHrs": null,
-          "confidenceInPercentage": 63.5,
+          "confidenceInPercentage": 55.0,
           "predictedMaxKpLowerRange": 3.0,
           "predictedMaxKpUpperRange": 5.0,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
           "differenceInHrs": null,
-          "leadTimeInHrs": "52.48",
+          "leadTimeInHrs": "44.73",
           "predictionNote": "Auto-generated median of all methods forecast."
         }
       ]
@@ -1034,67 +1064,10 @@
           "predictionNote": "{\n    \"domain\": \"SH\",\n    \"status\": \"Run Complete\",\n    \"status_date\": \"2026-09-14T18:26:16+00:00\",\n    \"progress\": 100,\n    \"filesJSON\": \"https://ccmc.gsfc.nasa.gov/results/run_files.php?runnumber=Mary_Aronne_091426_SH_1&format=json\",\n    \"model\": \"OSPREI\",\n    \"modelVersion\": \"1\",\n    \"description\": \"CCMC ROR run for OSPREI 1 with RORID Mary_Aronne_091426_SH_1\",\n    \"runSubmissionTime\": \"2026-09-14T17:53:46+00:00\",\n    \"runExecutionStartTime\": \"2026-09-14T17:56:47+00:00\",\n    \"runPublicationTime\": \"2026-09-14T18:26:16+00:00\",\n    \"nprocs\": \"\",\n    \"simulationStartTime\": \"2026-09-13T22:26:00+00:00\",\n    \"simulationEndTime\": \"\",\n    \"outfreq\": \"\",\n    \"keywords\": \"M2M SWAO\",\n    \"inputParameters\": {\n        \"project_number\": \"\",\n        \"models\": \"IP\",\n        \"models_str\": \"IP\",\n        \"MagFile\": \"\",\n        \"nRuns\": \"1\",\n        \"satellite\": \"Earth\",\n        \"startdatetime\": \"2026-09-13 22:26\",\n        \"CMEr\": \"21.5\",\n        \"CMElat\": \"12\",\n        \"CMElon\": \"39\",\n        \"CMEtilt\": \"10\",\n        \"CMEvr\": \"1305\",\n        \"CMEAW\": \"23\",\n        \"CMEAWp\": \"7.666666666666667\",\n        \"CMEM\": \"13.21\",\n        \"CMEdelAx\": \"0.75\",\n        \"CMEdelCS\": \"1\",\n        \"FRpol\": \"-1\",\n        \"FRafs\": \"+1\",\n        \"doPUP\": \"True\"\n    }\n}"
         }
       ]
-    },
-    {
-      "cmeID": "2026-09-09T16:00:00-CME-001",
-      "observedTime": "2026-09-09T16:00Z",
-      "noArrivalObserved": true,
-      "arrivalTime": null,
-      "maxKP": null,
-      "dstMin": null,
-      "dstMinTime": null,
-      "cmeNote": "Wide, faint CME visible to the SW in SOHO LASCO C2/C3 and GOES CCOR-1 imagery. The CME is also visible to the SE in STEREO A COR2 imagery, and overlaps in the field of view with CME: 2026-09-09T16:09Z. The potential source is unclear, but may be brightening and field line movement seen in the vicinity of AR 14521 (N09W48) beginning at approx. 2026-09-09T14:30Z as seen in SDO AIA 193.",
-      "predictions": [
-        {
-          "predictedMethodName": "WSA-ENLIL + Cone (NASA M2M)",
-          "submissionTime": "2026-09-11T15:38Z",
-          "predictedArrivalTime": "2026-09-13T23:00Z",
-          "uncertaintyMinusInHrs": 7.0,
-          "uncertaintyPlusInHrs": 7.0,
-          "confidenceInPercentage": null,
-          "predictedMaxKpLowerRange": 2.0,
-          "predictedMaxKpUpperRange": 3.0,
-          "predictedDstMin": null,
-          "predictedDstMinTime": null,
-          "differenceInHrs": null,
-          "leadTimeInHrs": "55.37",
-          "predictionNote": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/48664/1\nModel Inputs:\n2026-09-09T16:00:00-CME-001 with CME Analysis: Lon.=29.0, Lat.=1.0, Speed=282.0, HalfAngle=35.0, Time21.5=2026-09-10T04:39Z\n\nModel Output:\n\nEarth Impact:\nEarth Shock Arrival Time = 2026-09-13T23:00Z (+- 7 hours)\n(kp)90=2\n(kp)180=3\n\nOther Location(s) Impact:\nSolar Orbiter with esitmated shock arrival time 2026-09-12T02:58Z\nSTEREO A with esitmated shock arrival time 2026-09-13T14:00Z\n\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20260910_043900_2.0_anim.tim-den.gif\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20260910_043900_2.0_anim.tim-vel.gif\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20260910_043900_2.0_anim.tim-den-Stereo_A.gif\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20260910_043900_2.0_anim.tim-vel-Stereo_A.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20260910_043900_2.0_ENLIL_CONE_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20260910_043900_2.0_ENLIL_CONE_Kp_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20260910_043900_2.0_ENLIL_CONE_STA_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20260910_043900_2.0_ENLIL_CONE_Bepi_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20260910_043900_2.0_ENLIL_CONE_Mars_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20260910_043900_2.0_ENLIL_CONE_Merc_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20260910_043900_2.0_ENLIL_CONE_SolO_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20260910_043900_2.0_ENLIL_CONE_Juice_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20260910_043900_2.0_ENLIL_CONE_Venus_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20260910_043900_2.0_ENLIL_CONE_Osiris_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20260910_043900_2.0_ENLIL_CONE_Psyche_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20260910_043900_2.0_ENLIL_CONE_EuropaClippr_timeline.gif"
-        },
-        {
-          "predictedMethodName": "Average of all Methods",
-          "submissionTime": "2026-09-11T15:46Z",
-          "predictedArrivalTime": "2026-09-13T23:00Z",
-          "uncertaintyMinusInHrs": null,
-          "uncertaintyPlusInHrs": null,
-          "confidenceInPercentage": null,
-          "predictedMaxKpLowerRange": 2.0,
-          "predictedMaxKpUpperRange": 3.0,
-          "predictedDstMin": null,
-          "predictedDstMinTime": null,
-          "differenceInHrs": null,
-          "leadTimeInHrs": "55.23",
-          "predictionNote": "This is the auto generated average of all submitted predictions for this CME"
-        },
-        {
-          "predictedMethodName": "Median of all Methods",
-          "submissionTime": "2026-09-11T15:46Z",
-          "predictedArrivalTime": "2026-09-13T23:00Z",
-          "uncertaintyMinusInHrs": null,
-          "uncertaintyPlusInHrs": null,
-          "confidenceInPercentage": null,
-          "predictedMaxKpLowerRange": 2.0,
-          "predictedMaxKpUpperRange": 3.0,
-          "predictedDstMin": null,
-          "predictedDstMinTime": null,
-          "differenceInHrs": null,
-          "leadTimeInHrs": "55.23",
-          "predictionNote": "This is the auto generated median of all submitted predictions for this CME."
-        }
-      ]
     }
   ],
-  "source": "https://ccmc.gsfc.nasa.gov/CMESB-Earth/WS/get/predictions?CMEtimeStart=2026-09-09&CMEtimeEnd=2026-10-10&closeOutCMEsOnly=false&skipNoArrivalObservedCMEs=false",
-  "retrievedAt": "2026-10-09T20:51:01.638139+00:00",
-  "windowStart": "2026-09-09",
-  "windowEnd": "2026-10-10"
+  "source": "https://ccmc.gsfc.nasa.gov/CMESB-Earth/WS/get/predictions?CMEtimeStart=2026-09-10&CMEtimeEnd=2026-10-11&closeOutCMEsOnly=false&skipNoArrivalObservedCMEs=false",
+  "retrievedAt": "2026-10-10T00:44:51.798369+00:00",
+  "windowStart": "2026-09-10",
+  "windowEnd": "2026-10-11"
 }

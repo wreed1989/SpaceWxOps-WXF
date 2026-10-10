@@ -1,24 +1,24 @@
 {
   "schemaVersion": "ops-delivery-1",
-  "checkedAt": "2026-10-09T20:51:01.158112+00:00",
+  "checkedAt": "2026-10-10T00:44:51.557331+00:00",
   "products": {
     "scoreboard": {
       "status": "available",
-      "events": 11,
-      "retrievedAt": "2026-10-09T20:51:01.638139+00:00",
+      "events": 10,
+      "retrievedAt": "2026-10-10T00:44:51.798369+00:00",
       "attempts": []
     },
     "refm": {
       "status": "available",
-      "issuedAt": "2026-10-09T00:14:00+00:00"
+      "issuedAt": "2026-10-10T00:14:00+00:00"
     },
     "huxtAnimation": {
       "path": "huxt-animation.mp4",
       "sourceURL": "https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_animation_latest.mp4",
-      "retrievedAt": "2026-10-09T20:51:03.085815+00:00",
-      "httpLastModified": "Fri, 09 Oct 2026 18:00:06 GMT",
-      "sha256": "c2b3d65a66a222ee972a5ad977adfbf10c1f70f99e228e4f145f019907bdd5b2",
-      "bytes": 1027920,
+      "retrievedAt": "2026-10-10T00:44:52.975922+00:00",
+      "httpLastModified": "Sat, 10 Oct 2026 00:00:05 GMT",
+      "sha256": "0c94df0ff2e68b7c7a55f744435fa7ff2c5dcf74154d9edf6b7cc3ed9326b4ce",
+      "bytes": 1016800,
       "kind": "video",
       "frames": null,
       "status": "available",
@@ -27,7 +27,7 @@
     "m2mAnimation": {
       "path": "m2m-animation.gif",
       "sourceURL": "https://iswa.gsfc.nasa.gov/ENSEMBLE/2026-10-08_ncmes2_sims27_M2M-SWAO104/20261008_162400_ncmes2_sims27_M2M-SWAO104_anim_tim-den.gif",
-      "retrievedAt": "2026-10-09T20:51:04.941205+00:00",
+      "retrievedAt": "2026-10-10T00:44:53.767193+00:00",
       "httpLastModified": "Fri, 09 Oct 2026 02:47:02 GMT",
       "sha256": "79afbcbf93b013c0b21a911d3e0509513631ab905402325c7d446a04d19ccdbc",
       "bytes": 1678772,
@@ -40,8 +40,8 @@
     },
     "electron-fluence.json": {
       "status": "experimental",
-      "issuedAt": "2026-10-09T20:51:00.380080+00:00",
-      "dataAsOf": "2026-10-09T20:00:00+00:00",
+      "issuedAt": "2026-10-10T00:44:50.801371+00:00",
+      "dataAsOf": "2026-10-10T00:00:00+00:00",
       "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732"
     }
   }

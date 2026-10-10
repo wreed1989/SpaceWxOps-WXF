@@ -89,12 +89,12 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "component_id": "HARP14058",
       "m1": 29.336257618042644,
-      "x1": 1.4859142552383406
+      "x1": 1.485914255238342
     },
     {
       "component_id": "HARP14068",
-      "m1": 0.22714250110822398,
-      "x1": 0.06156717302389875
+      "m1": 0.22714250110822443,
+      "x1": 0.061567173023898816
     }
   ],
   "regions": [
@@ -187,12 +187,12 @@ window.FLARE_GUIDANCE_PAYLOAD = {
         },
         "ccmc_magpy": {
           "m1": 18.0,
-          "x1": 12.0,
+          "x1": 11.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC MagPy SHARP",
           "quality": "published-comparison",
-          "issued": "2026-10-10T01:02:24Z",
-          "valid_start": "2026-10-09T22:00:00Z",
-          "valid_end": "2026-10-10T22:00:00Z",
+          "issued": "2026-10-10T02:03:23Z",
+          "valid_start": "2026-10-09T23:00:00Z",
+          "valid_end": "2026-10-10T23:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "MagPy_SHARP_HMI_CEA_FULLDISK"
         },
@@ -441,7 +441,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20261009&region=&indexnum=1",
-    "retrieved_at": "2026-10-10T01:46:46Z",
+    "retrieved_at": "2026-10-10T02:26:23Z",
     "table_date": "2026-10-09",
     "valid_start": "2026-10-09T00:00:00Z",
     "valid_end": "2026-10-10T00:00:00Z",
@@ -453,7 +453,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-10-10T01:46:46Z",
+    "generated_at": "2026-10-10T02:26:23Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
@@ -679,7 +679,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 101,
+      "records": 102,
       "issued": "2026-10-10T00:00:00Z",
       "valid_start": "2026-10-10T00:00:00Z",
       "valid_end": "2026-10-11T00:00:00Z",
@@ -756,7 +756,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 101,
+      "records": 102,
       "issued": "2026-10-10T00:00:00Z",
       "valid_start": "2026-10-10T00:00:00Z",
       "valid_end": "2026-10-10T12:00:00Z",
@@ -1039,26 +1039,26 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 107,
-      "issued": "2026-10-10T01:02:24Z",
-      "valid_start": "2026-10-09T22:00:00Z",
-      "valid_end": "2026-10-10T22:00:00Z",
+      "records": 108,
+      "issued": "2026-10-10T02:03:23Z",
+      "valid_start": "2026-10-09T23:00:00Z",
+      "valid_end": "2026-10-10T23:00:00Z",
       "m1": 18.0,
-      "x1": 12.0,
+      "x1": 11.0,
       "selected_record": {
-        "start_window": "2026-10-09T22:00:00.0Z",
-        "end_window": "2026-10-10T22:00:00.0Z",
-        "issue_time": "2026-10-10T01:02:24.0Z",
+        "start_window": "2026-10-09T23:00:00.0Z",
+        "end_window": "2026-10-10T23:00:00.0Z",
+        "issue_time": "2026-10-10T02:03:23.0Z",
         "C": "-1",
         "M": "-1",
         "CPlus": "-1",
         "MPlus": 0.18,
-        "X": 0.12,
+        "X": 0.11,
         "C_uncertainty": "-1",
         "M_uncertainty": "-1",
         "CPlus_uncertainty": "-1",
         "MPlus_uncertainty": 0.01,
-        "X_uncertainty": 0.037,
+        "X_uncertainty": 0.034,
         "C_value_lower": "-1",
         "M_value_lower": "-1",
         "CPlus_value_lower": "-1",

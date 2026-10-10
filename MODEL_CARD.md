@@ -37,7 +37,7 @@ The direct magnetic/history X model reduces Brier score by 2.60% relative to the
 
 ## FlareDB use
 
-NJIT FlareDB is used as a positive-event sequence and label-coverage audit, and as a design reference for future HMI/AIA image modeling. It is not appended directly to the classifier: FlareDB selects only M5+ and X events, contains no quiet controls, and overlapping event-centered sequences from one region cannot be treated as independent forecast cases. See [research/flaredb/coverage_audit.json](research/flaredb/coverage_audit.json).
+NJIT FlareDB is used as a positive-event sequence and label-coverage audit, and as a design reference for future HMI/AIA image modeling. It is not appended directly to the classifier: FlareDB selects only M5+ and X events, contains no quiet controls, and overlapping event-centered sequences from one region cannot be treated as independent forecast cases. The offline audit was retired from the current checkout on October 3, 2026; its exact evidence remains in the [archived FlareDB coverage audit](https://github.com/wreed1989/SpaceWxOps-WXF/blob/97e029c6840308112fc5b8a0b565210f13f0b8d7/research/flaredb/coverage_audit.json).
 
 ## Known limitations and promotion gates
 

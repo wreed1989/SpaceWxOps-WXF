@@ -1,11 +1,11 @@
 {
   "schemaVersion": "ops-delivery-1",
-  "checkedAt": "2026-10-11T01:49:32.472939+00:00",
+  "checkedAt": "2026-10-11T08:43:41.234645+00:00",
   "products": {
     "scoreboard": {
       "status": "available",
       "events": 10,
-      "retrievedAt": "2026-10-11T01:49:32.943332+00:00",
+      "retrievedAt": "2026-10-11T08:43:41.705999+00:00",
       "attempts": []
     },
     "refm": {
@@ -15,10 +15,10 @@
     "huxtAnimation": {
       "path": "huxt-animation.mp4",
       "sourceURL": "https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_animation_latest.mp4",
-      "retrievedAt": "2026-10-11T01:49:34.150803+00:00",
-      "httpLastModified": "Sun, 11 Oct 2026 00:00:05 GMT",
-      "sha256": "27f5010847667a269854fb306c2070774e8490d5cda5c7bbd44986c5c8ad930e",
-      "bytes": 1110901,
+      "retrievedAt": "2026-10-11T08:43:43.197551+00:00",
+      "httpLastModified": "Sun, 11 Oct 2026 06:00:05 GMT",
+      "sha256": "c82efa1f9cbbbb7f223eaca9dcab81423ed28a2a50c8aed0fe49999654799350",
+      "bytes": 1097284,
       "kind": "video",
       "frames": null,
       "status": "available",
@@ -27,7 +27,7 @@
     "m2mAnimation": {
       "path": "m2m-animation.gif",
       "sourceURL": "https://iswa.gsfc.nasa.gov/ENSEMBLE/2026-10-08_ncmes2_sims27_M2M-SWAO104/20261008_162400_ncmes2_sims27_M2M-SWAO104_anim_tim-den.gif",
-      "retrievedAt": "2026-10-11T01:49:36.125861+00:00",
+      "retrievedAt": "2026-10-11T08:43:45.045617+00:00",
       "httpLastModified": "Fri, 09 Oct 2026 02:47:02 GMT",
       "sha256": "79afbcbf93b013c0b21a911d3e0509513631ab905402325c7d446a04d19ccdbc",
       "bytes": 1678772,
@@ -39,9 +39,9 @@
       "method": "Ensemble WSA-ENLIL + Cone (NASA M2M)"
     },
     "electron-fluence.json": {
-      "status": "withheld",
-      "reason": "Solar-wind-history gap",
-      "issuedAt": "2026-10-11T01:49:31.658172+00:00",
+      "status": "experimental",
+      "issuedAt": "2026-10-11T08:43:40.223907+00:00",
+      "dataAsOf": "2026-10-11T08:00:00+00:00",
       "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732"
     }
   }

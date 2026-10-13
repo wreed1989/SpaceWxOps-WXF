@@ -159,14 +159,15 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "quality": "published-comparison"
         },
         "sidc": {
-          "m1": 0.0,
-          "x1": 0.0,
-          "source": "SIDC 24-hour Global Flare Forecast",
+          "m1": 64.0,
+          "x1": 7.0,
+          "source": "NASA/CCMC Flare Scoreboard · SIDC Operator",
           "quality": "published-comparison",
-          "issued": "2026-10-12T12:21:03Z",
-          "valid_start": "2026-10-12T12:21:03Z",
-          "valid_end": "2026-10-13T12:21:03Z",
-          "note": "Human-operator-moderated global forecast published by SIDC."
+          "issued": "2026-10-12T12:30:04Z",
+          "valid_start": "2026-10-12T12:30:00Z",
+          "valid_end": "2026-10-13T12:30:00Z",
+          "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
+          "dataset_id": "SIDC_Operator_FULLDISK"
         },
         "ccmc_amos": {
           "m1": null,
@@ -534,7 +535,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20261012&region=&indexnum=1",
-    "retrieved_at": "2026-10-13T03:39:11Z",
+    "retrieved_at": "2026-10-13T06:49:09Z",
     "table_date": "2026-10-12",
     "valid_start": "2026-10-12T00:00:00Z",
     "valid_end": "2026-10-13T00:00:00Z",
@@ -546,14 +547,12 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-10-13T03:39:11Z",
+    "generated_at": "2026-10-13T06:49:10Z",
     "script_version": "1.0.0",
     "sidc_direct": {
-      "ok": true,
+      "ok": false,
       "url": "https://www.sidc.be/WMO/FlareForecast.php",
-      "issued": "2026-10-12T12:21:03Z",
-      "m1": 0.0,
-      "x1": 0.0
+      "detail": "ConnectionError: HTTPSConnectionPool(host='www.sidc.be', port=443): Max retries exceeded with url: /WMO/FlareForecast.php (Caused by ProtocolError('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer')))"
     },
     "ccmc_catalog": {
       "ok": true,
@@ -840,7 +839,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 103,
+      "records": 106,
       "issued": "2026-10-13T00:00:00Z",
       "valid_start": "2026-10-13T00:00:00Z",
       "valid_end": "2026-10-14T00:00:00Z",
@@ -917,7 +916,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 103,
+      "records": 106,
       "issued": "2026-10-13T00:00:00Z",
       "valid_start": "2026-10-13T00:00:00Z",
       "valid_end": "2026-10-13T12:00:00Z",
@@ -1200,7 +1199,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 124,
+      "records": 129,
       "issued": "2026-10-13T03:03:48Z",
       "valid_start": "2026-10-13T00:00:00Z",
       "valid_end": "2026-10-14T00:00:00Z",

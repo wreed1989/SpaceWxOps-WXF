@@ -71,33 +71,48 @@
           "predictionNote": "Please enter the following information for your prediction:\nSWPC ENLIL settings: \nENLIL version: 2.9e\nResolution: medium\nAmbient settings: a8b1\nEjecta settings: d4t1x1\nWSA version: 2.2\nGONG: mrbqs\n\nCME input parameters\nTime at 21.5Rs boundary:\nRadial velocity (km/s):\nLongitude (deg):\nLatitude (deg):\nHalf-angular width (deg):\n\nNotes: \nProduct: Forecast Discussion\nIssued: 2026 Oct 13 0030 UTC\nPrepared by the U.S. Dept. of Commerce, NOAA, Space Weather Prediction\nCenter\n\nBeginning at approximately 11/2150 UTC, an approximately 22 degree long\nfilament centered near S29E18 was observed lifting off the disk at\naround 11/2145 UTC. An associated CME was first observed in LASCO C2\nimagery at 11/2300 UTC and in CCOR2 imagery at 11/2330 UTC.\nAdditionally, a second filament was seen lifting off from near S22E29 at\n12/0425 UTC. This CME was first observed in LASCO C2 imagery at\napproximately 12/0524 UTC. Modeling suggests the majority of the bulk\nmaterial from both events will likely pass behind Earth orbit, however\nthere is a slight chance for a minor glancing blow early to midday on 14\nOct."
         },
         {
-          "predictedMethodName": "Average of all Methods",
-          "submissionTime": "2026-10-13T11:46Z",
-          "predictedArrivalTime": "2026-10-14T11:46Z",
-          "uncertaintyMinusInHrs": null,
-          "uncertaintyPlusInHrs": null,
-          "confidenceInPercentage": null,
-          "predictedMaxKpLowerRange": 3.9175,
-          "predictedMaxKpUpperRange": 5.75,
+          "predictedMethodName": "SIDC",
+          "submissionTime": "2026-10-13T13:00Z",
+          "predictedArrivalTime": "2026-10-14T22:00Z",
+          "uncertaintyMinusInHrs": 12.0,
+          "uncertaintyPlusInHrs": 12.0,
+          "confidenceInPercentage": 40.0,
+          "predictedMaxKpLowerRange": 4.0,
+          "predictedMaxKpUpperRange": 5.0,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
           "differenceInHrs": null,
-          "leadTimeInHrs": "24.00",
+          "leadTimeInHrs": "33.00",
+          "predictionNote": ":Issued: 2026 Oct 12 1231 UTC\n#--------------------------------------------------------------------#\n# DAILY BULLETIN ON SOLAR AND GEOMAGNETIC ACTIVITY from the SIDC     #\n# (RWC Belgium)                                                      #\n#--------------------------------------------------------------------#\nSIDC URSIGRAM 61012\nSIDC SOLAR BULLETIN 12 Oct 2026, 1230UT\nSIDC FORECAST\nSOLAR FLARES  : M-class flares expected (probability >=50%) GEOMAGNETISM  : Minor storm expected (A>=30 or K=5) SOLAR PROTONS : Quiet PREDICTIONS FOR 12 Oct 2026  10CM FLUX: 122 / AP: 021 PREDICTIONS FOR 13 Oct 2026  10CM FLUX: 119 / AP: 020 PREDICTIONS FOR 14 Oct 2026  10CM FLUX: 116 / AP: 014\n\nSolar Active Regions and flaring: Solar flaring activity was low over the past 24 hours, with only low-level C-class flares identified. There are currently seven numbered active regions on the solar disk. SIDC Sunspot Group 976 (NOAA Active Region 4549, magnetic type beta-gamma) is the most complex group and is rotating across the west limb. The returning SIDC Sunspot Group 965 (magnetic type beta) rotated on disk from the east limb in the northeast quadrant. SIDC Sunspot Group 981 (NOAA Active Region 4553, magnetic type alpha) emerged on disk in the northeast quadrant, while SIDC Sunspot Group 982 (magnetic type beta) emerged near the central meridian in the southern hemisphere. The solar flaring activity is expected to be moderate over the next 24 hours, with C-class flares expected and M-class flares likely.\n\nCoronal mass ejections: A wide Coronal Mass Ejection (SIDC CME 730) was observed in LASCO/C2 coronagraph imagery starting from around 23:15 UTC on October 11, directed mainly eastward. The CME is likely associated with dimming observed in SDO/AIA 193 imagery starting from around 22:00 UTC on October 11, from the southeast quadrant. Preliminary analysis indicates a possible glancing blow arrival at Earth late on October 14. Further analysis is ongoing. No other Earth-directed CMEs were observed in the available coronagraph imagery.\n\nCoronal holes: SIDC Coronal Hole 142, an elongated recurrent mid-latitude coronal hole with negative polarity, continues to reside near the central meridian. An associated high-speed stream may arrive at Earth from later today onwards.\n\nSolar wind: Over the past 24 hours, the solar wind parameters reflected the waning influence of the ICME arrival observed on October 10. Speed values gradually decreased from around 600 km/s to around 450 km/s. The interplanetary magnetic field values ranged between about 5 nT and 7 nT.\nThe Bz component varied between -4 nT and 2 nT. The interplanetary magnetic field angle was mostly in the negative sector. The solar wind parameters are expected to remain slightly perturbed over the next 24 hours, with possible further enhancements due to a possible glancing blow arrival from SIDC CME 729 late on October 12 and the possible arrival of a high-speed stream associated with SIDC Coronal Hole 142.\n\nGeomagnetism: Geomagnetic conditions globally and locally were mostly at quiet to unsettled levels over the past 24 hours (NOAA Kp 1 to 3, K BEL 1 to 3). Mostly quiet to unsettled geomagnetic conditions are expected over the next 24 hours, with possible active intervals and a chance for isolated minor storm conditions due to the possible glancing blow arrival from SIDC CME 729 late on October 12 and the possible arrival of a high-speed stream associated with SIDC Coronal Hole 142.\n\nProton flux levels: The greater than 10 MeV proton flux was below the 10 pfu threshold level over the past 24 hours. It is expected to remain below the threshold level over the next 24 hours.\n\nElectron fluxes at GEO: The greater than 2 MeV electron flux measured by GOES 18 and GOES 19 was below the 1000 pfu threshold in the last 24 hours.\nThe greater than 2 MeV electron flux is expected to be below the 1000 pfu threshold over the next 24 hours. The 24-hour electron fluence is presently at normal levels and is expected to remain so over the next 24 hours.\n\n\nTODAY'S ESTIMATED ISN  : 087, BASED ON 18 STATIONS.\n\nSOLAR INDICES FOR 11 Oct 2026\nWOLF NUMBER CATANIA    : ///\n10CM SOLAR FLUX        : ///\nAK CHAMBON LA FORET    : 016\nAK WINGST              : 014\nESTIMATED AP           : 016\nESTIMATED ISN          : 083, BASED ON 21 STATIONS.\n\nNOTICEABLE EVENTS SUMMARY\nDAY BEGIN MAX  END  LOC    XRAY OP  10CM Catania/NOAA RADIO_BURST_TYPES\nNONE\nEND\n\nBT\n\n#--------------------------------------------------------------------#\n# Solar Influences Data analysis Center - RWC Belgium                #\n# Royal Observatory of Belgium                                       #\n#                                                                    #"
+        },
+        {
+          "predictedMethodName": "Average of all Methods",
+          "submissionTime": "2026-10-14T11:15Z",
+          "predictedArrivalTime": "2026-10-14T13:48Z",
+          "uncertaintyMinusInHrs": null,
+          "uncertaintyPlusInHrs": null,
+          "confidenceInPercentage": 40.0,
+          "predictedMaxKpLowerRange": 3.934,
+          "predictedMaxKpUpperRange": 5.6,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "2.55",
           "predictionNote": "Auto-generated average of all methods forecast."
         },
         {
           "predictedMethodName": "Median of all Methods",
-          "submissionTime": "2026-10-13T11:46Z",
-          "predictedArrivalTime": "2026-10-14T10:17Z",
+          "submissionTime": "2026-10-14T11:15Z",
+          "predictedArrivalTime": "2026-10-14T11:30Z",
           "uncertaintyMinusInHrs": null,
           "uncertaintyPlusInHrs": null,
-          "confidenceInPercentage": null,
+          "confidenceInPercentage": 40.0,
           "predictedMaxKpLowerRange": 4.0,
           "predictedMaxKpUpperRange": 6.0,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
           "differenceInHrs": null,
-          "leadTimeInHrs": "22.52",
+          "leadTimeInHrs": "0.25",
           "predictionNote": "Auto-generated median of all methods forecast."
         }
       ]
@@ -284,7 +299,7 @@
       "maxKP": null,
       "dstMin": null,
       "dstMinTime": null,
-      "cmeNote": "CME visible to the NE in STEREO A COR2 and the NW in GOES CCOR-1. There is a real-time data gap in SOHO LASCO imagery at the start of the CME. The source for this CME is an M6.7 class flare from AR 14549 (N12W20) which peaked at 2026-10-08T15:48Z. The flare is best seen in SDO AIA 131. The accompanying EUV wave which spans the entire NW quadrant of the Earth-facing disk is best seen in SDO AIA 193. The eruption is also visible in STEREO A EUV 195/304 imagery.",
+      "cmeNote": "CME visible to the NE in STEREO A COR2 and the NW in GOES CCOR-1. There is a real-time data gap in SOHO LASCO imagery at the start of the CME. The source for this CME is an M6.7 class flare from AR 14549 (N12W20) which peaked at 2026-10-08T15:48Z. The flare is best seen in SDO AIA 131. The accompanying EUV wave which spans the entire NW quadrant of the Earth-facing disk is best seen in SDO AIA 193. The eruption is also visible in STEREO A EUV 195/304 imagery. The arrival of this CME was not detectable at L1.",
       "predictions": [
         {
           "predictedMethodName": "WSA-ENLIL + Cone (NASA M2M)",
@@ -431,7 +446,7 @@
       "maxKP": null,
       "dstMin": null,
       "dstMinTime": null,
-      "cmeNote": "CME visible to the west in SOHO LASCO C2/C3 and GOES CCOR-1 as well as possibly faintly to the east in STEREO A COR2. This CME overlaps in the field of view with the CME first seen in STEREO A COR2 at 2026-10-08T16:53Z. The potential source is a filament eruption centered around N05W25 as best seen in SDO AIA 193/304 imagery. The eruption is best seen as dimming starting at 2026-10-08T09:21Z in SDO AIA 193. The filament liftoff can be best seen from the point of view of STEREO A EUV 195/304, in the NE quadrant from the point of view of STEREO A.",
+      "cmeNote": "CME visible to the west in SOHO LASCO C2/C3 and GOES CCOR-1 as well as possibly faintly to the east in STEREO A COR2. This CME overlaps in the field of view with the CME first seen in STEREO A COR2 at 2026-10-08T16:53Z. The potential source is a filament eruption centered around N05W25 as best seen in SDO AIA 193/304 imagery. The eruption is best seen as dimming starting at 2026-10-08T09:21Z in SDO AIA 193. The filament liftoff can be best seen from the point of view of STEREO A EUV 195/304, in the NE quadrant from the point of view of STEREO A. The arrival of this CME was not detectable at L1.",
       "predictions": [
         {
           "predictedMethodName": "WSA-ENLIL + Cone (NASA M2M)",
@@ -533,7 +548,7 @@
       "maxKP": null,
       "dstMin": null,
       "dstMinTime": null,
-      "cmeNote": "CME first seen to the NE in STEREO A COR2 starting at 2026-10-07T13:53Z. So far it is only visible in COR2A. The source of this CME is a C7.9 class flare from AR 14549 (N10W04) peaking at 2026-10-07T13:17Z best seen in SDO AIA 171. Some dimming and an EUVI wave associated with the eruption can be seen in SDO AIA 193. Some deflection is evident in the measurement of this CME, likely due to it close proximity to a coronal hole to the SE of AR 14549.",
+      "cmeNote": "CME first seen to the NE in STEREO A COR2 starting at 2026-10-07T13:53Z. So far it is only visible in COR2A. The source of this CME is a C7.9 class flare from AR 14549 (N10W04) peaking at 2026-10-07T13:17Z best seen in SDO AIA 171. Some dimming and an EUVI wave associated with the eruption can be seen in SDO AIA 193. Some deflection is evident in the measurement of this CME, likely due to it close proximity to a coronal hole to the SE of AR 14549. The arrival of this CME was not detectable at L1.",
       "predictions": [
         {
           "predictedMethodName": "WSA-ENLIL + Cone (NASA M2M)",
@@ -1184,7 +1199,7 @@
     }
   ],
   "source": "https://ccmc.gsfc.nasa.gov/CMESB-Earth/WS/get/predictions?CMEtimeStart=2026-09-14&CMEtimeEnd=2026-10-15&closeOutCMEsOnly=false&skipNoArrivalObservedCMEs=false",
-  "retrievedAt": "2026-10-14T06:07:33.249390+00:00",
+  "retrievedAt": "2026-10-14T11:45:04.458503+00:00",
   "windowStart": "2026-09-14",
   "windowEnd": "2026-10-15"
 }

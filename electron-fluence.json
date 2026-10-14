@@ -1,6 +1,6 @@
 {
   "schemaVersion": "WXF-EF-0.2",
-  "issuedAt": "2026-10-14T17:04:43.618282+00:00",
+  "issuedAt": "2026-10-14T20:38:50.388756+00:00",
   "horizonHours": 24,
   "units": "electrons cm^-2 sr^-1",
   "fluxUnits": "electrons cm^-2 s^-1 sr^-1",
@@ -210,7 +210,7 @@
     "Current model uses observed drivers; the separate CME/HSS candidate has not passed its promotion gate.",
     "REFM UTC-day totals are a separate product, not rolling fluence."
   ],
-  "reason": "Insufficient recent electron coverage",
+  "reason": "Solar-wind-history gap",
   "forecast": [],
   "guidanceMode": "Current WXF \u00b7 observed drivers",
   "arrivalSource": {
@@ -228,7 +228,7 @@
   },
   "candidate": {
     "schemaVersion": "WXF-EF-0.2",
-    "issuedAt": "2026-10-14T17:04:43.618282+00:00",
+    "issuedAt": "2026-10-14T20:38:50.388756+00:00",
     "horizonHours": 24,
     "units": "electrons cm^-2 sr^-1",
     "fluxUnits": "electrons cm^-2 s^-1 sr^-1",
@@ -2471,7 +2471,7 @@
       "CME arrival guidance and 27-day wind recurrence are uncertain predictors; future Bz and new coronal-hole evolution are not known.",
       "REFM UTC-day totals are a separate product, not rolling fluence."
     ],
-    "reason": "Insufficient recent electron coverage",
+    "reason": "Solar-wind-history gap",
     "forecast": [],
     "guidanceMode": "External guidance incomplete; observed-driver + recurrence fallback",
     "modelSHA256": "3fa1360a114e3ab42fbb110456adb529cd5108a18caadc2c1c489c26faea24d8",
@@ -2973,18 +2973,18 @@
     }
   },
   "inputQuality": {
-    "rawSamples": 15074,
-    "acceptedSamples": 14985,
+    "rawSamples": 15117,
+    "acceptedSamples": 15028,
     "otherElectronSpacecraft": 0,
     "highProtonSamples": 41,
     "missingProtonSamples": 22,
-    "completeElectronHours": 1220,
+    "completeElectronHours": 1223,
     "spacecraftHours": {
-      "GOES-19": 1220
+      "GOES-19": 1223
     },
-    "hourCount": 1265,
+    "hourCount": 1269,
     "firstHourEnd": "2026-08-23T01:00:00+00:00",
-    "lastHourEnd": "2026-10-14T17:00:00+00:00"
+    "lastHourEnd": "2026-10-14T21:00:00+00:00"
   },
   "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732",
   "historicalValidation": {
@@ -3483,7 +3483,7 @@
   },
   "externalGuidance": {
     "source": "https://services.swpc.noaa.gov/text/3-day-forecast.txt",
-    "retrievedAt": "2026-10-14T17:04:44.136418+00:00",
+    "retrievedAt": "2026-10-14T20:38:50.936098+00:00",
     "bulletin": ":Product: 3-Day Forecast\n:Issued: 2026 Oct 14 1230 UTC\n# Prepared by the U.S. Dept. of Commerce, NOAA, Space Weather Prediction Center\n#\nA. NOAA Geomagnetic Activity Observation and Forecast\n\nThe greatest observed 3 hr Kp over the past 24 hours was 3 (below NOAA\nScale levels).\nThe greatest expected 3 hr Kp for Oct 14-Oct 16 2026 is 3.67 (below NOAA\nScale levels).\n\nNOAA Kp index breakdown Oct 14-Oct 16 2026\n\n             Oct 14       Oct 15       Oct 16\n00-03UT       2.33         2.67         2.33     \n03-06UT       3.33         3.33         2.33     \n06-09UT       1.67         3.00         2.00     \n09-12UT       2.33         2.33         2.00     \n12-15UT       2.67         1.67         2.00     \n15-18UT       3.00         1.00         2.00     \n18-21UT       3.33         1.33         2.00     \n21-00UT       3.67         2.33         2.00     \n\nRationale: No G1 (Minor) or greater geomagnetic storms are expected.  No\nsignificant transient or recurrent solar wind features are forecast.\n\nB. NOAA Solar Radiation Activity Observation and Forecast\n\nSolar radiation, as observed by NOAA GOES-18 over the past 24 hours, was\nbelow S-scale storm level thresholds.\n\nSolar Radiation Storm Forecast for Oct 14-Oct 16 2026\n\n              Oct 14  Oct 15  Oct 16\nS1 or greater    5%      5%      5%\n\nRationale: No S1 (Minor) or greater solar radiation storms are expected.\nNo significant active region activity favorable for radiation storm\nproduction is forecast.\n\nC. NOAA Radio Blackout Activity and Forecast\n\nNo radio blackouts were observed over the past 24 hours.\n\nRadio Blackout Forecast for Oct 14-Oct 16 2026\n\n              Oct 14        Oct 15        Oct 16\nR1-R2           20%           20%           20%\nR3 or greater    5%            5%            5%\n\nRationale: A slight chance for R1-R2 (Minor-Moderate) radio blackouts\nwill persist through 16 Oct primarily due to the growth and current\nflare potential exhibited by AR 4551.\n",
     "usedAsModelInput": false
   },

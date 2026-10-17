@@ -16,3 +16,27 @@ chhss-data/backfill/**/history/
 
 .electron-cache/
 .electron-current/
+
+# Local acquisition, build, and workflow evidence; keep published feed paths tracked.
+.ops-cache/
+ops-product/
+ops-evidence/
+flare-cache/
+flare-output/
+flare-verification/
+review-artifact/
+work/
+
+# Retired offline lanes and bulky report outputs. Recovery: docs/CONSOLIDATION.md.
+/research/cross-era/
+/research/sdo-temporal/
+/research/flaredb/
+/datasets/cross_era_*
+/datasets/goes_cycle23_events.csv.gz
+/datasets/noaa_cycle23_region_days.csv.gz
+/datasets/sdo_temporal_*
+/datasets/sdobenchmark_case_manifest.csv.gz
+/ccmc_diagnostic.json
+/research/electron_fluence/hindcast-predictions.csv.gz
+/research/electron_fluence/event-response.json
+/research/electron_fluence/event-response.png

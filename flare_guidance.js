@@ -138,15 +138,14 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "quality": "published-comparison"
         },
         "sidc": {
-          "m1": 50.0,
-          "x1": 1.0,
-          "source": "NASA/CCMC Flare Scoreboard · SIDC Operator",
+          "m1": 0.0,
+          "x1": 0.0,
+          "source": "SIDC 24-hour Global Flare Forecast",
           "quality": "published-comparison",
-          "issued": "2026-10-21T12:30:46Z",
-          "valid_start": "2026-10-21T12:30:00Z",
-          "valid_end": "2026-10-22T12:30:00Z",
-          "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
-          "dataset_id": "SIDC_Operator_FULLDISK"
+          "issued": "2026-10-22T11:52:59Z",
+          "valid_start": "2026-10-22T11:52:59Z",
+          "valid_end": "2026-10-23T11:52:59Z",
+          "note": "Human-operator-moderated global forecast published by SIDC."
         },
         "ccmc_amos": {
           "m1": null,
@@ -483,7 +482,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20261021&region=&indexnum=1",
-    "retrieved_at": "2026-10-22T04:50:14Z",
+    "retrieved_at": "2026-10-22T17:13:15Z",
     "table_date": "2026-10-21",
     "valid_start": "2026-10-21T00:00:00Z",
     "valid_end": "2026-10-22T00:00:00Z",
@@ -495,12 +494,14 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-10-22T04:50:15Z",
+    "generated_at": "2026-10-22T17:13:15Z",
     "script_version": "1.0.0",
     "sidc_direct": {
-      "ok": false,
+      "ok": true,
       "url": "https://www.sidc.be/WMO/FlareForecast.php",
-      "detail": "ConnectionError: HTTPSConnectionPool(host='www.sidc.be', port=443): Max retries exceeded with url: /WMO/FlareForecast.php (Caused by ProtocolError('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer')))"
+      "issued": "2026-10-22T11:52:59Z",
+      "m1": 0.0,
+      "x1": 0.0
     },
     "ccmc_catalog": {
       "ok": true,
@@ -547,7 +548,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 4,
+      "records": 5,
       "issued": "2026-10-21T12:30:46Z",
       "valid_start": "2026-10-21T12:30:00Z",
       "valid_end": "2026-10-22T12:30:00Z",
@@ -787,7 +788,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 104,
+      "records": 117,
       "issued": "2026-10-22T00:00:00Z",
       "valid_start": "2026-10-22T00:00:00Z",
       "valid_end": "2026-10-23T00:00:00Z",
@@ -864,7 +865,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 104,
+      "records": 117,
       "issued": "2026-10-22T00:00:00Z",
       "valid_start": "2026-10-22T00:00:00Z",
       "valid_end": "2026-10-22T12:00:00Z",
@@ -1070,7 +1071,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 85,
+      "records": 97,
       "issued": "2026-10-22T03:09:16Z",
       "valid_start": "2026-10-22T00:00:00Z",
       "valid_end": "2026-10-23T00:00:00Z",
@@ -1147,7 +1148,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 93,
+      "records": 105,
       "issued": "2026-10-22T03:00:18Z",
       "valid_start": "2026-10-22T00:00:00Z",
       "valid_end": "2026-10-23T00:00:00Z",
@@ -1276,7 +1277,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "flarecast": {
       "ok": false,
       "url": "https://api.flarecast.eu/api/prediction/flarecast_latest.xml",
-      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x7f220bcce490>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
+      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x7f874b3934d0>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
     },
     "swpc": {
       "ok": true,

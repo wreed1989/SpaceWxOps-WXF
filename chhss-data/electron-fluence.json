@@ -1,6 +1,6 @@
 {
   "schemaVersion": "WXF-EF-0.2",
-  "issuedAt": "2026-10-22T13:55:42.765911+00:00",
+  "issuedAt": "2026-10-22T18:38:51.363608+00:00",
   "horizonHours": 24,
   "units": "electrons cm^-2 sr^-1",
   "fluxUnits": "electrons cm^-2 s^-1 sr^-1",
@@ -228,7 +228,7 @@
   },
   "candidate": {
     "schemaVersion": "WXF-EF-0.2",
-    "issuedAt": "2026-10-22T13:55:42.765911+00:00",
+    "issuedAt": "2026-10-22T18:38:51.363608+00:00",
     "horizonHours": 24,
     "units": "electrons cm^-2 sr^-1",
     "fluxUnits": "electrons cm^-2 s^-1 sr^-1",
@@ -2973,18 +2973,18 @@
     }
   },
   "inputQuality": {
-    "rawSamples": 10180,
-    "acceptedSamples": 10156,
+    "rawSamples": 10237,
+    "acceptedSamples": 10213,
     "otherElectronSpacecraft": 0,
     "highProtonSamples": 0,
     "missingProtonSamples": 12,
-    "completeElectronHours": 825,
+    "completeElectronHours": 830,
     "spacecraftHours": {
-      "GOES-19": 825
+      "GOES-19": 830
     },
-    "hourCount": 854,
+    "hourCount": 859,
     "firstHourEnd": "2026-09-17T01:00:00+00:00",
-    "lastHourEnd": "2026-10-22T14:00:00+00:00"
+    "lastHourEnd": "2026-10-22T19:00:00+00:00"
   },
   "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732",
   "historicalValidation": {
@@ -3483,101 +3483,101 @@
   },
   "externalGuidance": {
     "source": "https://services.swpc.noaa.gov/text/3-day-forecast.txt",
-    "retrievedAt": "2026-10-22T13:55:43.117645+00:00",
+    "retrievedAt": "2026-10-22T18:38:51.747926+00:00",
     "bulletin": ":Product: 3-Day Forecast\n:Issued: 2026 Oct 22 1230 UTC\n# Prepared by the U.S. Dept. of Commerce, NOAA, Space Weather Prediction Center\n#\nA. NOAA Geomagnetic Activity Observation and Forecast\n\nThe greatest observed 3 hr Kp over the past 24 hours was 5 (NOAA Scale\nG1).\nThe greatest expected 3 hr Kp for Oct 22-Oct 24 2026 is 4.33 (below NOAA\nScale levels).\n\nNOAA Kp index breakdown Oct 22-Oct 24 2026\n\n             Oct 22       Oct 23       Oct 24\n00-03UT       2.33         2.33         2.33         \n03-06UT       3.00         2.00         2.00         \n06-09UT       3.00         1.67         1.67         \n09-12UT       3.33         1.00         1.33         \n12-15UT       3.67         1.33         3.00         \n15-18UT       2.00         1.67         3.67         \n18-21UT       2.33         2.00         4.33         \n21-00UT       2.67         2.00         4.00         \n\nRationale: No G1 (Minor) or greater geomagnetic storms are expected\nthrough 24 Oct, though a negative polarity CH HSS is anticipated to\nproduce a disturbed near-Earth environment on 24 Oct.\n\nB. NOAA Solar Radiation Activity Observation and Forecast\n\nSolar radiation, as observed by NOAA GOES-18 over the past 24 hours, was\nbelow S-scale storm level thresholds.\n\nSolar Radiation Storm Forecast for Oct 22-Oct 24 2026\n\n              Oct 22  Oct 23  Oct 24\nS1 or greater    5%      5%      5%\n\nRationale: No S1 (Minor) or greater solar radiation storms are expected\nthrough 24 Oct.\n\nC. NOAA Radio Blackout Activity and Forecast\n\nNo radio blackouts were observed over the past 24 hours.\n\nRadio Blackout Forecast for Oct 22-Oct 24 2026\n\n              Oct 22        Oct 23        Oct 24\nR1-R2           20%           15%           15%\nR3 or greater    5%            1%            1%\n\nRationale: There is a slight chance for R1-R2 (Minor-Moderate) radio\nblackouts through 24 Oct, decreasing as Region 4551 transits the west\nlimb on 22 Oct.\n",
     "usedAsModelInput": false
   },
   "coronalHoleGuidance": {
     "source": "WXF CH/HSS current.json",
-    "observationTime": "2026-10-22T06:48:04Z",
-    "availableAt": "2026-10-22T07:46:37Z",
+    "observationTime": "2026-10-22T17:24:04Z",
+    "availableAt": "2026-10-22T18:38:39Z",
     "measurementEngine": "chhss-euv-hmi-20260919.2",
     "holes": [
       {
         "id": "CH-20261022-01",
-        "latitude": 69.58315516689818,
-        "longitude": -10.285021602203043,
-        "cmd": -10.285021602203043,
-        "areaDisk": 0.015507940902708996,
-        "areaFraction": 0.015507940902708996,
-        "areaPct": 1.5507940902708994,
-        "width": 109.40314306496325,
+        "latitude": 68.77152138570821,
+        "longitude": -6.304253559318946,
+        "cmd": -6.304253559318946,
+        "areaDisk": 0.016098284796021524,
+        "areaFraction": 0.016098284796021524,
+        "areaPct": 1.6098284796021525,
+        "width": 104.38137400079209,
         "quantitative": true,
-        "time": "2026-10-22T06:48:04Z"
+        "time": "2026-10-22T17:24:04Z"
       },
       {
         "id": "CH-20261022-02",
-        "latitude": -60.48105528620061,
-        "longitude": -13.768915242773087,
-        "cmd": -13.768915242773087,
-        "areaDisk": 0.013882172034536958,
-        "areaFraction": 0.013882172034536958,
-        "areaPct": 1.3882172034536957,
-        "width": 80.33714169481851,
+        "latitude": -60.59565390368166,
+        "longitude": -13.452373833939795,
+        "cmd": -13.452373833939795,
+        "areaDisk": 0.013953949113103868,
+        "areaFraction": 0.013953949113103868,
+        "areaPct": 1.3953949113103867,
+        "width": 83.26618940035476,
         "quantitative": true,
-        "time": "2026-10-22T06:48:04Z"
+        "time": "2026-10-22T17:24:04Z"
       },
       {
         "id": "CH-20261022-03",
-        "latitude": 53.6189770032263,
-        "longitude": 12.36186814343029,
-        "cmd": 12.36186814343029,
-        "areaDisk": 0.003851335959553175,
-        "areaFraction": 0.003851335959553175,
-        "areaPct": 0.38513359595531754,
-        "width": 17.374199958293634,
+        "latitude": 0.3658351022607733,
+        "longitude": 16.95896196633721,
+        "cmd": 16.95896196633721,
+        "areaDisk": 0.006590678790143974,
+        "areaFraction": 0.006590678790143974,
+        "areaPct": 0.6590678790143973,
+        "width": 13.768231074742785,
         "quantitative": true,
-        "time": "2026-10-22T06:48:04Z"
+        "time": "2026-10-22T17:24:04Z"
       },
       {
         "id": "CH-20261022-04",
-        "latitude": -0.6187916388666387,
-        "longitude": 7.610111892343976,
-        "cmd": 7.610111892343976,
-        "areaDisk": 0.0029674227885081845,
-        "areaFraction": 0.0029674227885081845,
-        "areaPct": 0.29674227885081844,
-        "width": 6.633986038060206,
+        "latitude": 62.78401247530371,
+        "longitude": 25.603565837725494,
+        "cmd": 25.603565837725494,
+        "areaDisk": 0.0014190456725190375,
+        "areaFraction": 0.0014190456725190375,
+        "areaPct": 0.14190456725190376,
+        "width": 18.22272035281332,
         "quantitative": true,
-        "time": "2026-10-22T06:48:04Z"
+        "time": "2026-10-22T17:24:04Z"
       },
       {
         "id": "CH-20261022-05",
-        "latitude": 25.088370918800237,
-        "longitude": 23.273610685360442,
-        "cmd": 23.273610685360442,
-        "areaDisk": 0.0021782146000751566,
-        "areaFraction": 0.0021782146000751566,
-        "areaPct": 0.21782146000751565,
-        "width": 6.768103816882004,
+        "latitude": -8.387886643492296,
+        "longitude": -26.391000945261723,
+        "cmd": -26.391000945261723,
+        "areaDisk": 0.0010721678414588284,
+        "areaFraction": 0.0010721678414588284,
+        "areaPct": 0.10721678414588283,
+        "width": 8.30490246834546,
         "quantitative": true,
-        "time": "2026-10-22T06:48:04Z"
+        "time": "2026-10-22T17:24:04Z"
       },
       {
         "id": "CH-20261022-06",
-        "latitude": 5.480019899523093,
-        "longitude": 20.62014424204394,
-        "cmd": 20.62014424204394,
-        "areaDisk": 0.0012706251833771746,
-        "areaFraction": 0.0012706251833771746,
-        "areaPct": 0.12706251833771748,
-        "width": 5.4651190779391605,
+        "latitude": 49.96121358609606,
+        "longitude": 16.563836074977715,
+        "cmd": 16.563836074977715,
+        "areaDisk": 0.0010564006673197278,
+        "areaFraction": 0.0010564006673197278,
+        "areaPct": 0.10564006673197279,
+        "width": 10.559044110642132,
         "quantitative": true,
-        "time": "2026-10-22T06:48:04Z"
+        "time": "2026-10-22T17:24:04Z"
       }
     ],
     "usedAsModelInput": false,
     "reason": "Consistent as-issued CH forecast history is still accumulating; 27-day wind recurrence is a separate trained predictor.",
     "recurrencePublication": {
-      "generatedAt": "2026-10-22T13:54:42Z",
+      "generatedAt": "2026-10-22T18:38:29Z",
       "source": "NASA OMNI2 retrospective hourly",
       "coverage": {
         "ok": true,
         "state": "complete",
-        "generatedAt": "2026-10-22T13:54:42Z",
+        "generatedAt": "2026-10-22T18:38:29Z",
         "rows": 1800,
-        "validSpeedHours": 1474,
-        "firstValidHour": "2026-08-08T14:00:00Z",
+        "validSpeedHours": 1469,
+        "firstValidHour": "2026-08-08T19:00:00Z",
         "lastValidHour": "2026-10-13T00:00:00Z",
         "minimumDailyHours": 18,
         "forecastDays": [
@@ -3629,7 +3629,7 @@
   },
   "huxtGuidance": {
     "schemaVersion": "wxf-huxt-1",
-    "issuedAt": "2026-10-22T13:55:41.282293+00:00",
+    "issuedAt": "2026-10-22T18:38:49.570243+00:00",
     "status": "withheld",
     "reason": "HUXt inputs/run unavailable: HTTPSConnectionPool(host='kauai.ccmc.gsfc.nasa.gov', port=443): Max retries exceeded with url: /DONKI/WS/get/CMEAnalysis?startDate=2026-10-14&endDate=2026-10-22&mostAccurateOnly=true&catalog=M2M_CATAL",
     "boundary": null,

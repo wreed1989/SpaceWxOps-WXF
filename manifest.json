@@ -1,11 +1,11 @@
 {
   "schemaVersion": "ops-delivery-1",
-  "checkedAt": "2026-10-25T18:58:13.131329+00:00",
+  "checkedAt": "2026-10-25T21:42:38.852101+00:00",
   "products": {
     "scoreboard": {
       "status": "available",
       "events": 12,
-      "retrievedAt": "2026-10-25T18:58:13.388901+00:00",
+      "retrievedAt": "2026-10-25T21:42:39.101865+00:00",
       "attempts": []
     },
     "refm": {
@@ -15,7 +15,7 @@
     "m2mAnimation": {
       "path": "m2m-animation.gif",
       "sourceURL": "https://iswa.ccmc.gsfc.nasa.gov/iswa_data_tree/model/heliosphere/wsa-enlil-cone/animation-cme-velocity/2026/10/20261021_211000_2.0_anim.tim-vel.gif",
-      "retrievedAt": "2026-10-25T18:58:14.297418+00:00",
+      "retrievedAt": "2026-10-25T21:42:39.738135+00:00",
       "httpLastModified": "Wed, 21 Oct 2026 15:30:55 GMT",
       "sha256": "48a5348621829e684fcf26a3c39f5f326fdf26360fc53a1f755f4e249ab556b3",
       "bytes": 2339004,
@@ -29,10 +29,10 @@
     "huxtAnimation": {
       "path": "huxt-animation.mp4",
       "sourceURL": "https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_animation_latest.mp4",
-      "retrievedAt": "2026-10-25T18:58:14.567223+00:00",
-      "httpLastModified": "Sun, 25 Oct 2026 13:00:06 GMT",
-      "sha256": "d9947bacd2c6ef88fcac97d28661b21cc0fd3b237dda6be1771225bca2393f9e",
-      "bytes": 972907,
+      "retrievedAt": "2026-10-25T21:42:40.173728+00:00",
+      "httpLastModified": "Sun, 25 Oct 2026 19:00:05 GMT",
+      "sha256": "94bbe9caa456aae8c265384563ee8f2f56b7a83ff8a515e970773465bfe6665e",
+      "bytes": 952958,
       "kind": "video",
       "frames": null,
       "status": "available",
@@ -41,7 +41,7 @@
     "electron-fluence.json": {
       "status": "withheld",
       "reason": "Solar-wind-history gap",
-      "issuedAt": "2026-10-25T18:58:12.659771+00:00",
+      "issuedAt": "2026-10-25T21:42:38.075202+00:00",
       "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732"
     }
   }

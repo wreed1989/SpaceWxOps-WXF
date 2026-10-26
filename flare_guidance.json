@@ -175,9 +175,9 @@
           "x1": 1.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC MagPy SHARP",
           "quality": "published-comparison",
-          "issued": "2026-10-26T01:04:14Z",
-          "valid_start": "2026-10-25T22:00:00Z",
-          "valid_end": "2026-10-26T22:00:00Z",
+          "issued": "2026-10-26T03:09:22Z",
+          "valid_start": "2026-10-26T00:00:00Z",
+          "valid_end": "2026-10-27T00:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "MagPy_SHARP_HMI_CEA_FULLDISK"
         },
@@ -304,13 +304,13 @@
     "previous_issued": "2026-10-25T21:00:00Z",
     "attempts": 3,
     "exit_code": 2,
-    "checked_at": "2026-10-26T01:21:44Z",
+    "checked_at": "2026-10-26T04:50:44Z",
     "detail": "JSOC/SHARP retrieval failed after three attempts. The prior WXF magnetic probability was retained transparently while all independent forecast sources were refreshed."
   },
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20261025&region=&indexnum=1",
-    "retrieved_at": "2026-10-26T01:21:45Z",
+    "retrieved_at": "2026-10-26T04:50:45Z",
     "table_date": "2026-10-25",
     "valid_start": "2026-10-25T00:00:00Z",
     "valid_end": "2026-10-26T00:00:00Z",
@@ -322,7 +322,7 @@
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-10-26T01:21:45Z",
+    "generated_at": "2026-10-26T04:50:46Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
@@ -616,7 +616,7 @@
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 93,
+      "records": 96,
       "issued": "2026-10-26T00:00:00Z",
       "valid_start": "2026-10-26T00:00:00Z",
       "valid_end": "2026-10-27T00:00:00Z",
@@ -693,7 +693,7 @@
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 93,
+      "records": 96,
       "issued": "2026-10-26T00:00:00Z",
       "valid_start": "2026-10-26T00:00:00Z",
       "valid_end": "2026-10-26T12:00:00Z",
@@ -942,16 +942,16 @@
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 92,
-      "issued": "2026-10-26T01:04:14Z",
-      "valid_start": "2026-10-25T22:00:00Z",
-      "valid_end": "2026-10-26T22:00:00Z",
+      "records": 95,
+      "issued": "2026-10-26T03:09:22Z",
+      "valid_start": "2026-10-26T00:00:00Z",
+      "valid_end": "2026-10-27T00:00:00Z",
       "m1": 1.0,
       "x1": 1.0,
       "selected_record": {
-        "start_window": "2026-10-25T22:00:00.0Z",
-        "end_window": "2026-10-26T22:00:00.0Z",
-        "issue_time": "2026-10-26T01:04:14.0Z",
+        "start_window": "2026-10-26T00:00:00.0Z",
+        "end_window": "2026-10-27T00:00:00.0Z",
+        "issue_time": "2026-10-26T03:09:22.0Z",
         "C": "-1",
         "M": "-1",
         "CPlus": "-1",
@@ -1037,7 +1037,7 @@
     "flarecast": {
       "ok": false,
       "url": "https://api.flarecast.eu/api/prediction/flarecast_latest.xml",
-      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x7f213ff7f390>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
+      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x7ff00de53390>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
     },
     "swpc": {
       "ok": true,

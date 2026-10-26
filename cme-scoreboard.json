@@ -4,7 +4,7 @@
       "cmeID": "2026-10-21T08:53:00-CME-001",
       "observedTime": "2026-10-21T08:53Z",
       "noArrivalObserved": false,
-      "arrivalTime": null,
+      "arrivalTime": "2026-10-25T12:20Z",
       "maxKP": null,
       "dstMin": null,
       "dstMinTime": null,
@@ -21,8 +21,8 @@
           "predictedMaxKpUpperRange": 4.0,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
-          "differenceInHrs": null,
-          "leadTimeInHrs": "86.48",
+          "differenceInHrs": "-6.33",
+          "leadTimeInHrs": "92.82",
           "predictionNote": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/49190/1\nModel Inputs:\n2026-10-21T08:53:00-CME-001 with CME Analysis: Lon.=-33.0, Lat.=17.0, Speed=310.0, HalfAngle=35.0, Time21.5=2026-10-21T21:10Z\n\nModel Output:\n\nEarth Impact:\nEarth Shock Arrival Time = 2026-10-25T06:00Z (+- 7 hours)\n(kp)90=3\n(kp)180=4\n\nOther Location(s) Impact:\nBepiColombo with esitmated shock arrival time 2026-10-23T06:55Z\nEuropa Clipper with esitmated shock arrival time 2026-10-24T12:00Z\nJuice with esitmated shock arrival time 2026-10-24T20:00Z\nOSIRIS-APEX with esitmated shock arrival time 2026-10-25T02:00Z\nParker Solar Probe with esitmated shock arrival time 2026-10-24T04:00Z\n\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261021_211000_2.0_anim.tim-den.gif\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261021_211000_2.0_anim.tim-vel.gif\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261021_211000_2.0_anim.tim-vel-Stereo_A.gif\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261021_211000_2.0_anim.tim-den-Stereo_A.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261021_211000_2.0_ENLIL_CONE_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261021_211000_2.0_ENLIL_CONE_Kp_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261021_211000_2.0_ENLIL_CONE_STA_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261021_211000_2.0_ENLIL_CONE_PSP_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261021_211000_2.0_ENLIL_CONE_SolO_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261021_211000_2.0_ENLIL_CONE_Merc_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261021_211000_2.0_ENLIL_CONE_Mars_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261021_211000_2.0_ENLIL_CONE_Bepi_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261021_211000_2.0_ENLIL_CONE_Venus_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261021_211000_2.0_ENLIL_CONE_Juice_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261021_211000_2.0_ENLIL_CONE_Psyche_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261021_211000_2.0_ENLIL_CONE_Osiris_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261021_211000_2.0_ENLIL_CONE_EuropaClippr_timeline.gif"
         },
         {
@@ -36,8 +36,8 @@
           "predictedMaxKpUpperRange": 5.0,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
-          "differenceInHrs": null,
-          "leadTimeInHrs": "79.47",
+          "differenceInHrs": "-0.33",
+          "leadTimeInHrs": "79.80",
           "predictionNote": "Met Office ENLIL settings.\nENLIL version: 2.7\nResolution: medium-res (512x60x180) (X1=0.1-1.7/uniform X2=30.-150./uniform X3=0.-360./uniform)\nAmbient settings: a3b2-sa1\nWSA version: 4.5\nGONG: mrzqs\nNote that this arrival time forecast is based on the simulation but is then adjusted by a human-in-the-loop.\n\nPlease specify following CME input parameters.\nTime at 21.5Rs boundary: 2026-10-21T19:50Z\nRadial velocity (km/s): 450\nLongitude (deg): 42E\nLatitude (deg): 15N\nHalf-angular width (deg): 33\n\nNotes: \nSpace weather advisor: Rebecca Spalton"
         },
         {
@@ -51,8 +51,8 @@
           "predictedMaxKpUpperRange": 5.0,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
-          "differenceInHrs": null,
-          "leadTimeInHrs": "80.48",
+          "differenceInHrs": "1.67",
+          "leadTimeInHrs": "78.82",
           "predictionNote": "BoM ENLIL settings: \nENLIL version: 2.7\nGrid: 256x30x90\nResolution: low\nAmbient settings: a5b1 -sa1\nEjecta settings: \nWSA version: 2.2\nGONG: mrbqs\n\nCME input parameters\nTime at 21.5Rs boundary: 2026-10-21T21:15Z\nRadial velocity (km/s): 324\nLongitude (deg): -37\nLatitude (deg): 17\nHalf-angular width (deg): 31"
         },
         {
@@ -66,8 +66,8 @@
           "predictedMaxKpUpperRange": 4.66667,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
-          "differenceInHrs": null,
-          "leadTimeInHrs": "76.97",
+          "differenceInHrs": "-1.67",
+          "leadTimeInHrs": "78.63",
           "predictionNote": "Auto-generated average of all methods forecast."
         },
         {
@@ -81,8 +81,8 @@
           "predictedMaxKpUpperRange": 5.0,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
-          "differenceInHrs": null,
-          "leadTimeInHrs": "78.30",
+          "differenceInHrs": "-0.33",
+          "leadTimeInHrs": "78.63",
           "predictionNote": "Auto-generated median of all methods forecast."
         }
       ]
@@ -1256,7 +1256,7 @@
     }
   ],
   "source": "https://ccmc.gsfc.nasa.gov/CMESB-Earth/WS/get/predictions?CMEtimeStart=2026-09-26&CMEtimeEnd=2026-10-27&closeOutCMEsOnly=false&skipNoArrivalObservedCMEs=false",
-  "retrievedAt": "2026-10-26T12:50:29.742146+00:00",
+  "retrievedAt": "2026-10-26T19:13:39.620883+00:00",
   "windowStart": "2026-09-26",
   "windowEnd": "2026-10-27"
 }

@@ -111,7 +111,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "source": "WXF sharp-mag-20260903-xstruct-history-v3 regional combination",
           "quality": "stale-fallback",
           "method": "regional_union_with_explicit_fallbacks",
-          "issued": "2026-10-25T21:00:00Z",
+          "issued": "2026-10-26T21:00:00Z",
           "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
           "valid_start": "2026-10-24T00:00:00+00:00",
           "valid_end": "2026-10-25T00:00:00+00:00"
@@ -137,6 +137,17 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "valid_start": "2026-10-26T11:44:59Z",
           "valid_end": "2026-10-27T11:44:59Z",
           "note": "Human-operator-moderated global forecast published by SIDC."
+        },
+        "ccmc_amos": {
+          "m1": null,
+          "x1": 0.62,
+          "source": "NASA/CCMC Flare Scoreboard · CCMC AMOS",
+          "quality": "published-comparison",
+          "issued": "2026-10-27T00:30:00Z",
+          "valid_start": "2026-10-27T00:00:00Z",
+          "valid_end": "2026-10-28T00:00:00Z",
+          "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
+          "dataset_id": "AMOS_v1_FULLDISK"
         },
         "ccmc_assa24": {
           "m1": null,
@@ -165,9 +176,9 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "x1": 1.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC MagPy SHARP",
           "quality": "published-comparison",
-          "issued": "2026-10-27T00:04:52Z",
-          "valid_start": "2026-10-26T21:00:00Z",
-          "valid_end": "2026-10-27T21:00:00Z",
+          "issued": "2026-10-27T01:04:01Z",
+          "valid_start": "2026-10-26T22:00:00Z",
+          "valid_end": "2026-10-27T22:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "MagPy_SHARP_HMI_CEA_FULLDISK"
         },
@@ -211,7 +222,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "quality": "stale-fallback",
           "method": "morphology_fallback",
           "component_id": "AR14556-fallback",
-          "issued": "2026-10-25T21:00:00Z",
+          "issued": "2026-10-26T21:00:00Z",
           "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
           "valid_start": "2026-10-24T00:00:00+00:00",
           "valid_end": "2026-10-25T00:00:00+00:00"
@@ -239,7 +250,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "quality": "stale-fallback",
           "method": "morphology_fallback",
           "component_id": "AR14557-fallback",
-          "issued": "2026-10-25T21:00:00Z",
+          "issued": "2026-10-26T21:00:00Z",
           "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
           "valid_start": "2026-10-24T00:00:00+00:00",
           "valid_end": "2026-10-25T00:00:00+00:00"
@@ -267,7 +278,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "quality": "stale-fallback",
           "method": "sharp_magnetic",
           "component_id": "HARP14121",
-          "issued": "2026-10-25T21:00:00Z",
+          "issued": "2026-10-26T21:00:00Z",
           "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
           "valid_start": "2026-10-24T00:00:00+00:00",
           "valid_end": "2026-10-25T00:00:00+00:00"
@@ -302,16 +313,16 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "generation_status": {
     "ok": false,
     "used_previous_forecast": true,
-    "previous_issued": "2026-10-25T21:00:00Z",
+    "previous_issued": "2026-10-26T21:00:00Z",
     "attempts": 3,
     "exit_code": 2,
-    "checked_at": "2026-10-27T00:29:42Z",
+    "checked_at": "2026-10-27T01:30:57Z",
     "detail": "JSOC/SHARP retrieval failed after three attempts. The prior WXF magnetic probability was retained transparently while all independent forecast sources were refreshed."
   },
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20261026&region=&indexnum=1",
-    "retrieved_at": "2026-10-27T00:29:43Z",
+    "retrieved_at": "2026-10-27T01:30:58Z",
     "table_date": "2026-10-26",
     "valid_start": "2026-10-26T00:00:00Z",
     "valid_end": "2026-10-27T00:00:00Z",
@@ -323,7 +334,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-10-27T00:29:43Z",
+    "generated_at": "2026-10-27T01:30:58Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
@@ -460,7 +471,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "ccmc_ccmc_amos": {
       "dataset_id": "AMOS_v1_FULLDISK",
       "label": "CCMC AMOS",
-      "ok": false,
+      "ok": true,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=AMOS_v1_FULLDISK",
       "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=AMOS_v1_FULLDISK&time.min=2026-10-22T21%3A00%3A00.0&time.max=2026-10-27T21%3A00%3A00.0&format=json&options=fields.all",
@@ -497,8 +508,42 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 4,
-      "detail": "Forecast window does not meaningfully overlap target (2026-10-26T00:00:00Z to 2026-10-27T00:00:00Z)"
+      "records": 5,
+      "issued": "2026-10-27T00:30:00Z",
+      "valid_start": "2026-10-27T00:00:00Z",
+      "valid_end": "2026-10-28T00:00:00Z",
+      "m1": null,
+      "x1": 0.62,
+      "selected_record": {
+        "start_window": "2026-10-27T00:00:00.0Z",
+        "end_window": "2026-10-28T00:00:00.0Z",
+        "issue_time": "2026-10-27T00:30:00.0Z",
+        "C": 0.83,
+        "M": 0.1716,
+        "CPlus": "-1",
+        "MPlus": "-1",
+        "X": 0.0062,
+        "C_uncertainty": "-1",
+        "M_uncertainty": "-1",
+        "CPlus_uncertainty": "-1",
+        "MPlus_uncertainty": "-1",
+        "X_uncertainty": "-1",
+        "C_value_lower": "-1",
+        "M_value_lower": "-1",
+        "CPlus_value_lower": "-1",
+        "MPlus_value_lower": "-1",
+        "X_value_lower": "-1",
+        "C_value_higher": "-1",
+        "M_value_higher": "-1",
+        "CPlus_value_higher": "-1",
+        "MPlus_value_higher": "-1",
+        "X_value_higher": "-1",
+        "C_level": "-1",
+        "M_level": "-1",
+        "CPlus_level": "-1",
+        "MPlus_level": "-1",
+        "X_level": "-1"
+      }
     },
     "ccmc_ccmc_asap": {
       "dataset_id": "ASAP_1_FULLDISK",
@@ -583,7 +628,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 92,
+      "records": 93,
       "issued": "2026-10-27T00:00:00Z",
       "valid_start": "2026-10-27T00:00:00Z",
       "valid_end": "2026-10-28T00:00:00Z",
@@ -660,7 +705,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 92,
+      "records": 93,
       "issued": "2026-10-27T00:00:00Z",
       "valid_start": "2026-10-27T00:00:00Z",
       "valid_end": "2026-10-27T12:00:00Z",
@@ -909,16 +954,16 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 91,
-      "issued": "2026-10-27T00:04:52Z",
-      "valid_start": "2026-10-26T21:00:00Z",
-      "valid_end": "2026-10-27T21:00:00Z",
+      "records": 92,
+      "issued": "2026-10-27T01:04:01Z",
+      "valid_start": "2026-10-26T22:00:00Z",
+      "valid_end": "2026-10-27T22:00:00Z",
       "m1": 1.0,
       "x1": 1.0,
       "selected_record": {
-        "start_window": "2026-10-26T21:00:00.0Z",
-        "end_window": "2026-10-27T21:00:00.0Z",
-        "issue_time": "2026-10-27T00:04:52.0Z",
+        "start_window": "2026-10-26T22:00:00.0Z",
+        "end_window": "2026-10-27T22:00:00.0Z",
+        "issue_time": "2026-10-27T01:04:01.0Z",
         "C": "-1",
         "M": "-1",
         "CPlus": "-1",
@@ -1038,7 +1083,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "flarecast": {
       "ok": false,
       "url": "https://api.flarecast.eu/api/prediction/flarecast_latest.xml",
-      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x7f41e379b390>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
+      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x7fd58180f390>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
     },
     "swpc": {
       "ok": true,

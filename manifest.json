@@ -1,21 +1,33 @@
 {
   "schemaVersion": "ops-delivery-1",
-  "checkedAt": "2026-10-28T01:18:32.722764+00:00",
+  "checkedAt": "2026-10-28T08:24:35.854222+00:00",
   "products": {
     "scoreboard": {
       "status": "available",
       "events": 12,
-      "retrievedAt": "2026-10-28T01:18:32.810868+00:00",
+      "retrievedAt": "2026-10-28T08:24:36.366244+00:00",
       "attempts": []
     },
     "refm": {
       "status": "available",
       "issuedAt": "2026-10-28T00:14:00+00:00"
     },
+    "huxtAnimation": {
+      "path": "huxt-animation.mp4",
+      "sourceURL": "https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_animation_latest.mp4",
+      "retrievedAt": "2026-10-28T08:24:37.433924+00:00",
+      "httpLastModified": "Wed, 28 Oct 2026 07:00:05 GMT",
+      "sha256": "0395e3bbc895a85a1bf91c1c77c0d117b84f16c274433ce2d9298440a02335aa",
+      "bytes": 879505,
+      "kind": "video",
+      "frames": null,
+      "status": "available",
+      "issueTimeSource": "Read model times on provider animation"
+    },
     "m2mAnimation": {
       "path": "m2m-animation.gif",
       "sourceURL": "https://iswa.ccmc.gsfc.nasa.gov/iswa_data_tree/model/heliosphere/wsa-enlil-cone/animation-cme-velocity/2026/10/20261021_211000_2.0_anim.tim-vel.gif",
-      "retrievedAt": "2026-10-28T01:18:33.137656+00:00",
+      "retrievedAt": "2026-10-28T08:24:37.553287+00:00",
       "httpLastModified": "Wed, 21 Oct 2026 15:30:55 GMT",
       "sha256": "48a5348621829e684fcf26a3c39f5f326fdf26360fc53a1f755f4e249ab556b3",
       "bytes": 2339004,
@@ -26,22 +38,10 @@
       "event": "2026-10-21T08:53:00-CME-001",
       "method": "WSA-ENLIL + Cone (NASA M2M)"
     },
-    "huxtAnimation": {
-      "path": "huxt-animation.mp4",
-      "sourceURL": "https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_animation_latest.mp4",
-      "retrievedAt": "2026-10-28T01:18:33.720364+00:00",
-      "httpLastModified": "Wed, 28 Oct 2026 01:00:05 GMT",
-      "sha256": "a52f90217b4bd34d149bd38e782bddc9240fedb9c03c70f922a8856667038c6a",
-      "bytes": 923928,
-      "kind": "video",
-      "frames": null,
-      "status": "available",
-      "issueTimeSource": "Read model times on provider animation"
-    },
     "electron-fluence.json": {
       "status": "withheld",
-      "reason": "Solar-wind-history gap",
-      "issuedAt": "2026-10-28T01:18:32.058409+00:00",
+      "reason": "Insufficient recent electron coverage",
+      "issuedAt": "2026-10-28T08:24:35.281812+00:00",
       "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732"
     }
   }

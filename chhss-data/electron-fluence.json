@@ -1,6 +1,6 @@
 {
   "schemaVersion": "WXF-EF-0.2",
-  "issuedAt": "2026-10-28T00:40:26.002600+00:00",
+  "issuedAt": "2026-10-28T06:59:27.048093+00:00",
   "horizonHours": 24,
   "units": "electrons cm^-2 sr^-1",
   "fluxUnits": "electrons cm^-2 s^-1 sr^-1",
@@ -210,7 +210,7 @@
     "Current model uses observed drivers; the separate CME/HSS candidate has not passed its promotion gate.",
     "REFM UTC-day totals are a separate product, not rolling fluence."
   ],
-  "reason": "Solar-wind-history gap",
+  "reason": "Insufficient recent electron coverage",
   "forecast": [],
   "guidanceMode": "Current WXF \u00b7 observed drivers",
   "arrivalSource": {
@@ -228,7 +228,7 @@
   },
   "candidate": {
     "schemaVersion": "WXF-EF-0.2",
-    "issuedAt": "2026-10-28T00:40:26.002600+00:00",
+    "issuedAt": "2026-10-28T06:59:27.048093+00:00",
     "horizonHours": 24,
     "units": "electrons cm^-2 sr^-1",
     "fluxUnits": "electrons cm^-2 s^-1 sr^-1",
@@ -2471,7 +2471,7 @@
       "CME arrival guidance and 27-day wind recurrence are uncertain predictors; future Bz and new coronal-hole evolution are not known.",
       "REFM UTC-day totals are a separate product, not rolling fluence."
     ],
-    "reason": "Solar-wind-history gap",
+    "reason": "Insufficient recent electron coverage",
     "forecast": [],
     "guidanceMode": "External guidance incomplete; observed-driver + recurrence fallback",
     "modelSHA256": "3fa1360a114e3ab42fbb110456adb529cd5108a18caadc2c1c489c26faea24d8",
@@ -2973,18 +2973,18 @@
     }
   },
   "inputQuality": {
-    "rawSamples": 10078,
-    "acceptedSamples": 10067,
+    "rawSamples": 10153,
+    "acceptedSamples": 10142,
     "otherElectronSpacecraft": 0,
     "highProtonSamples": 0,
     "missingProtonSamples": 9,
-    "completeElectronHours": 825,
+    "completeElectronHours": 830,
     "spacecraftHours": {
-      "GOES-19": 825
+      "GOES-19": 830
     },
-    "hourCount": 841,
+    "hourCount": 847,
     "firstHourEnd": "2026-09-23T01:00:00+00:00",
-    "lastHourEnd": "2026-10-28T01:00:00+00:00"
+    "lastHourEnd": "2026-10-28T07:00:00+00:00"
   },
   "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732",
   "historicalValidation": {
@@ -3483,53 +3483,53 @@
   },
   "externalGuidance": {
     "source": "https://services.swpc.noaa.gov/text/3-day-forecast.txt",
-    "retrievedAt": "2026-10-28T00:40:26.553031+00:00",
+    "retrievedAt": "2026-10-28T06:59:27.438234+00:00",
     "bulletin": ":Product: 3-Day Forecast\n:Issued: 2026 Oct 28 0030 UTC\n# Prepared by the U.S. Dept. of Commerce, NOAA, Space Weather Prediction Center\n#\nA. NOAA Geomagnetic Activity Observation and Forecast\n\nThe greatest observed 3 hr Kp over the past 24 hours was 3 (below NOAA\nScale levels).\nThe greatest expected 3 hr Kp for Oct 28-Oct 30 2026 is 2.33 (below NOAA\nScale levels).\n\nNOAA Kp index breakdown Oct 28-Oct 30 2026\n\n             Oct 28       Oct 29       Oct 30\n00-03UT       1.33         1.67         2.33         \n03-06UT       1.33         1.33         2.33         \n06-09UT       1.00         1.33         2.33         \n09-12UT       1.00         1.33         2.00         \n12-15UT       0.67         1.33         2.00         \n15-18UT       1.33         1.33         2.00         \n18-21UT       1.67         1.67         1.67         \n21-00UT       1.67         1.67         2.00         \n\nRationale: No G1 (Minor) or greater geomagnetic storms are expected. No\nsignificant transient or recurrent solar wind features are forecast.\n\nB. NOAA Solar Radiation Activity Observation and Forecast\n\nSolar radiation, as observed by NOAA GOES-18 over the past 24 hours, was\nbelow S-scale storm level thresholds.\n\nSolar Radiation Storm Forecast for Oct 28-Oct 30 2026\n\n              Oct 28  Oct 29  Oct 30\nS1 or greater    1%      1%      1%\n\nRationale: No S1 (Minor) or greater solar radiation storms are expected.\nNo significant active region activity favorable for radiation storm\nproduction is forecast.\n\nC. NOAA Radio Blackout Activity and Forecast\n\nNo radio blackouts were observed over the past 24 hours.\n\nRadio Blackout Forecast for Oct 28-Oct 30 2026\n\n              Oct 28        Oct 29        Oct 30\nR1-R2            5%            5%            5%\nR3 or greater    1%            1%            1%\n\nRationale: No R1 (Minor) or greater radio blackouts are expected. No\nsignificant active region flare activity is forecast.\n",
     "usedAsModelInput": false
   },
   "coronalHoleGuidance": {
     "source": "WXF CH/HSS current.json",
-    "observationTime": "2026-10-27T23:36:04Z",
-    "availableAt": "2026-10-28T00:36:18Z",
+    "observationTime": "2026-10-28T05:48:04Z",
+    "availableAt": "2026-10-28T06:55:15Z",
     "measurementEngine": "chhss-euv-hmi-20260919.2",
     "holes": [
       {
-        "id": "CH-20261027-01",
-        "latitude": 3.6953131609539427,
-        "longitude": 11.424140328607994,
-        "cmd": 11.424140328607994,
-        "areaDisk": 0.005708143796212401,
-        "areaFraction": 0.005708143796212401,
-        "areaPct": 0.5708143796212402,
-        "width": 10.965003203410735,
+        "id": "CH-20261028-01",
+        "latitude": 59.35718698826939,
+        "longitude": -15.664654993900584,
+        "cmd": -15.664654993900584,
+        "areaDisk": 0.010210200081734245,
+        "areaFraction": 0.010210200081734245,
+        "areaPct": 1.0210200081734244,
+        "width": 71.5527135552563,
         "quantitative": true,
-        "time": "2026-10-27T23:36:04Z"
+        "time": "2026-10-28T05:48:04Z"
       },
       {
-        "id": "CH-20261027-02",
-        "latitude": 33.346594859612736,
-        "longitude": -12.98264976473278,
-        "cmd": -12.98264976473278,
-        "areaDisk": 0.0012108183810147517,
-        "areaFraction": 0.0012108183810147517,
-        "areaPct": 0.12108183810147517,
-        "width": 3.8914448067209833,
+        "id": "CH-20261028-02",
+        "latitude": 4.158419064217603,
+        "longitude": 14.240567176049126,
+        "cmd": 14.240567176049126,
+        "areaDisk": 0.008566184814336358,
+        "areaFraction": 0.008566184814336358,
+        "areaPct": 0.8566184814336358,
+        "width": 12.080177926389439,
         "quantitative": true,
-        "time": "2026-10-27T23:36:04Z"
+        "time": "2026-10-28T05:48:04Z"
       }
     ],
     "usedAsModelInput": false,
     "reason": "Consistent as-issued CH forecast history is still accumulating; 27-day wind recurrence is a separate trained predictor.",
     "recurrencePublication": {
-      "generatedAt": "2026-10-28T00:36:08Z",
+      "generatedAt": "2026-10-28T06:55:08Z",
       "source": "NASA OMNI2 retrospective hourly",
       "coverage": {
         "ok": true,
         "state": "complete",
-        "generatedAt": "2026-10-28T00:36:08Z",
+        "generatedAt": "2026-10-28T06:55:08Z",
         "rows": 1800,
-        "validSpeedHours": 1371,
-        "firstValidHour": "2026-08-14T01:00:00Z",
+        "validSpeedHours": 1365,
+        "firstValidHour": "2026-08-14T07:00:00Z",
         "lastValidHour": "2026-10-13T00:00:00Z",
         "minimumDailyHours": 18,
         "forecastDays": [
@@ -3581,7 +3581,7 @@
   },
   "huxtGuidance": {
     "schemaVersion": "wxf-huxt-1",
-    "issuedAt": "2026-10-28T00:37:25.039532+00:00",
+    "issuedAt": "2026-10-28T06:56:25.196215+00:00",
     "status": "withheld",
     "reason": "HUXt inputs/run unavailable: HTTPSConnectionPool(host='kauai.ccmc.gsfc.nasa.gov', port=443): Max retries exceeded with url: /DONKI/WS/get/CMEAnalysis?startDate=2026-10-20&endDate=2026-10-28&mostAccurateOnly=true&catalog=M2M_CATAL",
     "boundary": null,

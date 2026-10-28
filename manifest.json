@@ -1,21 +1,21 @@
 {
   "schemaVersion": "ops-delivery-1",
-  "checkedAt": "2026-10-27T21:19:08.655448+00:00",
+  "checkedAt": "2026-10-28T01:18:32.722764+00:00",
   "products": {
     "scoreboard": {
       "status": "available",
       "events": 12,
-      "retrievedAt": "2026-10-27T21:19:08.995293+00:00",
+      "retrievedAt": "2026-10-28T01:18:32.810868+00:00",
       "attempts": []
     },
     "refm": {
       "status": "available",
-      "issuedAt": "2026-10-27T00:14:00+00:00"
+      "issuedAt": "2026-10-28T00:14:00+00:00"
     },
     "m2mAnimation": {
       "path": "m2m-animation.gif",
       "sourceURL": "https://iswa.ccmc.gsfc.nasa.gov/iswa_data_tree/model/heliosphere/wsa-enlil-cone/animation-cme-velocity/2026/10/20261021_211000_2.0_anim.tim-vel.gif",
-      "retrievedAt": "2026-10-27T21:19:09.855597+00:00",
+      "retrievedAt": "2026-10-28T01:18:33.137656+00:00",
       "httpLastModified": "Wed, 21 Oct 2026 15:30:55 GMT",
       "sha256": "48a5348621829e684fcf26a3c39f5f326fdf26360fc53a1f755f4e249ab556b3",
       "bytes": 2339004,
@@ -29,10 +29,10 @@
     "huxtAnimation": {
       "path": "huxt-animation.mp4",
       "sourceURL": "https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_animation_latest.mp4",
-      "retrievedAt": "2026-10-27T21:19:10.492298+00:00",
-      "httpLastModified": "Tue, 27 Oct 2026 19:00:06 GMT",
-      "sha256": "10dda79c8b9ccf854d69356d440503fd37de5ab201b7e74f1164a398669149fc",
-      "bytes": 936689,
+      "retrievedAt": "2026-10-28T01:18:33.720364+00:00",
+      "httpLastModified": "Wed, 28 Oct 2026 01:00:05 GMT",
+      "sha256": "a52f90217b4bd34d149bd38e782bddc9240fedb9c03c70f922a8856667038c6a",
+      "bytes": 923928,
       "kind": "video",
       "frames": null,
       "status": "available",
@@ -41,7 +41,7 @@
     "electron-fluence.json": {
       "status": "withheld",
       "reason": "Solar-wind-history gap",
-      "issuedAt": "2026-10-27T21:19:08.049093+00:00",
+      "issuedAt": "2026-10-28T01:18:32.058409+00:00",
       "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732"
     }
   }

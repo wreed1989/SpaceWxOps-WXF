@@ -1,0 +1,18 @@
+{
+  "id": "193479565",
+  "date": "2026-10-30 16:16:09",
+  "name": "AIA 171",
+  "scale": 0.5957209053418645,
+  "scaleCorrection": 1.0071830862737305,
+  "width": 4096,
+  "height": 4096,
+  "refPixelX": 2048.5,
+  "refPixelY": 2048.5,
+  "offsetX": 0,
+  "offsetY": 0,
+  "rotation": 0,
+  "rsun": 1610.8967,
+  "dsun": 148530960000,
+  "sunCenterOffsetParams": [],
+  "layeringOrder": 1
+}

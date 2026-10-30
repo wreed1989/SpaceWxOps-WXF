@@ -1,0 +1,73 @@
+{
+  "status": "Updated",
+  "checked_at": "2026-10-30T21:08:49.064361Z",
+  "fitted_through": "2026-09-02",
+  "database_through": "2026-10-28",
+  "labels_through": "2026-10-29",
+  "frozen_cases": 7706,
+  "new_cases": 68,
+  "total_cases": 7774,
+  "frozen_sha256": "12a0f1d5ba245d392c2eb3bcbed41a530b6205b4b20705d534319db1fd20f683",
+  "database_sha256": "a331a5eb9b9a754d9ff4605e21d3c0e3cb12ebbd32aa26180a4383e0cf688650",
+  "quality": {
+    "queried_rows": 497,
+    "skipped_multi_region_harps": 59,
+    "skipped_unmapped_harps": 332,
+    "expanded_rows": 106,
+    "quality_retained": 72,
+    "quality_filter_input": 106,
+    "rejected_longitude": 34,
+    "after_longitude": 72,
+    "quality_missing": 0,
+    "quality_top_values": {
+      "0x00010400": 58,
+      "0x00011C00": 12,
+      "0x00011400": 2
+    },
+    "rejected_quality": 0,
+    "after_quality": 72,
+    "rejected_harp_merge": 0,
+    "after_harp_merge": 72,
+    "rejected_observer_velocity": 0,
+    "after_observer_velocity": 72,
+    "rejected_missing_mapping": 0,
+    "after_mapping": 72,
+    "min_finite_parameters": 12,
+    "rejected_parameter_completeness": 0,
+    "after_parameter_completeness": 72,
+    "unique_region_days": 72,
+    "date_start": "2026-09-01",
+    "date_end": "2026-10-28"
+  },
+  "labels": {
+    "rows_before_label_coverage_filter": 72,
+    "rows_after_label_coverage_filter": 72,
+    "rows_after_ambiguous_day_filter": 72,
+    "available_label_days": 89,
+    "ambiguous_major_flare_days": 0,
+    "ambiguous_negative_rows_removed": 0,
+    "attributed_positive_rows_preserved_on_ambiguous_days": 0,
+    "m1_positive_rows": 3,
+    "x1_positive_rows": 0,
+    "m1_prevalence": 0.041666666666666664,
+    "x1_prevalence": 0.0
+  },
+  "forward_check": {
+    "M1+": {
+      "cases": 68,
+      "events": 3,
+      "brier": 0.04012384564822221,
+      "mean_probability": 0.03519115686497339,
+      "observed_frequency": 0.04411764705882353
+    },
+    "X1+": {
+      "cases": 68,
+      "events": 0,
+      "brier": 3.3048053708394834e-05,
+      "mean_probability": 0.002865508473573862,
+      "observed_frequency": 0.0
+    }
+  },
+  "retrained": false,
+  "note": "Retrospective post-training update. Final NRT/archive revisions and report publication delays are not reconstructed. Not an as-issued operational backtest."
+}

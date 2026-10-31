@@ -1,0 +1,70 @@
+{
+  "checked_at": "2026-10-31T13:39:37Z",
+  "products": [
+    {
+      "product": "cactus",
+      "status": "ok"
+    },
+    {
+      "product": "solardemon",
+      "status": "ok"
+    },
+    {
+      "product": "sidc",
+      "status": "ok",
+      "availability": "current"
+    },
+    {
+      "product": "aeffort",
+      "status": "ok",
+      "availability": "expired"
+    },
+    {
+      "product": "holes",
+      "status": "ok"
+    },
+    {
+      "product": "solarmap",
+      "status": "ok"
+    },
+    {
+      "product": "kso",
+      "status": "ok"
+    },
+    {
+      "product": "connectivity",
+      "status": "ok"
+    },
+    {
+      "product": "euhforia",
+      "status": "ok"
+    },
+    {
+      "product": "hapi",
+      "status": "ok"
+    }
+  ],
+  "asset_count": 216,
+  "evidence": {
+    "cactus": {
+      "events": 12,
+      "observed_at": "2026-10-31T09:48:22Z",
+      "table_rows_parsed": null,
+      "major_rows_recognized": null
+    },
+    "solardemon": {
+      "events": 0,
+      "observed_at": "2026-10-31T13:18:00Z",
+      "table_rows_parsed": 2,
+      "major_rows_recognized": 0
+    },
+    "footpoints": {
+      "EARTH": 48,
+      "PSP": 21,
+      "STA": 33,
+      "SOLO": 36,
+      "BEPI": 21,
+      "ALL": 0
+    }
+  }
+}

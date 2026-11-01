@@ -1,24 +1,24 @@
 {
   "schemaVersion": "ops-delivery-1",
-  "checkedAt": "2026-10-31T23:23:05.588869+00:00",
+  "checkedAt": "2026-11-01T05:56:41.354241+00:00",
   "products": {
     "scoreboard": {
       "status": "available",
       "events": 10,
-      "retrievedAt": "2026-10-31T23:23:06.143565+00:00",
+      "retrievedAt": "2026-11-01T05:56:41.880631+00:00",
       "attempts": []
     },
     "refm": {
       "status": "available",
-      "issuedAt": "2026-10-31T00:14:00+00:00"
+      "issuedAt": "2026-11-01T00:14:00+00:00"
     },
     "huxtAnimation": {
       "path": "huxt-animation.mp4",
       "sourceURL": "https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_animation_latest.mp4",
-      "retrievedAt": "2026-10-31T23:23:07.277367+00:00",
-      "httpLastModified": "Sat, 31 Oct 2026 19:00:06 GMT",
-      "sha256": "be4e20d926a1ae5f0b419bbb8b850b54486b8e18f632274a481d223c2197ee2d",
-      "bytes": 934657,
+      "retrievedAt": "2026-11-01T05:56:43.065470+00:00",
+      "httpLastModified": "Sun, 01 Nov 2026 01:00:06 GMT",
+      "sha256": "bdfb5ae84bc0f76db6d6a12721ccb63821d8a9e226e42d2876035af5675e1eb9",
+      "bytes": 996298,
       "kind": "video",
       "frames": null,
       "status": "available",
@@ -27,7 +27,7 @@
     "m2mAnimation": {
       "path": "m2m-animation.gif",
       "sourceURL": "https://iswa.ccmc.gsfc.nasa.gov/iswa_data_tree/model/heliosphere/wsa-enlil-cone/animation-cme-velocity/2026/10/20261021_211000_2.0_anim.tim-vel.gif",
-      "retrievedAt": "2026-10-31T23:23:07.432580+00:00",
+      "retrievedAt": "2026-11-01T05:56:43.347120+00:00",
       "httpLastModified": "Wed, 21 Oct 2026 15:30:55 GMT",
       "sha256": "48a5348621829e684fcf26a3c39f5f326fdf26360fc53a1f755f4e249ab556b3",
       "bytes": 2339004,
@@ -41,7 +41,7 @@
     "electron-fluence.json": {
       "status": "withheld",
       "reason": "Insufficient recent electron coverage",
-      "issuedAt": "2026-10-31T23:23:05.068750+00:00",
+      "issuedAt": "2026-11-01T05:56:40.736491+00:00",
       "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732"
     }
   }

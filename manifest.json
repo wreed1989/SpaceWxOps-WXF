@@ -1,11 +1,11 @@
 {
   "schemaVersion": "ops-delivery-1",
-  "checkedAt": "2026-11-01T18:56:23.287875+00:00",
+  "checkedAt": "2026-11-01T22:47:54.470451+00:00",
   "products": {
     "scoreboard": {
       "status": "available",
-      "events": 10,
-      "retrievedAt": "2026-11-01T18:56:23.706365+00:00",
+      "events": 11,
+      "retrievedAt": "2026-11-01T22:47:54.968271+00:00",
       "attempts": []
     },
     "refm": {
@@ -15,10 +15,10 @@
     "huxtAnimation": {
       "path": "huxt-animation.mp4",
       "sourceURL": "https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_animation_latest.mp4",
-      "retrievedAt": "2026-11-01T18:56:24.745834+00:00",
-      "httpLastModified": "Sun, 01 Nov 2026 13:00:06 GMT",
-      "sha256": "b4d6d974375b179558adf6b6c1e8ba63a1d836f0d2f37bb406533fee9ee6e9f5",
-      "bytes": 861534,
+      "retrievedAt": "2026-11-01T22:47:56.064893+00:00",
+      "httpLastModified": "Sun, 01 Nov 2026 19:00:05 GMT",
+      "sha256": "df86e9f15f7ef4a7036b0664bf04728bd7c549368dda6e18db9b356dd61341f9",
+      "bytes": 896039,
       "kind": "video",
       "frames": null,
       "status": "available",
@@ -26,22 +26,22 @@
     },
     "m2mAnimation": {
       "path": "m2m-animation.gif",
-      "sourceURL": "https://iswa.ccmc.gsfc.nasa.gov/iswa_data_tree/model/heliosphere/wsa-enlil-cone/animation-cme-velocity/2026/10/20261021_211000_2.0_anim.tim-vel.gif",
-      "retrievedAt": "2026-11-01T18:56:24.760488+00:00",
-      "httpLastModified": "Wed, 21 Oct 2026 15:30:55 GMT",
-      "sha256": "48a5348621829e684fcf26a3c39f5f326fdf26360fc53a1f755f4e249ab556b3",
-      "bytes": 2339004,
+      "sourceURL": "https://iswa.ccmc.gsfc.nasa.gov/iswa_data_tree/model/heliosphere/wsa-enlil-cone/animation-cme-velocity/2026/11/20261102_035900_2.0_anim.tim-vel.gif",
+      "retrievedAt": "2026-11-01T22:47:56.152009+00:00",
+      "httpLastModified": "Sun, 01 Nov 2026 21:42:54 GMT",
+      "sha256": "379b792a16d176fdcc0375ef64a4d4dca9cf1c22ea0f6c3bf31268722ecd0967",
+      "bytes": 2421504,
       "kind": "image",
       "frames": 41,
       "status": "available",
-      "submittedAt": "2026-10-21T15:31:00+00:00",
-      "event": "2026-10-21T08:53:00-CME-001",
+      "submittedAt": "2026-11-01T21:43:00+00:00",
+      "event": "2026-11-01T19:00:00-CME-001",
       "method": "WSA-ENLIL + Cone (NASA M2M)"
     },
     "electron-fluence.json": {
       "status": "withheld",
       "reason": "Insufficient recent electron coverage",
-      "issuedAt": "2026-11-01T18:56:22.539644+00:00",
+      "issuedAt": "2026-11-01T22:47:53.897515+00:00",
       "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732"
     }
   }

@@ -8,7 +8,7 @@
       "maxKP": null,
       "dstMin": null,
       "dstMinTime": null,
-      "cmeNote": "CME first seen to the West in SOHO LASCO C2 beginning at 2026-11-01T19:00Z. The source of this event is a filament eruption seen centered at approx. N15W15. Filament destabilization began at approx. 2026-11-01T16:43Z, with liftoff beginning at approx. 2026-11-01T17:54Z as seen in SDO AIA, STEREO A EUVI and GOES SUVI 304. Post eruptive arcades and field line movement are also visible in SDO AIA 193, GOES SUVI 284 and STEREO A EUVI 195.",
+      "cmeNote": "CME first seen to the West in SOHO LASCO C2 beginning at 2026-11-01T19:00Z. The CME is also visible to the west in SOHO LASCO C3 and GOES CCOR-1. The CME may be faintly visible to the east in STEREO A COR2 imagery. The source of this event is a filament eruption seen centered at approx. N15W15. Filament destabilization began at approx. 2026-11-01T16:43Z, with liftoff beginning at approx. 2026-11-01T17:54Z as seen in SDO AIA, STEREO A EUVI and GOES SUVI 304. Post eruptive arcades and field line movement are also visible in SDO AIA 193, GOES SUVI 284 and STEREO A EUVI 195.",
       "predictions": [
         {
           "predictedMethodName": "WSA-ENLIL + Cone (NASA M2M)",
@@ -26,33 +26,48 @@
           "predictionNote": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/49360/1\nModel Inputs:\n2026-11-01T19:00:00-CME-001 with CME Analysis: Lon.=31.0, Lat.=7.0, Speed=357.0, HalfAngle=27.0, Time21.5=2026-11-02T03:59Z\n\nModel Output:\n\nEarth Impact:\nEarth Shock Arrival Time = 2026-11-05T05:00Z (+- 7 hours)\n(kp)90=3\n(kp)180=4\n\nOther Location(s) Impact:\nJuice with esitmated shock arrival time 2026-11-04T21:02Z\nSTEREO A with esitmated shock arrival time 2026-11-05T10:00Z\n\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261102_035900_2.0_anim.tim-den.gif\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261102_035900_2.0_anim.tim-vel.gif\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261102_035900_2.0_anim.tim-vel-Stereo_A.gif\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261102_035900_2.0_anim.tim-den-Stereo_A.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261102_035900_2.0_ENLIL_CONE_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261102_035900_2.0_ENLIL_CONE_Kp_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261102_035900_2.0_ENLIL_CONE_STA_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261102_035900_2.0_ENLIL_CONE_PSP_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261102_035900_2.0_ENLIL_CONE_SolO_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261102_035900_2.0_ENLIL_CONE_Merc_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261102_035900_2.0_ENLIL_CONE_Mars_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261102_035900_2.0_ENLIL_CONE_Bepi_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261102_035900_2.0_ENLIL_CONE_Venus_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261102_035900_2.0_ENLIL_CONE_Juice_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261102_035900_2.0_ENLIL_CONE_Psyche_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261102_035900_2.0_ENLIL_CONE_Osiris_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261102_035900_2.0_ENLIL_CONE_EuropaClippr_timeline.gif"
         },
         {
-          "predictedMethodName": "Average of all Methods",
-          "submissionTime": "2026-11-01T22:11Z",
-          "predictedArrivalTime": "2026-11-05T05:00Z",
-          "uncertaintyMinusInHrs": null,
-          "uncertaintyPlusInHrs": null,
-          "confidenceInPercentage": null,
+          "predictedMethodName": "SIDC",
+          "submissionTime": "2026-11-02T11:47Z",
+          "predictedArrivalTime": "2026-11-05T00:00Z",
+          "uncertaintyMinusInHrs": 12.0,
+          "uncertaintyPlusInHrs": 12.0,
+          "confidenceInPercentage": 35.0,
           "predictedMaxKpLowerRange": 3.0,
           "predictedMaxKpUpperRange": 4.0,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
           "differenceInHrs": null,
-          "leadTimeInHrs": "78.82",
+          "leadTimeInHrs": "60.22",
+          "predictionNote": ":Issued: 2026 Nov 02 1231 UTC\n#--------------------------------------------------------------------#\n# DAILY BULLETIN ON SOLAR AND GEOMAGNETIC ACTIVITY from the SIDC     #\n# (RWC Belgium)                                                      #\n#--------------------------------------------------------------------#\nSIDC URSIGRAM 61102\nSIDC SOLAR BULLETIN 02 Nov 2026, 1230UT\nSIDC FORECAST\nSOLAR FLARES  : Quiet conditions (<50% probability of C-class flares) GEOMAGNETISM  : Active conditions expected (A>=20 or K=4) SOLAR PROTONS : Quiet PREDICTIONS FOR 02 Nov 2026  10CM FLUX: 096 / AP: 013 PREDICTIONS FOR 03 Nov 2026  10CM FLUX: 099 / AP: 009 PREDICTIONS FOR 04 Nov 2026  10CM FLUX: 102 / AP: 007\n\nSolar Active Regions and flaring: Solar flaring activity was low over the past 24 hours. A single C-class flare was observed (SIDC Flare 8811, C1.1), peaking at 12:36 UTC on November 01. It was associated with SIDC Sunspot Group 976 (NOAA Active Region 4564, magnetic type beta). There are currently three numbered active regions on the solar disk. The most complex ones have a beta magnetic configuration. SIDC Sunspot Group 992 (magnetic type beta) has rotated on disk from the east limb, in the southeast quadrant. The solar flaring activity is expected to be low over the next 24 hours, with a chance for C-class.\n\nCoronal mass ejections: A Coronal Mass Ejection (SIDC CME 739) was observed in LASCO/C2 and LASCO/C3 coronagraph imagery, starting from around 20:45 UTC on November 01, lifting off from the east limb. It is likely associated with eruptive activity behind the east limb, as seen by SUVI 195, starting from 18:45 UTC on November 01. It is not expected to impact Earth. SIDC CME\n740 was observed in LASCO/C2 and LASCO/C3, starting from 19:00 UTC on November 01. It is likely associated with eruptive activity in the northeast quadrant, close to the central meridian, as seen by SUVI 195 and 304. A glancing blow may be expected to arrive at Earth starting from November 05. No other Earth-directed CMEs were observed in the available coronagraph imagery during the past 24 hours.\n\nSolar wind: During the past 24 hours, the solar wind parameters (SOLAR-1 and ACE) reflected the waning influence of a high-speed stream from the equatorial, positive polarity coronal hole (SIDC Coronal Hole 179). The solar wind speed has decreased from 550 km/s to around 420 km/s. The interplanetary magnetic field was between 3 nT and 5 nT. The Bz component varied between -4 nT and 4 nT. The interplanetary magnetic field angle phi was initially mostly in the negative sector, switching to mostly positive around 06:00 UTC on November 02. Slow solar wind conditions are expected over the next 24 hours.\n\nGeomagnetism: Geomagnetic conditions globally were at quiet to unsettled levels (NOAA Kp 2 to 3) during the past 24 hours. Geomagnetic conditions locally were mostly at unsettled levels (K Bel 3), with two isolated intervals of active levels (K Bel 4), between 15:00 and 16:00 UTC and between 20:00 and 21:00 UTC on November 01. Mostly quiet to unsettled conditions are expected over the next 24 hours, with possible isolated active intervals.\n\nProton flux levels: The greater than 10 MeV proton flux, as measured by GOES-18, was slightly enhanced but remained well below the 10 pfu threshold over the past 24 hours. It is expected to remain below the 10 pfu threshold over the next 24 hours.\n\nElectron fluxes at GEO: The greater than 2 MeV electron flux measured by GOES 18 and GOES 19 exceeded the 1000 pfu threshold during the past 24 hours. The greater than 2 MeV electron flux is expected to cross the 1000 pfu threshold over the next 24 hours. The 24-hour electron fluence was at normal levels but it is expected to increase to moderate levels over the next 24 hours.\n\n\nTODAY'S ESTIMATED ISN  : 049, BASED ON 10 STATIONS.\n\nSOLAR INDICES FOR 01 Nov 2026\nWOLF NUMBER CATANIA    : ///\n10CM SOLAR FLUX        : 094\nAK CHAMBON LA FORET    : ///\nAK WINGST              : 020\nESTIMATED AP           : 018\nESTIMATED ISN          : 033, BASED ON 17 STATIONS.\n\nNOTICEABLE EVENTS SUMMARY\nDAY BEGIN MAX  END  LOC    XRAY OP  10CM Catania/NOAA RADIO_BURST_TYPES\nNONE\nEND\n\nBT\n\n#--------------------------------------------------------------------#\n# Solar Influences Data analysis Center - RWC Belgium                #\n# Royal Observatory of Belgium                                       #\n#                                                                    #"
+        },
+        {
+          "predictedMethodName": "Average of all Methods",
+          "submissionTime": "2026-11-02T17:42Z",
+          "predictedArrivalTime": "2026-11-05T02:30Z",
+          "uncertaintyMinusInHrs": null,
+          "uncertaintyPlusInHrs": null,
+          "confidenceInPercentage": 35.0,
+          "predictedMaxKpLowerRange": 3.0,
+          "predictedMaxKpUpperRange": 4.0,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "56.80",
           "predictionNote": "Auto-generated average of all methods forecast."
         },
         {
           "predictedMethodName": "Median of all Methods",
-          "submissionTime": "2026-11-01T22:11Z",
-          "predictedArrivalTime": "2026-11-05T05:00Z",
+          "submissionTime": "2026-11-02T17:42Z",
+          "predictedArrivalTime": "2026-11-05T02:30Z",
           "uncertaintyMinusInHrs": null,
           "uncertaintyPlusInHrs": null,
-          "confidenceInPercentage": null,
+          "confidenceInPercentage": 35.0,
           "predictedMaxKpLowerRange": 3.0,
           "predictedMaxKpUpperRange": 4.0,
           "predictedDstMin": null,
           "predictedDstMinTime": null,
           "differenceInHrs": null,
-          "leadTimeInHrs": "78.82",
+          "leadTimeInHrs": "56.80",
           "predictionNote": "Auto-generated median of all methods forecast."
         }
       ]
@@ -1124,7 +1139,7 @@
     }
   ],
   "source": "https://ccmc.gsfc.nasa.gov/CMESB-Earth/WS/get/predictions?CMEtimeStart=2026-10-03&CMEtimeEnd=2026-11-03&closeOutCMEsOnly=false&skipNoArrivalObservedCMEs=false",
-  "retrievedAt": "2026-11-02T10:57:45.539179+00:00",
+  "retrievedAt": "2026-11-02T20:47:10.019176+00:00",
   "windowStart": "2026-10-03",
   "windowEnd": "2026-11-03"
 }

@@ -88,8 +88,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     },
     {
       "component_id": "HARP14155",
-      "m1": 0.9905349970604512,
-      "x1": 0.1130146574320792
+      "m1": 0.9905349970604502,
+      "x1": 0.113014657432079
     }
   ],
   "regions": [
@@ -185,9 +185,9 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "x1": 1.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC MagPy HMI LOS",
           "quality": "published-comparison",
-          "issued": "2026-11-03T00:09:29Z",
-          "valid_start": "2026-11-02T21:00:00Z",
-          "valid_end": "2026-11-03T21:00:00Z",
+          "issued": "2026-11-03T03:13:08Z",
+          "valid_start": "2026-11-03T00:00:00Z",
+          "valid_end": "2026-11-04T00:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "MagPy-HMI-LOS_FULLDISK"
         },
@@ -196,9 +196,9 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "x1": 1.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC MagPy SHARP",
           "quality": "published-comparison",
-          "issued": "2026-11-03T02:03:17Z",
-          "valid_start": "2026-11-02T23:00:00Z",
-          "valid_end": "2026-11-03T23:00:00Z",
+          "issued": "2026-11-03T03:04:38Z",
+          "valid_start": "2026-11-03T00:00:00Z",
+          "valid_end": "2026-11-04T00:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "MagPy_SHARP_HMI_CEA_FULLDISK"
         }
@@ -362,7 +362,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20261102&region=&indexnum=1",
-    "retrieved_at": "2026-11-03T02:56:33Z",
+    "retrieved_at": "2026-11-03T03:29:30Z",
     "table_date": "2026-11-02",
     "valid_start": "2026-11-02T00:00:00Z",
     "valid_end": "2026-11-03T00:00:00Z",
@@ -374,7 +374,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-11-03T02:56:33Z",
+    "generated_at": "2026-11-03T03:29:30Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
@@ -668,7 +668,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 100,
+      "records": 101,
       "issued": "2026-11-03T00:00:00Z",
       "valid_start": "2026-11-03T00:00:00Z",
       "valid_end": "2026-11-04T00:00:00Z",
@@ -745,7 +745,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 100,
+      "records": 101,
       "issued": "2026-11-03T00:00:00Z",
       "valid_start": "2026-11-03T00:00:00Z",
       "valid_end": "2026-11-03T12:00:00Z",
@@ -951,16 +951,16 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 80,
-      "issued": "2026-11-03T00:09:29Z",
-      "valid_start": "2026-11-02T21:00:00Z",
-      "valid_end": "2026-11-03T21:00:00Z",
+      "records": 81,
+      "issued": "2026-11-03T03:13:08Z",
+      "valid_start": "2026-11-03T00:00:00Z",
+      "valid_end": "2026-11-04T00:00:00Z",
       "m1": 1.0,
       "x1": 1.0,
       "selected_record": {
-        "start_window": "2026-11-02T21:00:00.0Z",
-        "end_window": "2026-11-03T21:00:00.0Z",
-        "issue_time": "2026-11-03T00:09:29.0Z",
+        "start_window": "2026-11-03T00:00:00.0Z",
+        "end_window": "2026-11-04T00:00:00.0Z",
+        "issue_time": "2026-11-03T03:13:08.0Z",
         "C": "-1",
         "M": "-1",
         "CPlus": "-1",
@@ -1028,16 +1028,16 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 95,
-      "issued": "2026-11-03T02:03:17Z",
-      "valid_start": "2026-11-02T23:00:00Z",
-      "valid_end": "2026-11-03T23:00:00Z",
+      "records": 96,
+      "issued": "2026-11-03T03:04:38Z",
+      "valid_start": "2026-11-03T00:00:00Z",
+      "valid_end": "2026-11-04T00:00:00Z",
       "m1": 1.0,
       "x1": 1.0,
       "selected_record": {
-        "start_window": "2026-11-02T23:00:00.0Z",
-        "end_window": "2026-11-03T23:00:00.0Z",
-        "issue_time": "2026-11-03T02:03:17.0Z",
+        "start_window": "2026-11-03T00:00:00.0Z",
+        "end_window": "2026-11-04T00:00:00.0Z",
+        "issue_time": "2026-11-03T03:04:38.0Z",
         "C": "-1",
         "M": "-1",
         "CPlus": "-1",
@@ -1123,7 +1123,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "flarecast": {
       "ok": false,
       "url": "https://api.flarecast.eu/api/prediction/flarecast_latest.xml",
-      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x7b4eeacef390>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
+      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x719c80643390>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
     },
     "swpc": {
       "ok": true,

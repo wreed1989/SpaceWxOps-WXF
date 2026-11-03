@@ -1,6 +1,6 @@
 {
   "schemaVersion": "WXF-EF-0.2",
-  "issuedAt": "2026-11-03T12:08:30.337847+00:00",
+  "issuedAt": "2026-11-03T19:41:39.388619+00:00",
   "horizonHours": 24,
   "units": "electrons cm^-2 sr^-1",
   "fluxUnits": "electrons cm^-2 s^-1 sr^-1",
@@ -228,7 +228,7 @@
   },
   "candidate": {
     "schemaVersion": "WXF-EF-0.2",
-    "issuedAt": "2026-11-03T12:08:30.337847+00:00",
+    "issuedAt": "2026-11-03T19:41:39.388619+00:00",
     "horizonHours": 24,
     "units": "electrons cm^-2 sr^-1",
     "fluxUnits": "electrons cm^-2 s^-1 sr^-1",
@@ -2973,18 +2973,18 @@
     }
   },
   "inputQuality": {
-    "rawSamples": 10217,
-    "acceptedSamples": 10131,
+    "rawSamples": 10308,
+    "acceptedSamples": 10222,
     "otherElectronSpacecraft": 0,
     "highProtonSamples": 0,
     "missingProtonSamples": 84,
-    "completeElectronHours": 833,
+    "completeElectronHours": 840,
     "spacecraftHours": {
-      "GOES-19": 833
+      "GOES-19": 840
     },
-    "hourCount": 852,
+    "hourCount": 860,
     "firstHourEnd": "2026-09-29T01:00:00+00:00",
-    "lastHourEnd": "2026-11-03T12:00:00+00:00"
+    "lastHourEnd": "2026-11-03T20:00:00+00:00"
   },
   "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732",
   "historicalValidation": {
@@ -3483,53 +3483,65 @@
   },
   "externalGuidance": {
     "source": "https://services.swpc.noaa.gov/text/3-day-forecast.txt",
-    "retrievedAt": "2026-11-03T12:08:32.624847+00:00",
-    "bulletin": ":Product: 3-Day Forecast\n:Issued: 2026 Nov 03 0030 UTC\n# Prepared by the U.S. Dept. of Commerce, NOAA, Space Weather Prediction Center\n#\nA. NOAA Geomagnetic Activity Observation and Forecast\n\nThe greatest observed 3 hr Kp over the past 24 hours was 3 (below NOAA\nScale levels).\nThe greatest expected 3 hr Kp for Nov 03-Nov 05 2026 is 3.67 (below NOAA\nScale levels).\n\nNOAA Kp index breakdown Nov 03-Nov 05 2026\n\n             Nov 03       Nov 04       Nov 05\n00-03UT       1.67         1.67         2.67         \n03-06UT       2.00         2.00         3.00         \n06-09UT       1.67         1.67         3.67         \n09-12UT       1.33         1.33         2.67         \n12-15UT       0.67         1.33         2.67         \n15-18UT       0.67         0.67         1.67         \n18-21UT       1.67         0.67         1.67         \n21-00UT       1.33         1.67         2.67         \n\nRationale: No G1 (Minor) or greater geomagnetic storms are expected. No\nsignificant transient or recurrent solar wind features are forecast.\n\nB. NOAA Solar Radiation Activity Observation and Forecast\n\nSolar radiation, as observed by NOAA GOES-18 over the past 24 hours, was\nbelow S-scale storm level thresholds.\n\nSolar Radiation Storm Forecast for Nov 03-Nov 05 2026\n\n              Nov 03  Nov 04  Nov 05\nS1 or greater    1%      1%      1%\n\nRationale: No S1 (Minor) or greater solar radiation storms are expected.\nNo significant active region activity favorable for radiation storm\nproduction is forecast.\n\nC. NOAA Radio Blackout Activity and Forecast\n\nNo radio blackouts were observed over the past 24 hours.\n\nRadio Blackout Forecast for Nov 03-Nov 05 2026\n\n              Nov 03        Nov 04        Nov 05\nR1-R2            5%            5%            5%\nR3 or greater    1%            1%            1%\n\nRationale: No R1 (Minor) or greater radio blackouts are expected. No\nsignificant active region flare activity is forecast.\n",
+    "retrievedAt": "2026-11-03T19:41:39.752631+00:00",
+    "bulletin": ":Product: 3-Day Forecast\n:Issued: 2026 Nov 03 1230 UTC\n# Prepared by the U.S. Dept. of Commerce, NOAA, Space Weather Prediction Center\n#\nA. NOAA Geomagnetic Activity Observation and Forecast\n\nThe greatest observed 3 hr Kp over the past 24 hours was 2 (below NOAA\nScale levels).\nThe greatest expected 3 hr Kp for Nov 03-Nov 05 2026 is 3.67 (below NOAA\nScale levels).\n\nNOAA Kp index breakdown Nov 03-Nov 05 2026\n\n             Nov 03       Nov 04       Nov 05\n00-03UT       0.67         1.67         2.67         \n03-06UT       1.67         2.00         3.00         \n06-09UT       2.00         1.67         3.67         \n09-12UT       1.67         1.33         2.67         \n12-15UT       1.00         1.33         2.67         \n15-18UT       1.33         0.67         1.67         \n18-21UT       1.67         0.67         1.67         \n21-00UT       2.00         1.67         2.67         \n\nRationale: No G1 (Minor) or greater geomagnetic storms are expected. No\nsignificant transient or recurrent solar wind features are forecast.\n\nB. NOAA Solar Radiation Activity Observation and Forecast\n\nSolar radiation, as observed by NOAA GOES-18 over the past 24 hours, was\nbelow S-scale storm level thresholds.\n\nSolar Radiation Storm Forecast for Nov 03-Nov 05 2026\n\n              Nov 03  Nov 04  Nov 05\nS1 or greater    1%      1%      1%\n\nRationale: No S1 (Minor) or greater solar radiation storms are expected.\nNo significant active region activity favorable for radiation storm\nproduction is forecast.\n\nC. NOAA Radio Blackout Activity and Forecast\n\nNo radio blackouts were observed over the past 24 hours.\n\nRadio Blackout Forecast for Nov 03-Nov 05 2026\n\n              Nov 03        Nov 04        Nov 05\nR1-R2            5%            5%            5%\nR3 or greater    1%            1%            1%\n\nRationale: No R1 (Minor) or greater radio blackouts are expected. No\nsignificant active region flare activity is forecast.\n",
     "usedAsModelInput": false
   },
   "coronalHoleGuidance": {
     "source": "WXF CH/HSS current.json",
-    "observationTime": "2026-11-03T02:36:04Z",
-    "availableAt": "2026-11-03T03:30:45Z",
+    "observationTime": "2026-11-03T18:24:04Z",
+    "availableAt": "2026-11-03T19:37:24Z",
     "measurementEngine": "chhss-euv-hmi-20260919.2",
     "holes": [
       {
         "id": "CH-20261103-01",
-        "latitude": -16.278197921875517,
-        "longitude": -38.66392384197253,
-        "cmd": -38.66392384197253,
-        "areaDisk": 0.0431136015910353,
-        "areaFraction": 0.0431136015910353,
-        "areaPct": 4.31136015910353,
-        "width": 71.2124503740879,
+        "latitude": -16.720144405799186,
+        "longitude": -32.8873687712774,
+        "cmd": -32.8873687712774,
+        "areaDisk": 0.05056334628605965,
+        "areaFraction": 0.05056334628605965,
+        "areaPct": 5.056334628605965,
+        "width": 77.29182037564289,
         "quantitative": true,
-        "time": "2026-11-03T02:36:04Z"
+        "time": "2026-11-03T18:24:04Z"
       },
       {
         "id": "CH-20261103-02",
-        "latitude": 19.391951457017022,
-        "longitude": 13.891393891892953,
-        "cmd": 13.891393891892953,
-        "areaDisk": 0.0012466016826649597,
-        "areaFraction": 0.0012466016826649597,
-        "areaPct": 0.12466016826649597,
-        "width": 5.072864412098546,
+        "latitude": 23.58945232691535,
+        "longitude": -8.8148046174249,
+        "cmd": -8.8148046174249,
+        "areaDisk": 0.0012141469673647165,
+        "areaFraction": 0.0012141469673647165,
+        "areaPct": 0.12141469673647166,
+        "width": 7.279398927103273,
         "quantitative": true,
-        "time": "2026-11-03T02:36:04Z"
+        "time": "2026-11-03T18:24:04Z"
+      },
+      {
+        "id": "CH-20261103-03",
+        "latitude": 10.02866881926608,
+        "longitude": -44.833470875412026,
+        "cmd": -44.833470875412026,
+        "areaDisk": 0.001151481317436215,
+        "areaFraction": 0.001151481317436215,
+        "areaPct": 0.11514813174362151,
+        "width": 7.24251490775589,
+        "quantitative": true,
+        "time": "2026-11-03T18:24:04Z"
       }
     ],
     "usedAsModelInput": false,
     "reason": "Consistent as-issued CH forecast history is still accumulating; 27-day wind recurrence is a separate trained predictor.",
     "recurrencePublication": {
-      "generatedAt": "2026-11-03T12:03:06Z",
+      "generatedAt": "2026-11-03T19:37:18Z",
       "source": "NASA OMNI2 retrospective hourly",
       "coverage": {
         "ok": true,
         "state": "complete",
-        "generatedAt": "2026-11-03T12:03:06Z",
+        "generatedAt": "2026-11-03T19:37:18Z",
         "rows": 1800,
-        "validSpeedHours": 1572,
-        "firstValidHour": "2026-08-20T13:00:00Z",
+        "validSpeedHours": 1565,
+        "firstValidHour": "2026-08-20T20:00:00Z",
         "lastValidHour": "2026-10-26T01:00:00Z",
         "minimumDailyHours": 18,
         "forecastDays": [
@@ -3581,7 +3593,7 @@
   },
   "huxtGuidance": {
     "schemaVersion": "wxf-huxt-1",
-    "issuedAt": "2026-11-03T12:05:29.113893+00:00",
+    "issuedAt": "2026-11-03T19:38:36.505578+00:00",
     "status": "withheld",
     "reason": "HUXt inputs/run unavailable: HTTPSConnectionPool(host='kauai.ccmc.gsfc.nasa.gov', port=443): Max retries exceeded with url: /DONKI/WS/get/CMEAnalysis?startDate=2026-10-26&endDate=2026-11-03&mostAccurateOnly=true&catalog=M2M_CATAL",
     "boundary": null,

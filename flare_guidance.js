@@ -83,7 +83,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     },
     {
       "component_id": "HARP14146",
-      "m1": 2.790197786354453,
+      "m1": 2.7901977863544514,
       "x1": 0.184808217562207
     },
     {
@@ -193,12 +193,12 @@ window.FLARE_GUIDANCE_PAYLOAD = {
         },
         "ccmc_magpy": {
           "m1": 7.0,
-          "x1": 4.0,
+          "x1": 5.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC MagPy SHARP",
           "quality": "published-comparison",
-          "issued": "2026-11-04T01:03:33Z",
-          "valid_start": "2026-11-03T22:00:00Z",
-          "valid_end": "2026-11-04T22:00:00Z",
+          "issued": "2026-11-04T02:01:57Z",
+          "valid_start": "2026-11-03T23:00:00Z",
+          "valid_end": "2026-11-04T23:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "MagPy_SHARP_HMI_CEA_FULLDISK"
         },
@@ -377,7 +377,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20261103&region=&indexnum=1",
-    "retrieved_at": "2026-11-04T01:26:00Z",
+    "retrieved_at": "2026-11-04T02:22:36Z",
     "table_date": "2026-11-03",
     "valid_start": "2026-11-03T00:00:00Z",
     "valid_end": "2026-11-04T00:00:00Z",
@@ -389,7 +389,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-11-04T01:26:00Z",
+    "generated_at": "2026-11-04T02:22:36Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
@@ -683,7 +683,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 101,
+      "records": 102,
       "issued": "2026-11-04T00:00:00Z",
       "valid_start": "2026-11-04T00:00:00Z",
       "valid_end": "2026-11-05T00:00:00Z",
@@ -760,7 +760,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 101,
+      "records": 102,
       "issued": "2026-11-04T00:00:00Z",
       "valid_start": "2026-11-04T00:00:00Z",
       "valid_end": "2026-11-04T12:00:00Z",
@@ -1043,26 +1043,26 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 95,
-      "issued": "2026-11-04T01:03:33Z",
-      "valid_start": "2026-11-03T22:00:00Z",
-      "valid_end": "2026-11-04T22:00:00Z",
+      "records": 96,
+      "issued": "2026-11-04T02:01:57Z",
+      "valid_start": "2026-11-03T23:00:00Z",
+      "valid_end": "2026-11-04T23:00:00Z",
       "m1": 7.0,
-      "x1": 4.0,
+      "x1": 5.0,
       "selected_record": {
-        "start_window": "2026-11-03T22:00:00.0Z",
-        "end_window": "2026-11-04T22:00:00.0Z",
-        "issue_time": "2026-11-04T01:03:33.0Z",
+        "start_window": "2026-11-03T23:00:00.0Z",
+        "end_window": "2026-11-04T23:00:00.0Z",
+        "issue_time": "2026-11-04T02:01:57.0Z",
         "C": "-1",
         "M": "-1",
         "CPlus": "-1",
         "MPlus": 0.07,
-        "X": 0.04,
+        "X": 0.05,
         "C_uncertainty": "-1",
         "M_uncertainty": "-1",
         "CPlus_uncertainty": "-1",
         "MPlus_uncertainty": 0.01,
-        "X_uncertainty": 0.013,
+        "X_uncertainty": 0.015,
         "C_value_lower": "-1",
         "M_value_lower": "-1",
         "CPlus_value_lower": "-1",
@@ -1172,7 +1172,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "flarecast": {
       "ok": false,
       "url": "https://api.flarecast.eu/api/prediction/flarecast_latest.xml",
-      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x73f57a3db390>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
+      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x7acfceabb390>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
     },
     "swpc": {
       "ok": true,

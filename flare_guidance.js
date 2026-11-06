@@ -147,9 +147,9 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "x1": 0.0,
           "source": "SIDC 24-hour Global Flare Forecast",
           "quality": "published-comparison",
-          "issued": "2026-11-05T12:59:55Z",
-          "valid_start": "2026-11-05T12:59:55Z",
-          "valid_end": "2026-11-06T12:59:55Z",
+          "issued": "2026-11-06T11:27:12Z",
+          "valid_start": "2026-11-06T11:27:12Z",
+          "valid_end": "2026-11-07T11:27:12Z",
           "note": "Human-operator-moderated global forecast published by SIDC."
         },
         "ccmc_amos": {
@@ -206,6 +206,17 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "valid_end": "2026-11-07T00:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "MagPy_SHARP_HMI_CEA_FULLDISK"
+        },
+        "ccmc_sps": {
+          "m1": null,
+          "x1": 1.0,
+          "source": "NASA/CCMC Flare Scoreboard · CCMC SPS",
+          "quality": "published-comparison",
+          "issued": "2026-11-05T17:00:00Z",
+          "valid_start": "2026-11-05T17:00:00Z",
+          "valid_end": "2026-11-06T17:00:00Z",
+          "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
+          "dataset_id": "SPS_FULLDISK"
         }
       }
     },
@@ -412,7 +423,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20261105&region=&indexnum=1",
-    "retrieved_at": "2026-11-06T06:50:29Z",
+    "retrieved_at": "2026-11-06T19:26:45Z",
     "table_date": "2026-11-05",
     "valid_start": "2026-11-05T00:00:00Z",
     "valid_end": "2026-11-06T00:00:00Z",
@@ -424,12 +435,12 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-11-06T06:50:29Z",
+    "generated_at": "2026-11-06T19:26:46Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
       "url": "https://www.sidc.be/WMO/FlareForecast.php",
-      "issued": "2026-11-05T12:59:55Z",
+      "issued": "2026-11-06T11:27:12Z",
       "m1": 0.0,
       "x1": 0.0
     },
@@ -441,7 +452,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "ccmc_sidc": {
       "dataset_id": "SIDC_Operator_FULLDISK",
       "label": "SIDC Operator",
-      "ok": false,
+      "ok": true,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=SIDC_Operator_FULLDISK",
       "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=SIDC_Operator_FULLDISK&time.min=2026-11-01T21%3A00%3A00.0&time.max=2026-11-06T21%3A00%3A00.0&format=json&options=fields.all",
@@ -478,8 +489,42 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 3,
-      "detail": "Forecast window does not meaningfully overlap target (2026-11-04T12:30:00Z to 2026-11-05T12:30:00Z)"
+      "records": 4,
+      "issued": "2026-11-06T12:30:15Z",
+      "valid_start": "2026-11-06T12:30:00Z",
+      "valid_end": "2026-11-07T12:30:00Z",
+      "m1": 40.0,
+      "x1": 5.0,
+      "selected_record": {
+        "start_window": "2026-11-06T12:30:00.0Z",
+        "end_window": "2026-11-07T12:30:00.0Z",
+        "issue_time": "2026-11-06T12:30:15.0Z",
+        "C": "-1",
+        "M": "-1",
+        "CPlus": 0.95,
+        "MPlus": 0.4,
+        "X": 0.05,
+        "C_uncertainty": "-1",
+        "M_uncertainty": "-1",
+        "CPlus_uncertainty": "-1",
+        "MPlus_uncertainty": "-1",
+        "X_uncertainty": "-1",
+        "C_value_lower": "-1",
+        "M_value_lower": "-1",
+        "CPlus_value_lower": "-1",
+        "MPlus_value_lower": "-1",
+        "X_value_lower": "-1",
+        "C_value_higher": "-1",
+        "M_value_higher": "-1",
+        "CPlus_value_higher": "-1",
+        "MPlus_value_higher": "-1",
+        "X_value_higher": "-1",
+        "C_level": "-1",
+        "M_level": "-1",
+        "CPlus_level": 0.95,
+        "MPlus_level": 0.4,
+        "X_level": 0.05
+      }
     },
     "ccmc_metoffice": {
       "dataset_id": "MO_TOT1_FULLDISK",
@@ -684,7 +729,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 106,
+      "records": 119,
       "issued": "2026-11-06T00:00:00Z",
       "valid_start": "2026-11-06T00:00:00Z",
       "valid_end": "2026-11-07T00:00:00Z",
@@ -761,7 +806,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 106,
+      "records": 119,
       "issued": "2026-11-06T00:00:00Z",
       "valid_start": "2026-11-06T00:00:00Z",
       "valid_end": "2026-11-06T12:00:00Z",
@@ -967,7 +1012,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 82,
+      "records": 95,
       "issued": "2026-11-06T03:16:13Z",
       "valid_start": "2026-11-06T00:00:00Z",
       "valid_end": "2026-11-07T00:00:00Z",
@@ -1044,7 +1089,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 88,
+      "records": 101,
       "issued": "2026-11-06T03:02:28Z",
       "valid_start": "2026-11-06T00:00:00Z",
       "valid_end": "2026-11-07T00:00:00Z",
@@ -1084,7 +1129,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "ccmc_ccmc_sps": {
       "dataset_id": "SPS_FULLDISK",
       "label": "CCMC SPS",
-      "ok": false,
+      "ok": true,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=SPS_FULLDISK",
       "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=SPS_FULLDISK&time.min=2026-11-01T21%3A00%3A00.0&time.max=2026-11-06T21%3A00%3A00.0&format=json&options=fields.all",
@@ -1121,8 +1166,42 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 2,
-      "detail": "Latest usable issue is stale (2026-11-03T17:00:00Z)"
+      "records": 5,
+      "issued": "2026-11-05T17:00:00Z",
+      "valid_start": "2026-11-05T17:00:00Z",
+      "valid_end": "2026-11-06T17:00:00Z",
+      "m1": null,
+      "x1": 1.0,
+      "selected_record": {
+        "start_window": "2026-11-05T17:00:00.0Z",
+        "end_window": "2026-11-06T17:00:00.0Z",
+        "issue_time": "2026-11-05T17:00:00.0Z",
+        "C": 0.55,
+        "M": 0.15,
+        "CPlus": "-1",
+        "MPlus": "-1",
+        "X": 0.01,
+        "C_uncertainty": "-1",
+        "M_uncertainty": "-1",
+        "CPlus_uncertainty": "-1",
+        "MPlus_uncertainty": "-1",
+        "X_uncertainty": "-1",
+        "C_value_lower": "-1",
+        "M_value_lower": "-1",
+        "CPlus_value_lower": "-1",
+        "MPlus_value_lower": "-1",
+        "X_value_lower": "-1",
+        "C_value_higher": "-1",
+        "M_value_higher": "-1",
+        "CPlus_value_higher": "-1",
+        "MPlus_value_higher": "-1",
+        "X_value_higher": "-1",
+        "C_level": "-1",
+        "M_level": "-1",
+        "CPlus_level": "-1",
+        "MPlus_level": "-1",
+        "X_level": "-1"
+      }
     },
     "ccmc_ccmc_daffs": {
       "ok": false,
@@ -1139,7 +1218,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "flarecast": {
       "ok": false,
       "url": "https://api.flarecast.eu/api/prediction/flarecast_latest.xml",
-      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x72738731f390>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
+      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x7e1d5288b4d0>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
     },
     "swpc": {
       "ok": true,

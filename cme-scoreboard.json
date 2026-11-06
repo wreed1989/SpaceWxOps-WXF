@@ -890,7 +890,7 @@
     }
   ],
   "source": "https://ccmc.gsfc.nasa.gov/CMESB-Earth/WS/get/predictions?CMEtimeStart=2026-10-07&CMEtimeEnd=2026-11-07&closeOutCMEsOnly=false&skipNoArrivalObservedCMEs=false",
-  "retrievedAt": "2026-11-06T00:12:25.792354+00:00",
+  "retrievedAt": "2026-11-06T06:36:13.447855+00:00",
   "windowStart": "2026-10-07",
   "windowEnd": "2026-11-07"
 }

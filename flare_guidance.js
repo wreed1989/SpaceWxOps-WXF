@@ -73,7 +73,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "wxf_region_components": [
     {
       "component_id": "AR14567-fallback",
-      "m1": 3.0,
+      "m1": 1.0,
       "x1": 0.0
     },
     {
@@ -98,7 +98,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     },
     {
       "component_id": "HARP14160",
-      "m1": 32.574166906152854,
+      "m1": 32.5741669061529,
       "x1": 1.2326854267071328
     },
     {
@@ -124,7 +124,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "members": {
         "sharpmag": {
-          "m1": 37.4,
+          "m1": 36.1,
           "x1": 1.5,
           "source": "WXF sharp-mag-20260903-xstruct-history-v3 regional combination",
           "quality": "research",
@@ -196,13 +196,13 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "dataset_id": "ASSA_1_FULLDISK"
         },
         "ccmc_magpy_los": {
-          "m1": 45.0,
+          "m1": 47.0,
           "x1": 10.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC MagPy HMI LOS",
           "quality": "published-comparison",
-          "issued": "2026-11-07T00:14:27Z",
-          "valid_start": "2026-11-06T21:00:00Z",
-          "valid_end": "2026-11-07T21:00:00Z",
+          "issued": "2026-11-07T03:17:39Z",
+          "valid_start": "2026-11-07T00:00:00Z",
+          "valid_end": "2026-11-08T00:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "MagPy-HMI-LOS_FULLDISK"
         },
@@ -211,9 +211,9 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "x1": 9.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC MagPy SHARP",
           "quality": "published-comparison",
-          "issued": "2026-11-07T02:03:29Z",
-          "valid_start": "2026-11-06T23:00:00Z",
-          "valid_end": "2026-11-07T23:00:00Z",
+          "issued": "2026-11-07T03:03:26Z",
+          "valid_start": "2026-11-07T00:00:00Z",
+          "valid_end": "2026-11-08T00:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "MagPy_SHARP_HMI_CEA_FULLDISK"
         },
@@ -233,7 +233,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14564",
       "label": "AR 14564",
-      "location": "N01W40",
+      "location": "N01W55",
       "mcintosh": "",
       "quality": {
         "level": "research",
@@ -249,8 +249,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "component_id": "HARP14146"
         },
         "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
+          "m1": 0.0,
+          "x1": 0.0,
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
@@ -278,7 +278,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14565",
       "label": "AR 14565",
-      "location": "N13W18",
+      "location": "N13W31",
       "mcintosh": "CSO",
       "quality": {
         "level": "research",
@@ -323,8 +323,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14566",
       "label": "AR 14566",
-      "location": "S06E19",
-      "mcintosh": "DAC",
+      "location": "S06E06",
+      "mcintosh": "DKC",
       "quality": {
         "level": "research",
         "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=21.5°"
@@ -368,15 +368,15 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14567",
       "label": "AR 14567",
-      "location": "N18W70",
-      "mcintosh": "CSO",
+      "location": "N18W83",
+      "mcintosh": "AXX",
       "quality": {
         "level": "fallback",
         "message": "Numbered region is represented, but no accepted live SHARP vector was available; this is not a SHARP magnetic inference."
       },
       "members": {
         "sharpmag": {
-          "m1": 3.0,
+          "m1": 1.0,
           "x1": 0.0,
           "source": "Bloomfield et al. (2012) McIntosh-Poisson coverage fallback",
           "quality": "research-coverage-fallback",
@@ -404,15 +404,15 @@ window.FLARE_GUIDANCE_PAYLOAD = {
         }
       },
       "drivers": [
-        "McIntosh CSO",
+        "McIntosh AXX",
         "No accepted live single-region SHARP vector"
       ]
     },
     {
       "id": "AR14568",
       "label": "AR 14568",
-      "location": "S08E40",
-      "mcintosh": "HRX",
+      "location": "S09E25",
+      "mcintosh": "AXX",
       "quality": {
         "level": "research",
         "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=43.7°"
@@ -450,7 +450,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14569",
       "label": "AR 14569",
-      "location": "S06E07",
+      "location": "S06W07",
       "mcintosh": "AXX",
       "quality": {
         "level": "fallback",
@@ -481,8 +481,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14570",
       "label": "AR 14570",
-      "location": "S13E59",
-      "mcintosh": "AXX",
+      "location": "S13E47",
+      "mcintosh": "BXO",
       "quality": {
         "level": "fallback",
         "message": "Numbered region is represented, but no accepted live SHARP vector was available; this is not a SHARP magnetic inference."
@@ -505,7 +505,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
         }
       },
       "drivers": [
-        "McIntosh AXX",
+        "McIntosh BXO",
         "No accepted live single-region SHARP vector"
       ]
     }
@@ -513,7 +513,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20261106&region=&indexnum=1",
-    "retrieved_at": "2026-11-07T02:55:40Z",
+    "retrieved_at": "2026-11-07T06:00:24Z",
     "table_date": "2026-11-06",
     "valid_start": "2026-11-06T00:00:00Z",
     "valid_end": "2026-11-07T00:00:00Z",
@@ -525,7 +525,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-11-07T02:55:40Z",
+    "generated_at": "2026-11-07T06:00:24Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
@@ -819,7 +819,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 102,
+      "records": 105,
       "issued": "2026-11-07T00:00:00Z",
       "valid_start": "2026-11-07T00:00:00Z",
       "valid_end": "2026-11-08T00:00:00Z",
@@ -896,7 +896,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 102,
+      "records": 105,
       "issued": "2026-11-07T00:00:00Z",
       "valid_start": "2026-11-07T00:00:00Z",
       "valid_end": "2026-11-07T12:00:00Z",
@@ -1102,26 +1102,26 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 81,
-      "issued": "2026-11-07T00:14:27Z",
-      "valid_start": "2026-11-06T21:00:00Z",
-      "valid_end": "2026-11-07T21:00:00Z",
-      "m1": 45.0,
+      "records": 84,
+      "issued": "2026-11-07T03:17:39Z",
+      "valid_start": "2026-11-07T00:00:00Z",
+      "valid_end": "2026-11-08T00:00:00Z",
+      "m1": 47.0,
       "x1": 10.0,
       "selected_record": {
-        "start_window": "2026-11-06T21:00:00.0Z",
-        "end_window": "2026-11-07T21:00:00.0Z",
-        "issue_time": "2026-11-07T00:14:27.0Z",
+        "start_window": "2026-11-07T00:00:00.0Z",
+        "end_window": "2026-11-08T00:00:00.0Z",
+        "issue_time": "2026-11-07T03:17:39.0Z",
         "C": "-1",
         "M": "-1",
         "CPlus": "-1",
-        "MPlus": 0.45,
+        "MPlus": 0.47,
         "X": 0.1,
         "C_uncertainty": "-1",
         "M_uncertainty": "-1",
         "CPlus_uncertainty": "-1",
-        "MPlus_uncertainty": 0.085,
-        "X_uncertainty": 0.143,
+        "MPlus_uncertainty": 0.087,
+        "X_uncertainty": 0.154,
         "C_value_lower": "-1",
         "M_value_lower": "-1",
         "CPlus_value_lower": "-1",
@@ -1179,16 +1179,16 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 87,
-      "issued": "2026-11-07T02:03:29Z",
-      "valid_start": "2026-11-06T23:00:00Z",
-      "valid_end": "2026-11-07T23:00:00Z",
+      "records": 90,
+      "issued": "2026-11-07T03:03:26Z",
+      "valid_start": "2026-11-07T00:00:00Z",
+      "valid_end": "2026-11-08T00:00:00Z",
       "m1": 18.0,
       "x1": 9.0,
       "selected_record": {
-        "start_window": "2026-11-06T23:00:00.0Z",
-        "end_window": "2026-11-07T23:00:00.0Z",
-        "issue_time": "2026-11-07T02:03:29.0Z",
+        "start_window": "2026-11-07T00:00:00.0Z",
+        "end_window": "2026-11-08T00:00:00.0Z",
+        "issue_time": "2026-11-07T03:03:26.0Z",
         "C": "-1",
         "M": "-1",
         "CPlus": "-1",
@@ -1197,8 +1197,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
         "C_uncertainty": "-1",
         "M_uncertainty": "-1",
         "CPlus_uncertainty": "-1",
-        "MPlus_uncertainty": 0.09,
-        "X_uncertainty": 0.06,
+        "MPlus_uncertainty": 0.01,
+        "X_uncertainty": 0.027,
         "C_value_lower": "-1",
         "M_value_lower": "-1",
         "CPlus_value_lower": "-1",
@@ -1308,7 +1308,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "flarecast": {
       "ok": false,
       "url": "https://api.flarecast.eu/api/prediction/flarecast_latest.xml",
-      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x78ba952bb390>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
+      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x75890f75f390>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
     },
     "swpc": {
       "ok": true,

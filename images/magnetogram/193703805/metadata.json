@@ -1,0 +1,18 @@
+{
+  "id": "193703805",
+  "date": "2026-11-07 00:27:26",
+  "name": "HMI Mag",
+  "scale": 0.5946819199308175,
+  "scaleCorrection": 1.0089427640070192,
+  "width": 4096,
+  "height": 4096,
+  "refPixelX": 2048.5,
+  "refPixelY": 2048.5,
+  "offsetX": 0,
+  "offsetY": 0,
+  "rotation": 0,
+  "rsun": 1613.7097292475958,
+  "dsun": 148271910000,
+  "sunCenterOffsetParams": [],
+  "layeringOrder": 1
+}

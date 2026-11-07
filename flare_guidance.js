@@ -157,9 +157,9 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "x1": 0.0,
           "source": "SIDC 24-hour Global Flare Forecast",
           "quality": "published-comparison",
-          "issued": "2026-11-06T11:27:12Z",
-          "valid_start": "2026-11-06T11:27:12Z",
-          "valid_end": "2026-11-07T11:27:12Z",
+          "issued": "2026-11-07T12:43:44Z",
+          "valid_start": "2026-11-07T12:43:44Z",
+          "valid_end": "2026-11-08T12:43:44Z",
           "note": "Human-operator-moderated global forecast published by SIDC."
         },
         "ccmc_amos": {
@@ -513,7 +513,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20261106&region=&indexnum=1",
-    "retrieved_at": "2026-11-07T06:00:24Z",
+    "retrieved_at": "2026-11-07T17:45:11Z",
     "table_date": "2026-11-06",
     "valid_start": "2026-11-06T00:00:00Z",
     "valid_end": "2026-11-07T00:00:00Z",
@@ -525,12 +525,12 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-11-07T06:00:24Z",
+    "generated_at": "2026-11-07T17:45:11Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
       "url": "https://www.sidc.be/WMO/FlareForecast.php",
-      "issued": "2026-11-06T11:27:12Z",
+      "issued": "2026-11-07T12:43:44Z",
       "m1": 0.0,
       "x1": 0.0
     },
@@ -819,7 +819,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 105,
+      "records": 117,
       "issued": "2026-11-07T00:00:00Z",
       "valid_start": "2026-11-07T00:00:00Z",
       "valid_end": "2026-11-08T00:00:00Z",
@@ -896,7 +896,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 105,
+      "records": 117,
       "issued": "2026-11-07T00:00:00Z",
       "valid_start": "2026-11-07T00:00:00Z",
       "valid_end": "2026-11-07T12:00:00Z",
@@ -1102,7 +1102,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 84,
+      "records": 96,
       "issued": "2026-11-07T03:17:39Z",
       "valid_start": "2026-11-07T00:00:00Z",
       "valid_end": "2026-11-08T00:00:00Z",
@@ -1179,7 +1179,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 90,
+      "records": 102,
       "issued": "2026-11-07T03:03:26Z",
       "valid_start": "2026-11-07T00:00:00Z",
       "valid_end": "2026-11-08T00:00:00Z",
@@ -1256,7 +1256,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 4,
+      "records": 5,
       "issued": "2026-11-06T17:00:00Z",
       "valid_start": "2026-11-06T17:00:00Z",
       "valid_end": "2026-11-07T17:00:00Z",
@@ -1308,7 +1308,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "flarecast": {
       "ok": false,
       "url": "https://api.flarecast.eu/api/prediction/flarecast_latest.xml",
-      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x75890f75f390>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
+      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x7eecc01574d0>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
     },
     "swpc": {
       "ok": true,

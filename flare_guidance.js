@@ -9,104 +9,97 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "valid_start": "2026-11-08T00:00:00Z",
   "valid_end": "2026-11-09T00:00:00Z",
   "quality": {
-    "level": "degraded",
-    "message": "WXF input refresh unavailable; prior published WXF probabilities retained."
+    "level": "research",
+    "message": "Daily WXF inference from a saved calibrated M1+ model and an independently calibrated magnetic/history X1+ model. Research/shadow guidance unless explicitly validated and marked operational."
   },
   "input": {
     "series": "hmi.sharp_cea_720s_nrt",
-    "target_time": "2026-11-06T18:00:00Z",
-    "latest_record": "2026-11-06T18:00:00Z",
-    "oldest_retained_record": "2026-11-06T18:00:00Z",
-    "raw_records": 1829,
-    "retained_regions": 4,
+    "target_time": "2026-11-07T18:00:00Z",
+    "latest_record": "2026-11-07T18:00:00Z",
+    "oldest_retained_record": "2026-11-07T18:00:00Z",
+    "raw_records": 1992,
+    "retained_regions": 6,
     "mapping": {
       "skipped_multi_region_harps": 0,
-      "skipped_unmapped_harps": 10,
-      "expanded_rows": 6
+      "skipped_unmapped_harps": 11,
+      "expanded_rows": 8
     },
     "quality": {
-      "input": 6,
+      "input": 8,
       "rejected_longitude": 2,
-      "after_longitude": 4,
+      "after_longitude": 6,
       "quality_missing": 0,
       "quality_top_values": {
-        "0x00010400": 4
+        "0x00010400": 6
       },
       "rejected_quality": 0,
-      "after_quality": 4,
+      "after_quality": 6,
       "rejected_harp_merge": 0,
-      "after_harp_merge": 4,
+      "after_harp_merge": 6,
       "rejected_observer_velocity": 0,
-      "after_observer_velocity": 4,
+      "after_observer_velocity": 6,
       "rejected_missing_mapping": 0,
-      "after_mapping": 4,
+      "after_mapping": 6,
       "min_finite_parameters": 12,
       "rejected_parameter_completeness": 0,
-      "after_parameter_completeness": 4,
-      "retained": 4
+      "after_parameter_completeness": 6,
+      "retained": 6
     },
     "flare_history": {
       "available": true,
       "source": "https://services.swpc.noaa.gov/json/edited_events.json",
-      "events": 12,
-      "m1_plus_events": 12,
+      "events": 17,
+      "m1_plus_events": 17,
       "x1_plus_events": 0
     },
     "swpc_full_disk": {
       "available": true,
       "source": "https://services.swpc.noaa.gov/text/3-day-solar-geomag-predictions.txt",
-      "issued": "2026-11-06T22:00:00+00:00",
-      "valid_date": "2026-11-07"
-    },
-    "attempted_target_time": "2026-11-07T18:00:00Z",
-    "fallback_from_previous_cycle": true
+      "issued": "2026-11-07T22:00:00+00:00",
+      "valid_date": "2026-11-08"
+    }
   },
   "wxf_full_disk": {
     "method": "union_of_unique_region_components",
     "formula": "1 - product(1 - regional probability)",
-    "components": 7,
+    "components": 6,
     "numbered_regions": 7,
-    "sharp_regions": 4,
-    "shared_harp_region_values": 0,
-    "fallback_regions": 3,
+    "sharp_regions": 6,
+    "shared_harp_region_values": 2,
+    "fallback_regions": 1,
     "unnumbered_or_farside_residual": false,
     "note": "Coverage aggregate, not a separately trained full-disk classifier. Shared HARP probabilities are included once. The product formula assumes independent components and is not a validated full-disk calibration."
   },
   "wxf_region_components": [
     {
       "component_id": "AR14567-fallback",
-      "m1": 1.0,
-      "x1": 0.0
-    },
-    {
-      "component_id": "AR14569-fallback",
-      "m1": 1.0,
-      "x1": 0.0
-    },
-    {
-      "component_id": "AR14570-fallback",
-      "m1": 1.0,
+      "m1": 2.0,
       "x1": 0.0
     },
     {
       "component_id": "HARP14146",
-      "m1": 0.5767927803812248,
-      "x1": 0.06166136991714299
+      "m1": 0.4255405368317442,
+      "x1": 0.06321804639143333
     },
     {
       "component_id": "HARP14155",
-      "m1": 1.5795478025784044,
-      "x1": 0.20450655054277136
+      "m1": 2.2092996842761554,
+      "x1": 0.19268783063954076
     },
     {
       "component_id": "HARP14160",
-      "m1": 32.5741669061529,
-      "x1": 1.2326854267071328
+      "m1": 61.48759572178869,
+      "x1": 0.5306831210800181
     },
     {
       "component_id": "HARP14165",
-      "m1": 0.23226361411201693,
-      "x1": 0.037603820756339626
+      "m1": 0.43531622802389075,
+      "x1": 0.04892694429332099
+    },
+    {
+      "component_id": "HARP14169",
+      "m1": 0.2192610451832148,
+      "x1": 0.03520153886364335
     }
   ],
   "regions": [
@@ -119,22 +112,28 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       },
       "drivers": [
         "7 numbered active regions represented",
-        "4 SHARP region values; 3 fallbacks",
+        "6 SHARP region values; 1 fallbacks",
         "Regional probabilities combined as 1 - product(1 - p_i)",
         "Shared HARPs counted once in the full-disk aggregate",
         "No unnumbered or farside residual term"
       ],
       "members": {
         "sharpmag": {
-          "m1": 36.1,
-          "x1": 1.5,
+          "m1": 63.5,
+          "x1": 0.9,
           "source": "WXF sharp-mag-20260903-xstruct-history-v3 regional combination",
-          "quality": "stale-fallback",
-          "method": "regional_union_with_explicit_fallbacks",
-          "issued": "2026-11-06T21:00:00Z",
-          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
-          "valid_start": "2026-11-07T00:00:00+00:00",
-          "valid_end": "2026-11-08T00:00:00+00:00"
+          "quality": "research",
+          "method": "regional_union_with_explicit_fallbacks"
+        },
+        "swpc": {
+          "m1": 60.0,
+          "x1": 20.0,
+          "source": "NOAA/SWPC 3-day whole-disk flare forecast",
+          "quality": "official-operational",
+          "method": "official_swpc",
+          "issued": "2026-11-07T22:00:00+00:00",
+          "valid_start": "2026-11-08T00:00:00+00:00",
+          "valid_end": "2026-11-09T00:00:00+00:00"
         },
         "mcstat": {
           "m1": 24.0,
@@ -157,6 +156,17 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "valid_start": "2026-11-07T12:43:44Z",
           "valid_end": "2026-11-08T12:43:44Z",
           "note": "Human-operator-moderated global forecast published by SIDC."
+        },
+        "ccmc_amos": {
+          "m1": null,
+          "x1": 10.09,
+          "source": "NASA/CCMC Flare Scoreboard · CCMC AMOS",
+          "quality": "published-comparison",
+          "issued": "2026-11-08T00:30:00Z",
+          "valid_start": "2026-11-08T00:00:00Z",
+          "valid_end": "2026-11-09T00:00:00Z",
+          "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
+          "dataset_id": "AMOS_v1_FULLDISK"
         },
         "ccmc_assa24": {
           "m1": null,
@@ -196,9 +206,9 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "x1": 17.0,
           "source": "NASA/CCMC Flare Scoreboard · CCMC MagPy SHARP",
           "quality": "published-comparison",
-          "issued": "2026-11-08T00:01:41Z",
-          "valid_start": "2026-11-07T21:00:00Z",
-          "valid_end": "2026-11-08T21:00:00Z",
+          "issued": "2026-11-08T01:02:20Z",
+          "valid_start": "2026-11-07T22:00:00Z",
+          "valid_end": "2026-11-08T22:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "MagPy_SHARP_HMI_CEA_FULLDISK"
         },
@@ -212,16 +222,6 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "valid_end": "2026-11-08T17:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "SPS_FULLDISK"
-        },
-        "swpc": {
-          "m1": 60.0,
-          "x1": 20.0,
-          "source": "NOAA/SWPC 3-day whole-disk flare forecast",
-          "quality": "official-operational",
-          "method": "official_swpc",
-          "issued": "2026-11-07T22:00:00+00:00",
-          "valid_start": "2026-11-08T00:00:00+00:00",
-          "valid_end": "2026-11-09T00:00:00+00:00"
         }
       }
     },
@@ -232,50 +232,56 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "mcintosh": "",
       "quality": {
         "level": "research",
-        "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=32.0°"
+        "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=44.3°"
       },
       "members": {
         "sharpmag": {
-          "m1": 0.6,
+          "m1": 0.4,
           "x1": 0.1,
           "source": "WXF sharp-mag-20260903-xstruct-history-v3 (independently calibrated magnetic M1/X1)",
-          "quality": "stale-fallback",
+          "quality": "research",
           "method": "sharp_magnetic",
-          "component_id": "HARP14146",
-          "issued": "2026-11-06T21:00:00Z",
-          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
-          "valid_start": "2026-11-07T00:00:00+00:00",
-          "valid_end": "2026-11-08T00:00:00+00:00"
+          "component_id": "HARP14146"
+        },
+        "swpc": {
+          "m1": 0.0,
+          "x1": 0.0,
+          "source": "NOAA/SWPC numbered-region flare forecast",
+          "quality": "official-operational",
+          "method": "official_swpc"
         }
       },
       "drivers": [
-        "M1+: lower strong-gradient PIL flux",
-        "M1+: rising total unsigned flux",
-        "X1+ direct: elevated active magnetic area",
-        "X1+ direct: lower strong-gradient PIL flux"
+        "M1+: elevated mean free-energy density",
+        "M1+: farther from disk center",
+        "X1+ direct: lower absolute net current helicity",
+        "X1+ direct: lower mean magnetic shear"
       ]
     },
     {
       "id": "AR14565",
       "label": "AR 14565",
       "location": "N13W31",
-      "mcintosh": "CSO",
+      "mcintosh": "HSX",
       "quality": {
         "level": "research",
-        "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=13.3°"
+        "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=26.2°"
       },
       "members": {
         "sharpmag": {
-          "m1": 1.6,
+          "m1": 2.2,
           "x1": 0.2,
           "source": "WXF sharp-mag-20260903-xstruct-history-v3 (independently calibrated magnetic M1/X1)",
-          "quality": "stale-fallback",
+          "quality": "research",
           "method": "sharp_magnetic",
-          "component_id": "HARP14155",
-          "issued": "2026-11-06T21:00:00Z",
-          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
-          "valid_start": "2026-11-07T00:00:00+00:00",
-          "valid_end": "2026-11-08T00:00:00+00:00"
+          "component_id": "HARP14155"
+        },
+        "swpc": {
+          "m1": 1.0,
+          "x1": 1.0,
+          "source": "NOAA/SWPC numbered-region flare forecast",
+          "quality": "official-operational",
+          "method": "official_swpc"
         },
         "mcstat": {
           "m1": 3.0,
@@ -288,17 +294,11 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "x1": 0.0,
           "source": "SolarMonitor MCEVOL regional forecast",
           "quality": "published-comparison"
-        },
-        "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
-          "source": "SWPC regional forecast as displayed by SolarMonitor",
-          "quality": "published-comparison"
         }
       },
       "drivers": [
-        "M1+: elevated mean magnetic shear",
-        "M1+: lower mean free-energy density",
+        "M1+: rising total unsigned flux",
+        "M1+: falling mean magnetic shear",
         "X1+ direct: elevated absolute net current helicity",
         "X1+ direct: elevated mean magnetic shear"
       ]
@@ -310,37 +310,34 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "mcintosh": "DKC",
       "quality": {
         "level": "research",
-        "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=21.5°"
+        "message": "SHARP NRT record age 3.0 h; shared 2-region HARP; |LON_FWT|=8.7°"
       },
       "members": {
         "sharpmag": {
-          "m1": 32.6,
-          "x1": 1.2,
+          "m1": 61.5,
+          "x1": 0.5,
           "source": "WXF sharp-mag-20260903-xstruct-history-v3 (independently calibrated magnetic M1/X1)",
-          "quality": "stale-fallback",
+          "quality": "research-shared-harp",
           "method": "sharp_magnetic",
-          "component_id": "HARP14160",
-          "issued": "2026-11-06T21:00:00Z",
-          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
-          "valid_start": "2026-11-07T00:00:00+00:00",
-          "valid_end": "2026-11-08T00:00:00+00:00"
+          "component_id": "HARP14160"
+        },
+        "swpc": {
+          "m1": 60.0,
+          "x1": 20.0,
+          "source": "NOAA/SWPC numbered-region flare forecast",
+          "quality": "official-operational",
+          "method": "official_swpc"
         },
         "mcstat": {
           "m1": 24.0,
           "x1": 2.0,
           "source": "SolarMonitor MCSTAT regional forecast",
           "quality": "published-comparison"
-        },
-        "swpc": {
-          "m1": 35.0,
-          "x1": 10.0,
-          "source": "SWPC regional forecast as displayed by SolarMonitor",
-          "quality": "published-comparison"
         }
       },
       "drivers": [
         "M1+: elevated active magnetic area",
-        "M1+: elevated strong-gradient PIL flux",
+        "M1+: elevated time since the last M1+ flare",
         "X1+ direct: elevated active magnetic area",
         "X1+ direct: elevated absolute net current helicity"
       ]
@@ -349,23 +346,26 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "id": "AR14567",
       "label": "AR 14567",
       "location": "N18W83",
-      "mcintosh": "AXX",
+      "mcintosh": "HRX",
       "quality": {
         "level": "fallback",
         "message": "Numbered region is represented, but no accepted live SHARP vector was available; this is not a SHARP magnetic inference."
       },
       "members": {
         "sharpmag": {
-          "m1": 1.0,
+          "m1": 2.0,
           "x1": 0.0,
           "source": "Bloomfield et al. (2012) McIntosh-Poisson coverage fallback",
-          "quality": "stale-fallback",
+          "quality": "research-coverage-fallback",
           "method": "morphology_fallback",
-          "component_id": "AR14567-fallback",
-          "issued": "2026-11-06T21:00:00Z",
-          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
-          "valid_start": "2026-11-07T00:00:00+00:00",
-          "valid_end": "2026-11-08T00:00:00+00:00"
+          "component_id": "AR14567-fallback"
+        },
+        "swpc": {
+          "m1": 1.0,
+          "x1": 1.0,
+          "source": "NOAA/SWPC numbered-region flare forecast",
+          "quality": "official-operational",
+          "method": "official_swpc"
         },
         "mcstat": {
           "m1": 3.0,
@@ -378,16 +378,10 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "x1": 0.0,
           "source": "SolarMonitor MCEVOL regional forecast",
           "quality": "published-comparison"
-        },
-        "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
-          "source": "SWPC regional forecast as displayed by SolarMonitor",
-          "quality": "published-comparison"
         }
       },
       "drivers": [
-        "McIntosh AXX",
+        "McIntosh HRX",
         "No accepted live single-region SHARP vector"
       ]
     },
@@ -398,39 +392,36 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "mcintosh": "AXX",
       "quality": {
         "level": "research",
-        "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=43.7°"
+        "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=31.0°"
       },
       "members": {
         "sharpmag": {
-          "m1": 0.2,
+          "m1": 0.4,
           "x1": 0.0,
           "source": "WXF sharp-mag-20260903-xstruct-history-v3 (independently calibrated magnetic M1/X1)",
-          "quality": "stale-fallback",
+          "quality": "research",
           "method": "sharp_magnetic",
-          "component_id": "HARP14165",
-          "issued": "2026-11-06T21:00:00Z",
-          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
-          "valid_start": "2026-11-07T00:00:00+00:00",
-          "valid_end": "2026-11-08T00:00:00+00:00"
+          "component_id": "HARP14165"
+        },
+        "swpc": {
+          "m1": 1.0,
+          "x1": 1.0,
+          "source": "NOAA/SWPC numbered-region flare forecast",
+          "quality": "official-operational",
+          "method": "official_swpc"
         },
         "mcstat": {
           "m1": 1.0,
           "x1": 0.0,
           "source": "SolarMonitor MCSTAT regional forecast",
           "quality": "published-comparison"
-        },
-        "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
-          "source": "SWPC regional forecast as displayed by SolarMonitor",
-          "quality": "published-comparison"
         }
       },
       "drivers": [
-        "M1+: lower strong-gradient PIL flux",
-        "M1+: farther from disk center",
-        "X1+ direct: lower strong-gradient PIL flux",
-        "X1+ direct: lower active magnetic area"
+        "M1+: falling total unsigned flux",
+        "M1+: elevated mean free-energy density",
+        "X1+ direct: lower absolute net current helicity",
+        "X1+ direct: falling absolute net current helicity"
       ]
     },
     {
@@ -439,94 +430,83 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "location": "S06W07",
       "mcintosh": "AXX",
       "quality": {
-        "level": "fallback",
-        "message": "Numbered region is represented, but no accepted live SHARP vector was available; this is not a SHARP magnetic inference."
+        "level": "research",
+        "message": "SHARP NRT record age 3.0 h; shared 2-region HARP; |LON_FWT|=8.7°"
       },
       "members": {
         "sharpmag": {
+          "m1": 14.6,
+          "x1": 0.6,
+          "source": "WXF sharp-mag-20260903-xstruct-history-v3 (independently calibrated magnetic M1/X1)",
+          "quality": "research-shared-harp",
+          "method": "sharp_magnetic",
+          "component_id": "HARP14160"
+        },
+        "swpc": {
           "m1": 1.0,
-          "x1": 0.0,
-          "source": "Bloomfield et al. (2012) McIntosh-Poisson coverage fallback",
-          "quality": "stale-fallback",
-          "method": "morphology_fallback",
-          "component_id": "AR14569-fallback",
-          "issued": "2026-11-06T21:00:00Z",
-          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
-          "valid_start": "2026-11-07T00:00:00+00:00",
-          "valid_end": "2026-11-08T00:00:00+00:00"
+          "x1": 1.0,
+          "source": "NOAA/SWPC numbered-region flare forecast",
+          "quality": "official-operational",
+          "method": "official_swpc"
         },
         "mcstat": {
           "m1": 1.0,
           "x1": 0.0,
           "source": "SolarMonitor MCSTAT regional forecast",
           "quality": "published-comparison"
-        },
-        "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
-          "source": "SWPC regional forecast as displayed by SolarMonitor",
-          "quality": "published-comparison"
         }
       },
       "drivers": [
-        "McIntosh AXX",
-        "No accepted live single-region SHARP vector"
+        "M1+: elevated active magnetic area",
+        "M1+: lower mean free-energy density",
+        "X1+ direct: elevated active magnetic area",
+        "X1+ direct: elevated absolute net current helicity"
       ]
     },
     {
       "id": "AR14570",
       "label": "AR 14570",
       "location": "S13E47",
-      "mcintosh": "BXO",
+      "mcintosh": "AXX",
       "quality": {
-        "level": "fallback",
-        "message": "Numbered region is represented, but no accepted live SHARP vector was available; this is not a SHARP magnetic inference."
+        "level": "research",
+        "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=49.2°"
       },
       "members": {
         "sharpmag": {
-          "m1": 1.0,
+          "m1": 0.2,
           "x1": 0.0,
-          "source": "Bloomfield et al. (2012) McIntosh-Poisson coverage fallback",
-          "quality": "stale-fallback",
-          "method": "morphology_fallback",
-          "component_id": "AR14570-fallback",
-          "issued": "2026-11-06T21:00:00Z",
-          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
-          "valid_start": "2026-11-07T00:00:00+00:00",
-          "valid_end": "2026-11-08T00:00:00+00:00"
+          "source": "WXF sharp-mag-20260903-xstruct-history-v3 (independently calibrated magnetic M1/X1)",
+          "quality": "research",
+          "method": "sharp_magnetic",
+          "component_id": "HARP14169"
+        },
+        "swpc": {
+          "m1": 1.0,
+          "x1": 1.0,
+          "source": "NOAA/SWPC numbered-region flare forecast",
+          "quality": "official-operational",
+          "method": "official_swpc"
         },
         "mcstat": {
           "m1": 1.0,
           "x1": 0.0,
           "source": "SolarMonitor MCSTAT regional forecast",
           "quality": "published-comparison"
-        },
-        "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
-          "source": "SWPC regional forecast as displayed by SolarMonitor",
-          "quality": "published-comparison"
         }
       },
       "drivers": [
-        "McIntosh BXO",
-        "No accepted live single-region SHARP vector"
+        "M1+: lower strong-gradient PIL flux",
+        "M1+: rising total unsigned flux",
+        "X1+ direct: lower strong-gradient PIL flux",
+        "X1+ direct: rising active magnetic area"
       ]
     }
   ],
-  "generation_status": {
-    "ok": false,
-    "used_previous_forecast": true,
-    "previous_issued": "2026-11-06T21:00:00Z",
-    "attempts": 3,
-    "exit_code": 2,
-    "checked_at": "2026-11-08T00:44:12Z",
-    "detail": "JSOC/SHARP retrieval failed after three attempts. The prior WXF magnetic probability was retained transparently while all independent forecast sources were refreshed."
-  },
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20261107&region=&indexnum=1",
-    "retrieved_at": "2026-11-08T00:44:13Z",
+    "retrieved_at": "2026-11-08T01:28:26Z",
     "table_date": "2026-11-07",
     "valid_start": "2026-11-07T00:00:00Z",
     "valid_end": "2026-11-08T00:00:00Z",
@@ -538,7 +518,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-11-08T00:44:13Z",
+    "generated_at": "2026-11-08T01:28:26Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
@@ -641,7 +621,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "ccmc_ccmc_amos": {
       "dataset_id": "AMOS_v1_FULLDISK",
       "label": "CCMC AMOS",
-      "ok": false,
+      "ok": true,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=AMOS_v1_FULLDISK",
       "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=AMOS_v1_FULLDISK&time.min=2026-11-03T21%3A00%3A00.0&time.max=2026-11-08T21%3A00%3A00.0&format=json&options=fields.all",
@@ -678,8 +658,42 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 4,
-      "detail": "Forecast window does not meaningfully overlap target (2026-11-07T00:00:00Z to 2026-11-08T00:00:00Z)"
+      "records": 5,
+      "issued": "2026-11-08T00:30:00Z",
+      "valid_start": "2026-11-08T00:00:00Z",
+      "valid_end": "2026-11-09T00:00:00Z",
+      "m1": null,
+      "x1": 10.09,
+      "selected_record": {
+        "start_window": "2026-11-08T00:00:00.0Z",
+        "end_window": "2026-11-09T00:00:00.0Z",
+        "issue_time": "2026-11-08T00:30:00.0Z",
+        "C": 0.95,
+        "M": 0.4879,
+        "CPlus": "-1",
+        "MPlus": "-1",
+        "X": 0.1009,
+        "C_uncertainty": "-1",
+        "M_uncertainty": "-1",
+        "CPlus_uncertainty": "-1",
+        "MPlus_uncertainty": "-1",
+        "X_uncertainty": "-1",
+        "C_value_lower": "-1",
+        "M_value_lower": "-1",
+        "CPlus_value_lower": "-1",
+        "MPlus_value_lower": "-1",
+        "X_value_lower": "-1",
+        "C_value_higher": "-1",
+        "M_value_higher": "-1",
+        "CPlus_value_higher": "-1",
+        "MPlus_value_higher": "-1",
+        "X_value_higher": "-1",
+        "C_level": "-1",
+        "M_level": "-1",
+        "CPlus_level": "-1",
+        "MPlus_level": "-1",
+        "X_level": "-1"
+      }
     },
     "ccmc_ccmc_asap": {
       "dataset_id": "ASAP_1_FULLDISK",
@@ -764,7 +778,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 100,
+      "records": 101,
       "issued": "2026-11-08T00:00:00Z",
       "valid_start": "2026-11-08T00:00:00Z",
       "valid_end": "2026-11-09T00:00:00Z",
@@ -841,7 +855,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 100,
+      "records": 101,
       "issued": "2026-11-08T00:00:00Z",
       "valid_start": "2026-11-08T00:00:00Z",
       "valid_end": "2026-11-08T12:00:00Z",
@@ -1124,16 +1138,16 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 85,
-      "issued": "2026-11-08T00:01:41Z",
-      "valid_start": "2026-11-07T21:00:00Z",
-      "valid_end": "2026-11-08T21:00:00Z",
+      "records": 86,
+      "issued": "2026-11-08T01:02:20Z",
+      "valid_start": "2026-11-07T22:00:00Z",
+      "valid_end": "2026-11-08T22:00:00Z",
       "m1": 34.0,
       "x1": 17.0,
       "selected_record": {
-        "start_window": "2026-11-07T21:00:00.0Z",
-        "end_window": "2026-11-08T21:00:00.0Z",
-        "issue_time": "2026-11-08T00:01:41.0Z",
+        "start_window": "2026-11-07T22:00:00.0Z",
+        "end_window": "2026-11-08T22:00:00.0Z",
+        "issue_time": "2026-11-08T01:02:20.0Z",
         "C": "-1",
         "M": "-1",
         "CPlus": "-1",
@@ -1253,7 +1267,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "flarecast": {
       "ok": false,
       "url": "https://api.flarecast.eu/api/prediction/flarecast_latest.xml",
-      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x7e00036f7390>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
+      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x73240cf93390>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
     },
     "swpc": {
       "ok": true,

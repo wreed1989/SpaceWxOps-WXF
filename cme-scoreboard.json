@@ -449,67 +449,10 @@
           "predictionNote": "Auto-generated median of all methods forecast."
         }
       ]
-    },
-    {
-      "cmeID": "2026-10-10T16:15:00-CME-001",
-      "observedTime": "2026-10-10T16:15Z",
-      "noArrivalObserved": false,
-      "arrivalTime": "2026-10-13T00:21Z",
-      "maxKP": null,
-      "dstMin": null,
-      "dstMinTime": null,
-      "cmeNote": "CME observed to the NW in SOHO LASCO C2/C3 and GOES CCOR-1, with a full halo shock. Not yet observed in STEREO A COR2 white light imagery. The source is AR 14549, associated with an M6.4 flare peaking at 2026-10-10T15:10Z observed in SDO AIA 131. Also observed starting around 2026-10-10T15:04Z as field line movement and very large EUV wave, some dimming, and brightening/post eruptive arcade in SDO AIA 131/171/193/211/304.",
-      "predictions": [
-        {
-          "predictedMethodName": "SIDC",
-          "submissionTime": "2026-10-12T13:12Z",
-          "predictedArrivalTime": "2026-10-12T22:00Z",
-          "uncertaintyMinusInHrs": 12.0,
-          "uncertaintyPlusInHrs": 12.0,
-          "confidenceInPercentage": 20.0,
-          "predictedMaxKpLowerRange": 4.0,
-          "predictedMaxKpUpperRange": 6.0,
-          "predictedDstMin": null,
-          "predictedDstMinTime": null,
-          "differenceInHrs": "-2.35",
-          "leadTimeInHrs": "11.15",
-          "predictionNote": ":Issued: 2026 Oct 11 1231 UTC\n\n# DAILY BULLETIN ON SOLAR AND GEOMAGNETIC ACTIVITY from the SIDC     #\n# (RWC Belgium)                                                      #\n#--------------------------------------------------------------------#\nSIDC URSIGRAM 61011\nSIDC SOLAR BULLETIN 11 Oct 2026, 1230UT\nSIDC FORECAST\n\n\n...A wide north-westward coronal mass ejection (SIDC CME 729) with a white-light shock was first detected in the LASCO/C2 coronagraph imagery around 15:36 UTC on October 10. The CME is associated with the M6.4 flare (SIDC Flare 8708) with peak time at 15:10 UTC on October 10. Related type II and type IV radio emissions were detected starting around 15:12 UTC. Significant EUV dimming and a coronal wave were observed in the SDO/AIA imagery starting at 15:15 UTC. The CME has an estimated speed of 850-900 km/s and is expected to travel mostly off the Sun-Earth line. Nevertheless a glancing blow and a shock arrival remain possible late UTC on October 12."
-        },
-        {
-          "predictedMethodName": "Average of all Methods",
-          "submissionTime": "2026-10-12T18:45Z",
-          "predictedArrivalTime": "2026-10-12T22:00Z",
-          "uncertaintyMinusInHrs": null,
-          "uncertaintyPlusInHrs": null,
-          "confidenceInPercentage": 20.0,
-          "predictedMaxKpLowerRange": 4.0,
-          "predictedMaxKpUpperRange": 6.0,
-          "predictedDstMin": null,
-          "predictedDstMinTime": null,
-          "differenceInHrs": "-2.35",
-          "leadTimeInHrs": "5.60",
-          "predictionNote": "Auto-generated average of all methods forecast."
-        },
-        {
-          "predictedMethodName": "Median of all Methods",
-          "submissionTime": "2026-10-12T18:45Z",
-          "predictedArrivalTime": "2026-10-12T22:00Z",
-          "uncertaintyMinusInHrs": null,
-          "uncertaintyPlusInHrs": null,
-          "confidenceInPercentage": 20.0,
-          "predictedMaxKpLowerRange": 4.0,
-          "predictedMaxKpUpperRange": 6.0,
-          "predictedDstMin": null,
-          "predictedDstMinTime": null,
-          "differenceInHrs": "-2.35",
-          "leadTimeInHrs": "5.60",
-          "predictionNote": "Auto-generated median of all methods forecast."
-        }
-      ]
     }
   ],
-  "source": "https://ccmc.gsfc.nasa.gov/CMESB-Earth/WS/get/predictions?CMEtimeStart=2026-10-10&CMEtimeEnd=2026-11-10&closeOutCMEsOnly=false&skipNoArrivalObservedCMEs=false",
-  "retrievedAt": "2026-11-09T18:45:30.273583+00:00",
-  "windowStart": "2026-10-10",
-  "windowEnd": "2026-11-10"
+  "source": "https://ccmc.gsfc.nasa.gov/CMESB-Earth/WS/get/predictions?CMEtimeStart=2026-10-11&CMEtimeEnd=2026-11-11&closeOutCMEsOnly=false&skipNoArrivalObservedCMEs=false",
+  "retrievedAt": "2026-11-10T02:03:15.475344+00:00",
+  "windowStart": "2026-10-11",
+  "windowEnd": "2026-11-11"
 }

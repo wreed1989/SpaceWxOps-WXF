@@ -1,11 +1,11 @@
 {
   "schemaVersion": "ops-delivery-1",
-  "checkedAt": "2026-11-10T17:46:39.763133+00:00",
+  "checkedAt": "2026-11-10T23:16:25.332915+00:00",
   "products": {
     "scoreboard": {
       "status": "available",
       "events": 5,
-      "retrievedAt": "2026-11-10T17:46:40.235078+00:00",
+      "retrievedAt": "2026-11-10T23:16:25.807912+00:00",
       "attempts": []
     },
     "refm": {
@@ -15,10 +15,10 @@
     "huxtAnimation": {
       "path": "huxt-animation.mp4",
       "sourceURL": "https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_animation_latest.mp4",
-      "retrievedAt": "2026-11-10T17:46:41.485341+00:00",
-      "httpLastModified": "Tue, 10 Nov 2026 13:00:06 GMT",
-      "sha256": "5ecc77dd21d3fa41f4946535c34a90cecc98b234905619a201de6a3c0246d287",
-      "bytes": 1001177,
+      "retrievedAt": "2026-11-10T23:16:26.963162+00:00",
+      "httpLastModified": "Tue, 10 Nov 2026 19:00:06 GMT",
+      "sha256": "263be09f26fb2aaaed35e6414f707ef3656c872f510ea691d649af864a0510fb",
+      "bytes": 1005583,
       "kind": "video",
       "frames": null,
       "status": "available",
@@ -27,7 +27,7 @@
     "m2mAnimation": {
       "path": "m2m-animation.gif",
       "sourceURL": "https://iswa.ccmc.gsfc.nasa.gov/iswa_data_tree/model/heliosphere/wsa-enlil-cone/animation-cme-velocity/2026/11/20261102_035900_2.0_anim.tim-vel.gif",
-      "retrievedAt": "2026-11-10T17:46:41.525989+00:00",
+      "retrievedAt": "2026-11-10T23:16:27.019399+00:00",
       "httpLastModified": "Sun, 01 Nov 2026 21:42:54 GMT",
       "sha256": "379b792a16d176fdcc0375ef64a4d4dca9cf1c22ea0f6c3bf31268722ecd0967",
       "bytes": 2421504,
@@ -40,8 +40,8 @@
     },
     "electron-fluence.json": {
       "status": "experimental",
-      "issuedAt": "2026-11-10T17:46:39.145461+00:00",
-      "dataAsOf": "2026-11-10T17:00:00+00:00",
+      "issuedAt": "2026-11-10T23:16:24.736228+00:00",
+      "dataAsOf": "2026-11-10T23:00:00+00:00",
       "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732"
     }
   }

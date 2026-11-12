@@ -1,11 +1,11 @@
 {
   "schemaVersion": "ops-delivery-1",
-  "checkedAt": "2026-11-12T10:59:40.089004+00:00",
+  "checkedAt": "2026-11-12T18:54:36.288868+00:00",
   "products": {
     "scoreboard": {
       "status": "available",
       "events": 3,
-      "retrievedAt": "2026-11-12T10:59:40.147934+00:00",
+      "retrievedAt": "2026-11-12T18:54:36.348658+00:00",
       "attempts": []
     },
     "refm": {
@@ -15,7 +15,7 @@
     "m2mAnimation": {
       "path": "m2m-animation.gif",
       "sourceURL": "https://iswa.ccmc.gsfc.nasa.gov/iswa_data_tree/model/heliosphere/wsa-enlil-cone/animation-cme-velocity/2026/11/20261102_035900_2.0_anim.tim-vel.gif",
-      "retrievedAt": "2026-11-12T10:59:40.579565+00:00",
+      "retrievedAt": "2026-11-12T18:54:36.751156+00:00",
       "httpLastModified": "Sun, 01 Nov 2026 21:42:54 GMT",
       "sha256": "379b792a16d176fdcc0375ef64a4d4dca9cf1c22ea0f6c3bf31268722ecd0967",
       "bytes": 2421504,
@@ -29,10 +29,10 @@
     "huxtAnimation": {
       "path": "huxt-animation.mp4",
       "sourceURL": "https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_animation_latest.mp4",
-      "retrievedAt": "2026-11-12T10:59:40.856327+00:00",
-      "httpLastModified": "Thu, 12 Nov 2026 07:00:05 GMT",
-      "sha256": "247207c0eb38b8707092905db0635a041585c4a9278d9da89d6651205e1b7c66",
-      "bytes": 997105,
+      "retrievedAt": "2026-11-12T18:54:37.090641+00:00",
+      "httpLastModified": "Thu, 12 Nov 2026 13:00:05 GMT",
+      "sha256": "311de7a4c6ec26bc660b27ff9e58f55750c8e8baee3fe26b0756e12d23e2f60d",
+      "bytes": 972145,
       "kind": "video",
       "frames": null,
       "status": "available",
@@ -40,8 +40,8 @@
     },
     "electron-fluence.json": {
       "status": "experimental",
-      "issuedAt": "2026-11-12T10:59:39.380027+00:00",
-      "dataAsOf": "2026-11-12T10:00:00+00:00",
+      "issuedAt": "2026-11-12T18:54:35.570098+00:00",
+      "dataAsOf": "2026-11-12T18:00:00+00:00",
       "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732"
     }
   }

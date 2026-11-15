@@ -1,6 +1,78 @@
 {
   "rows": [
     {
+      "cmeID": "2026-11-14T22:15:00-CME-001",
+      "observedTime": "2026-11-14T22:15Z",
+      "noArrivalObserved": false,
+      "arrivalTime": null,
+      "maxKP": null,
+      "dstMin": null,
+      "dstMinTime": null,
+      "cmeNote": "Bright CME with a narrower brighter bulk and a wider fainter shock seen to the NE in CCOR-1. Its source is an elongated, fast developing filament eruption from close to the NE limb ~(N17E70) starting at 2026-11-14T21:17Z and seemingly deflecting northward. There is an associated relatively long duration C2.8 flare originating near AR 14579 (N17E72) and peaking at 2026-11-14T21:27Z, as well as a type II burst. The long erupting filament is best seen in GOES SUVI 304/284 imagery but also seen in SDO AIA 304/131/171, with an EUV wave seen clearly in AIA 193.",
+      "predictions": [
+        {
+          "predictedMethodName": "WSA-ENLIL + Cone (NASA M2M)",
+          "submissionTime": "2026-11-15T14:34Z",
+          "predictedArrivalTime": "2026-11-18T07:00Z",
+          "uncertaintyMinusInHrs": 7.0,
+          "uncertaintyPlusInHrs": 7.0,
+          "confidenceInPercentage": null,
+          "predictedMaxKpLowerRange": 2.0,
+          "predictedMaxKpUpperRange": 4.0,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "64.43",
+          "predictionNote": "NASA GSFC M2M ENLIL settings:\nENLIL version: 2.7\nResolution: low2 (256x30x90)\nAmbient settings: a4b1\nEjecta settings d4t1x1\nWSA version: 2.2\nGONG: mrzqs\ncormode: single\n\n\n## Community Coordinated Modeling Center Database Of Notifications, Knowledge, Information ( CCMC DONKI )\n## Message Type: Space Weather Notification - CME update (OSIRIS-APEX, Parker Solar Probe, Europa Clipper, Missions Near Earth)\n##\n## Message Issue Date: 2026-11-15T14:32:06Z\n## Message ID: 20261115-AL-002\n##\n## Disclaimer: NOAA's Space Weather Prediction Center is the United States Government official source for space weather forecasts. This \"Experimental Research Information\" consists of preliminary NASA research products and should be interpreted and used accordingly.\n\n\n## Summary:\n\nUpdate on CME with ID 2026-11-14T22:15:00-CME-001 (see previous notification 20261115-AL-001).  Based on preliminary analysis by the Moon to Mars Space Weather Analysis Office and heliospheric modeling carried out at NASA Community Coordinated Modeling Center, it is estimated that this CME may affect OSIRIS-APEX, Parker Solar Probe, and Europa Clipper (glancing blow).  The leading edge of the CME may reach OSIRIS-APEX at 2026-11-17T13:03Z and Parker Solar Probe at 2026-11-16T04:21Z, and the flank of the CME may reach Europa Clipper at 2026-11-17T23:00Z (plus minus 7 hours). \n\nThe simulation also indicates that the CME may have a glancing blow at NASA missions near Earth.  Simulations indicate that the flank of the CME will reach NASA missions near Earth at about 2026-11-18T07:00Z (plus minus 7 hours). The roughly estimated expected range of the maximum Kp index is 2-4 (below minor).\n   \n\nUpdated CME parameters are (C-type):\n\nStart time of the event: 2026-11-14T22:15Z.\n\nEstimated speed: ~715 km/s.\n\nEstimated opening half-angle: 39 deg.\n\nDirection (lon./lat.): -70/19 in Heliocentric Earth Equatorial coordinates.\n\nActivity ID: 2026-11-14T22:15:00-CME-001\n\n\nLinks to the movies of the modeled event (includes CME: 2026-11-14T22:15:00-CME-001):\n\nhttps://iswa.gsfc.nasa.gov/api/redirect?filename=20261115_024200_2.0_anim.tim-den.gif\nhttps://iswa.gsfc.nasa.gov/api/redirect?filename=20261115_024200_2.0_anim.tim-vel.gif\nhttps://iswa.gsfc.nasa.gov/api/redirect?filename=20261115_024200_2.0_ENLIL_CONE_timeline.gif\nhttps://iswa.gsfc.nasa.gov/api/redirect?filename=20261115_024200_2.0_ENLIL_CONE_PSP_timeline.gif\nhttps://iswa.gsfc.nasa.gov/api/redirect?filename=20261115_024200_2.0_ENLIL_CONE_Osiris_timeline.gif\nhttps://iswa.gsfc.nasa.gov/api/redirect?filename=20261115_024200_2.0_ENLIL_CONE_EuropaClippr_timeline.gif\n\n\n## Notes: \n\nThis CME event (2026-11-14T22:15:00-CME-001) is associated with C2.8 flare from Active Region 14579 (N17E70) with ID 2026-11-14T21:16:00-FLR-001 which peaked at 2026-11-14T21:27Z.\n\n\nSCORE CME typification system:\nS-type: CMEs with speeds less than 500 km/s\nC-type: Common 500-999 km/s\nO-type: Occasional 1000-1999 km/s\nR-type: Rare 2000-2999 km/s\nER-type: Extremely Rare >3000 km/s\n\n\nCommunity Coordinated Modeling Center Database Of Notifications, Knowledge, Information (CCMC DONKI) Disclaimer\n\nData and/or information stored within the CCMC DONKI is provided \"as is\" without any warranty of any kind, either expressed, implied, or statutory, including, but not limited to, any warranty that the data and/or information will conform to specifications, any implied warranties of merchantability, fitness for a particular purpose, or freedom from infringement, any warranty that the information will be error free, or any warranty that documentation, if provided, will conform to the data and/or information. In no event shall the United States Government, or its contractors or subcontractors, be liable for any damages, including, but not limited to, direct, indirect, special or consequential damages, arising out of, resulting from, or in any way connected with this information, whether or not based upon warranty, contract, tort, or otherwise, whether or not injury was sustained by persons or property or otherwise, and whether or not loss was sustained from, or arose out of the results of, or use of, the data and/or information. The United States Government disclaims all warranties and liabilities regarding third party data and/or information, if present in the data and/or information generated and/or compiled by CCMC DONKI, and distributes it \"as is\".\n\nUse of data and/or information stored within the CCMC DONKI does not, in any manner, constitute an endorsement by NASA of any test results, resulting designs, hardware, or other matters. Use of data and/or information stored within the CCMC DONKI does not, in any manner, constitute the grant of a license to RECIPIENT under any NASA copyright, patent, patent application or other intellectual property.\n\nThe terms of this disclaimer shall be construed, and the legal relations between the parties hereto shall be determined, in accordance with United States federal law.\n\nNOAA's Space Weather Prediction Center is the United States Government official source for space weather forecasts. This \"Experimental Research Information\" consists of preliminary NASA research products and should be interpreted and used accordingly."
+        },
+        {
+          "predictedMethodName": "SARM",
+          "submissionTime": "2026-11-15T14:53Z",
+          "predictedArrivalTime": "2026-11-17T10:37Z",
+          "uncertaintyMinusInHrs": null,
+          "uncertaintyPlusInHrs": null,
+          "confidenceInPercentage": null,
+          "predictedMaxKpLowerRange": 3.0,
+          "predictedMaxKpUpperRange": 5.0,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "43.73",
+          "predictionNote": "CME observed at 21.5 Rs: 2026-11-15 02:04\n\u2003- Time at C2: 2026-11-14 22:15\n\u2003- Radial speed: 804.0 km/s\n\u2003- Half angle: 45 deg\n\u2003- Eruption location: N26E39\n\u2003Inferences:\n\u2003\u2003 - No flare association was found\n\u2003Predictions for Earth:\n\u2003\u2003 - In-situ shock speed: 647.20 km/s\n\u2003\u2003 - Shock arrival time: 2026-11-17 10:37 (i.e. predicted transit time: 60.38 hours)"
+        },
+        {
+          "predictedMethodName": "Average of all Methods",
+          "submissionTime": "2026-11-15T14:55Z",
+          "predictedArrivalTime": "2026-11-17T20:48Z",
+          "uncertaintyMinusInHrs": null,
+          "uncertaintyPlusInHrs": null,
+          "confidenceInPercentage": null,
+          "predictedMaxKpLowerRange": 2.5,
+          "predictedMaxKpUpperRange": 4.5,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "53.88",
+          "predictionNote": "Auto-generated average of all methods forecast."
+        },
+        {
+          "predictedMethodName": "Median of all Methods",
+          "submissionTime": "2026-11-15T14:55Z",
+          "predictedArrivalTime": "2026-11-17T20:48Z",
+          "uncertaintyMinusInHrs": null,
+          "uncertaintyPlusInHrs": null,
+          "confidenceInPercentage": null,
+          "predictedMaxKpLowerRange": 2.5,
+          "predictedMaxKpUpperRange": 4.5,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "53.88",
+          "predictionNote": "Auto-generated median of all methods forecast."
+        }
+      ]
+    },
+    {
       "cmeID": "2026-11-01T19:00:00-CME-001",
       "observedTime": "2026-11-01T19:00Z",
       "noArrivalObserved": true,
@@ -218,7 +290,7 @@
     }
   ],
   "source": "https://ccmc.gsfc.nasa.gov/CMESB-Earth/WS/get/predictions?CMEtimeStart=2026-10-16&CMEtimeEnd=2026-11-16&closeOutCMEsOnly=false&skipNoArrivalObservedCMEs=false",
-  "retrievedAt": "2026-11-15T09:18:22.974926+00:00",
+  "retrievedAt": "2026-11-15T17:04:13.808128+00:00",
   "windowStart": "2026-10-16",
   "windowEnd": "2026-11-16"
 }

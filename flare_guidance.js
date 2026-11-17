@@ -62,29 +62,24 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "wxf_full_disk": {
     "method": "union_of_unique_region_components",
     "formula": "1 - product(1 - regional probability)",
-    "components": 8,
-    "numbered_regions": 9,
+    "components": 7,
+    "numbered_regions": 8,
     "sharp_regions": 6,
     "shared_harp_region_values": 2,
-    "fallback_regions": 3,
+    "fallback_regions": 2,
     "unnumbered_or_farside_residual": false,
     "note": "Coverage aggregate, not a separately trained full-disk classifier. Shared HARP probabilities are included once. The product formula assumes independent components and is not a validated full-disk calibration."
   },
   "wxf_region_components": [
     {
-      "component_id": "AR14570-fallback",
+      "component_id": "AR14576-fallback",
       "m1": 3.698416818063846,
       "x1": 0.24656112120425644
     },
     {
-      "component_id": "AR14576-fallback",
-      "m1": 7.000000000000001,
-      "x1": 0.0
-    },
-    {
       "component_id": "AR14578-fallback",
-      "m1": 4.0,
-      "x1": 0.0
+      "m1": 3.698416818063846,
+      "x1": 0.24656112120425644
     },
     {
       "component_id": "HARP14176",
@@ -121,16 +116,16 @@ window.FLARE_GUIDANCE_PAYLOAD = {
         "message": "Visible-disk WXF coverage aggregate. Accepted SHARP components and explicit morphology/climatology fallbacks are combined once per HARP/region."
       },
       "drivers": [
-        "9 numbered active regions represented",
-        "6 SHARP region values; 3 fallbacks",
+        "8 numbered active regions represented",
+        "6 SHARP region values; 2 fallbacks",
         "Regional probabilities combined as 1 - product(1 - p_i)",
         "Shared HARPs counted once in the full-disk aggregate",
         "No unnumbered or farside residual term"
       ],
       "members": {
         "sharpmag": {
-          "m1": 22.2,
-          "x1": 1.0,
+          "m1": 16.0,
+          "x1": 1.3,
           "source": "WXF sharp-mag-20260903-xstruct-history-v3 regional combination",
           "quality": "research",
           "method": "regional_union_with_explicit_fallbacks"
@@ -236,41 +231,10 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       }
     },
     {
-      "id": "AR14570",
-      "label": "AR 14570",
-      "location": "S09W90",
-      "mcintosh": "",
-      "quality": {
-        "level": "fallback",
-        "message": "Numbered region is represented, but no accepted live SHARP vector was available; this is not a SHARP magnetic inference."
-      },
-      "members": {
-        "sharpmag": {
-          "m1": 3.7,
-          "x1": 0.2,
-          "source": "WXF training-climatology coverage fallback",
-          "quality": "research-coverage-fallback",
-          "method": "morphology_fallback",
-          "component_id": "AR14570-fallback"
-        },
-        "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
-          "source": "NOAA/SWPC numbered-region flare forecast",
-          "quality": "official-operational",
-          "method": "official_swpc"
-        }
-      },
-      "drivers": [
-        "McIntosh class unavailable or absent from published table",
-        "No accepted live single-region SHARP vector"
-      ]
-    },
-    {
       "id": "AR14572",
       "label": "AR 14572",
-      "location": "N13W24",
-      "mcintosh": "CRO",
+      "location": "N14W38",
+      "mcintosh": "",
       "quality": {
         "level": "research",
         "message": "SHARP NRT record age 3.0 h; shared 2-region HARP; |LON_FWT|=6.5°"
@@ -285,8 +249,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "component_id": "HARP14183"
         },
         "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
+          "m1": 0.0,
+          "x1": 0.0,
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
@@ -302,7 +266,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14573",
       "label": "AR 14573",
-      "location": "N08W37",
+      "location": "N08W51",
       "mcintosh": "",
       "quality": {
         "level": "research",
@@ -318,8 +282,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "component_id": "HARP14176"
         },
         "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
+          "m1": 0.0,
+          "x1": 0.0,
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
@@ -335,8 +299,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14574",
       "label": "AR 14574",
-      "location": "N17W06",
-      "mcintosh": "DAI",
+      "location": "N18W20",
+      "mcintosh": "",
       "quality": {
         "level": "research",
         "message": "SHARP NRT record age 3.0 h; shared 2-region HARP; |LON_FWT|=6.5°"
@@ -351,8 +315,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "component_id": "HARP14183"
         },
         "swpc": {
-          "m1": 10.0,
-          "x1": 1.0,
+          "m1": 0.0,
+          "x1": 0.0,
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
@@ -380,8 +344,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14575",
       "label": "AR 14575",
-      "location": "S10E05",
-      "mcintosh": "CRO",
+      "location": "S09W16",
+      "mcintosh": "",
       "quality": {
         "level": "research",
         "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=2.3°"
@@ -396,8 +360,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "component_id": "HARP14193"
         },
         "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
+          "m1": 0.0,
+          "x1": 0.0,
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
@@ -425,24 +389,24 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14576",
       "label": "AR 14576",
-      "location": "S19W67",
-      "mcintosh": "DAO",
+      "location": "S08W79",
+      "mcintosh": "",
       "quality": {
         "level": "fallback",
         "message": "Numbered region is represented, but no accepted live SHARP vector was available; this is not a SHARP magnetic inference."
       },
       "members": {
         "sharpmag": {
-          "m1": 7.0,
-          "x1": 0.0,
-          "source": "Bloomfield et al. (2012) McIntosh-Poisson coverage fallback",
+          "m1": 3.7,
+          "x1": 0.2,
+          "source": "WXF training-climatology coverage fallback",
           "quality": "research-coverage-fallback",
           "method": "morphology_fallback",
           "component_id": "AR14576-fallback"
         },
         "swpc": {
-          "m1": 5.0,
-          "x1": 1.0,
+          "m1": 0.0,
+          "x1": 0.0,
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
@@ -461,15 +425,15 @@ window.FLARE_GUIDANCE_PAYLOAD = {
         }
       },
       "drivers": [
-        "McIntosh DAO",
+        "McIntosh class unavailable or absent from published table",
         "No accepted live single-region SHARP vector"
       ]
     },
     {
       "id": "AR14577",
       "label": "AR 14577",
-      "location": "S07W24",
-      "mcintosh": "DRO",
+      "location": "S07W37",
+      "mcintosh": "",
       "quality": {
         "level": "research",
         "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=18.1°"
@@ -484,8 +448,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "component_id": "HARP14199"
         },
         "swpc": {
-          "m1": 5.0,
-          "x1": 1.0,
+          "m1": 0.0,
+          "x1": 0.0,
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
@@ -513,24 +477,24 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     {
       "id": "AR14578",
       "label": "AR 14578",
-      "location": "S12W59",
-      "mcintosh": "CRI",
+      "location": "S12W73",
+      "mcintosh": "",
       "quality": {
         "level": "fallback",
         "message": "Numbered region is represented, but no accepted live SHARP vector was available; this is not a SHARP magnetic inference."
       },
       "members": {
         "sharpmag": {
-          "m1": 4.0,
-          "x1": 0.0,
-          "source": "Bloomfield et al. (2012) McIntosh-Poisson coverage fallback",
+          "m1": 3.7,
+          "x1": 0.2,
+          "source": "WXF training-climatology coverage fallback",
           "quality": "research-coverage-fallback",
           "method": "morphology_fallback",
           "component_id": "AR14578-fallback"
         },
         "swpc": {
-          "m1": 5.0,
-          "x1": 1.0,
+          "m1": 0.0,
+          "x1": 0.0,
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
@@ -549,15 +513,15 @@ window.FLARE_GUIDANCE_PAYLOAD = {
         }
       },
       "drivers": [
-        "McIntosh CRI",
+        "McIntosh class unavailable or absent from published table",
         "No accepted live single-region SHARP vector"
       ]
     },
     {
       "id": "AR14579",
       "label": "AR 14579",
-      "location": "N15E46",
-      "mcintosh": "HHX",
+      "location": "N15E31",
+      "mcintosh": "",
       "quality": {
         "level": "research",
         "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=50.0°"
@@ -572,8 +536,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "component_id": "HARP14206"
         },
         "swpc": {
-          "m1": 5.0,
-          "x1": 1.0,
+          "m1": 0.0,
+          "x1": 0.0,
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
@@ -602,7 +566,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20261116&region=&indexnum=1",
-    "retrieved_at": "2026-11-17T04:32:14Z",
+    "retrieved_at": "2026-11-17T07:57:26Z",
     "table_date": "2026-11-16",
     "valid_start": "2026-11-16T00:00:00Z",
     "valid_end": "2026-11-17T00:00:00Z",
@@ -614,7 +578,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-11-17T04:32:14Z",
+    "generated_at": "2026-11-17T07:57:26Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
@@ -908,7 +872,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 104,
+      "records": 107,
       "issued": "2026-11-17T00:00:00Z",
       "valid_start": "2026-11-17T00:00:00Z",
       "valid_end": "2026-11-18T00:00:00Z",
@@ -985,7 +949,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 104,
+      "records": 107,
       "issued": "2026-11-17T00:00:00Z",
       "valid_start": "2026-11-17T00:00:00Z",
       "valid_end": "2026-11-17T12:00:00Z",
@@ -1191,7 +1155,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 89,
+      "records": 92,
       "issued": "2026-11-17T03:15:38Z",
       "valid_start": "2026-11-17T00:00:00Z",
       "valid_end": "2026-11-18T00:00:00Z",
@@ -1268,7 +1232,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 97,
+      "records": 100,
       "issued": "2026-11-17T03:04:33Z",
       "valid_start": "2026-11-17T00:00:00Z",
       "valid_end": "2026-11-18T00:00:00Z",
@@ -1397,7 +1361,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "flarecast": {
       "ok": false,
       "url": "https://api.flarecast.eu/api/prediction/flarecast_latest.xml",
-      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x7a5796c9b390>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
+      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x790b4228f390>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
     },
     "swpc": {
       "ok": true,

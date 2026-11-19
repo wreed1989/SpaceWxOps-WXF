@@ -1,24 +1,24 @@
 {
   "schemaVersion": "ops-delivery-1",
-  "checkedAt": "2026-11-18T21:55:46.271309+00:00",
+  "checkedAt": "2026-11-19T03:20:20.244553+00:00",
   "products": {
     "scoreboard": {
       "status": "available",
       "events": 3,
-      "retrievedAt": "2026-11-18T21:55:46.675233+00:00",
+      "retrievedAt": "2026-11-19T03:20:20.618017+00:00",
       "attempts": []
     },
     "refm": {
       "status": "available",
-      "issuedAt": "2026-11-18T00:14:00+00:00"
+      "issuedAt": "2026-11-19T00:14:00+00:00"
     },
     "huxtAnimation": {
       "path": "huxt-animation.mp4",
       "sourceURL": "https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_animation_latest.mp4",
-      "retrievedAt": "2026-11-18T21:55:47.817649+00:00",
-      "httpLastModified": "Wed, 18 Nov 2026 19:00:05 GMT",
-      "sha256": "7a7c8ecc5cb3e676d28566700b891b8f8ed8295bba61e99b34211bc143f10baf",
-      "bytes": 1054452,
+      "retrievedAt": "2026-11-19T03:20:21.743181+00:00",
+      "httpLastModified": "Thu, 19 Nov 2026 01:00:05 GMT",
+      "sha256": "912a5ed9c68a0f4e9282d332619b6f17af000e4a5cb1e412a5c8b2c8114fed20",
+      "bytes": 1057445,
       "kind": "video",
       "frames": null,
       "status": "available",
@@ -27,7 +27,7 @@
     "m2mAnimation": {
       "path": "m2m-animation.gif",
       "sourceURL": "https://iswa.ccmc.gsfc.nasa.gov/iswa_data_tree/model/heliosphere/wsa-enlil-cone/animation-cme-velocity/2026/11/20261115_024200_2.0_anim.tim-vel.gif",
-      "retrievedAt": "2026-11-18T21:55:47.962824+00:00",
+      "retrievedAt": "2026-11-19T03:20:21.804058+00:00",
       "httpLastModified": "Sun, 15 Nov 2026 14:05:09 GMT",
       "sha256": "c0f98104c7e4e7a9c4e8d4fe117d6a6772337ea4a1833c25bec02c165f645a61",
       "bytes": 2441540,
@@ -39,9 +39,9 @@
       "method": "WSA-ENLIL + Cone (NASA M2M)"
     },
     "electron-fluence.json": {
-      "status": "withheld",
-      "reason": "Insufficient recent electron coverage",
-      "issuedAt": "2026-11-18T21:55:45.662435+00:00",
+      "status": "experimental",
+      "issuedAt": "2026-11-19T03:20:19.554182+00:00",
+      "dataAsOf": "2026-11-19T03:00:00+00:00",
       "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732"
     }
   }

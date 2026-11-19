@@ -1,9 +1,66 @@
 {
   "rows": [
     {
+      "cmeID": "2026-11-19T08:09:00-CME-001",
+      "observedTime": "2026-11-19T08:09Z",
+      "noArrivalObserved": false,
+      "arrivalTime": null,
+      "maxKP": null,
+      "dstMin": null,
+      "dstMinTime": null,
+      "cmeNote": "CME seen to the NE in STEREO A COR2 and GOES CCOR-1 imagery. The CME can also be faintly seen to the NE in SOHO LASCO C2 before a real-time data gap starting at 2026-11-19T09:48Z. The source is likely an eruption from west of Active Region 14579, located around N15E10, starting at 2026-11-19T07:09Z as seen in SDO AIA 304/193 imagery. Dimming can be best seen in SDO AIA 193 and an ejecta of material is visible in SDO AIA 304. The eruption is also visible near the east limb from the point of view of STEREO A EUV 195/304 imagery.",
+      "predictions": [
+        {
+          "predictedMethodName": "WSA-ENLIL + Cone (NASA M2M)",
+          "submissionTime": "2026-11-19T13:15Z",
+          "predictedArrivalTime": "2026-11-23T00:00Z",
+          "uncertaintyMinusInHrs": 7.0,
+          "uncertaintyPlusInHrs": 7.0,
+          "confidenceInPercentage": null,
+          "predictedMaxKpLowerRange": 2.0,
+          "predictedMaxKpUpperRange": 4.0,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "82.75",
+          "predictionNote": "https://ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/49658/1\nModel Inputs:\n2026-11-19T08:09:00-CME-001 with CME Analysis: Lon.=-20.0, Lat.=17.0, Speed=364.0, HalfAngle=21.0, Time21.5=2026-11-19T17:56Z\n\nModel Output:\n\nEarth Impact:\nEarth Shock Arrival Time = 2026-11-23T00:00Z (+- 7 hours)\n(kp)90=2\n(kp)180=4\n\nOther Location(s) Impact:\nEuropa Clipper with esitmated shock arrival time 2026-11-22T18:00Z\nOSIRIS-APEX with esitmated shock arrival time 2026-11-22T16:00Z\n\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261119_175600_2.0_anim.tim-den.gif\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261119_175600_2.0_anim.tim-vel.gif\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261119_175600_2.0_anim.tim-vel-Stereo_A.gif\nInner Planets Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261119_175600_2.0_anim.tim-den-Stereo_A.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261119_175600_2.0_ENLIL_CONE_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261119_175600_2.0_ENLIL_CONE_Kp_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261119_175600_2.0_ENLIL_CONE_STA_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261119_175600_2.0_ENLIL_CONE_PSP_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261119_175600_2.0_ENLIL_CONE_SolO_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261119_175600_2.0_ENLIL_CONE_Merc_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261119_175600_2.0_ENLIL_CONE_Mars_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261119_175600_2.0_ENLIL_CONE_Bepi_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261119_175600_2.0_ENLIL_CONE_Venus_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261119_175600_2.0_ENLIL_CONE_Juice_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261119_175600_2.0_ENLIL_CONE_Psyche_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261119_175600_2.0_ENLIL_CONE_Osiris_timeline.gif\nTimelines Link = https://iswa.gsfc.nasa.gov/api/redirect?filename=20261119_175600_2.0_ENLIL_CONE_EuropaClippr_timeline.gif"
+        },
+        {
+          "predictedMethodName": "Average of all Methods",
+          "submissionTime": "2026-11-19T18:10Z",
+          "predictedArrivalTime": "2026-11-23T00:00Z",
+          "uncertaintyMinusInHrs": null,
+          "uncertaintyPlusInHrs": null,
+          "confidenceInPercentage": null,
+          "predictedMaxKpLowerRange": 2.0,
+          "predictedMaxKpUpperRange": 4.0,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "77.83",
+          "predictionNote": "Auto-generated average of all methods forecast."
+        },
+        {
+          "predictedMethodName": "Median of all Methods",
+          "submissionTime": "2026-11-19T18:10Z",
+          "predictedArrivalTime": "2026-11-23T00:00Z",
+          "uncertaintyMinusInHrs": null,
+          "uncertaintyPlusInHrs": null,
+          "confidenceInPercentage": null,
+          "predictedMaxKpLowerRange": 2.0,
+          "predictedMaxKpUpperRange": 4.0,
+          "predictedDstMin": null,
+          "predictedDstMinTime": null,
+          "differenceInHrs": null,
+          "leadTimeInHrs": "77.83",
+          "predictionNote": "Auto-generated median of all methods forecast."
+        }
+      ]
+    },
+    {
       "cmeID": "2026-11-14T22:15:00-CME-001",
       "observedTime": "2026-11-14T22:15Z",
-      "noArrivalObserved": false,
+      "noArrivalObserved": true,
       "arrivalTime": null,
       "maxKP": null,
       "dstMin": null,
@@ -233,7 +290,7 @@
     }
   ],
   "source": "https://ccmc.gsfc.nasa.gov/CMESB-Earth/WS/get/predictions?CMEtimeStart=2026-10-20&CMEtimeEnd=2026-11-20&closeOutCMEsOnly=false&skipNoArrivalObservedCMEs=false",
-  "retrievedAt": "2026-11-19T12:57:36.022430+00:00",
+  "retrievedAt": "2026-11-19T21:29:27.406502+00:00",
   "windowStart": "2026-10-20",
   "windowEnd": "2026-11-20"
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "WXF-EF-0.2",
-  "issuedAt": "2026-11-19T22:21:33.369580+00:00",
+  "issuedAt": "2026-11-20T03:34:40.737469+00:00",
   "horizonHours": 24,
   "units": "electrons cm^-2 sr^-1",
   "fluxUnits": "electrons cm^-2 s^-1 sr^-1",
@@ -9,7 +9,7 @@
     "moderate": 110000000.0,
     "high": 480000000.0
   },
-  "status": "withheld",
+  "status": "experimental",
   "modelVersion": "WXF-EF-0.1",
   "evaluation": {
     "originCount": 456,
@@ -210,15 +210,512 @@
     "Current model uses observed drivers; the separate CME/HSS candidate has not passed its promotion gate.",
     "REFM UTC-day totals are a separate product, not rolling fluence."
   ],
-  "reason": "Insufficient recent electron coverage",
-  "forecast": [],
-  "guidanceMode": "Current WXF \u00b7 observed drivers",
-  "arrivalSource": {
-    "source": "NASA CME Scoreboard",
-    "error": "HTTPSConnectionPool(host='kauai.ccmc.gsfc.nasa.gov', port=443): Max retries exceeded with url: /CMEscoreboard/WS/get/predictions?CMEtimeStart=2026-10-29&CMEtimeEnd=2026-11-19&closeOutCMEsOnly=false&sk"
+  "dataAsOf": "2026-11-20T03:00:00+00:00",
+  "observedFluence": null,
+  "completeObservedHours": 23,
+  "forecast": [
+    {
+      "time": "2026-11-20T04:00:00+00:00",
+      "low": null,
+      "q25": null,
+      "median": null,
+      "q75": null,
+      "high": null,
+      "fluxLow": 100.933796179198,
+      "fluxQ25": 183.3816453472759,
+      "fluxMedian": 210.15520409759472,
+      "fluxQ75": 232.09228396020632,
+      "fluxHigh": 267.50618982661405
+    },
+    {
+      "time": "2026-11-20T05:00:00+00:00",
+      "low": null,
+      "q25": null,
+      "median": null,
+      "q75": null,
+      "high": null,
+      "fluxLow": 89.78374167909833,
+      "fluxQ25": 170.69679723832016,
+      "fluxMedian": 208.1853639099867,
+      "fluxQ75": 247.19583909140084,
+      "fluxHigh": 312.91431124691775
+    },
+    {
+      "time": "2026-11-20T06:00:00+00:00",
+      "low": null,
+      "q25": null,
+      "median": null,
+      "q75": null,
+      "high": null,
+      "fluxLow": 74.2779888077678,
+      "fluxQ25": 161.2443831037362,
+      "fluxMedian": 215.7997883670258,
+      "fluxQ75": 259.5257241305544,
+      "fluxHigh": 360.99986421934705
+    },
+    {
+      "time": "2026-11-20T07:00:00+00:00",
+      "low": null,
+      "q25": null,
+      "median": null,
+      "q75": null,
+      "high": null,
+      "fluxLow": 94.42071580793463,
+      "fluxQ25": 172.8260763401057,
+      "fluxMedian": 216.4614226926948,
+      "fluxQ75": 283.5053323240081,
+      "fluxHigh": 356.2843450657946
+    },
+    {
+      "time": "2026-11-20T08:00:00+00:00",
+      "low": null,
+      "q25": null,
+      "median": null,
+      "q75": null,
+      "high": null,
+      "fluxLow": 88.76457386751653,
+      "fluxQ25": 179.36885985680397,
+      "fluxMedian": 244.59685570375314,
+      "fluxQ75": 317.42227921285485,
+      "fluxHigh": 391.57057430285
+    },
+    {
+      "time": "2026-11-20T09:00:00+00:00",
+      "low": null,
+      "q25": null,
+      "median": null,
+      "q75": null,
+      "high": null,
+      "fluxLow": 111.2893020892639,
+      "fluxQ25": 189.52220810835445,
+      "fluxMedian": 275.53705654642835,
+      "fluxQ75": 377.51982161260116,
+      "fluxHigh": 522.4386602598013
+    },
+    {
+      "time": "2026-11-20T10:00:00+00:00",
+      "low": null,
+      "q25": null,
+      "median": null,
+      "q75": null,
+      "high": null,
+      "fluxLow": 112.89809383768177,
+      "fluxQ25": 239.8067721757028,
+      "fluxMedian": 320.337068202918,
+      "fluxQ75": 462.8846859776357,
+      "fluxHigh": 755.9794114627439
+    },
+    {
+      "time": "2026-11-20T11:00:00+00:00",
+      "low": null,
+      "q25": null,
+      "median": null,
+      "q75": null,
+      "high": null,
+      "fluxLow": 155.95692384535658,
+      "fluxQ25": 257.8954390217888,
+      "fluxMedian": 367.8642703535117,
+      "fluxQ75": 522.3415204100776,
+      "fluxHigh": 929.7739186004678
+    },
+    {
+      "time": "2026-11-20T12:00:00+00:00",
+      "low": null,
+      "q25": null,
+      "median": null,
+      "q75": null,
+      "high": null,
+      "fluxLow": 118.93097917679643,
+      "fluxQ25": 316.61926703652097,
+      "fluxMedian": 425.18999791514045,
+      "fluxQ75": 594.0569405252984,
+      "fluxHigh": 1136.7402623096339
+    },
+    {
+      "time": "2026-11-20T13:00:00+00:00",
+      "low": null,
+      "q25": null,
+      "median": null,
+      "q75": null,
+      "high": null,
+      "fluxLow": 153.64712061785798,
+      "fluxQ25": 354.65028850020764,
+      "fluxMedian": 468.5713732324169,
+      "fluxQ75": 661.5649961996068,
+      "fluxHigh": 1128.0786905367663
+    },
+    {
+      "time": "2026-11-20T14:00:00+00:00",
+      "low": null,
+      "q25": null,
+      "median": null,
+      "q75": null,
+      "high": null,
+      "fluxLow": 191.56993033914858,
+      "fluxQ25": 384.5364397379703,
+      "fluxMedian": 520.225446894293,
+      "fluxQ75": 738.0875743435578,
+      "fluxHigh": 1488.2260309183575
+    },
+    {
+      "time": "2026-11-20T15:00:00+00:00",
+      "low": null,
+      "q25": null,
+      "median": null,
+      "q75": null,
+      "high": null,
+      "fluxLow": 168.1067183213522,
+      "fluxQ25": 437.7741046314606,
+      "fluxMedian": 569.6168299173419,
+      "fluxQ75": 820.107891291035,
+      "fluxHigh": 1587.5159424626656
+    },
+    {
+      "time": "2026-11-20T16:00:00+00:00",
+      "low": null,
+      "q25": null,
+      "median": null,
+      "q75": null,
+      "high": null,
+      "fluxLow": 203.54604727192915,
+      "fluxQ25": 405.88961223451787,
+      "fluxMedian": 548.4525233103662,
+      "fluxQ75": 832.3720783617791,
+      "fluxHigh": 1545.861762722064
+    },
+    {
+      "time": "2026-11-20T17:00:00+00:00",
+      "low": null,
+      "q25": null,
+      "median": null,
+      "q75": null,
+      "high": null,
+      "fluxLow": 242.82292340710416,
+      "fluxQ25": 406.03310173171826,
+      "fluxMedian": 514.4440433326355,
+      "fluxQ75": 760.4553696074216,
+      "fluxHigh": 1606.3873494898546
+    },
+    {
+      "time": "2026-11-20T18:00:00+00:00",
+      "low": null,
+      "q25": null,
+      "median": null,
+      "q75": null,
+      "high": null,
+      "fluxLow": 174.75667927590467,
+      "fluxQ25": 364.0551790850181,
+      "fluxMedian": 460.2666714526474,
+      "fluxQ75": 724.2421239165785,
+      "fluxHigh": 1500.7815023667185
+    },
+    {
+      "time": "2026-11-20T19:00:00+00:00",
+      "low": null,
+      "q25": null,
+      "median": null,
+      "q75": null,
+      "high": null,
+      "fluxLow": 130.46360853742493,
+      "fluxQ25": 333.59082183546445,
+      "fluxMedian": 430.6087453441242,
+      "fluxQ75": 643.0376080029837,
+      "fluxHigh": 1389.1179788072463
+    },
+    {
+      "time": "2026-11-20T20:00:00+00:00",
+      "low": null,
+      "q25": null,
+      "median": null,
+      "q75": null,
+      "high": null,
+      "fluxLow": 112.55169166243164,
+      "fluxQ25": 273.7412354938566,
+      "fluxMedian": 377.48564969681917,
+      "fluxQ75": 578.0482017083898,
+      "fluxHigh": 1204.8849108055374
+    },
+    {
+      "time": "2026-11-20T21:00:00+00:00",
+      "low": 17455958.315857667,
+      "q25": 25477565.832637668,
+      "median": 29696413.451741662,
+      "q75": 38082764.68637718,
+      "high": 62289643.62999734,
+      "fluxLow": 103.363952508537,
+      "fluxQ25": 229.6380561017491,
+      "fluxMedian": 332.7824330759607,
+      "fluxQ75": 480.86619744660504,
+      "fluxHigh": 954.3832183152208
+    },
+    {
+      "time": "2026-11-20T22:00:00+00:00",
+      "low": 16872557.98377518,
+      "q25": 25320470.69206789,
+      "median": 29865179.12139238,
+      "q75": 39482900.23401037,
+      "high": 64648140.13807473,
+      "fluxLow": 93.64711676093818,
+      "fluxQ25": 182.11005818109032,
+      "fluxMedian": 273.79883418648654,
+      "fluxQ75": 431.58978959434023,
+      "fluxHigh": 897.828482009996
+    },
+    {
+      "time": "2026-11-20T23:00:00+00:00",
+      "low": 16327930.308714274,
+      "q25": 25139333.26160726,
+      "median": 29799167.96295941,
+      "q75": 40276678.46124874,
+      "high": 66501547.87652536,
+      "fluxLow": 62.84046624248649,
+      "fluxQ25": 155.8941717751599,
+      "fluxMedian": 227.42523716687256,
+      "fluxQ75": 402.338771204787,
+      "fluxHigh": 905.5666231989891
+    },
+    {
+      "time": "2026-11-21T00:00:00+00:00",
+      "low": 15915109.456138987,
+      "q25": 25079750.882273063,
+      "median": 29625804.53903679,
+      "q75": 40720069.9610333,
+      "high": 68283256.77130753,
+      "fluxLow": 50.96702318789198,
+      "fluxQ25": 160.8691087476373,
+      "fluxMedian": 214.1934612724851,
+      "fluxQ75": 328.8446437908856,
+      "fluxHigh": 816.6921654686088
+    },
+    {
+      "time": "2026-11-21T01:00:00+00:00",
+      "low": 15312829.657732552,
+      "q25": 24839703.924426503,
+      "median": 29779368.785676446,
+      "q75": 41087107.83286424,
+      "high": 70622471.29987492,
+      "fluxLow": 40.70186416471595,
+      "fluxQ25": 131.40845855179194,
+      "fluxMedian": 180.55324557489735,
+      "fluxQ75": 298.16204210753136,
+      "fluxHigh": 698.444408148663
+    },
+    {
+      "time": "2026-11-21T02:00:00+00:00",
+      "low": 14670219.474378455,
+      "q25": 24786113.92713712,
+      "median": 29607435.806306474,
+      "q75": 41262108.578638986,
+      "high": 71947392.0766468,
+      "fluxLow": 35.10041999752864,
+      "fluxQ25": 121.25667955319622,
+      "fluxMedian": 179.12447260337547,
+      "fluxQ75": 291.0361961927122,
+      "fluxHigh": 591.7065971209727
+    },
+    {
+      "time": "2026-11-21T03:00:00+00:00",
+      "low": 13939538.312633228,
+      "q25": 24433023.36427851,
+      "median": 29322823.476420917,
+      "q75": 41139667.64745797,
+      "high": 72151838.2561114,
+      "fluxLow": 41.273479546200896,
+      "fluxQ25": 128.51422765291002,
+      "fluxMedian": 173.15095312868988,
+      "fluxQ75": 258.95434299657745,
+      "fluxHigh": 587.6996766516232
+    }
+  ],
+  "history": [
+    {
+      "time": "2026-11-19T04:00:00+00:00",
+      "flux": 227.62074518203735
+    },
+    {
+      "time": "2026-11-19T05:00:00+00:00",
+      "flux": 181.508882522583
+    },
+    {
+      "time": "2026-11-19T06:00:00+00:00",
+      "flux": 154.15841643015543
+    },
+    {
+      "time": "2026-11-19T07:00:00+00:00",
+      "flux": 196.57268142700195
+    },
+    {
+      "time": "2026-11-19T08:00:00+00:00",
+      "flux": 178.30636660257974
+    },
+    {
+      "time": "2026-11-19T09:00:00+00:00",
+      "flux": 161.58540789286295
+    },
+    {
+      "time": "2026-11-19T10:00:00+00:00",
+      "flux": 192.90585390726724
+    },
+    {
+      "time": "2026-11-19T11:00:00+00:00",
+      "flux": 226.52012952168783
+    },
+    {
+      "time": "2026-11-19T12:00:00+00:00",
+      "flux": 190.54267183939615
+    },
+    {
+      "time": "2026-11-19T13:00:00+00:00",
+      "flux": 255.49232610066733
+    },
+    {
+      "time": "2026-11-19T14:00:00+00:00",
+      "flux": 325.53505833943683
+    },
+    {
+      "time": "2026-11-19T15:00:00+00:00",
+      "flux": 339.1441065470378
+    },
+    {
+      "time": "2026-11-19T16:00:00+00:00",
+      "flux": 387.8180732727051
+    },
+    {
+      "time": "2026-11-19T17:00:00+00:00",
+      "flux": 386.739501953125
+    },
+    {
+      "time": "2026-11-19T18:00:00+00:00",
+      "flux": 372.40751393636066
+    },
+    {
+      "time": "2026-11-19T19:00:00+00:00",
+      "flux": 363.016897837321
+    },
+    {
+      "time": "2026-11-19T20:00:00+00:00",
+      "flux": 262.3001480102539
+    },
+    {
+      "time": "2026-11-19T21:00:00+00:00",
+      "flux": null
+    },
+    {
+      "time": "2026-11-19T22:00:00+00:00",
+      "flux": 239.72889963785806
+    },
+    {
+      "time": "2026-11-19T23:00:00+00:00",
+      "flux": 242.51233545939127
+    },
+    {
+      "time": "2026-11-20T00:00:00+00:00",
+      "flux": 215.47655169169107
+    },
+    {
+      "time": "2026-11-20T01:00:00+00:00",
+      "flux": 208.0018081665039
+    },
+    {
+      "time": "2026-11-20T02:00:00+00:00",
+      "flux": 213.47211774190268
+    },
+    {
+      "time": "2026-11-20T03:00:00+00:00",
+      "flux": 240.09070523579916
+    }
+  ],
+  "predictorValues": {
+    "level": 5.905033463650947,
+    "level_1h": 6.051847667331221,
+    "std_1h": 0.0,
+    "level_3h": 5.905033463650947,
+    "std_3h": 0.11195079393732603,
+    "level_6h": 5.780294754465988,
+    "std_6h": 0.15743102067032097,
+    "level_12h": 5.578364308184771,
+    "std_12h": 0.25469813001729924,
+    "level_24h": 5.492745961381863,
+    "std_24h": 0.3018387276411836,
+    "level_48h": 5.533535907626539,
+    "std_48h": 0.3035490897851374,
+    "level_72h": 5.912793775277924,
+    "std_72h": 0.7062831470891411,
+    "change_3h": 0.24947741836992066,
+    "change_6h": 0.5192744566021048,
+    "change_12h": 0.7827008725055213,
+    "change_24h": -0.12206435885167544,
+    "change_48h": 0.32495175189150594,
+    "diurnal_0": -0.5122002509083589,
+    "diurnal_1": -0.4002071632494544,
+    "diurnal_2": 0.06219165325898343,
+    "diurnal_3": 0.00991614822426981,
+    "speed_3h": 406.30163103930573,
+    "speed_12h": 432.41979037912284,
+    "speed_24h": 430.25582683330794,
+    "speed_48h": 412.28190856196215,
+    "speed_72h": 384.18387607482515,
+    "speed_change": -23.954195794002203,
+    "density_3h": 1.2177219964537835,
+    "density_12h": 1.6196285572813316,
+    "density_24h": 2.099574443229642,
+    "density_48h": 2.5765817783731504,
+    "density_72h": 2.5851533890641876,
+    "density_change": -0.8818524467758584,
+    "bt_3h": 5.78902013117735,
+    "bt_12h": 6.004116622832651,
+    "bt_24h": 6.585586096154348,
+    "bt_48h": 7.301673337834398,
+    "bt_72h": 7.2299192453724475,
+    "bt_change": -0.796565964976998,
+    "bz_3h": -0.9896246509513604,
+    "bz_12h": -1.4576518523930126,
+    "bz_24h": -1.1959045125983314,
+    "bz_48h": -1.8186447614842898,
+    "bz_72h": -1.6342304013654048,
+    "bz_change": 0.20627986164697099,
+    "southward_3h": 0.9892720306513408,
+    "southward_12h": 1.5314187588223434,
+    "southward_24h": 1.5519116588947204,
+    "southward_48h": 2.1798810182650095,
+    "southward_72h": 2.089175269444336,
+    "southward_change": -0.5626396282433795,
+    "pressure_3h": 0.336258007406619,
+    "pressure_12h": 0.5220897098912868,
+    "pressure_24h": 0.6593896411801047,
+    "pressure_48h": 0.7283683017283141,
+    "pressure_72h": 0.6463312581398616,
+    "pressure_change": -0.3231316337734857,
+    "coupling_3h": 0.3991183194293015,
+    "coupling_12h": 0.6675711346857823,
+    "coupling_24h": 0.6713002382206695,
+    "coupling_48h": 0.8900285989751416,
+    "coupling_72h": 0.7983248843221159,
+    "coupling_change": -0.27218191879136805
   },
-  "impactSource": {
-    "error": "HTTPSConnectionPool(host='kauai.ccmc.gsfc.nasa.gov', port=443): Max retries exceeded with url: /DONKI/WS/get/IPS?startDate=2026-11-05&endDate=2026-11-19&version=ALL&catalog=M2M_CATALOG&location=Earth "
+  "arrivalGuidance": {
+    "source": "https://kauai.ccmc.gsfc.nasa.gov/CMEscoreboard/WS/get/predictions",
+    "available": false,
+    "features": {
+      "cme_feed_available": 0.0,
+      "cme_event_count": 0.0,
+      "cme_provider_count": 0.0,
+      "cme_nearest_arrival_hours": 96.0,
+      "cme_arrival_spread_hours": 0.0,
+      "cme_reported_uncertainty_hours": 0.0,
+      "cme_uncertainty_coverage": 0.0,
+      "cme_forecast_kp": 0.0,
+      "cme_kp_coverage": 0.0,
+      "cme_window_-72_-24h": 0.0,
+      "cme_window_-24_0h": 0.0,
+      "cme_window_0_12h": 0.0,
+      "cme_window_12_24h": 0.0,
+      "cme_window_24_48h": 0.0,
+      "cme_window_48_72h": 0.0
+    },
+    "predictions": [],
+    "caution": "Provider agreement is not an impact probability. Arrival timing does not forecast Bz or guarantee an electron dropout.",
+    "usedAsModelInput": false
   },
   "impactGuidance": {
     "available": false,
@@ -226,9 +723,25 @@
     "events": [],
     "meaning": "Reported Earth/L1 shocks and HSS onsets, gated by each version submission time. A shock is called CME-associated only when the available version links a CME."
   },
+  "spacecraft": "GOES-19",
+  "drivers": {
+    "speed": 406.30163103930573,
+    "bz": -0.9896246509513604,
+    "pressure": 0.336258007406619,
+    "coupling": 0.3991183194293015
+  },
+  "outOfTrainingRange": [],
+  "guidanceMode": "Current WXF \u00b7 observed drivers",
+  "arrivalSource": {
+    "source": "NASA CME Scoreboard",
+    "error": "HTTPSConnectionPool(host='kauai.ccmc.gsfc.nasa.gov', port=443): Max retries exceeded with url: /CMEscoreboard/WS/get/predictions?CMEtimeStart=2026-10-30&CMEtimeEnd=2026-11-20&closeOutCMEsOnly=false&sk"
+  },
+  "impactSource": {
+    "error": "HTTPSConnectionPool(host='kauai.ccmc.gsfc.nasa.gov', port=443): Max retries exceeded with url: /DONKI/WS/get/IPS?startDate=2026-11-06&endDate=2026-11-20&version=ALL&catalog=M2M_CATALOG&location=Earth "
+  },
   "candidate": {
     "schemaVersion": "WXF-EF-0.2",
-    "issuedAt": "2026-11-19T22:21:33.369580+00:00",
+    "issuedAt": "2026-11-20T03:34:40.737469+00:00",
     "horizonHours": 24,
     "units": "electrons cm^-2 sr^-1",
     "fluxUnits": "electrons cm^-2 s^-1 sr^-1",
@@ -237,7 +750,7 @@
       "moderate": 110000000.0,
       "high": 480000000.0
     },
-    "status": "withheld",
+    "status": "experimental",
     "modelVersion": "WXF-EF-0.2",
     "evaluation": {
       "originCount": 456,
@@ -2471,8 +2984,557 @@
       "CME arrival guidance and 27-day wind recurrence are uncertain predictors; future Bz and new coronal-hole evolution are not known.",
       "REFM UTC-day totals are a separate product, not rolling fluence."
     ],
-    "reason": "Insufficient recent electron coverage",
-    "forecast": [],
+    "dataAsOf": "2026-11-20T03:00:00+00:00",
+    "observedFluence": null,
+    "completeObservedHours": 23,
+    "forecast": [
+      {
+        "time": "2026-11-20T04:00:00+00:00",
+        "low": null,
+        "q25": null,
+        "median": null,
+        "q75": null,
+        "high": null,
+        "fluxLow": 102.45476341492318,
+        "fluxQ25": 198.18885310676774,
+        "fluxMedian": 221.80473850513073,
+        "fluxQ75": 248.92326583095246,
+        "fluxHigh": 293.3384566358801
+      },
+      {
+        "time": "2026-11-20T05:00:00+00:00",
+        "low": null,
+        "q25": null,
+        "median": null,
+        "q75": null,
+        "high": null,
+        "fluxLow": 99.07191791846022,
+        "fluxQ25": 174.17973671745173,
+        "fluxMedian": 220.36755754830605,
+        "fluxQ75": 252.30490446737377,
+        "fluxHigh": 327.6774311354186
+      },
+      {
+        "time": "2026-11-20T06:00:00+00:00",
+        "low": null,
+        "q25": null,
+        "median": null,
+        "q75": null,
+        "high": null,
+        "fluxLow": 75.59857952048773,
+        "fluxQ25": 175.21067304135119,
+        "fluxMedian": 230.4085304619885,
+        "fluxQ75": 270.6589844086835,
+        "fluxHigh": 347.6776038565374
+      },
+      {
+        "time": "2026-11-20T07:00:00+00:00",
+        "low": null,
+        "q25": null,
+        "median": null,
+        "q75": null,
+        "high": null,
+        "fluxLow": 93.58760468438552,
+        "fluxQ25": 192.8447888137619,
+        "fluxMedian": 231.64756278840318,
+        "fluxQ75": 293.71508820167173,
+        "fluxHigh": 366.33398817874604
+      },
+      {
+        "time": "2026-11-20T08:00:00+00:00",
+        "low": null,
+        "q25": null,
+        "median": null,
+        "q75": null,
+        "high": null,
+        "fluxLow": 99.1787148231079,
+        "fluxQ25": 194.38606469687372,
+        "fluxMedian": 256.2187220981535,
+        "fluxQ75": 332.3901477736741,
+        "fluxHigh": 485.0956084782882
+      },
+      {
+        "time": "2026-11-20T09:00:00+00:00",
+        "low": null,
+        "q25": null,
+        "median": null,
+        "q75": null,
+        "high": null,
+        "fluxLow": 123.2189439413152,
+        "fluxQ25": 211.84916173987426,
+        "fluxMedian": 280.5681035828313,
+        "fluxQ75": 388.24103962884465,
+        "fluxHigh": 538.6173694404936
+      },
+      {
+        "time": "2026-11-20T10:00:00+00:00",
+        "low": null,
+        "q25": null,
+        "median": null,
+        "q75": null,
+        "high": null,
+        "fluxLow": 122.38658968086588,
+        "fluxQ25": 261.0300287911866,
+        "fluxMedian": 357.7991255166085,
+        "fluxQ75": 507.82455122511624,
+        "fluxHigh": 752.3861658870956
+      },
+      {
+        "time": "2026-11-20T11:00:00+00:00",
+        "low": null,
+        "q25": null,
+        "median": null,
+        "q75": null,
+        "high": null,
+        "fluxLow": 188.80149430809834,
+        "fluxQ25": 296.6639984653806,
+        "fluxMedian": 417.62272969017397,
+        "fluxQ75": 567.6111650162634,
+        "fluxHigh": 815.6551916611025
+      },
+      {
+        "time": "2026-11-20T12:00:00+00:00",
+        "low": null,
+        "q25": null,
+        "median": null,
+        "q75": null,
+        "high": null,
+        "fluxLow": 167.71611248680082,
+        "fluxQ25": 355.9028140698434,
+        "fluxMedian": 452.1868490572848,
+        "fluxQ75": 670.9236395858468,
+        "fluxHigh": 1025.3549691123553
+      },
+      {
+        "time": "2026-11-20T13:00:00+00:00",
+        "low": null,
+        "q25": null,
+        "median": null,
+        "q75": null,
+        "high": null,
+        "fluxLow": 205.86677251524304,
+        "fluxQ25": 415.1044477513964,
+        "fluxMedian": 523.7838401874886,
+        "fluxQ75": 754.9531389776972,
+        "fluxHigh": 1211.4186141432626
+      },
+      {
+        "time": "2026-11-20T14:00:00+00:00",
+        "low": null,
+        "q25": null,
+        "median": null,
+        "q75": null,
+        "high": null,
+        "fluxLow": 245.37342780588762,
+        "fluxQ25": 422.41585841700214,
+        "fluxMedian": 575.0689323964971,
+        "fluxQ75": 821.3549266630357,
+        "fluxHigh": 1453.5118862480456
+      },
+      {
+        "time": "2026-11-20T15:00:00+00:00",
+        "low": null,
+        "q25": null,
+        "median": null,
+        "q75": null,
+        "high": null,
+        "fluxLow": 214.8533431187225,
+        "fluxQ25": 441.3389541983096,
+        "fluxMedian": 652.3435890071919,
+        "fluxQ75": 865.6082624923708,
+        "fluxHigh": 1425.003412474829
+      },
+      {
+        "time": "2026-11-20T16:00:00+00:00",
+        "low": null,
+        "q25": null,
+        "median": null,
+        "q75": null,
+        "high": null,
+        "fluxLow": 280.47696564015973,
+        "fluxQ25": 483.9050751522551,
+        "fluxMedian": 660.011034597508,
+        "fluxQ75": 954.6153358127896,
+        "fluxHigh": 1528.3333612399429
+      },
+      {
+        "time": "2026-11-20T17:00:00+00:00",
+        "low": null,
+        "q25": null,
+        "median": null,
+        "q75": null,
+        "high": null,
+        "fluxLow": 296.38260796629606,
+        "fluxQ25": 456.45308769317205,
+        "fluxMedian": 597.3261627812395,
+        "fluxQ75": 939.837242255127,
+        "fluxHigh": 1451.827691194328
+      },
+      {
+        "time": "2026-11-20T18:00:00+00:00",
+        "low": null,
+        "q25": null,
+        "median": null,
+        "q75": null,
+        "high": null,
+        "fluxLow": 236.29975682772317,
+        "fluxQ25": 398.1309350443958,
+        "fluxMedian": 545.4675085336345,
+        "fluxQ75": 815.095064048644,
+        "fluxHigh": 1381.691809760675
+      },
+      {
+        "time": "2026-11-20T19:00:00+00:00",
+        "low": null,
+        "q25": null,
+        "median": null,
+        "q75": null,
+        "high": null,
+        "fluxLow": 222.32178415766765,
+        "fluxQ25": 383.5097103962591,
+        "fluxMedian": 491.42041881989127,
+        "fluxQ75": 750.3638196544027,
+        "fluxHigh": 1358.7477725775357
+      },
+      {
+        "time": "2026-11-20T20:00:00+00:00",
+        "low": null,
+        "q25": null,
+        "median": null,
+        "q75": null,
+        "high": null,
+        "fluxLow": 194.51578158136562,
+        "fluxQ25": 329.9267861470456,
+        "fluxMedian": 470.5117402245849,
+        "fluxQ75": 697.9458513793381,
+        "fluxHigh": 1122.8175731886881
+      },
+      {
+        "time": "2026-11-20T21:00:00+00:00",
+        "low": 20835749.412823986,
+        "q25": 27890076.47624997,
+        "median": 33168264.719829727,
+        "q75": 43371499.63371431,
+        "high": 57159258.51670935,
+        "fluxLow": 148.88692779451495,
+        "fluxQ25": 282.15424570982975,
+        "fluxMedian": 433.37557992543304,
+        "fluxQ75": 593.7473741868479,
+        "fluxHigh": 949.007812068007
+      },
+      {
+        "time": "2026-11-20T22:00:00+00:00",
+        "low": 21007700.72995736,
+        "q25": 27777321.697453137,
+        "median": 33511371.408220347,
+        "q75": 45426527.67073391,
+        "high": 59217283.53295037,
+        "fluxLow": 133.52331535275042,
+        "fluxQ25": 244.00043426941846,
+        "fluxMedian": 364.6541112152903,
+        "fluxQ75": 510.1798046456162,
+        "fluxHigh": 920.0347732951245
+      },
+      {
+        "time": "2026-11-20T23:00:00+00:00",
+        "low": 20573126.95757925,
+        "q25": 27740877.33031732,
+        "median": 33652006.46484423,
+        "q75": 46708288.72211604,
+        "high": 61372800.21799701,
+        "fluxLow": 115.64478920898821,
+        "fluxQ25": 229.8441765806711,
+        "fluxMedian": 309.73658088059886,
+        "fluxQ75": 486.02273412527575,
+        "fluxHigh": 860.8050474823062
+      },
+      {
+        "time": "2026-11-21T00:00:00+00:00",
+        "low": 20066694.871023174,
+        "q25": 27717909.17154053,
+        "median": 33873097.60422828,
+        "q75": 48216487.190493576,
+        "high": 62745214.07179275,
+        "fluxLow": 80.2502776151043,
+        "fluxQ25": 210.98002449807865,
+        "fluxMedian": 280.7654347964351,
+        "fluxQ75": 427.7332175752626,
+        "fluxHigh": 804.6430647755581
+      },
+      {
+        "time": "2026-11-21T01:00:00+00:00",
+        "low": 19540377.42464812,
+        "q25": 27592753.687539116,
+        "median": 34060249.70658803,
+        "q75": 48771797.70424352,
+        "high": 64175796.15090918,
+        "fluxLow": 81.38745545075399,
+        "fluxQ25": 169.9024803637942,
+        "fluxMedian": 260.345278451688,
+        "fluxQ75": 409.76373844195615,
+        "fluxHigh": 671.8550232553966
+      },
+      {
+        "time": "2026-11-21T02:00:00+00:00",
+        "low": 18933740.352015432,
+        "q25": 27938268.729011096,
+        "median": 33944424.935486645,
+        "q75": 49033693.55866778,
+        "high": 65113498.218971305,
+        "fluxLow": 74.674068537696,
+        "fluxQ25": 145.19759883408767,
+        "fluxMedian": 260.20687505741193,
+        "fluxQ75": 448.97116081694554,
+        "fluxHigh": 648.7084439205673
+      },
+      {
+        "time": "2026-11-21T03:00:00+00:00",
+        "low": 18278012.825133692,
+        "q25": 27666749.224024776,
+        "median": 33921660.278097086,
+        "q75": 49483718.49117567,
+        "high": 66847184.98617351,
+        "fluxLow": 71.89310903940444,
+        "fluxQ25": 169.00021276407358,
+        "fluxMedian": 235.0347919689384,
+        "fluxQ75": 391.5168886866358,
+        "fluxHigh": 689.1714214001029
+      }
+    ],
+    "history": [
+      {
+        "time": "2026-11-19T04:00:00+00:00",
+        "flux": 227.62074518203735
+      },
+      {
+        "time": "2026-11-19T05:00:00+00:00",
+        "flux": 181.508882522583
+      },
+      {
+        "time": "2026-11-19T06:00:00+00:00",
+        "flux": 154.15841643015543
+      },
+      {
+        "time": "2026-11-19T07:00:00+00:00",
+        "flux": 196.57268142700195
+      },
+      {
+        "time": "2026-11-19T08:00:00+00:00",
+        "flux": 178.30636660257974
+      },
+      {
+        "time": "2026-11-19T09:00:00+00:00",
+        "flux": 161.58540789286295
+      },
+      {
+        "time": "2026-11-19T10:00:00+00:00",
+        "flux": 192.90585390726724
+      },
+      {
+        "time": "2026-11-19T11:00:00+00:00",
+        "flux": 226.52012952168783
+      },
+      {
+        "time": "2026-11-19T12:00:00+00:00",
+        "flux": 190.54267183939615
+      },
+      {
+        "time": "2026-11-19T13:00:00+00:00",
+        "flux": 255.49232610066733
+      },
+      {
+        "time": "2026-11-19T14:00:00+00:00",
+        "flux": 325.53505833943683
+      },
+      {
+        "time": "2026-11-19T15:00:00+00:00",
+        "flux": 339.1441065470378
+      },
+      {
+        "time": "2026-11-19T16:00:00+00:00",
+        "flux": 387.8180732727051
+      },
+      {
+        "time": "2026-11-19T17:00:00+00:00",
+        "flux": 386.739501953125
+      },
+      {
+        "time": "2026-11-19T18:00:00+00:00",
+        "flux": 372.40751393636066
+      },
+      {
+        "time": "2026-11-19T19:00:00+00:00",
+        "flux": 363.016897837321
+      },
+      {
+        "time": "2026-11-19T20:00:00+00:00",
+        "flux": 262.3001480102539
+      },
+      {
+        "time": "2026-11-19T21:00:00+00:00",
+        "flux": null
+      },
+      {
+        "time": "2026-11-19T22:00:00+00:00",
+        "flux": 239.72889963785806
+      },
+      {
+        "time": "2026-11-19T23:00:00+00:00",
+        "flux": 242.51233545939127
+      },
+      {
+        "time": "2026-11-20T00:00:00+00:00",
+        "flux": 215.47655169169107
+      },
+      {
+        "time": "2026-11-20T01:00:00+00:00",
+        "flux": 208.0018081665039
+      },
+      {
+        "time": "2026-11-20T02:00:00+00:00",
+        "flux": 213.47211774190268
+      },
+      {
+        "time": "2026-11-20T03:00:00+00:00",
+        "flux": 240.09070523579916
+      }
+    ],
+    "predictorValues": {
+      "level": 5.905033463650947,
+      "level_1h": 6.051847667331221,
+      "std_1h": 0.0,
+      "level_3h": 5.905033463650947,
+      "std_3h": 0.11195079393732603,
+      "level_6h": 5.780294754465988,
+      "std_6h": 0.15743102067032097,
+      "level_12h": 5.578364308184771,
+      "std_12h": 0.25469813001729924,
+      "level_24h": 5.492745961381863,
+      "std_24h": 0.3018387276411836,
+      "level_48h": 5.533535907626539,
+      "std_48h": 0.3035490897851374,
+      "level_72h": 5.912793775277924,
+      "std_72h": 0.7062831470891411,
+      "change_3h": 0.24947741836992066,
+      "change_6h": 0.5192744566021048,
+      "change_12h": 0.7827008725055213,
+      "change_24h": -0.12206435885167544,
+      "change_48h": 0.32495175189150594,
+      "diurnal_0": -0.5122002509083589,
+      "diurnal_1": -0.4002071632494544,
+      "diurnal_2": 0.06219165325898343,
+      "diurnal_3": 0.00991614822426981,
+      "speed_3h": 406.30163103930573,
+      "speed_12h": 432.41979037912284,
+      "speed_24h": 430.25582683330794,
+      "speed_48h": 412.28190856196215,
+      "speed_72h": 384.18387607482515,
+      "speed_change": -23.954195794002203,
+      "density_3h": 1.2177219964537835,
+      "density_12h": 1.6196285572813316,
+      "density_24h": 2.099574443229642,
+      "density_48h": 2.5765817783731504,
+      "density_72h": 2.5851533890641876,
+      "density_change": -0.8818524467758584,
+      "bt_3h": 5.78902013117735,
+      "bt_12h": 6.004116622832651,
+      "bt_24h": 6.585586096154348,
+      "bt_48h": 7.301673337834398,
+      "bt_72h": 7.2299192453724475,
+      "bt_change": -0.796565964976998,
+      "bz_3h": -0.9896246509513604,
+      "bz_12h": -1.4576518523930126,
+      "bz_24h": -1.1959045125983314,
+      "bz_48h": -1.8186447614842898,
+      "bz_72h": -1.6342304013654048,
+      "bz_change": 0.20627986164697099,
+      "southward_3h": 0.9892720306513408,
+      "southward_12h": 1.5314187588223434,
+      "southward_24h": 1.5519116588947204,
+      "southward_48h": 2.1798810182650095,
+      "southward_72h": 2.089175269444336,
+      "southward_change": -0.5626396282433795,
+      "pressure_3h": 0.336258007406619,
+      "pressure_12h": 0.5220897098912868,
+      "pressure_24h": 0.6593896411801047,
+      "pressure_48h": 0.7283683017283141,
+      "pressure_72h": 0.6463312581398616,
+      "pressure_change": -0.3231316337734857,
+      "coupling_3h": 0.3991183194293015,
+      "coupling_12h": 0.6675711346857823,
+      "coupling_24h": 0.6713002382206695,
+      "coupling_48h": 0.8900285989751416,
+      "coupling_72h": 0.7983248843221159,
+      "coupling_change": -0.27218191879136805,
+      "spacecraft_goes19": 1.0,
+      "speed_lag72_168h_coverage": 1.0,
+      "speed_lag72_168h": 359.45366359333866,
+      "speed_lag168_336h_coverage": 0.9880952380952381,
+      "speed_lag168_336h": 562.3245535469595,
+      "speed_max24h": 464.5816666666667,
+      "speed_std24h": 16.57235788604399,
+      "pressure_lag72_168h_coverage": 1.0,
+      "pressure_lag72_168h": 0.2702907589230062,
+      "pressure_lag168_336h_coverage": 0.9880952380952381,
+      "pressure_lag168_336h": 1.2455196974383747,
+      "pressure_max24h": 1.0521206799536047,
+      "pressure_std24h": 0.21902796227582746,
+      "coupling_lag72_168h_coverage": 1.0,
+      "coupling_lag72_168h": 0.14459774435886594,
+      "coupling_lag168_336h_coverage": 0.9880952380952381,
+      "coupling_lag168_336h": 0.3674986313745067,
+      "coupling_max24h": 1.9675565344827586,
+      "coupling_std24h": 0.4453124653008519,
+      "southward_lag72_168h_coverage": 1.0,
+      "southward_lag72_168h": 0.3960982474724948,
+      "southward_lag168_336h_coverage": 0.9880952380952381,
+      "southward_lag168_336h": 0.6802944761219044,
+      "southward_max24h": 4.505084745762712,
+      "southward_std24h": 0.997074755708882,
+      "fast_wind_fraction72h": 0.0,
+      "recurrence_0h_coverage": 0.375,
+      "recurrence_0h_speed": 430.25582683330794,
+      "recurrence_24h_coverage": 0.375,
+      "recurrence_24h_speed": 430.25582683330794,
+      "recurrence_48h_coverage": 0.4166666666666667,
+      "recurrence_48h_speed": 430.25582683330794,
+      "recurrence_72h_coverage": 0.375,
+      "recurrence_72h_speed": 430.25582683330794,
+      "recurrence_rise24h": 0.0
+    },
+    "arrivalGuidance": {
+      "source": "https://kauai.ccmc.gsfc.nasa.gov/CMEscoreboard/WS/get/predictions",
+      "available": false,
+      "features": {
+        "cme_feed_available": 0.0,
+        "cme_event_count": 0.0,
+        "cme_provider_count": 0.0,
+        "cme_nearest_arrival_hours": 96.0,
+        "cme_arrival_spread_hours": 0.0,
+        "cme_reported_uncertainty_hours": 0.0,
+        "cme_uncertainty_coverage": 0.0,
+        "cme_forecast_kp": 0.0,
+        "cme_kp_coverage": 0.0,
+        "cme_window_-72_-24h": 0.0,
+        "cme_window_-24_0h": 0.0,
+        "cme_window_0_12h": 0.0,
+        "cme_window_12_24h": 0.0,
+        "cme_window_24_48h": 0.0,
+        "cme_window_48_72h": 0.0
+      },
+      "predictions": [],
+      "caution": "Provider agreement is not an impact probability. Arrival timing does not forecast Bz or guarantee an electron dropout.",
+      "usedAsModelInput": false
+    },
+    "impactGuidance": null,
+    "spacecraft": "GOES-19",
+    "drivers": {
+      "speed": 406.30163103930573,
+      "bz": -0.9896246509513604,
+      "pressure": 0.336258007406619,
+      "coupling": 0.3991183194293015
+    },
+    "outOfTrainingRange": [],
     "guidanceMode": "External guidance incomplete; observed-driver + recurrence fallback",
     "modelSHA256": "3fa1360a114e3ab42fbb110456adb529cd5108a18caadc2c1c489c26faea24d8",
     "promotionStatus": "Historical hindcasts support improvement over persistence, but do not establish added CME/HSS skill over measured drivers. Candidate remains separate.",
@@ -2973,18 +4035,18 @@
     }
   },
   "inputQuality": {
-    "rawSamples": 10341,
-    "acceptedSamples": 10258,
+    "rawSamples": 10115,
+    "acceptedSamples": 10032,
     "otherElectronSpacecraft": 0,
     "highProtonSamples": 0,
     "missingProtonSamples": 83,
-    "completeElectronHours": 845,
+    "completeElectronHours": 826,
     "spacecraftHours": {
-      "GOES-19": 845
+      "GOES-19": 826
     },
-    "hourCount": 863,
-    "firstHourEnd": "2026-10-15T01:00:00+00:00",
-    "lastHourEnd": "2026-11-19T23:00:00+00:00"
+    "hourCount": 844,
+    "firstHourEnd": "2026-10-16T01:00:00+00:00",
+    "lastHourEnd": "2026-11-20T04:00:00+00:00"
   },
   "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732",
   "historicalValidation": {
@@ -3483,74 +4545,80 @@
   },
   "externalGuidance": {
     "source": "https://services.swpc.noaa.gov/text/3-day-forecast.txt",
-    "retrievedAt": "2026-11-19T22:21:33.741961+00:00",
-    "bulletin": ":Product: 3-Day Forecast\n:Issued: 2026 Nov 19 2200 UTC\n# Prepared by the U.S. Dept. of Commerce, NOAA, Space Weather Prediction Center\n#\nA. NOAA Geomagnetic Activity Observation and Forecast\n\nThe greatest observed 3 hr Kp over the past 24 hours was 5 (NOAA Scale\nG1).\nThe greatest expected 3 hr Kp for Nov 20-Nov 22 2026 is 3.67 (below NOAA\nScale levels).\n\nNOAA Kp index breakdown Nov 20-Nov 22 2026\n\n             Nov 20       Nov 21       Nov 22\n00-03UT       3.00         2.33         2.33         \n03-06UT       3.33         2.67         2.00         \n06-09UT       2.67         2.00         2.00         \n09-12UT       2.33         2.00         2.67         \n12-15UT       1.67         1.33         3.67         \n15-18UT       2.67         2.00         2.67         \n18-21UT       2.67         2.00         2.67         \n21-00UT       3.00         2.33         3.00         \n\nRationale: No G1 (Minor) or greater geomagnetic storms are expected. No\nsignificant transient or recurrent solar wind features are forecast.\n\nB. NOAA Solar Radiation Activity Observation and Forecast\n\nSolar radiation, as observed by NOAA GOES-18 over the past 24 hours, was\nbelow S-scale storm level thresholds.\n\nSolar Radiation Storm Forecast for Nov 20-Nov 22 2026\n\n              Nov 20  Nov 21  Nov 22\nS1 or greater    1%      1%      1%\n\nRationale: No S1 (Minor) or greater solar radiation storms are expected.\nNo significant active region activity favorable for radiation storm\nproduction is forecast.\n\nC. NOAA Radio Blackout Activity and Forecast\n\nRadio blackouts reaching the R1 levels were observed over the past 24\nhours. The largest was at 19/1324Z UTC.\n\nRadio Blackout Forecast for Nov 20-Nov 22 2026\n\n              Nov 20        Nov 21        Nov 22\nR1-R2           15%           15%           15%\nR3 or greater    5%            5%            5%\n\nRationale: No R1 (Minor) or greater radio blackouts are expected. No\nsignificant active region flare activity is forecast.\n",
+    "retrievedAt": "2026-11-20T03:34:41.192951+00:00",
+    "bulletin": ":Product: 3-Day Forecast\n:Issued: 2026 Nov 20 0030 UTC\n# Prepared by the U.S. Dept. of Commerce, NOAA, Space Weather Prediction Center\n#\nA. NOAA Geomagnetic Activity Observation and Forecast\n\nThe greatest observed 3 hr Kp over the past 24 hours was 5 (NOAA Scale\nG1).\nThe greatest expected 3 hr Kp for Nov 20-Nov 22 2026 is 3.67 (below NOAA\nScale levels).\n\nNOAA Kp index breakdown Nov 20-Nov 22 2026\n\n             Nov 20       Nov 21       Nov 22\n00-03UT       3.00         2.33         2.33         \n03-06UT       3.33         2.67         2.00         \n06-09UT       2.67         2.00         2.00         \n09-12UT       2.33         2.00         2.67         \n12-15UT       1.67         1.33         3.67         \n15-18UT       2.67         2.00         2.67         \n18-21UT       2.67         2.00         2.67         \n21-00UT       3.00         2.33         3.00         \n\nRationale: No G1 (Minor) or greater geomagnetic storms are expected. No\nsignificant transient or recurrent solar wind features are forecast.\n\nB. NOAA Solar Radiation Activity Observation and Forecast\n\nSolar radiation, as observed by NOAA GOES-18 over the past 24 hours, was\nbelow S-scale storm level thresholds.\n\nSolar Radiation Storm Forecast for Nov 20-Nov 22 2026\n\n              Nov 20  Nov 21  Nov 22\nS1 or greater    1%      1%      1%\n\nRationale: No S1 (Minor) or greater solar radiation storms are expected.\nNo significant active region activity favorable for radiation storm\nproduction is forecast.\n\nC. NOAA Radio Blackout Activity and Forecast\n\nRadio blackouts reaching the R1 levels were observed over the past 24\nhours. The largest was at 19/1324Z UTC.\n\nRadio Blackout Forecast for Nov 20-Nov 22 2026\n\n              Nov 20        Nov 21        Nov 22\nR1-R2           15%           15%           15%\nR3 or greater    5%            5%            5%\n\nRationale: There is a slight chance for R1-R2 (Minor-Moderate)radio\nblackouts over 20-22 Nov\n",
     "usedAsModelInput": false
   },
   "coronalHoleGuidance": {
     "source": "WXF CH/HSS current.json",
-    "observationTime": "2026-11-19T21:24:04Z",
-    "availableAt": "2026-11-19T22:17:17Z",
+    "observationTime": "2026-11-20T02:36:04Z",
+    "availableAt": "2026-11-20T03:29:52Z",
     "measurementEngine": "chhss-euv-hmi-20260919.2",
     "holes": [
       {
-        "id": "CH-20261119-01",
-        "latitude": -57.86954188143165,
-        "longitude": -0.5306373773793813,
-        "cmd": -0.5306373773793813,
-        "areaDisk": 0.031888867378785185,
-        "areaFraction": 0.031888867378785185,
-        "areaPct": 3.1888867378785184,
-        "width": 98.76748039273697,
+        "id": "CH-20261120-01",
+        "latitude": -58.37955580949085,
+        "longitude": -1.7258240436418932,
+        "cmd": -1.7258240436418932,
+        "areaDisk": 0.028574732232451376,
+        "areaFraction": 0.028574732232451376,
+        "areaPct": 2.8574732232451376,
+        "width": 98.27731632598123,
         "quantitative": true,
-        "time": "2026-11-19T21:24:04Z"
+        "time": "2026-11-20T02:36:04Z"
       },
       {
-        "id": "CH-20261119-02",
-        "latitude": 59.07420949478173,
-        "longitude": -11.006729758115137,
-        "cmd": -11.006729758115137,
-        "areaDisk": 0.014980460126503914,
-        "areaFraction": 0.014980460126503914,
-        "areaPct": 1.4980460126503914,
-        "width": 70.46882955684106,
+        "id": "CH-20261120-02",
+        "latitude": 60.61084770061536,
+        "longitude": -12.172587405046103,
+        "cmd": -12.172587405046103,
+        "areaDisk": 0.014995123501406166,
+        "areaFraction": 0.014995123501406166,
+        "areaPct": 1.4995123501406167,
+        "width": 71.34085826219487,
         "quantitative": true,
-        "time": "2026-11-19T21:24:04Z"
+        "time": "2026-11-20T02:36:04Z"
       },
       {
-        "id": "CH-20261119-03",
-        "latitude": 7.444454364096618,
-        "longitude": -64.4965786969282,
-        "cmd": -64.4965786969282,
-        "areaDisk": 0.002798632924515521,
-        "areaFraction": 0.002798632924515521,
-        "areaPct": 0.2798632924515521,
-        "width": 11.052733227913166,
+        "id": "CH-20261120-03",
+        "latitude": 31.781260916862802,
+        "longitude": 14.913950425992924,
+        "cmd": 14.913950425992924,
+        "areaDisk": 0.008609751927415263,
+        "areaFraction": 0.008609751927415263,
+        "areaPct": 0.8609751927415262,
+        "width": 22.114790867288626,
         "quantitative": true,
-        "time": "2026-11-19T21:24:04Z"
+        "time": "2026-11-20T02:36:04Z"
+      },
+      {
+        "id": "CH-20261120-04",
+        "latitude": 7.664298243726504,
+        "longitude": -60.86432097695657,
+        "cmd": -60.86432097695657,
+        "areaDisk": 0.0028932499701883265,
+        "areaFraction": 0.0028932499701883265,
+        "areaPct": 0.2893249970188327,
+        "width": 12.044186069689772,
+        "quantitative": true,
+        "time": "2026-11-20T02:36:04Z"
       }
     ],
     "usedAsModelInput": false,
     "reason": "Consistent as-issued CH forecast history is still accumulating; 27-day wind recurrence is a separate trained predictor.",
     "recurrencePublication": {
-      "generatedAt": "2026-11-19T22:17:07Z",
+      "generatedAt": "2026-11-20T03:29:44Z",
       "source": "NASA OMNI2 retrospective hourly",
       "coverage": {
         "ok": true,
         "state": "complete",
-        "generatedAt": "2026-11-19T22:17:07Z",
+        "generatedAt": "2026-11-20T03:29:44Z",
         "rows": 1800,
-        "validSpeedHours": 1430,
-        "firstValidHour": "2026-09-05T23:00:00Z",
+        "validSpeedHours": 1425,
+        "firstValidHour": "2026-09-06T04:00:00Z",
         "lastValidHour": "2026-11-05T01:00:00Z",
         "minimumDailyHours": 18,
         "forecastDays": [
-          {
-            "validDate": "2026-11-19",
-            "analogDate": "2026-10-23",
-            "validHours": 24,
-            "speed": 436.9583333333333
-          },
           {
             "validDate": "2026-11-20",
             "analogDate": "2026-10-24",
@@ -3586,6 +4654,12 @@
             "analogDate": "2026-10-29",
             "validHours": 24,
             "speed": 354.6666666666667
+          },
+          {
+            "validDate": "2026-11-26",
+            "analogDate": "2026-10-30",
+            "validHours": 24,
+            "speed": 343.7916666666667
           }
         ]
       }
@@ -3593,9 +4667,9 @@
   },
   "huxtGuidance": {
     "schemaVersion": "wxf-huxt-1",
-    "issuedAt": "2026-11-19T22:18:32.464516+00:00",
+    "issuedAt": "2026-11-20T03:31:04.489481+00:00",
     "status": "withheld",
-    "reason": "HUXt inputs/run unavailable: HTTPSConnectionPool(host='kauai.ccmc.gsfc.nasa.gov', port=443): Max retries exceeded with url: /DONKI/WS/get/CMEAnalysis?startDate=2026-11-11&endDate=2026-11-19&mostAccurateOnly=true&catalog=M2M_CATAL",
+    "reason": "HUXt inputs/run unavailable: HTTPSConnectionPool(host='kauai.ccmc.gsfc.nasa.gov', port=443): Max retries exceeded with url: /DONKI/WS/get/CMEAnalysis?startDate=2026-11-12&endDate=2026-11-20&mostAccurateOnly=true&catalog=M2M_CATAL",
     "boundary": null,
     "cmeInputs": null,
     "source": null,

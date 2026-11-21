@@ -1,0 +1,18 @@
+{
+  "id": "194117546",
+  "date": "2026-11-20 14:40:55",
+  "name": "HMI Int",
+  "scale": 0.5928107033953071,
+  "scaleCorrection": 1.0121275080957821,
+  "width": 4096,
+  "height": 4096,
+  "refPixelX": 2048.5,
+  "refPixelY": 2048.5,
+  "offsetX": 0,
+  "offsetY": 0,
+  "rotation": 0,
+  "rsun": 1618.8034300050006,
+  "dsun": 147805360000,
+  "sunCenterOffsetParams": [],
+  "layeringOrder": 1
+}

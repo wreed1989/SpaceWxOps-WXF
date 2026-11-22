@@ -1,21 +1,21 @@
 {
   "schemaVersion": "ops-delivery-1",
-  "checkedAt": "2026-11-21T23:10:06.123799+00:00",
+  "checkedAt": "2026-11-22T03:05:44.669912+00:00",
   "products": {
     "scoreboard": {
       "status": "available",
       "events": 3,
-      "retrievedAt": "2026-11-21T23:10:06.279437+00:00",
+      "retrievedAt": "2026-11-22T03:05:44.724806+00:00",
       "attempts": []
     },
     "refm": {
       "status": "available",
-      "issuedAt": "2026-11-21T00:14:00+00:00"
+      "issuedAt": "2026-11-22T00:14:00+00:00"
     },
     "m2mAnimation": {
       "path": "m2m-animation.gif",
       "sourceURL": "https://iswa.ccmc.gsfc.nasa.gov/iswa_data_tree/model/heliosphere/wsa-enlil-cone/animation-cme-velocity/2026/11/20261119_175600_2.0_anim.tim-vel.gif",
-      "retrievedAt": "2026-11-21T23:10:06.836037+00:00",
+      "retrievedAt": "2026-11-22T03:05:45.015448+00:00",
       "httpLastModified": "Thu, 19 Nov 2026 13:20:28 GMT",
       "sha256": "e77451a0c57e15e3e0d472a119d01c4233151c4b8c69cd2c5e2831691265e772",
       "bytes": 2423311,
@@ -29,10 +29,10 @@
     "huxtAnimation": {
       "path": "huxt-animation.mp4",
       "sourceURL": "https://swxforecastlab.s3.eu-west-2.amazonaws.com/WSA_DONKI_huxt_animation_latest.mp4",
-      "retrievedAt": "2026-11-21T23:10:07.139110+00:00",
-      "httpLastModified": "Sat, 21 Nov 2026 19:00:05 GMT",
-      "sha256": "6ceab2b0c38a940b5b87bf9b0cfde3e6a28220dac306a6bd72b868c7ab649acf",
-      "bytes": 1021299,
+      "retrievedAt": "2026-11-22T03:05:45.488751+00:00",
+      "httpLastModified": "Sun, 22 Nov 2026 01:00:04 GMT",
+      "sha256": "510a04eef66fda0ec0a1c394a542f073bc097dea9f2763d2419735f2bdba2bf6",
+      "bytes": 1010751,
       "kind": "video",
       "frames": null,
       "status": "available",
@@ -40,8 +40,8 @@
     },
     "electron-fluence.json": {
       "status": "experimental",
-      "issuedAt": "2026-11-21T23:10:05.368466+00:00",
-      "dataAsOf": "2026-11-21T23:00:00+00:00",
+      "issuedAt": "2026-11-22T03:05:44.211954+00:00",
+      "dataAsOf": "2026-11-22T02:00:00+00:00",
       "modelSHA256": "929c5ee2a3d24db0838a4d389ae996d165bcf1c54dbedc9719ac38c82f241732"
     }
   }

@@ -3,7 +3,7 @@
     {
       "cmeID": "2026-11-19T08:09:00-CME-001",
       "observedTime": "2026-11-19T08:09Z",
-      "noArrivalObserved": false,
+      "noArrivalObserved": true,
       "arrivalTime": null,
       "maxKP": null,
       "dstMin": null,
@@ -233,7 +233,7 @@
     }
   ],
   "source": "https://ccmc.gsfc.nasa.gov/CMESB-Earth/WS/get/predictions?CMEtimeStart=2026-10-25&CMEtimeEnd=2026-11-25&closeOutCMEsOnly=false&skipNoArrivalObservedCMEs=false",
-  "retrievedAt": "2026-11-24T06:00:40.185265+00:00",
+  "retrievedAt": "2026-11-24T17:36:47.968643+00:00",
   "windowStart": "2026-10-25",
   "windowEnd": "2026-11-25"
 }

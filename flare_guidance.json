@@ -61,15 +61,20 @@
   "wxf_full_disk": {
     "method": "union_of_unique_region_components",
     "formula": "1 - product(1 - regional probability)",
-    "components": 2,
-    "numbered_regions": 2,
+    "components": 3,
+    "numbered_regions": 3,
     "sharp_regions": 2,
     "shared_harp_region_values": 0,
-    "fallback_regions": 0,
+    "fallback_regions": 1,
     "unnumbered_or_farside_residual": false,
     "note": "Coverage aggregate, not a separately trained full-disk classifier. Shared HARP probabilities are included once. The product formula assumes independent components and is not a validated full-disk calibration."
   },
   "wxf_region_components": [
+    {
+      "component_id": "AR14582-fallback",
+      "m1": 2.0,
+      "x1": 0.0
+    },
     {
       "component_id": "HARP14206",
       "m1": 2.1271992163281057,
@@ -90,15 +95,15 @@
         "message": "Visible-disk WXF coverage aggregate. Accepted SHARP components and explicit morphology/climatology fallbacks are combined once per HARP/region."
       },
       "drivers": [
-        "2 numbered active regions represented",
-        "2 SHARP region values; 0 fallbacks",
+        "3 numbered active regions represented",
+        "2 SHARP region values; 1 fallbacks",
         "Regional probabilities combined as 1 - product(1 - p_i)",
         "Shared HARPs counted once in the full-disk aggregate",
         "No unnumbered or farside residual term"
       ],
       "members": {
         "sharpmag": {
-          "m1": 2.9,
+          "m1": 4.9,
           "x1": 0.3,
           "source": "WXF sharp-mag-20260903-xstruct-history-v3 regional combination",
           "quality": "research",
@@ -208,7 +213,7 @@
       "id": "AR14579",
       "label": "AR 14579",
       "location": "N12W62",
-      "mcintosh": "",
+      "mcintosh": "HSX",
       "quality": {
         "level": "research",
         "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=41.9°"
@@ -223,8 +228,8 @@
           "component_id": "HARP14206"
         },
         "swpc": {
-          "m1": 0.0,
-          "x1": 0.0,
+          "m1": 1.0,
+          "x1": 1.0,
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
@@ -253,7 +258,7 @@
       "id": "AR14581",
       "label": "AR 14581",
       "location": "S10W35",
-      "mcintosh": "",
+      "mcintosh": "HRX",
       "quality": {
         "level": "research",
         "message": "SHARP NRT record age 3.0 h; single-region HARP; |LON_FWT|=11.3°"
@@ -268,8 +273,8 @@
           "component_id": "HARP14216"
         },
         "swpc": {
-          "m1": 0.0,
-          "x1": 0.0,
+          "m1": 1.0,
+          "x1": 1.0,
           "source": "NOAA/SWPC numbered-region flare forecast",
           "quality": "official-operational",
           "method": "official_swpc"
@@ -293,12 +298,43 @@
         "X1+ direct: lower absolute net current helicity",
         "X1+ direct: rising mean vertical-field gradient"
       ]
+    },
+    {
+      "id": "AR14582",
+      "label": "AR 14582",
+      "location": "N18E46",
+      "mcintosh": "CRO",
+      "quality": {
+        "level": "fallback",
+        "message": "Numbered region is represented, but no accepted live SHARP vector was available; this is not a SHARP magnetic inference."
+      },
+      "members": {
+        "sharpmag": {
+          "m1": 2.0,
+          "x1": 0.0,
+          "source": "Bloomfield et al. (2012) McIntosh-Poisson coverage fallback",
+          "quality": "research-coverage-fallback",
+          "method": "morphology_fallback",
+          "component_id": "AR14582-fallback"
+        },
+        "swpc": {
+          "m1": 1.0,
+          "x1": 1.0,
+          "source": "NOAA/SWPC numbered-region flare forecast",
+          "quality": "official-operational",
+          "method": "official_swpc"
+        }
+      },
+      "drivers": [
+        "McIntosh CRO",
+        "No accepted live single-region SHARP vector"
+      ]
     }
   ],
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20261123&region=&indexnum=1",
-    "retrieved_at": "2026-11-24T05:21:03Z",
+    "retrieved_at": "2026-11-24T09:56:55Z",
     "table_date": "2026-11-23",
     "valid_start": "2026-11-23T00:00:00Z",
     "valid_end": "2026-11-24T00:00:00Z",
@@ -310,7 +346,7 @@
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-11-24T05:21:03Z",
+    "generated_at": "2026-11-24T09:56:56Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
@@ -570,7 +606,7 @@
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 104,
+      "records": 108,
       "issued": "2026-11-24T00:00:00Z",
       "valid_start": "2026-11-24T00:00:00Z",
       "valid_end": "2026-11-25T00:00:00Z",
@@ -647,7 +683,7 @@
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 104,
+      "records": 108,
       "issued": "2026-11-24T00:00:00Z",
       "valid_start": "2026-11-24T00:00:00Z",
       "valid_end": "2026-11-24T12:00:00Z",
@@ -853,7 +889,7 @@
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 66,
+      "records": 70,
       "issued": "2026-11-24T03:10:56Z",
       "valid_start": "2026-11-24T00:00:00Z",
       "valid_end": "2026-11-25T00:00:00Z",
@@ -930,7 +966,7 @@
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 72,
+      "records": 77,
       "issued": "2026-11-24T03:03:03Z",
       "valid_start": "2026-11-24T00:00:00Z",
       "valid_end": "2026-11-25T00:00:00Z",
@@ -1059,7 +1095,7 @@
     "flarecast": {
       "ok": false,
       "url": "https://api.flarecast.eu/api/prediction/flarecast_latest.xml",
-      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x7751eb323390>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
+      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x71ac05983390>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
     },
     "swpc": {
       "ok": true,

@@ -111,14 +111,12 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "method": "regional_union_with_explicit_fallbacks"
         },
         "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
-          "source": "NOAA/SWPC 3-day whole-disk flare forecast",
-          "quality": "official-operational",
+          "m1": null,
+          "x1": null,
+          "source": "https://services.swpc.noaa.gov/text/3-day-solar-geomag-predictions.txt",
+          "quality": "unavailable",
           "method": "official_swpc",
-          "issued": "2026-11-23T22:00:00+00:00",
-          "valid_start": "2026-11-24T00:00:00+00:00",
-          "valid_end": "2026-11-25T00:00:00+00:00"
+          "note": "SWPC bulletin does not cover 2026-11-24"
         },
         "mcstat": {
           "m1": 6.0,
@@ -137,9 +135,9 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "x1": 0.0,
           "source": "SIDC 24-hour Global Flare Forecast",
           "quality": "published-comparison",
-          "issued": "2026-11-23T12:25:40Z",
-          "valid_start": "2026-11-23T12:25:40Z",
-          "valid_end": "2026-11-24T12:25:40Z",
+          "issued": "2026-11-24T11:57:08Z",
+          "valid_start": "2026-11-24T11:57:08Z",
+          "valid_end": "2026-11-25T11:57:08Z",
           "note": "Human-operator-moderated global forecast published by SIDC."
         },
         "ccmc_amos": {
@@ -335,7 +333,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20261123&region=&indexnum=1",
-    "retrieved_at": "2026-11-24T09:56:55Z",
+    "retrieved_at": "2026-11-24T22:29:06Z",
     "table_date": "2026-11-23",
     "valid_start": "2026-11-23T00:00:00Z",
     "valid_end": "2026-11-24T00:00:00Z",
@@ -347,12 +345,12 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-11-24T09:56:56Z",
+    "generated_at": "2026-11-24T22:29:07Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
       "url": "https://www.sidc.be/WMO/FlareForecast.php",
-      "issued": "2026-11-23T12:25:40Z",
+      "issued": "2026-11-24T11:57:08Z",
       "m1": 0.0,
       "x1": 0.0
     },
@@ -364,7 +362,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "ccmc_sidc": {
       "dataset_id": "SIDC_Operator_FULLDISK",
       "label": "SIDC Operator",
-      "ok": false,
+      "ok": true,
       "parser": "3.0.0",
       "info_url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/info?id=SIDC_Operator_FULLDISK",
       "url": "https://iswa.ccmc.gsfc.nasa.gov/IswaSystemWebApp/flarescoreboard/hapi/data?id=SIDC_Operator_FULLDISK&time.min=2026-11-19T21%3A00%3A00.0&time.max=2026-11-24T21%3A00%3A00.0&format=json&options=fields.all",
@@ -401,8 +399,42 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 3,
-      "detail": "Forecast window does not meaningfully overlap target (2026-11-22T12:30:00Z to 2026-11-23T12:30:00Z)"
+      "records": 4,
+      "issued": "2026-11-24T12:32:08Z",
+      "valid_start": "2026-11-24T12:30:00Z",
+      "valid_end": "2026-11-25T12:30:00Z",
+      "m1": 6.0,
+      "x1": 1.0,
+      "selected_record": {
+        "start_window": "2026-11-24T12:30:00.0Z",
+        "end_window": "2026-11-25T12:30:00.0Z",
+        "issue_time": "2026-11-24T12:32:08.0Z",
+        "C": "-1",
+        "M": "-1",
+        "CPlus": 0.32,
+        "MPlus": 0.06,
+        "X": 0.01,
+        "C_uncertainty": "-1",
+        "M_uncertainty": "-1",
+        "CPlus_uncertainty": "-1",
+        "MPlus_uncertainty": "-1",
+        "X_uncertainty": "-1",
+        "C_value_lower": "-1",
+        "M_value_lower": "-1",
+        "CPlus_value_lower": "-1",
+        "MPlus_value_lower": "-1",
+        "X_value_lower": "-1",
+        "C_value_higher": "-1",
+        "M_value_higher": "-1",
+        "CPlus_value_higher": "-1",
+        "MPlus_value_higher": "-1",
+        "X_value_higher": "-1",
+        "C_level": "-1",
+        "M_level": "-1",
+        "CPlus_level": 0.32,
+        "MPlus_level": 0.06,
+        "X_level": 0.01
+      }
     },
     "ccmc_metoffice": {
       "dataset_id": "MO_TOT1_FULLDISK",
@@ -607,7 +639,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 108,
+      "records": 120,
       "issued": "2026-11-24T00:00:00Z",
       "valid_start": "2026-11-24T00:00:00Z",
       "valid_end": "2026-11-25T00:00:00Z",
@@ -684,7 +716,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 108,
+      "records": 120,
       "issued": "2026-11-24T00:00:00Z",
       "valid_start": "2026-11-24T00:00:00Z",
       "valid_end": "2026-11-24T12:00:00Z",
@@ -890,7 +922,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 70,
+      "records": 83,
       "issued": "2026-11-24T03:10:56Z",
       "valid_start": "2026-11-24T00:00:00Z",
       "valid_end": "2026-11-25T00:00:00Z",
@@ -967,7 +999,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 77,
+      "records": 90,
       "issued": "2026-11-24T03:03:03Z",
       "valid_start": "2026-11-24T00:00:00Z",
       "valid_end": "2026-11-25T00:00:00Z",
@@ -1044,7 +1076,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 4,
+      "records": 5,
       "issued": "2026-11-23T17:00:00Z",
       "valid_start": "2026-11-23T17:00:00Z",
       "valid_end": "2026-11-24T17:00:00Z",
@@ -1096,12 +1128,11 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "flarecast": {
       "ok": false,
       "url": "https://api.flarecast.eu/api/prediction/flarecast_latest.xml",
-      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x71ac05983390>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
+      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x751d1a16f4d0>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
     },
     "swpc": {
-      "ok": true,
-      "detail": "Official benchmark refreshed independently of SHARP",
-      "issued": "2026-11-23T22:00:00+00:00",
+      "ok": false,
+      "detail": "SWPC bulletin does not cover 2026-11-24",
       "url": "https://services.swpc.noaa.gov/text/3-day-solar-geomag-predictions.txt"
     },
     "strict_parser_version": "5.0.0",

@@ -9,8 +9,8 @@ window.FLARE_GUIDANCE_PAYLOAD = {
   "valid_start": "2026-11-25T00:00:00Z",
   "valid_end": "2026-11-26T00:00:00Z",
   "quality": {
-    "level": "research",
-    "message": "Daily WXF inference from a saved calibrated M1+ model and an independently calibrated magnetic/history X1+ model. Research/shadow guidance unless explicitly validated and marked operational."
+    "level": "degraded",
+    "message": "WXF input refresh unavailable; prior published WXF probabilities retained."
   },
   "input": {
     "series": "hmi.sharp_cea_720s_nrt",
@@ -57,7 +57,9 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       "source": "https://services.swpc.noaa.gov/text/3-day-solar-geomag-predictions.txt",
       "issued": "2026-11-24T22:00:00+00:00",
       "valid_date": "2026-11-25"
-    }
+    },
+    "attempted_target_time": "2026-11-24T18:00:00Z",
+    "fallback_from_previous_cycle": true
   },
   "wxf_full_disk": {
     "method": "union_of_unique_region_components",
@@ -107,16 +109,10 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "m1": 5.6,
           "x1": 0.1,
           "source": "WXF sharp-mag-20260903-xstruct-history-v3 regional combination",
-          "quality": "research",
-          "method": "regional_union_with_explicit_fallbacks"
-        },
-        "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
-          "source": "NOAA/SWPC 3-day whole-disk flare forecast",
-          "quality": "official-operational",
-          "method": "official_swpc",
-          "issued": "2026-11-24T22:00:00+00:00",
+          "quality": "stale-fallback",
+          "method": "regional_union_with_explicit_fallbacks",
+          "issued": "2026-11-24T21:00:00Z",
+          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
           "valid_start": "2026-11-25T00:00:00+00:00",
           "valid_end": "2026-11-26T00:00:00+00:00"
         },
@@ -207,6 +203,16 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "valid_end": "2026-11-25T17:00:00Z",
           "note": "Probability reproduced from the NASA/CCMC Flare Scoreboard HAPI feed using the /data parameter schema.",
           "dataset_id": "SPS_FULLDISK"
+        },
+        "swpc": {
+          "m1": 1.0,
+          "x1": 1.0,
+          "source": "NOAA/SWPC 3-day whole-disk flare forecast",
+          "quality": "official-operational",
+          "method": "official_swpc",
+          "issued": "2026-11-24T22:00:00+00:00",
+          "valid_start": "2026-11-25T00:00:00+00:00",
+          "valid_end": "2026-11-26T00:00:00+00:00"
         }
       }
     },
@@ -224,16 +230,13 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "m1": 3.0,
           "x1": 0.0,
           "source": "Bloomfield et al. (2012) McIntosh-Poisson coverage fallback",
-          "quality": "research-coverage-fallback",
+          "quality": "stale-fallback",
           "method": "morphology_fallback",
-          "component_id": "AR14579-fallback"
-        },
-        "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
-          "source": "NOAA/SWPC numbered-region flare forecast",
-          "quality": "official-operational",
-          "method": "official_swpc"
+          "component_id": "AR14579-fallback",
+          "issued": "2026-11-24T21:00:00Z",
+          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
+          "valid_start": "2026-11-25T00:00:00+00:00",
+          "valid_end": "2026-11-26T00:00:00+00:00"
         },
         "mcstat": {
           "m1": 3.0,
@@ -245,6 +248,12 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "m1": 0.0,
           "x1": 0.0,
           "source": "SolarMonitor MCEVOL regional forecast",
+          "quality": "published-comparison"
+        },
+        "swpc": {
+          "m1": 1.0,
+          "x1": 1.0,
+          "source": "SWPC regional forecast as displayed by SolarMonitor",
           "quality": "published-comparison"
         }
       },
@@ -267,16 +276,13 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "m1": 0.7,
           "x1": 0.1,
           "source": "WXF sharp-mag-20260903-xstruct-history-v3 (independently calibrated magnetic M1/X1)",
-          "quality": "research",
+          "quality": "stale-fallback",
           "method": "sharp_magnetic",
-          "component_id": "HARP14216"
-        },
-        "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
-          "source": "NOAA/SWPC numbered-region flare forecast",
-          "quality": "official-operational",
-          "method": "official_swpc"
+          "component_id": "HARP14216",
+          "issued": "2026-11-24T21:00:00Z",
+          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
+          "valid_start": "2026-11-25T00:00:00+00:00",
+          "valid_end": "2026-11-26T00:00:00+00:00"
         },
         "mcstat": {
           "m1": 3.0,
@@ -288,6 +294,12 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "m1": 0.0,
           "x1": 0.0,
           "source": "SolarMonitor MCEVOL regional forecast",
+          "quality": "published-comparison"
+        },
+        "swpc": {
+          "m1": 1.0,
+          "x1": 1.0,
+          "source": "SWPC regional forecast as displayed by SolarMonitor",
           "quality": "published-comparison"
         }
       },
@@ -312,16 +324,13 @@ window.FLARE_GUIDANCE_PAYLOAD = {
           "m1": 2.0,
           "x1": 0.0,
           "source": "Bloomfield et al. (2012) McIntosh-Poisson coverage fallback",
-          "quality": "research-coverage-fallback",
+          "quality": "stale-fallback",
           "method": "morphology_fallback",
-          "component_id": "AR14582-fallback"
-        },
-        "swpc": {
-          "m1": 1.0,
-          "x1": 1.0,
-          "source": "NOAA/SWPC numbered-region flare forecast",
-          "quality": "official-operational",
-          "method": "official_swpc"
+          "component_id": "AR14582-fallback",
+          "issued": "2026-11-24T21:00:00Z",
+          "note": "Previous published WXF magnetic probability retained because the current JSOC/SHARP query timed out after three attempts.",
+          "valid_start": "2026-11-25T00:00:00+00:00",
+          "valid_end": "2026-11-26T00:00:00+00:00"
         }
       },
       "drivers": [
@@ -330,10 +339,19 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ]
     }
   ],
+  "generation_status": {
+    "ok": false,
+    "used_previous_forecast": true,
+    "previous_issued": "2026-11-24T21:00:00Z",
+    "attempts": 3,
+    "exit_code": 2,
+    "checked_at": "2026-11-25T04:58:00Z",
+    "detail": "JSOC/SHARP retrieval failed after three attempts. The prior WXF magnetic probability was retained transparently while all independent forecast sources were refreshed."
+  },
   "solar_monitor": {
     "source": "SolarMonitor",
     "source_url": "https://www.solarmonitor.org/forecast.php?date=20261124&region=&indexnum=1",
-    "retrieved_at": "2026-11-25T04:15:31Z",
+    "retrieved_at": "2026-11-25T04:58:01Z",
     "table_date": "2026-11-24",
     "valid_start": "2026-11-24T00:00:00Z",
     "valid_end": "2026-11-25T00:00:00Z",
@@ -345,7 +363,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "note": "Regional MCSTAT/MCEVOL values are reproduced from the latest issue-date SolarMonitor table. SolarMonitor does not publish a full-disk aggregate in this table; the dashboard uses each method's maximum published regional probability to avoid an independence-union inflation. The table's daily window is reported separately from WXF's next-calendar-day window; missing values remain missing."
   },
   "external_sources": {
-    "generated_at": "2026-11-25T04:15:31Z",
+    "generated_at": "2026-11-25T04:58:02Z",
     "script_version": "1.0.0",
     "sidc_direct": {
       "ok": true,
@@ -999,7 +1017,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
       ],
       "m_parameter": "MPlus",
       "x_parameter": "X",
-      "records": 71,
+      "records": 72,
       "issued": "2026-11-25T03:01:17Z",
       "valid_start": "2026-11-25T00:00:00Z",
       "valid_end": "2026-11-26T00:00:00Z",
@@ -1128,7 +1146,7 @@ window.FLARE_GUIDANCE_PAYLOAD = {
     "flarecast": {
       "ok": false,
       "url": "https://api.flarecast.eu/api/prediction/flarecast_latest.xml",
-      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x77e63c5ef390>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
+      "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.flarecast.eu', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.flarecast.eu', port=443) at 0x7c43df87b390>, 'Connection to api.flarecast.eu timed out. (connect timeout=30)'))"
     },
     "swpc": {
       "ok": true,
